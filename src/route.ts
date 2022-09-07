@@ -18,6 +18,7 @@ const routes: RouteRecordRaw[] = [
     path: "/home",
     component: Home,
     name: RouterName.book,
+    redirect: "/home/book",
     children: [
       { path: "book", component: Book, name: RouterName.book },
       { path: "notes", component: Note, name: RouterName.note },
