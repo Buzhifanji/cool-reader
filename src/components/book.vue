@@ -1,7 +1,7 @@
 <template>
   <n-card hoverable v-for="item in books" @click="openBook(item)">
     <template #cover>
-      <n-image src="src/assets/2.jpg" preview-disabled />
+      <n-image :src="item.cover" preview-disabled />
     </template>
     <n-ellipsis :line-clamp="1">
       {{ item.bookName }}
@@ -10,134 +10,14 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NEllipsis, NImage } from "naive-ui";
-import { ref } from "vue";
-import { BaseBookType } from "../core/type";
+import { NCard, NEllipsis, NImage, useNotification } from "naive-ui";
+import { books, initBook } from "../core/book";
+import { bookType } from "../core/type";
 
-const books = ref<BaseBookType[]>([
-  {
-    bookName: "name1name1name1name1name1name1name1name1name1",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "1",
-  },
-  {
-    bookName: "name2",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "2",
-  },
-  {
-    bookName: "name3",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "3",
-  },
-  {
-    bookName: "name1name1name1name1name1name1name1name1name1",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "1",
-  },
-  {
-    bookName: "name2",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "2",
-  },
-  {
-    bookName: "name3",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "3",
-  },
-  {
-    bookName: "name1name1name1name1name1name1name1name1name1",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "1",
-  },
-  {
-    bookName: "name2",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "2",
-  },
-  {
-    bookName: "name3",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "3",
-  },
-  {
-    bookName: "name1name1name1name1name1name1name1name1name1",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "1",
-  },
-  {
-    bookName: "name2",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "2",
-  },
-  {
-    bookName: "name3",
-    extname: "pdf",
-    author: "佚名",
-    category: "",
-    size: 100,
-    path: "home",
-    content: [],
-    id: "3",
-  },
-]);
+const notification = useNotification();
+initBook(notification);
 
-function openBook(book: BaseBookType) {}
+function openBook(book: bookType) {}
 </script>
 
 <style scoped>

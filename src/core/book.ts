@@ -1,45 +1,66 @@
 import { forage } from "@tauri-apps/tauri-forage";
 import { NotificationApiInjection } from "naive-ui/es/notification/src/NotificationProvider";
 import { ref } from "vue";
-import { loadPdf } from "./pdf";
-import { BaseBookType } from "./type";
+import { setBookId } from "./md5";
+import { getPDFCover } from "./pdf";
+import { BaseBook, bookType } from "./type";
 
 /**
  * 已上传的书籍列表
  */
-export const books = ref<BaseBookType[]>([]);
+export const books = ref<bookType[]>([]);
+
+export const cacheBooks = new Map<string, Uint8Array>();
 
 const store = forage.createInstance({ name: "_cool_reader_" });
 
-export async function addBook(
-  book: BaseBookType,
-  notification: NotificationApiInjection
-) {
-  const { id } = book;
-  const value = await store.hasKey(id);
+export function clearStore() {
+  store.clear();
+}
+
+let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
+
+export function initBook(notion: NotificationApiInjection) {
+  if (!isLoadStoraged) {
+    store.keys().then((keys: string[]) => {
+      keys.forEach(async (key: string) => {
+        const value = await store.getItem(key);
+        books.value.push(value);
+      });
+    });
+    isLoadStoraged = true;
+  }
+}
+
+export async function addBook(book: bookType) {
+  const { id, bookName } = book;
+  const value = await store.getItem(id);
   if (value) {
-    notification.warning({
-      content: "书籍以存在",
-      meta: "请不要重复添加",
+    window.notification.warning({
+      content: "书籍已存在！",
+      meta: bookName,
       duration: 2000,
       keepAliveOnHover: true,
     });
   } else {
     store.setItem(id, book);
     books.value.unshift(book);
+    window.notification.success({
+      content: "添加成功！",
+      meta: bookName,
+      duration: 2000,
+      keepAliveOnHover: true,
+    });
   }
 }
 
-export async function deleteBook(
-  bookId: string,
-  notification: NotificationApiInjection
-) {
+export async function deleteBook(bookId: string) {
   const index = books.value.findIndex((book) => book.id === bookId);
   if (index !== -1) {
     books.value.splice(index, 1);
   }
   await store.removeItem(bookId);
-  notification.success({
+  window.notification.success({
     content: "删除成功！",
     meta: "66666666",
     duration: 2000,
@@ -47,25 +68,47 @@ export async function deleteBook(
   });
 }
 
-export function handleBook(file: File, fileContent: Uint8Array) {
-  const fileName = file.name;
-  const len = fileName.length;
-  const lastIndexOfDots = fileName.lastIndexOf(".");
-  const extname = fileName
-    .substring(lastIndexOfDots + 1, len)
-    .toLocaleLowerCase();
-  const bookName = fileName.substring(0, lastIndexOfDots);
-  generateBook(bookName, extname, fileContent);
+export async function handleBook(file: File, fileContent: Uint8Array) {
+  const { name, size } = file;
+  const len = name.length;
+  const lastIndexOfDots = name.lastIndexOf(".");
+  const extname = name.substring(lastIndexOfDots + 1, len).toLocaleLowerCase();
+  const bookName = name.substring(0, lastIndexOfDots);
+
+  try {
+    const id = await setBookId(file, extname, fileContent);
+    const baseBook: BaseBook = { bookName, extname, size, id };
+    const cover = await generateBook(baseBook, fileContent);
+    const book: bookType = { ...baseBook, cover, author: "", category: "" };
+    await addBook(book);
+  } catch (e) {
+    console.log("kkkkk", e);
+  }
+}
+
+export function openBook(id: string) {}
+
+function getBookContent(id: string): Uint8Array {
+  let result = new Uint8Array();
+  if (cacheBooks.has(id)) {
+    result = cacheBooks.get(id)!;
+  } else {
+    // TODO:
+  }
+  return result;
 }
 
 function generateBook(
-  bookName: string,
-  extname: string,
+  book: BaseBook,
   fileContent: Uint8Array
-) {
-  switch (extname) {
-    case "pdf":
-      loadPdf(fileContent);
-      break;
-  }
+): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    let cover: string = "";
+    switch (book.extname) {
+      case "pdf":
+        cover = await getPDFCover(fileContent);
+        break;
+    }
+    resolve(cover);
+  });
 }

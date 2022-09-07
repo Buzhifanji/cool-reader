@@ -13,7 +13,7 @@ export function setBookId(
     try {
       if (extname === Bookextname.pdf) {
         pdfLoadingTask(fileContent)
-          .then((pdfDoc) => {
+          .promise.then((pdfDoc: any) => {
             resolve(pdfDoc.fingerprints());
           })
           .catch((err: any) => {
