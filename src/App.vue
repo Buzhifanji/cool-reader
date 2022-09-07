@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 import { WebviewWindow } from '@tauri-apps/api/window';
+import { NNotificationProvider } from 'naive-ui';
 
 function open() {
   console.log('open');
@@ -20,7 +21,9 @@ function open() {
 </script>
 
 <template>
-  <router-view></router-view>
+  <n-notification-provider>
+    <router-view></router-view>
+  </n-notification-provider>
 </template>
 
 <style scoped>
