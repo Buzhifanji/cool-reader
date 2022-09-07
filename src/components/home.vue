@@ -7,15 +7,19 @@ import {
   NLayoutSider,
   NMenu,
   NSpace,
+  useNotification,
 } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { changeStorageLoction, fileChange, isLoadFile } from "../core/file";
+import { clearStore } from "../core/book";
+import { fileChange, isLoadFile } from "../core/file";
 import { RouterName } from "../route";
 import BookIcon from "./icons/book.vue";
 import HighLightIcon from "./icons/highlight.vue";
 import NoteIcon from "./icons/note.vue";
 import SetIcon from "./icons/set.vue";
+
+window.notification = useNotification();
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -53,7 +57,7 @@ const siderMenuOptions = [
       <n-space justify="end">
         <input type="file" @change="fileChange" :disabled="isLoadFile" />
         <SetIcon />
-        <button @click="changeStorageLoction">路径</button>
+        <button @click="clearStore">clear</button>
       </n-space>
     </n-layout-header>
     <n-layout has-sider>
