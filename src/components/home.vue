@@ -10,9 +10,8 @@ import {
 } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { changeStorageLoction } from "../core/file";
+import { changeStorageLoction, fileChange, isLoadFile } from "../core/file";
 import { RouterName } from "../route";
-import { fileChange, isLoadFile } from "../utils/file";
 import BookIcon from "./icons/book.vue";
 import HighLightIcon from "./icons/highlight.vue";
 import NoteIcon from "./icons/note.vue";
