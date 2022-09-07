@@ -1,5 +1,4 @@
 import { forage } from "@tauri-apps/tauri-forage";
-import { NotificationApiInjection } from "naive-ui/es/notification/src/NotificationProvider";
 import { ref } from "vue";
 import { setBookId } from "./md5";
 import { getPDFCover } from "./pdf";
@@ -20,7 +19,7 @@ export function clearStore() {
 
 let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
 
-export function initBook(notion: NotificationApiInjection) {
+export function initBook() {
   if (!isLoadStoraged) {
     store.keys().then((keys: string[]) => {
       keys.forEach(async (key: string) => {

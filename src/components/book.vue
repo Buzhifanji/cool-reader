@@ -10,12 +10,11 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NEllipsis, NImage, useNotification } from "naive-ui";
+import { NCard, NEllipsis, NImage } from "naive-ui";
 import { books, initBook } from "../core/book";
 import { bookType } from "../core/type";
 
-const notification = useNotification();
-initBook(notification);
+initBook();
 
 function openBook(book: bookType) {}
 </script>
