@@ -9,11 +9,6 @@ import { handleBook } from "./book";
 export const isLoadFile = ref<boolean>(false);
 const setLoadFile = (value: boolean) => (isLoadFile.value = value);
 
-/**
- * 用户自定义文件存储路径
- */
-export const stoargeLoction = "_tauri_storage_loction";
-
 export function fileChange(event: Event) {
   const target = event.target as HTMLInputElement;
   if (target.files) {
@@ -95,6 +90,9 @@ function readFile(file: File) {
   });
   seqReadFile();
 }
+
+/*------------------------- 文件存储位置  ------------------------*/
+const stoargeLoction = "_tauri_storage_loction";
 /**
  * 更改存储位置
  */
@@ -102,7 +100,7 @@ export async function changeStorageLoction() {
   const selectedPath = await open({
     directory: true,
     multiple: false,
-    defaultPath: await downloadDir(),
+    defaultPath: await getStoreageLoction(),
   });
   if (selectedPath) {
     await forage.setItem({
@@ -110,4 +108,10 @@ export async function changeStorageLoction() {
       value: selectedPath as string,
     });
   }
+}
+
+export async function getStoreageLoction(): Promise<string> {
+  const param = { key: stoargeLoction };
+  const isExite = await forage.hasKey(param)();
+  return isExite ? await forage.getItem(param)() : await downloadDir();
 }
