@@ -1,8 +1,6 @@
 <template>
   <div><button @click="goHome">go home</button></div>
-  <section>
-    <canvas id="view-canvas"></canvas>
-  </section>
+  <section id="view-container"></section>
 </template>
 
 <script setup lang="ts">
