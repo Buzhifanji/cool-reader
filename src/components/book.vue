@@ -12,11 +12,13 @@
 <script setup lang="ts">
 import { NCard, NEllipsis, NImage } from "naive-ui";
 import { books, initBook } from "../core/book";
-import { bookType } from "../core/type";
+import { StorageBook } from "../core/type";
 
 initBook();
 
-function openBook(book: bookType) {}
+function openBook(book: StorageBook) {
+  console.log("kkkkkkkkkkkkk", book);
+}
 </script>
 
 <style scoped>

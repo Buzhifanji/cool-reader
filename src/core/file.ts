@@ -3,9 +3,10 @@ import { appDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
 import { ref } from "vue";
-import { _addBook } from "./book";
-import { BufType, _BaseBook } from "./type";
+import { addBook } from "./book";
+import { BaseBook, BufType } from "./type";
 import { mergerUint8Array } from "./utils";
+
 /**
  * 因为一次只能读取一个文件，所以设定此变量，防止用户在读取中重复读取文件
  */
@@ -27,11 +28,11 @@ export async function openFile() {
   }
 }
 
-function downloadFile(book: _BaseBook) {
+function downloadFile(book: BaseBook) {
   listenDownloadFile(book);
   readFileSize.value = 0;
   invoke("download_local_file", { window: appWindow, path: book.path }).then(
-    (data) => {
+    (data: unknown) => {
       readFileSize.value = data as unknown as number;
       console.log("data", data);
     }
@@ -41,7 +42,7 @@ function downloadFile(book: _BaseBook) {
 /**
  * 由于 js 从 rust 中复制 较大数据 时，非常缓慢，目前采用事情 + 切片，分批次传递方案 折中处理。
  */
-function listenDownloadFile(book: _BaseBook) {
+function listenDownloadFile(book: BaseBook) {
   let fileContent = new Uint8Array();
   const unlisten = appWindow.listen(
     "downloadLocalFileEvent",
@@ -53,7 +54,7 @@ function listenDownloadFile(book: _BaseBook) {
       } else {
         const bookInfo = { ...book, fileContent };
         bookInfo.fileSize = readFileSize.value;
-        _addBook(bookInfo).then(() => {
+        addBook(bookInfo).then(() => {
           // 取消事件监听
           unlisten.then((done) => {
             done();
@@ -66,7 +67,7 @@ function listenDownloadFile(book: _BaseBook) {
 
 function handleFile(path: string) {
   const name = handleFileName(path);
-  const book: _BaseBook = { ...name, path, fileSize: 0 };
+  const book: BaseBook = { ...name, path, fileSize: 0 };
   downloadFile(book);
 }
 
