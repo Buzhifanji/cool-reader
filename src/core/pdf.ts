@@ -1,8 +1,7 @@
 import { pdfLoadingTask } from "./utils";
 
-export function loadPdf(fileContent: Uint8Array) {
-  const pdfjsLib = (window as Window)["pdfjs-dist/build/pdf"];
-  const loadingTask = pdfjsLib.getDocument({ data: fileContent });
+export function loadPdf(fileContent: string) {
+  const loadingTask = pdfLoadingTask(fileContent);
   loadingTask.promise
     .then((pdf: any) => {
       return pdf.getPage(1);
