@@ -18,3 +18,24 @@ export interface bookType extends BaseBook {
   category: string; // 类别，用于书籍分类
   cover: string; // 封面
 }
+
+export interface BufType {
+  message: Uint8Array;
+}
+
+export interface _BaseBook {
+  bookName: string;
+  extname: string;
+  fileSize: number;
+  path: string;
+}
+
+export interface BookInfo extends _BaseBook {
+  fileContent: Uint8Array;
+}
+
+export interface StorageBook extends _BaseBook {
+  category: string; // 类别，用于书籍分类
+  cover: string; // 封面
+  id: string; // md5
+}

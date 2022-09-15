@@ -11,13 +11,12 @@ import {
 } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { clearStore } from "../core/book";
-import { fileChange, isLoadFile } from "../core/file";
+import { openFile } from "../core/file";
+import { clearStore } from "../core/storage";
 import { RouterName } from "../route";
 import BookIcon from "./icons/book.vue";
 import HighLightIcon from "./icons/highlight.vue";
 import NoteIcon from "./icons/note.vue";
-import SetIcon from "./icons/set.vue";
 
 window.notification = useNotification();
 
@@ -55,8 +54,9 @@ const siderMenuOptions = [
   <n-layout>
     <n-layout-header :inverted="inverted" bordered>
       <n-space justify="end">
-        <input type="file" @change="fileChange" :disabled="isLoadFile" />
-        <SetIcon />
+        <!-- <input type="file" @change="fileChange" :disabled="isLoadFile" /> -->
+        <!-- <SetIcon /> -->
+        <button @click="openFile">上传</button>
         <button @click="clearStore">clear</button>
       </n-space>
     </n-layout-header>
