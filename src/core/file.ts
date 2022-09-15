@@ -65,7 +65,7 @@ function listenDownloadFile(book: BaseBook) {
   );
 }
 
-function handleFile(path: string) {
+export function handleFile(path: string) {
   const name = handleFileName(path);
   const book: BaseBook = { ...name, path, fileSize: 0 };
   downloadFile(book);

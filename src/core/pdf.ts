@@ -1,28 +1,35 @@
+import { ref } from "vue";
 import { pdfLoadingTask } from "./utils";
 
-export function loadPdf(fileContent: string) {
-  const loadingTask = pdfLoadingTask(fileContent);
-  loadingTask.promise
-    .then((pdf: any) => {
+const scale = ref<number>(1); // 展示比例
+
+function renderPageContent(page: any, canvas: HTMLCanvasElement) {
+  const viewport = page.getViewport({
+    scale: scale.value, // 展示比例
+    rotation: 0, // 旋转角度
+  });
+  const width = viewport.width;
+  const height = viewport.height;
+  const viewBox = viewport.viewBox;
+
+  const context = canvas.getContext("2d");
+  canvas.height = height || viewBox[3];
+  canvas.width = width || viewBox[2];
+
+  // 渲染内容
+  return page.render({ canvasContext: context, viewport });
+}
+
+export function loadPdf(fileContent: Uint8Array) {
+  pdfLoadingTask(fileContent)
+    .promise.then((pdf: any) => {
       return pdf.getPage(1);
     })
     .then((page: any) => {
-      const scale = 1.5; // 设置展示比例
-      const viewport = page.getViewport({
-        scale,
-      }); // 获取pdf尺寸
-      const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-      const context = canvas.getContext("2d");
-      canvas.height =
-        viewport.height || viewport.viewBox[3]; /* viewport.height is NaN */
-      canvas.width =
-        viewport.width || viewport.viewBox[2]; /* viewport.width is also NaN */
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: viewport,
-      };
-      page.render(renderContext);
+      const canvas = document.getElementById(
+        "view-canvas"
+      ) as HTMLCanvasElement;
+      renderPageContent(page, canvas);
     })
     .catch((error: any) => {
       console.log("error", error);
@@ -36,13 +43,8 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
         return pdfDoc.getPage(1);
       })
       .then((page: any) => {
-        const scale = 1.5;
-        const viewport = page.getViewport({ scale });
         const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.height = viewport.height || viewport.viewBox[3];
-        canvas.width = viewport.width || viewport.viewBox[2];
-        const taks = page.render({ canvasContext: context, viewport });
+        const taks = renderPageContent(page, canvas);
         taks.promise.then(async () => {
           const cover = canvas.toDataURL("image/jpeg");
           resolve(cover);

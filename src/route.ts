@@ -25,7 +25,11 @@ const routes: RouteRecordRaw[] = [
       { path: "highlight", component: HighLight, name: RouterName.highlight },
     ],
   },
-  { path: "/view", component: View, name: RouterName.view },
+  {
+    path: "/view",
+    component: View,
+    name: RouterName.view,
+  },
 ];
 
 export const router = createRouter({

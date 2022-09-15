@@ -75,7 +75,15 @@ export async function deleteBook(bookId: string) {
   });
 }
 
-export function openBook(id: string) {}
+export async function openBook(id: string) {
+  const book = cacheBooks.get(id);
+  if (book) {
+    return book.fileContent;
+  } else {
+    const value = await bookStore.getItem(id);
+    return value.fileContent;
+  }
+}
 
 function getBookContent(id: string): Uint8Array {
   let result = new Uint8Array();
