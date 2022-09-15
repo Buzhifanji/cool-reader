@@ -1,4 +1,3 @@
-import { forage } from "@tauri-apps/tauri-forage";
 import { ref } from "vue";
 import { setBookId } from "./md5";
 import { getPDFCover } from "./pdf";
@@ -12,19 +11,13 @@ export const books = ref<StorageBook[]>([]);
 
 export const cacheBooks = new Map<string, BookInfo>();
 
-const store = forage.createInstance({ name: "_cool_reader_" });
-
-export function clearStore() {
-  store.clear();
-}
-
 let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
 
 export function initBook() {
   if (!isLoadStoraged) {
-    store.keys().then((keys: string[]) => {
+    bookStore.keys().then((keys: string[]) => {
       keys.forEach(async (key: string) => {
-        const value = await store.getItem(key);
+        const value = await bookStore.getItem(key);
         books.value.push(value);
       });
     });
@@ -73,7 +66,7 @@ export async function deleteBook(bookId: string) {
   if (cacheBooks.has(bookId)) {
     cacheBooks.delete(bookId);
   }
-  await store.removeItem(bookId);
+  await bookStore.removeItem(bookId);
   window.notification.success({
     content: "删除成功！",
     meta: "66666666",
