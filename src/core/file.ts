@@ -1,10 +1,11 @@
 import { open } from "@tauri-apps/api/dialog";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { appDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
 import { ref } from "vue";
 import { addBook } from "./book";
-import { BaseBook, BufType } from "./type";
+import { BaseBook } from "./type";
 import { mergerUint8Array } from "./utils";
 
 /**
@@ -15,54 +16,68 @@ const setLoadFile = (value: boolean) => (isLoadFile.value = value);
 
 const readFileSize = ref<number>(0);
 
-export async function openFile() {
+async function getFilePath() {
   const selected = await open({
     defaultPath: await appDir(),
   });
+  let result = "";
   if (Array.isArray(selected)) {
     // todo: 暂不支持
   } else if (selected === null) {
-    return;
   } else {
-    handleFile(selected);
+    result = selected;
+  }
+  return result;
+}
+
+export async function openFile() {
+  const path = await getFilePath();
+  if (path) {
+    handleFile(path);
   }
 }
 
 function downloadFile(book: BaseBook) {
-  listenDownloadFile(book);
+  const unlisten = listFileSize();
+  listenDownloadFile(book, unlisten);
+  invoke("download_local_file", { message: book.path });
+}
+
+function listFileSize() {
   readFileSize.value = 0;
-  invoke("download_local_file", { window: appWindow, path: book.path }).then(
-    (data: unknown) => {
-      readFileSize.value = data as unknown as number;
-      console.log("data", data);
-    }
-  );
+  return appWindow.listen("fileSize", ({ payload }) => {
+    readFileSize.value = (payload as unknown as any).message;
+    console.log(readFileSize.value);
+  });
 }
 
 /**
  * 由于 js 从 rust 中复制 较大数据 时，非常缓慢，目前采用事情 + 切片，分批次传递方案 折中处理。
  */
-function listenDownloadFile(book: BaseBook) {
+function listenDownloadFile(book: BaseBook, event: Promise<UnlistenFn>) {
   let fileContent = new Uint8Array();
-  const unlisten = appWindow.listen(
-    "downloadLocalFileEvent",
-    ({ event, payload }) => {
-      const arr = (payload as unknown as BufType).message;
-      if (arr.length) {
-        const buf = new Uint8Array(arr);
-        fileContent = mergerUint8Array(fileContent, buf);
-      } else {
-        const bookInfo = { ...book, fileContent };
-        bookInfo.fileSize = readFileSize.value;
-        addBook(bookInfo).then(() => {
-          // 取消事件监听
-          unlisten.then((done) => {
-            done();
-          });
+  setLoadFile(true);
+  const unlisten = listen("downloadLocalFileEvent", ({ payload }) => {
+    const arr = payload as unknown as Uint8Array;
+    if (arr.length) {
+      const buf = new Uint8Array(arr);
+      fileContent = mergerUint8Array(fileContent, buf);
+    } else {
+      const bookInfo = { ...book, fileContent };
+      bookInfo.fileSize = readFileSize.value;
+      addBook(bookInfo).then(() => {
+        setLoadFile(false);
+        // 取消 监听文件大小
+        event.then((done) => {
+          done();
         });
-      }
+        // 取消下载文件事件监听
+        unlisten.then((done) => {
+          done();
+        });
+      });
     }
-  );
+  });
 }
 
 export function handleFile(path: string) {
