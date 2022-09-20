@@ -1,5 +1,5 @@
 import { Bookextname, BookInfo } from "../type";
-import { pdfLoadingTask } from "./utils";
+import { pdfLoadingTask } from "../utils/utils";
 
 /**
  * 生成书本的唯一id

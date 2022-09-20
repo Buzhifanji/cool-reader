@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { getPDFCover } from "../file/pdf";
 import { BookInfo, StorageBook } from "../type";
-import { setBookId } from "../utils/md5";
 import { bookStore } from "../utils/storage";
+import { setBookId } from "./md5";
 
 /**
  * 已上传的书籍列表
