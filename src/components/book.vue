@@ -1,4 +1,11 @@
 <template>
+  <n-progress
+    v-if="percentage"
+    type="line"
+    :percentage="percentage"
+    :indicator-placement="'inside'"
+    processing
+  />
   <template v-if="books.length">
     <n-card
       hoverable
@@ -30,6 +37,7 @@
 import { useRouter } from "vue-router";
 import { books, initBook } from "../core/book";
 import { openFile } from "../core/file";
+import { percentage } from "../core/file-size";
 import { StorageBook } from "../core/type";
 import { RouterName } from "../route";
 

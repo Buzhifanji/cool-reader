@@ -2,9 +2,9 @@ import { open } from "@tauri-apps/api/dialog";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { appDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
-import { appWindow } from "@tauri-apps/api/window";
 import { ref } from "vue";
 import { addBook } from "./book";
+import { calculatePercentage, listFileSize, readFileSize } from "./file-size";
 import { BaseBook } from "./type";
 import { mergerUint8Array } from "./utils";
 
@@ -13,8 +13,6 @@ import { mergerUint8Array } from "./utils";
  */
 export const isLoadFile = ref<boolean>(false);
 const setLoadFile = (value: boolean) => (isLoadFile.value = value);
-
-const readFileSize = ref<number>(0);
 
 async function getFilePath() {
   const selected = await open({
@@ -43,29 +41,26 @@ function downloadFile(book: BaseBook) {
   invoke("download_local_file", { message: book.path });
 }
 
-function listFileSize() {
-  readFileSize.value = 0;
-  return appWindow.listen("fileSize", ({ payload }) => {
-    readFileSize.value = (payload as unknown as any).message;
-    console.log(readFileSize.value);
-  });
-}
-
 /**
  * 由于 js 从 rust 中复制 较大数据 时，非常缓慢，目前采用事情 + 切片，分批次传递方案 折中处理。
  */
 function listenDownloadFile(book: BaseBook, event: Promise<UnlistenFn>) {
   let fileContent = new Uint8Array();
   setLoadFile(true);
+  let cahceLen = 0;
   const unlisten = listen("downloadLocalFileEvent", ({ payload }) => {
     const arr = payload as unknown as Uint8Array;
-    if (arr.length) {
+    const len = arr.length;
+    cahceLen += len;
+    if (len) {
+      calculatePercentage(cahceLen);
       const buf = new Uint8Array(arr);
       fileContent = mergerUint8Array(fileContent, buf);
     } else {
       const bookInfo = { ...book, fileContent };
       bookInfo.fileSize = readFileSize.value;
       addBook(bookInfo).then(() => {
+        calculatePercentage(0);
         setLoadFile(false);
         // 取消 监听文件大小
         event.then((done) => {

@@ -12,6 +12,7 @@ import {
   NLayoutSider,
   NMenu,
   NNotificationProvider,
+  NProgress,
   NResult,
   NSpace,
 } from "naive-ui";
@@ -35,5 +36,6 @@ export const naive = create({
     NMenu,
     NSpace,
     NResult,
+    NProgress,
   ],
 });
