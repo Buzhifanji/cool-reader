@@ -3,10 +3,10 @@ import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { appDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { ref } from "vue";
-import { addBook } from "./book";
+import { addBook } from "../book/book";
+import { BaseBook } from "../type";
+import { mergerUint8Array } from "../utils/utils";
 import { calculatePercentage, listFileSize, readFileSize } from "./file-size";
-import { BaseBook } from "./type";
-import { mergerUint8Array } from "./utils";
 
 /**
  * 因为一次只能读取一个文件，所以设定此变量，防止用户在读取中重复读取文件

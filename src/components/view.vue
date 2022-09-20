@@ -5,8 +5,8 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { books, openBook } from "../core/book";
-import { loadPdf } from "../core/pdf";
+import { books, openBook } from "../core/book/book";
+import { loadPdf } from "../core/file/pdf";
 
 const router = useRouter();
 const route = useRoute();

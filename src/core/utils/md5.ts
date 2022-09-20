@@ -1,4 +1,4 @@
-import { Bookextname, BookInfo } from "./type";
+import { Bookextname, BookInfo } from "../type";
 import { pdfLoadingTask } from "./utils";
 
 /**

@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { pdfLoadingTask } from "./utils";
+import { pdfLoadingTask } from "../utils/utils";
 
 const scale = ref<number>(1); // 展示比例
 

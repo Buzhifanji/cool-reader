@@ -1,7 +1,7 @@
 import { open } from "@tauri-apps/api/dialog";
 import { downloadDir } from "@tauri-apps/api/path";
 import { forage } from "@tauri-apps/tauri-forage";
-import { books } from "./book";
+import { books } from "../book/book";
 
 /**
  * 本地缓存

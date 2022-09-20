@@ -35,9 +35,9 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { books, initBook } from "../core/book";
-import { openFile } from "../core/file";
-import { percentage } from "../core/file-size";
+import { books, initBook } from "../core/book/book";
+import { openFile } from "../core/file/file";
+import { percentage } from "../core/file/file-size";
 import { StorageBook } from "../core/type";
 import { RouterName } from "../route";
 
