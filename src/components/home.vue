@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import {
-  NIcon,
-  NLayout,
-  NLayoutContent,
-  NLayoutHeader,
-  NLayoutSider,
-  NMenu,
-  NSpace,
-  useNotification,
-} from "naive-ui";
+import { NIcon, useNotification } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { openFile } from "../core/file";

@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NEllipsis, NImage } from "naive-ui";
 import { useRouter } from "vue-router";
 import { books, initBook } from "../core/book";
 import { StorageBook } from "../core/type";
