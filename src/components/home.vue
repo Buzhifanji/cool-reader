@@ -2,7 +2,7 @@
 import { NIcon, useNotification } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { openFile } from "../core/file";
+import { isLoadFile, openFile } from "../core/file";
 import { clearStore } from "../core/storage";
 import { RouterName } from "../route";
 import BookIcon from "./icons/book.vue";
@@ -47,8 +47,8 @@ const siderMenuOptions = [
       <n-space justify="end">
         <!-- <input type="file" @change="fileChange" :disabled="isLoadFile" /> -->
         <!-- <SetIcon /> -->
-        <button @click="openFile">上传</button>
-        <button @click="clearStore">clear</button>
+        <n-button @click="openFile" :disabled="isLoadFile">上传</n-button>
+        <n-button @click="clearStore" :disabled="isLoadFile">clear</n-button>
       </n-space>
     </n-layout-header>
     <n-layout has-sider>
