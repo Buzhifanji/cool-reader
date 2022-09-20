@@ -3,6 +3,7 @@ import {
   NButton,
   NCard,
   NEllipsis,
+  NEmpty,
   NIcon,
   NImage,
   NLayout,
@@ -11,6 +12,7 @@ import {
   NLayoutSider,
   NMenu,
   NNotificationProvider,
+  NResult,
   NSpace,
 } from "naive-ui";
 
@@ -22,6 +24,7 @@ export const naive = create({
     NButton,
     NCard,
     NEllipsis,
+    NEmpty,
     NImage,
     NNotificationProvider,
     NIcon,
@@ -31,5 +34,6 @@ export const naive = create({
     NLayoutSider,
     NMenu,
     NSpace,
+    NResult,
   ],
 });

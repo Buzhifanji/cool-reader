@@ -1,21 +1,35 @@
 <template>
-  <n-card
-    hoverable
-    v-for="(item, index) in books"
-    @click="openBook(item, index)"
+  <template v-if="books.length">
+    <n-card
+      hoverable
+      v-for="(item, index) in books"
+      @click="openBook(item, index)"
+    >
+      <template #cover>
+        <n-image :src="item.cover" preview-disabled />
+      </template>
+      <n-ellipsis :line-clamp="1">
+        {{ item.bookName }}
+      </n-ellipsis>
+    </n-card>
+  </template>
+
+  <n-result
+    v-else
+    status="418"
+    title="暂无书本可读"
+    description="一切尽在不言中"
   >
-    <template #cover>
-      <n-image :src="item.cover" preview-disabled />
+    <template #footer>
+      <n-button @click="openFile">从本地导入</n-button>
     </template>
-    <n-ellipsis :line-clamp="1">
-      {{ item.bookName }}
-    </n-ellipsis>
-  </n-card>
+  </n-result>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { books, initBook } from "../core/book";
+import { openFile } from "../core/file";
 import { StorageBook } from "../core/type";
 import { RouterName } from "../route";
 
