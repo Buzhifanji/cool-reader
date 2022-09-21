@@ -6,6 +6,8 @@ import {
 } from "pdfjs-dist";
 import { EventBus, TextLayerBuilder } from "pdfjs-dist/web/pdf_viewer";
 import { ref } from "vue";
+import { setCatalog } from "../book/catalog";
+import { StorageBook } from "../type";
 import { createEle } from "../utils/utils";
 
 const scale = ref<number>(1); // 展示比例
@@ -34,9 +36,12 @@ function createWrapper({ width, height }: PageViewport, className: string) {
   return wrapper;
 }
 
-export function loadPdf(fileContent: Uint8Array) {
-  getDocument(fileContent).promise.then(async (pdf) => {
+export function loadPdf({ fileContent, id }: StorageBook) {
+  return getDocument(fileContent).promise.then(async (pdf) => {
     container = document.getElementById("viewer");
+    // 获取目录
+    await setCatalog(id, { extname: "pdf", documentProxy: pdf });
+
     const num = pdf.numPages;
     for (let i = 1; i < 6; i++) {
       try {

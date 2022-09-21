@@ -16,6 +16,8 @@
         :width="302"
         placement="left"
         :show-mask="false"
+        :trap-focus="false"
+        :block-scroll="false"
         to="#drawer-target"
       >
         <n-drawer-content>
@@ -36,12 +38,24 @@
               </n-space>
             </n-gi>
           </n-grid>
-
-          《斯通纳》是美国作家约翰·威廉姆斯在 1965 年出版的小说。
+          <n-divider />
+          <n-tabs
+            type="segment"
+            v-model:value="activeTabRef"
+            @update:value="changePane"
+          >
+            <n-tab-pane
+              v-for="item in tabPanes"
+              :name="item.name"
+              :tab="item.tab"
+            >
+              <Catalog v-if="isActiveTab(TabPaneEnum.catalog)" />
+            </n-tab-pane>
+          </n-tabs>
         </n-drawer-content>
       </n-drawer>
       <!-- reader options -->
-      <n-drawer
+      <!-- <n-drawer
         v-model:show="active"
         :width="302"
         placement="right"
@@ -51,7 +65,7 @@
         <n-drawer-content title="斯通纳">
           《斯通纳》是美国作家约翰·威廉姆斯在 1965 年出版的小说。
         </n-drawer-content>
-      </n-drawer>
+      </n-drawer> -->
     </n-layout-content>
   </n-layout>
 </template>
@@ -62,6 +76,14 @@ import { useRoute, useRouter } from "vue-router";
 import { openBook } from "../../core/book/book";
 import { loadPdf } from "../../core/file/pdf";
 import { initReadingBook, rendingBook } from "./book";
+import Catalog from "./catalog.vue";
+import {
+  activeTabRef,
+  changePane,
+  isActiveTab,
+  TabPaneEnum,
+  tabPanes,
+} from "./tab-pene";
 
 const active = ref<boolean>(false);
 function openDrawer() {
@@ -79,7 +101,8 @@ async function render() {
   const book = await openBook(rendingBook.id);
   const { fileContent } = book;
   if (fileContent) {
-    loadPdf(rendingBook.fileContent);
+    await loadPdf(rendingBook);
+    changePane(TabPaneEnum.catalog);
   } else {
     console.log("没有数据");
   }

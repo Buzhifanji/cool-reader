@@ -2,6 +2,7 @@ import {
   create,
   NButton,
   NCard,
+  NDivider,
   NDrawer,
   NDrawerContent,
   NEllipsis,
@@ -19,6 +20,8 @@ import {
   NProgress,
   NResult,
   NSpace,
+  NTabPane,
+  NTabs,
 } from "naive-ui";
 
 /**
@@ -45,5 +48,8 @@ export const naive = create({
     NDrawerContent,
     NGrid,
     NGi,
+    NTabs,
+    NTabPane,
+    NDivider,
   ],
 });
