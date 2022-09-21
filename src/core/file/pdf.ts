@@ -9,8 +9,10 @@ import { ref } from "vue";
 import { setCatalog } from "../book/catalog";
 import { StorageBook } from "../type";
 import { createEle } from "../utils/utils";
+import { Bextname } from "./extname";
 
-const scale = ref<number>(1); // 展示比例
+const scale = ref<number>(1.7); // 展示比例
+export const documentProxyMap = new Map<string, PDFDocumentProxy>();
 
 let container: null | HTMLElement = null;
 
@@ -39,11 +41,12 @@ function createWrapper({ width, height }: PageViewport, className: string) {
 export function loadPdf({ fileContent, id }: StorageBook) {
   return getDocument(fileContent).promise.then(async (pdf) => {
     container = document.getElementById("viewer");
-    // 获取目录
-    await setCatalog(id, { extname: "pdf", documentProxy: pdf });
 
-    const num = pdf.numPages;
-    for (let i = 1; i < 6; i++) {
+    documentProxyMap.set(id, pdf);
+    // 获取目录
+    await setCatalog(id, { extname: Bextname.pdf, documentProxy: pdf });
+
+    for (let i = 1; i < 20; i++) {
       try {
         await rendPDF(pdf, i);
       } catch (e) {
@@ -72,7 +75,7 @@ export function loadPdf({ fileContent, id }: StorageBook) {
  * @param pdf 
  * @param num 
  */
-async function rendPDF(pdf: PDFDocumentProxy, num: number) {
+export async function rendPDF(pdf: PDFDocumentProxy, num: number) {
   const page = await pdf.getPage(num);
   const viewport = getViewport(page);
   const { canvasContext, canvas } = createCanvas(viewport);

@@ -1,21 +1,29 @@
 import { PDFDocumentProxy } from "pdfjs-dist";
+import { toRaw } from "vue";
+import { Bextname } from "../file/extname";
+import { documentProxyMap, rendPDF } from "../file/pdf";
+import { arrayHasData, isArray, isObj, isOwn } from "../utils/utils";
 
 interface CatalogOptions {
-  extname: "pdf"; // 书本文件格式类型
+  extname: Bextname.pdf; // 书本文件格式类型
   documentProxy: PDFDocumentProxy;
 }
 
 export const catalogs = new Map<string, any[]>();
 
-export async function setCatalog(id: string, options: CatalogOptions) {
+export async function setCatalog(
+  id: string,
+  { extname, documentProxy }: CatalogOptions
+) {
   let result: any[] = [];
-  switch (options.extname) {
-    case "pdf":
-      result = await options.documentProxy.getOutline();
+  switch (extname) {
+    case Bextname.pdf:
+      result = await documentProxy.getOutline();
       result = formatePdfCatalog(result);
       break;
   }
 
+  // 处理获取目录异常
   if (Array.isArray(result)) {
     catalogs.set(id, result);
   } else {
@@ -46,4 +54,40 @@ function formatePdfCatalog(list: any[]) {
   };
   handle(list);
   return list;
+}
+
+export function generateGotoPage({
+  id,
+  extname,
+  desc,
+}: {
+  id: string;
+  extname: string;
+  desc: any;
+}) {
+  switch (extname) {
+    case Bextname.pdf:
+      pdfGotoPage(id, desc);
+      break;
+  }
+}
+
+async function pdfGotoPage(id: string, desc: any) {
+  return new Promise<any>(async (resolve, reject) => {
+    const pdf = documentProxyMap.get(id)!;
+    if (pdf && isArray(desc) && arrayHasData(desc)) {
+      const refProxy = toRaw(desc[0]);
+      if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
+        const pageIndex = await pdf.getPageIndex(refProxy);
+        console.log("pageIndex: " + pageIndex);
+        await rendPDF(pdf, pageIndex);
+        resolve("ok");
+      } else {
+        console.log("refProxy", refProxy);
+      }
+    }
+  }).catch((err) => {
+    console.log("error", err);
+    Promise.reject(err);
+  });
 }

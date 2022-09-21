@@ -49,7 +49,10 @@
               :name="item.name"
               :tab="item.tab"
             >
-              <Catalog v-if="isActiveTab(TabPaneEnum.catalog)" />
+              <Catalog
+                :book="rendingBook"
+                v-if="isActiveTab(TabPaneEnum.catalog)"
+              />
             </n-tab-pane>
           </n-tabs>
         </n-drawer-content>
@@ -77,6 +80,7 @@ import { openBook } from "../../core/book/book";
 import { loadPdf } from "../../core/file/pdf";
 import { initReadingBook, rendingBook } from "./book";
 import Catalog from "./catalog.vue";
+
 import {
   activeTabRef,
   changePane,
