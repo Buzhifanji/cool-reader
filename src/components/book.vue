@@ -44,7 +44,7 @@ import { RouterName } from "../route";
 initBook();
 const router = useRouter();
 function openBook(book: StorageBook, index: number) {
-  router.push({ name: RouterName.view, query: { index } });
+  router.push({ name: RouterName.reader, query: { index } });
   console.log("kkkkkkkkkkkkk", book);
   console.log("index", index);
 }

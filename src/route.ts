@@ -3,13 +3,13 @@ import Book from "./components/book.vue";
 import HighLight from "./components/highlight.vue";
 import Home from "./components/home.vue";
 import Note from "./components/note.vue";
-import View from "./components/view.vue";
+import Reader from "./components/reader/reading.vue";
 
 export enum RouterName {
   book = "book",
   note = "note",
   highlight = "highlight",
-  view = "view",
+  reader = "reader",
 }
 
 const routes: RouteRecordRaw[] = [
@@ -26,9 +26,9 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: "/view",
-    component: View,
-    name: RouterName.view,
+    path: "/reader",
+    component: Reader,
+    name: RouterName.reader,
   },
 ];
 

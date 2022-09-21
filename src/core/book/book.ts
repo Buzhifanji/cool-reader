@@ -75,13 +75,13 @@ export async function deleteBook(bookId: string) {
   });
 }
 
-export async function openBook(id: string) {
+export async function openBook(id: string): Promise<BookInfo> {
   const book = cacheBooks.get(id);
   if (book) {
-    return book.fileContent;
+    return book;
   } else {
     const value = await bookStore.getItem(id);
-    return value.fileContent;
+    return value;
   }
 }
 
