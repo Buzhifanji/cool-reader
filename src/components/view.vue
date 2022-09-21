@@ -1,6 +1,8 @@
 <template>
   <div><button @click="goHome">go home</button></div>
-  <section id="view-container"></section>
+  <section id="viewerContainer" tabindex="0">
+    <div id="viewer" class="pdfViewer"></div>
+  </section>
 </template>
 
 <script setup lang="ts">
