@@ -13,7 +13,7 @@
       <!-- note -->
       <n-drawer
         v-model:show="active"
-        :width="302"
+        :width="342"
         placement="left"
         :show-mask="false"
         :trap-focus="false"
@@ -93,9 +93,9 @@ function openDrawer() {
 const router = useRouter();
 const route = useRoute();
 
-render();
+init();
 
-async function render() {
+async function init() {
   const index = Number(route.query.index);
   initReadingBook(index);
   const book = await openBook(rendingBook.id);

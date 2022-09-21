@@ -12,9 +12,7 @@ export async function setCatalog(id: string, options: CatalogOptions) {
   switch (options.extname) {
     case "pdf":
       result = await options.documentProxy.getOutline();
-      if (result.length === 1 && result[0].title === "目录") {
-        result = [];
-      }
+      result = formatePdfCatalog(result);
       break;
   }
 
@@ -27,4 +25,25 @@ export async function setCatalog(id: string, options: CatalogOptions) {
 
 export function getCatalog(id: string): any[] {
   return catalogs.get(id) || [];
+}
+
+function formatePdfCatalog(list: any[]) {
+  // 处理 没有目录的特殊情况
+  if (list.length === 1 && list[0].title === "目录") {
+    return [];
+  }
+
+  // 处理没有 子数据的时候 不显示图标的情况
+  const handle = (arr: any[]) => {
+    arr.forEach((item) => {
+      const items = item.items;
+      if (items && items.length) {
+        handle(items);
+      } else {
+        delete item.items;
+      }
+    });
+  };
+  handle(list);
+  return list;
 }

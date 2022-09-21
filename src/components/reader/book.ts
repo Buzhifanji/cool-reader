@@ -24,5 +24,4 @@ export function initReadingBook(index: number) {
 export const catalog = ref<any[]>([]);
 export function getBookCatalog() {
   catalog.value = getCatalog(rendingBook.id);
-  console.log("catalog.value", catalog.value);
 }

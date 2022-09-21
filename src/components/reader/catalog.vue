@@ -1,6 +1,5 @@
 <template>
   <n-menu
-    :collapsed-width="64"
     v-if="catalog.length"
     :collapsed-icon-size="22"
     :options="catalog"
