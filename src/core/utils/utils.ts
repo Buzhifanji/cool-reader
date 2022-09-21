@@ -1,9 +1,13 @@
-export const pdfLoadingTask = (fileContent: Uint8Array | string): any => {
-  const pdfjsLib = (window as Window)["pdfjs-dist/build/pdf"];
-  const param =
-    typeof pdfjsLib === "string" ? fileContent : { data: fileContent };
-  return pdfjsLib.getDocument(param);
-};
+// export const pdfLoadingTask = (fileContent: Uint8Array | string): any => {
+//   const pdfjsLib = (window as Window)["pdfjs-dist/build/pdf"];
+//   const param =
+//     typeof pdfjsLib === "string" ? fileContent : { data: fileContent };
+//   return pdfjsLib.getDocument(param);
+// };
+
+// export const getTextLayerBuilder: any = () => {
+//   return (window as Window)["pdfjs-dist/web/viewer"].TextLayerBuilder;
+// };
 
 /**
  * 合并两个 Uint8Array，合并之后的顺序结果是： [...buf1, ...buf2]
@@ -20,4 +24,8 @@ export function mergerUint8Array(
   result.set(buf1);
   result.set(buf2, buf1.length);
   return result;
+}
+
+export function createEle(tagName: string) {
+  return document.createElement(tagName);
 }
