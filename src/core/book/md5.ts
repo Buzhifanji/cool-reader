@@ -1,5 +1,5 @@
+import { getDocument } from "pdfjs-dist";
 import { Bookextname, BookInfo } from "../type";
-import { pdfLoadingTask } from "../utils/utils";
 
 /**
  * 生成书本的唯一id
@@ -13,7 +13,7 @@ export function setBookId({
   return new Promise<string>((resolve, reject) => {
     try {
       if (extname === Bookextname.pdf) {
-        pdfLoadingTask(fileContent)
+        getDocument(fileContent)
           .promise.then((pdfDoc: any) => {
             resolve(pdfDoc.fingerprints());
           })
