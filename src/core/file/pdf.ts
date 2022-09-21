@@ -17,8 +17,9 @@ export const documentProxyMap = new Map<string, PDFDocumentProxy>();
 let container: null | HTMLElement = null;
 
 function getViewport(page: PDFPageProxy) {
+  const devicePixelRatio = window.devicePixelRatio; // 提高清晰度
   return page.getViewport({
-    scale: scale.value, // 展示比例
+    scale: scale.value * devicePixelRatio, // 展示比例
     rotation: 0, // 旋转角度
   });
 }
@@ -46,7 +47,7 @@ export function loadPdf({ fileContent, id }: StorageBook) {
     // 获取目录
     await setCatalog(id, { extname: Bextname.pdf, documentProxy: pdf });
 
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < 10; i++) {
       try {
         await rendPDF(pdf, i);
       } catch (e) {
