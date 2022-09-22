@@ -1,7 +1,13 @@
 import { ref } from "vue";
 import { getPDFCover } from "../file/pdf";
+import {
+  addForageFile,
+  deleteForageFile,
+  getForageFile,
+  getForageFiles,
+  hasForageFile,
+} from "../store/file";
 import { BookInfo, StorageBook } from "../type";
-import { bookStore } from "../utils/storage";
 import { setBookId } from "./md5";
 
 /**
@@ -13,14 +19,11 @@ export const cacheBooks = new Map<string, BookInfo>();
 
 let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
 
-export function initBook() {
+export async function initBook() {
   if (!isLoadStoraged) {
-    bookStore.keys().then((keys: string[]) => {
-      keys.forEach(async (key: string) => {
-        const value = await bookStore.getItem(key);
-        books.value.push(value);
-      });
-    });
+    const list = await getForageFiles();
+    console.log("list", list);
+    books.value = [...list];
     isLoadStoraged = true;
   }
 }
@@ -28,7 +31,7 @@ export function initBook() {
 export async function addBook(bookInfo: BookInfo) {
   const { bookName } = bookInfo;
   const bookId = await setBookId(bookInfo);
-  const value = await bookStore.getItem(bookId);
+  const value = await hasForageFile(bookId);
   if (value) {
     window.notification.warning({
       content: "书籍已存在！",
@@ -45,7 +48,7 @@ export async function addBook(bookInfo: BookInfo) {
       category: "",
     };
     // 离线缓存
-    bookStore.setItem(bookId, cacheBook);
+    addForageFile(cacheBook);
     // 在线缓存
     cacheBooks.set(bookId, bookInfo);
     books.value.unshift(cacheBook);
@@ -66,7 +69,7 @@ export async function deleteBook(bookId: string) {
   if (cacheBooks.has(bookId)) {
     cacheBooks.delete(bookId);
   }
-  await bookStore.removeItem(bookId);
+  await deleteForageFile(bookId);
   window.notification.success({
     content: "删除成功！",
     meta: "66666666",
@@ -75,13 +78,12 @@ export async function deleteBook(bookId: string) {
   });
 }
 
-export async function openBook(id: string): Promise<BookInfo> {
+export async function openBook(id: string): Promise<BookInfo | null> {
   const book = cacheBooks.get(id);
   if (book) {
     return book;
   } else {
-    const value = await bookStore.getItem(id);
-    return value;
+    return await getForageFile(id);
   }
 }
 

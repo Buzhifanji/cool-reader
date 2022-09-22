@@ -5,8 +5,21 @@ const BOOKLIST = "_tauri_book_list_";
 
 type fileInfo = [StorageBook[], number];
 
-export function getForageFile(): Promise<StorageBook[]> {
+/**
+ * 获取 全部数据列表
+ * @returns
+ */
+export function getForageFiles(): Promise<StorageBook[]> {
   return forage.getItem({ key: BOOKLIST })();
+}
+
+export async function getForageFile(id: string): Promise<StorageBook | null> {
+  const [arr, index] = await findForageFile(id);
+  if (index !== -1) {
+    return arr[index];
+  } else {
+    return null;
+  }
 }
 
 export async function addForageFile(file: StorageBook) {
@@ -31,7 +44,7 @@ export async function hasForageFile(id: string) {
 
 async function findForageFile(id: string): Promise<fileInfo> {
   let result = -1;
-  const arr = await getForageFile();
+  const arr = await getForageFiles();
   if (arr) {
     result = findIndex(id, arr);
   }
