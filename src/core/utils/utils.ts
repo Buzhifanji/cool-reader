@@ -19,6 +19,14 @@ export function createEle(tagName: string) {
   return document.createElement(tagName);
 }
 
+export function getEleById(id: string) {
+  return document.getElementById(id);
+}
+
+export function selectorAll(selectors: string) {
+  return document.querySelectorAll(selectors);
+}
+
 export const isArray = (value: any) => Array.isArray(value);
 export const arrayHasData = (value: any[]) => arrayHasData.length > 0;
 export const isObj = (value: any) =>
