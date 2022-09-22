@@ -1,18 +1,25 @@
-import { defineStore } from "pinia";
 import { StorageBook } from "../type";
 
-export const useBookStore = defineStore("_book_", {
-  state: () => ({
-    books: new Map<string, StorageBook>(),
-  }),
-  getters: {
-    getBookById: (state) => {
-      return (id: string): StorageBook | undefined => state.books.get(id);
-    },
-  },
-  actions: {
-    setBook(id: string, value: StorageBook) {
-      this.books.set(id, value);
-    },
-  },
-});
+const books = new Map<string, StorageBook>();
+
+export function addBookToStore(id: string, value: StorageBook) {
+  books.set(id, value);
+}
+
+export function removeBookFromStore(id: string) {
+  return books.delete(id);
+}
+
+export function hasBookFromStore(id: string) {
+  return books.has(id);
+}
+
+export function getBookFromStore(id: string) {
+  return books.get(id);
+}
+
+export function getBooksFromStore() {
+  const result: StorageBook[] = [];
+  books.forEach((book) => result.push(book));
+  return result;
+}

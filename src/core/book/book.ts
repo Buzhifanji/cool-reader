@@ -1,6 +1,12 @@
 import { ref } from "vue";
 import { getPDFCover } from "../file/pdf";
 import {
+  addBookToStore,
+  getBookFromStore,
+  hasBookFromStore,
+  removeBookFromStore,
+} from "../store";
+import {
   addForageFile,
   deleteForageFile,
   getForageFile,
@@ -15,14 +21,11 @@ import { setBookId } from "./md5";
  */
 export const books = ref<StorageBook[]>([]);
 
-export const cacheBooks = new Map<string, BookInfo>();
-
 let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
 
 export async function initBook() {
   if (!isLoadStoraged) {
     const list = await getForageFiles();
-    console.log("list", list);
     books.value = [...list];
     isLoadStoraged = true;
   }
@@ -50,7 +53,8 @@ export async function addBook(bookInfo: BookInfo) {
     // 离线缓存
     addForageFile(cacheBook);
     // 在线缓存
-    cacheBooks.set(bookId, bookInfo);
+
+    addBookToStore(bookId, cacheBook);
     books.value.unshift(cacheBook);
     window.notification.success({
       content: "添加成功！",
@@ -66,8 +70,8 @@ export async function deleteBook(bookId: string) {
   if (index !== -1) {
     books.value.splice(index, 1);
   }
-  if (cacheBooks.has(bookId)) {
-    cacheBooks.delete(bookId);
+  if (hasBookFromStore(bookId)) {
+    removeBookFromStore(bookId);
   }
   await deleteForageFile(bookId);
   window.notification.success({
@@ -79,7 +83,7 @@ export async function deleteBook(bookId: string) {
 }
 
 export async function openBook(id: string): Promise<BookInfo | null> {
-  const book = cacheBooks.get(id);
+  const book = getBookFromStore(id);
   if (book) {
     return book;
   } else {
@@ -89,8 +93,7 @@ export async function openBook(id: string): Promise<BookInfo | null> {
 
 function getBookContent(id: string): Uint8Array {
   let result = new Uint8Array();
-  if (cacheBooks.has(id)) {
-    // result = cacheBooks.get(id)!;
+  if (hasBookFromStore(id)) {
   } else {
     // TODO:
   }
