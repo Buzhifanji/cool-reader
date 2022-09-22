@@ -9,7 +9,6 @@ specifiers:
   '@vueuse/core': ^9.2.0
   naive-ui: ^2.33.1
   pdfjs-dist: ^2.16.105
-  pinia: ^2.0.22
   typescript: ^4.6.4
   vite: ^3.0.2
   vue: ^3.2.37
@@ -29,7 +28,6 @@ devDependencies:
   '@vueuse/core': 9.2.0_vue@3.2.38
   naive-ui: 2.33.1_vue@3.2.38
   pdfjs-dist: 2.16.105
-  pinia: 2.0.22_pj7ch6rmow6odq73xb5hfvge3q
   typescript: 4.8.2
   vite: 3.0.9
   vue-tsc: 0.39.5_typescript@4.8.2
@@ -317,6 +315,7 @@ packages:
 
   /@vue/devtools-api/6.2.1:
     resolution: {integrity: sha512-OEgAMeQXvCoJ+1x8WyQuVZzFo0wcyCmUR3baRVLmKBo1LmYZWMlRiXlux5jd0fqVJu6PfDbOrZItVqUEzLobeQ==}
+    dev: false
 
   /@vue/reactivity-transform/3.2.38:
     resolution: {integrity: sha512-3SD3Jmi1yXrDwiNJqQ6fs1x61WsDLqVk4NyKVz78mkaIRh6d3IqtRnptgRfXn+Fzf+m6B1KxBYWq1APj6h4qeA==}
@@ -752,24 +751,6 @@ packages:
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
-
-  /pinia/2.0.22_pj7ch6rmow6odq73xb5hfvge3q:
-    resolution: {integrity: sha512-u+b8/BC+tmvo3ACbYO2w5NfxHWFOjvvw9DQnyT0dW8aUMCPRQT5QnfZ5R5W2MzZBMTeZRMQI7V/QFbafmM9QHw==}
-    peerDependencies:
-      '@vue/composition-api': ^1.4.0
-      typescript: '>=4.4.4'
-      vue: ^2.6.14 || ^3.2.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      '@vue/devtools-api': 6.2.1
-      typescript: 4.8.2
-      vue: 3.2.38
-      vue-demi: 0.13.11_vue@3.2.38
-    dev: true
 
   /postcss/8.4.16:
     resolution: {integrity: sha512-ipHE1XBvKzm5xI7hiHCZJCSugxvsdq2mPnsq5+UF+VHCjiBvtDrlxJfMBToWaP9D5XlgNmcFGqoHmUn0EYEaRQ==}
