@@ -2,7 +2,13 @@ import { PDFDocumentProxy } from "pdfjs-dist";
 import { toRaw } from "vue";
 import { Bextname } from "../file/extname";
 import { getPdfDocument } from "../store";
-import { arrayHasData, isArray, isObj, isOwn } from "../utils/utils";
+import {
+  arrayHasData,
+  getEleById,
+  isArray,
+  isObj,
+  isOwn,
+} from "../utils/utils";
 
 interface CatalogOptions {
   extname: Bextname.pdf; // 书本文件格式类型
@@ -72,16 +78,21 @@ export function generateGotoPage({
   }
 }
 
-async function pdfGotoPage(id: string, desc: any) {
+async function pdfGotoPage(bookId: string, desc: any) {
   return new Promise<any>(async (resolve, reject) => {
-    const pdfContext = getPdfDocument(id)!;
-    if (pdfContext && isArray(desc) && arrayHasData(desc)) {
-      const { pdf } = pdfContext;
+    const { pdf, heights } = getPdfDocument(bookId)!;
+    if (pdf && isArray(desc) && arrayHasData(desc)) {
       const refProxy = toRaw(desc[0]);
       if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
         const pageIndex = await pdf.getPageIndex(refProxy);
-        console.log("pageIndex: " + pageIndex);
-        // renderPages(pageIndex, pdf);
+
+        let offset = 0;
+        for (let i = 1; i <= pageIndex; i++) {
+          offset += heights.get(i)!;
+        }
+
+        const container = getEleById("viewerContainer")!;
+        container.scrollTo({ top: offset });
         resolve("ok");
       } else {
         console.log("refProxy", refProxy);
