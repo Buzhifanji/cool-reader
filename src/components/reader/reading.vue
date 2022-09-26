@@ -7,7 +7,12 @@
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target">
-      <section id="viewerContainer" tabindex="0">
+      <section
+        ref="srollRef"
+        id="viewerContainer"
+        tabindex="0"
+        @scroll="srcollEvent"
+      >
         <div id="viewer" class="pdfViewer"></div>
       </section>
       <!-- note -->
@@ -81,6 +86,7 @@ import { loadPdf } from "../../core/file/pdf";
 import { initReadingBook, rendingBook } from "./book";
 import Catalog from "./catalog.vue";
 
+import { useVirtualList } from "./sroll";
 import {
   activeTabRef,
   changePane,
@@ -93,23 +99,26 @@ const active = ref<boolean>(false);
 function openDrawer() {
   active.value = true;
 }
-
 const router = useRouter();
 const route = useRoute();
-
 init();
+
+const { srollRef, srcollEvent } = useVirtualList(rendingBook.id);
 
 async function init() {
   const index = Number(route.query.index);
   initReadingBook(index);
   const book = await openBook(rendingBook.id);
-  const { fileContent } = book;
-  if (fileContent) {
-    await loadPdf(rendingBook);
-    changePane(TabPaneEnum.catalog);
-  } else {
-    console.log("没有数据");
+  if (book) {
+    const { fileContent } = book;
+    if (fileContent) {
+      await loadPdf(rendingBook);
+      changePane(TabPaneEnum.catalog);
+    } else {
+      console.log("没有数据");
+    }
   }
+
   //
 }
 
@@ -122,7 +131,9 @@ function goHome() {
 .n-layout-content {
   height: calc(100% - 35px);
 }
-section {
+#viewerContainer {
   margin-top: -32px;
+  height: 100%;
+  overflow: scroll;
 }
 </style>
