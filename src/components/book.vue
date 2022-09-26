@@ -38,12 +38,14 @@ import { useRouter } from "vue-router";
 import { books, initBook } from "../core/book/book";
 import { openFile } from "../core/file/file";
 import { percentage } from "../core/file/file-size";
+import { setOpenedBookId } from "../core/store";
 import { StorageBook } from "../core/type";
 import { RouterName } from "../route";
 
 initBook();
 const router = useRouter();
 function openBook(book: StorageBook, index: number) {
+  setOpenedBookId(book.id);
   router.push({ name: RouterName.reader, query: { index } });
   console.log("kkkkkkkkkkkkk", book);
   console.log("index", index);
