@@ -109,3 +109,24 @@ button {
     background-color: #0f0f0f98;
   }
 }
+
+.tauri-loading {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  background-color: #000;
+  margin-top: calc(50% - 30px);
+  margin-left: calc(50% - 30px);
+  animation: ball-scale infinite linear 0.75s;
+}
+
+@keyframes ball-scale {
+  0% {
+    transform: scale(0.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
