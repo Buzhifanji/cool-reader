@@ -1,7 +1,7 @@
 import { PDFDocumentProxy } from "pdfjs-dist";
 import { toRaw } from "vue";
 import { Bextname } from "../file/extname";
-import { documentProxyMap, rendPDF } from "../file/pdf";
+import { getPdfDocument } from "../store";
 import { arrayHasData, isArray, isObj, isOwn } from "../utils/utils";
 
 interface CatalogOptions {
@@ -74,13 +74,14 @@ export function generateGotoPage({
 
 async function pdfGotoPage(id: string, desc: any) {
   return new Promise<any>(async (resolve, reject) => {
-    const pdf = documentProxyMap.get(id)!;
-    if (pdf && isArray(desc) && arrayHasData(desc)) {
+    const pdfContext = getPdfDocument(id)!;
+    if (pdfContext && isArray(desc) && arrayHasData(desc)) {
+      const { pdf } = pdfContext;
       const refProxy = toRaw(desc[0]);
       if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
         const pageIndex = await pdf.getPageIndex(refProxy);
         console.log("pageIndex: " + pageIndex);
-        await rendPDF(pdf, pageIndex);
+        // renderPages(pageIndex, pdf);
         resolve("ok");
       } else {
         console.log("refProxy", refProxy);
