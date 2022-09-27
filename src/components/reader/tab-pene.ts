@@ -1,5 +1,4 @@
 import { ref } from "vue";
-import { getBookCatalog } from "./book";
 
 export enum TabPaneEnum {
   catalog,
@@ -21,14 +20,6 @@ export const tabPanes = ref<TabPane[]>([
 ]);
 
 export const activeTabRef = ref<TabPaneEnum>(TabPaneEnum.catalog);
-
-export function changePane(name: TabPaneEnum) {
-  switch (name) {
-    case TabPaneEnum.catalog:
-      getBookCatalog();
-      break;
-  }
-}
 
 export function isActiveTab(tab: TabPaneEnum): boolean {
   return tab === activeTabRef.value;

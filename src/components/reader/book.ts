@@ -1,6 +1,5 @@
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import { books } from "../../core/book/book";
-import { getCatalog } from "../../core/book/catalog";
 import { ReadingBook } from "../../core/models/book";
 import { StorageBook } from "../../core/type";
 
@@ -18,10 +17,4 @@ export function initReadingBook(index: number) {
   rendingBook.cover = selectedBook.cover;
   rendingBook.id = selectedBook.id;
   rendingBook.fileContent = selectedBook.fileContent;
-}
-
-// 书本目录
-export const catalog = ref<any[]>([]);
-export function getBookCatalog() {
-  catalog.value = getCatalog(rendingBook.id);
 }

@@ -78,8 +78,8 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { openBook } from "../../core/book/book";
 import { getPdf } from "../../core/file/pdf";
+import Catalog from "../catalog/catalog.vue";
 import { initReadingBook, rendingBook } from "./book";
-import Catalog from "./catalog.vue";
 
 import {
   activeTabRef,
@@ -105,7 +105,6 @@ async function init() {
     const { fileContent } = book;
     if (fileContent) {
       await getPdf(rendingBook);
-      // changePane(TabPaneEnum.catalog);
     } else {
       console.log("没有数据");
     }

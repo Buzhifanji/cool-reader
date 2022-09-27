@@ -5,19 +5,15 @@ import {
   PDFLinkService,
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
-import { ref } from "vue";
-import { setCatalog } from "../book/catalog";
-import { setPDfPagesHeight } from "../store/pdf";
+import { setPdfBook } from "../store/pdf";
 import { StorageBook } from "../type";
 import { createEle, getEleById } from "../utils/utils";
-import { Bextname } from "./extname";
 
-const scale = ref<number>(1.7); // 展示比例
+const scale = 1.7 * window.devicePixelRatio; // 展示比例
 
 export function getViewport(page: PDFPageProxy) {
-  const devicePixelRatio = window.devicePixelRatio; // 提高清晰度
   return page.getViewport({
-    scale: scale.value * devicePixelRatio, // 展示比例
+    scale, // 展示比例
     rotation: 0, // 旋转角度
   });
 }
@@ -32,22 +28,26 @@ function createCanvas({ width, height, viewBox }: PageViewport) {
 
 export async function getPdf({ fileContent, id }: StorageBook) {
   const container = getEleById("viewerContainer")! as HTMLDivElement;
+
   const pdfLinkService = new PDFLinkService({
     eventBus: new EventBus(),
   });
-  setPDfPagesHeight;
-  const l10n = new GenericL10n("zh");
-  let pdfViewer = new PDFViewer({
+
+  const pdfViewer = new PDFViewer({
     container: container,
     eventBus: new EventBus(),
     linkService: pdfLinkService,
-    l10n,
+    l10n: new GenericL10n("zh"),
   });
-  pdfViewer.currentScale = 2 * window.devicePixelRatio;
+  pdfViewer.currentScale = scale;
+
   const loadingTask = getDocument(fileContent);
   const pdf = await loadingTask.promise;
 
-  setCatalog(id, { extname: Bextname.pdf, documentProxy: pdf });
+  const outline = await pdf.getOutline();
+  const catalogs = formatePdfCatalog(outline);
+
+  setPdfBook(id, { pdfViewer, pdf, catalogs });
 
   pdfViewer.setDocument(pdf);
 }
@@ -73,7 +73,7 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-export function formatePdfCatalog(list: any[]) {
+function formatePdfCatalog(list: any[]) {
   // 处理 没有目录的特殊情况
   if (list.length === 1 && list[0].title === "目录") {
     return [];

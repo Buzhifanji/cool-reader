@@ -1,33 +1,32 @@
 import { PDFDocumentProxy } from "pdfjs-dist";
+import { PDFViewer } from "pdfjs-dist/web/pdf_viewer";
 
-interface CachePDF {
-  document: PDFDocumentProxy;
-  heights: Map<number, number>;
+/**
+ * 缓存 pdf 数据信息
+ */
+
+interface PdfBook {
+  pdfViewer: PDFViewer;
+  pdf: PDFDocumentProxy;
+  catalogs: any[]; // 目录
 }
 
-const pdfDocument = new Map<string, CachePDF>(); // 缓存渲染 pdf 的 PDFDocumentProxy
+const pdfBooks = new Map<string, PdfBook>();
 
-export function getPdfDocument(bookId: string) {
-  const pdf = pdfDocument.get(bookId);
-  if (pdf) {
-    return {
-      pdf: pdf.document,
-      heights: pdf.heights,
-    };
-  } else {
-    return null;
-  }
+export function setPdfBook(bookId: string, options: PdfBook) {
+  return pdfBooks.set(bookId, options);
 }
 
-export function setPdfDocument(bookId: string, value: CachePDF) {
-  return pdfDocument.set(bookId, value);
+export function getPdfBook(bookId: string) {
+  return pdfBooks.get(bookId);
 }
 
-export function setPDfPagesHeight(
-  bookId: string,
-  index: number,
-  height: number
-) {
-  const pdf = pdfDocument.get(bookId);
-  pdf?.heights.set(index, height);
+/**
+ * 获取 pdf 目录
+ * @param bookId
+ * @returns
+ */
+export function getPdfCatalogs(bookId: string) {
+  const book = getPdfBook(bookId);
+  return book ? book.catalogs : [];
 }

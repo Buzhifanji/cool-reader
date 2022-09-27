@@ -19,15 +19,16 @@
 
 <script setup lang="ts">
 import { MenuOption } from "naive-ui";
-import { generateGotoPage } from "../../core/book/catalog";
 import { StorageBook } from "../../core/type";
-import { catalog } from "./book";
+import { generateGotoPage, useCatalog } from "./catalog";
 
 interface Props {
   book: StorageBook;
 }
 
 const { book } = defineProps<Props>();
+
+const { catalog } = useCatalog(book);
 
 function updateCatalog(key: string, item: MenuOption) {
   const { id, extname } = book;
