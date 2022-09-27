@@ -72,10 +72,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { openBook } from "../../core/book/book";
-import { getPdf } from "../../core/file/pdf";
 import Catalog from "../catalog/catalog.vue";
-import { initReadingBook, rendingBook } from "./book";
+import { rendingBook, useReader } from "./book";
 
 import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";
 
@@ -85,23 +83,8 @@ function openDrawer() {
 }
 const router = useRouter();
 const route = useRoute();
-init();
 
-async function init() {
-  const index = Number(route.query.index);
-  initReadingBook(index);
-  const book = await openBook(rendingBook.id);
-  if (book) {
-    const { fileContent } = book;
-    if (fileContent) {
-      await getPdf(rendingBook);
-    } else {
-      console.log("没有数据");
-    }
-  }
-
-  //
-}
+useReader(route);
 
 function goHome() {
   router.push("/");
