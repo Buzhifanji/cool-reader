@@ -112,6 +112,17 @@ function goHome() {
 .n-layout-content {
   height: calc(100% - 35px);
 }
+.n-tabs {
+  height: calc(100% - 229px);
+  overflow: hidden;
+}
+.n-tab-pane {
+  height: 100%;
+  overflow: auto;
+}
+.n-card {
+  height: 180px;
+}
 #viewerContainer {
   margin-top: -32px;
   height: 100%;

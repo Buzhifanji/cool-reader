@@ -1,14 +1,13 @@
 <template>
-  <n-scrollbar v-if="catalog.length">
-    <n-menu
-      :collapsed-icon-size="22"
-      :options="catalog"
-      key-field="title"
-      label-field="title"
-      children-field="items"
-      @update:value="updateCatalog"
-    />
-  </n-scrollbar>
+  <n-menu
+    v-if="catalog.length"
+    :collapsed-icon-size="22"
+    :options="catalog"
+    key-field="title"
+    label-field="title"
+    children-field="items"
+    @update:value="updateCatalog"
+  />
   <n-result
     v-else
     status="403"
