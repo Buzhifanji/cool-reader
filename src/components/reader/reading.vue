@@ -7,7 +7,7 @@
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target">
-      <div ref="srollRef" id="viewerContainer" tabindex="0">
+      <div id="viewerContainer">
         <div id="viewer" class="pdfViewer"></div>
       </div>
       <!-- note -->
@@ -81,7 +81,6 @@ import { getPdf } from "../../core/file/pdf";
 import { initReadingBook, rendingBook } from "./book";
 import Catalog from "./catalog.vue";
 
-import { useVirtualList } from "./sroll";
 import {
   activeTabRef,
   changePane,
@@ -98,8 +97,6 @@ const router = useRouter();
 const route = useRoute();
 init();
 
-const { srollRef, srcollEvent } = useVirtualList(rendingBook.id);
-
 async function init() {
   const index = Number(route.query.index);
   initReadingBook(index);
@@ -107,7 +104,6 @@ async function init() {
   if (book) {
     const { fileContent } = book;
     if (fileContent) {
-      // await loadPdf(rendingBook);
       await getPdf(rendingBook);
       // changePane(TabPaneEnum.catalog);
     } else {
