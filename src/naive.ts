@@ -19,6 +19,7 @@ import {
   NNotificationProvider,
   NProgress,
   NResult,
+  NScrollbar,
   NSpace,
   NTabPane,
   NTabs,
@@ -51,5 +52,6 @@ export const naive = create({
     NTabs,
     NTabPane,
     NDivider,
+    NScrollbar,
   ],
 });
