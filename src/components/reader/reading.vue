@@ -7,14 +7,9 @@
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target">
-      <section
-        ref="srollRef"
-        id="viewerContainer"
-        tabindex="0"
-        @scroll="srcollEvent"
-      >
+      <div ref="srollRef" id="viewerContainer" tabindex="0">
         <div id="viewer" class="pdfViewer"></div>
-      </section>
+      </div>
       <!-- note -->
       <n-drawer
         v-model:show="active"
@@ -82,7 +77,7 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { openBook } from "../../core/book/book";
-import { loadPdf } from "../../core/file/pdf";
+import { getPdf } from "../../core/file/pdf";
 import { initReadingBook, rendingBook } from "./book";
 import Catalog from "./catalog.vue";
 
@@ -112,8 +107,9 @@ async function init() {
   if (book) {
     const { fileContent } = book;
     if (fileContent) {
-      await loadPdf(rendingBook);
-      changePane(TabPaneEnum.catalog);
+      // await loadPdf(rendingBook);
+      await getPdf(rendingBook);
+      // changePane(TabPaneEnum.catalog);
     } else {
       console.log("没有数据");
     }

@@ -4,7 +4,13 @@ import {
   PDFDocumentProxy,
   PDFPageProxy,
 } from "pdfjs-dist";
-import { EventBus, TextLayerBuilder } from "pdfjs-dist/web/pdf_viewer";
+import {
+  EventBus,
+  GenericL10n,
+  PDFLinkService,
+  PDFViewer,
+  TextLayerBuilder,
+} from "pdfjs-dist/web/pdf_viewer";
 import { ref } from "vue";
 import { setCatalog } from "../book/catalog";
 import { setPdfDocument } from "../store";
@@ -50,6 +56,28 @@ export function loadPdf({ fileContent, id }: StorageBook) {
     container?.appendChild(fragment);
     renderPages(1, pdf);
   });
+}
+
+export async function getPdf({ fileContent, id }: StorageBook) {
+  const container = getEleById("viewerContainer")! as HTMLDivElement;
+  const pdfLinkService = new PDFLinkService({
+    eventBus: new EventBus(),
+  });
+  const l10n = new GenericL10n("zh");
+  // const pdfRenderingQueue = new PDFRenderingQueue();
+  let pdfViewer = new PDFViewer({
+    container: container,
+    eventBus: new EventBus(),
+    linkService: pdfLinkService,
+    l10n,
+  });
+  pdfViewer.currentScale = 2 * window.devicePixelRatio;
+  const loadingTask = getDocument(fileContent);
+  const pdf = await loadingTask.promise;
+
+  setCatalog(id, { extname: Bextname.pdf, documentProxy: pdf });
+
+  pdfViewer.setDocument(pdf);
 }
 
 async function createPageContainer(pdf: PDFDocumentProxy, id: string) {
