@@ -39,11 +39,7 @@
             </n-gi>
           </n-grid>
           <n-divider />
-          <n-tabs
-            type="segment"
-            v-model:value="activeTabRef"
-            @update:value="changePane"
-          >
+          <n-tabs type="segment" v-model:value="activeTabRef">
             <n-tab-pane
               v-for="item in tabPanes"
               :name="item.name"
@@ -81,13 +77,7 @@ import { getPdf } from "../../core/file/pdf";
 import Catalog from "../catalog/catalog.vue";
 import { initReadingBook, rendingBook } from "./book";
 
-import {
-  activeTabRef,
-  changePane,
-  isActiveTab,
-  TabPaneEnum,
-  tabPanes,
-} from "./tab-pene";
+import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";
 
 const active = ref<boolean>(false);
 function openDrawer() {
