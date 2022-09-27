@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Book from "./components/book.vue";
-import HighLight from "./components/highlight.vue";
-import Home from "./components/home.vue";
-import Note from "./components/note.vue";
-import Reader from "./components/reader/reading.vue";
+const Book = () => import("./components/book.vue");
+const HighLight = () => import("./components/highlight.vue");
+const Home = () => import("./components/home.vue");
+const Note = () => import("./components/note.vue");
+const Reader = () => import("./components/reader/reading.vue");
 
 export enum RouterName {
   book = "book",
