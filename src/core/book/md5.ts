@@ -1,6 +1,7 @@
 import { getDocument } from "pdfjs-dist";
 import SparkMD5 from "spark-md5";
-import { Bookextname, BookInfo } from "../type";
+import { BookInfo } from "../type";
+import { Bookextname } from "../utils/enums";
 
 /**
  * 生成书本的唯一id

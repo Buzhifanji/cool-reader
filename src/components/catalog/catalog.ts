@@ -1,7 +1,7 @@
 import { ref, toRaw } from "vue";
-import { Bextname } from "../../core/file/extname";
 import { getPdfBook, getPdfCatalogs } from "../../core/store/pdf";
 import { StorageBook } from "../../core/type";
+import { Bookextname } from "../../core/utils/enums";
 import { arrayHasData, isArray, isObj, isOwn } from "../../core/utils/utils";
 
 export const useCatalog = ({ extname, id }: StorageBook) => {
@@ -9,7 +9,7 @@ export const useCatalog = ({ extname, id }: StorageBook) => {
 
   function switchBookCatalog() {
     switch (extname) {
-      case Bextname.pdf:
+      case Bookextname.pdf:
         catalog.value = getPdfCatalogs(id);
         break;
     }
@@ -30,7 +30,7 @@ export function generateGotoPage({
   desc: any;
 }) {
   switch (extname) {
-    case Bextname.pdf:
+    case Bookextname.pdf:
       pdfGotoPage(id, desc);
       break;
   }

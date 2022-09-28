@@ -4,7 +4,8 @@ import { books, openBook } from "../../core/book/book";
 import { getEpub } from "../../core/file/epub";
 import { getPdf } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
-import { Bookextname, StorageBook } from "../../core/type";
+import { StorageBook } from "../../core/type";
+import { Bookextname } from "../../core/utils/enums";
 
 export const rendingBook = reactive<StorageBook>(
   new ReadingBook("", "", 0, "", "", "", "", new Uint8Array())

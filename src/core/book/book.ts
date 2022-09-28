@@ -14,7 +14,8 @@ import {
   getForageFiles,
   hasForageFile,
 } from "../store/file";
-import { Bookextname, BookInfo, StorageBook } from "../type";
+import { BookInfo, StorageBook } from "../type";
+import { Bookextname } from "../utils/enums";
 import { isIndex } from "../utils/utils";
 import { setBookId } from "./md5";
 
