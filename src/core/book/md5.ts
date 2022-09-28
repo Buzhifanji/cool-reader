@@ -1,30 +1,34 @@
 import { getDocument } from "pdfjs-dist";
+import SparkMD5 from "spark-md5";
 import { Bookextname, BookInfo } from "../type";
 
 /**
  * 生成书本的唯一id
  */
-export function setBookId({
-  bookName,
-  extname,
-  fileSize,
-  fileContent,
-}: BookInfo) {
+export function setBookId(book: BookInfo) {
   return new Promise<string>((resolve, reject) => {
     try {
+      const { extname, fileContent } = book;
       if (extname === Bookextname.pdf) {
-        getDocument(fileContent)
-          .promise.then((pdfDoc: any) => {
-            resolve(pdfDoc.fingerprints());
-          })
-          .catch((err: any) => {
-            resolve(bookName + "-" + fileSize);
-          });
+        return setPdfMD5(book);
       } else {
-        // TODO:
+        const hash = SparkMD5.ArrayBuffer.hash(fileContent);
+        resolve(hash);
       }
     } catch (error) {
       reject("set book id is error: " + error);
     }
+  });
+}
+
+function setPdfMD5({ bookName, fileSize, fileContent }: BookInfo) {
+  return new Promise((resolve) => {
+    getDocument(fileContent)
+      .promise.then((pdfDoc: any) => {
+        resolve(pdfDoc.fingerprints());
+      })
+      .catch((err: any) => {
+        resolve(bookName + "-" + fileSize);
+      });
   });
 }
