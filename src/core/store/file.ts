@@ -1,5 +1,6 @@
 import { forage } from "@tauri-apps/tauri-forage";
 import { StorageBook } from "../type";
+import { isIndex } from "../utils/utils";
 
 const BOOKLIST = "_tauri_book_list_";
 
@@ -15,7 +16,7 @@ export function getForageFiles(): Promise<StorageBook[]> {
 
 export async function getForageFile(id: string): Promise<StorageBook | null> {
   const [arr, index] = await findForageFile(id);
-  if (index !== -1) {
+  if (isIndex(index)) {
     return arr[index];
   } else {
     return null;
@@ -24,7 +25,7 @@ export async function getForageFile(id: string): Promise<StorageBook | null> {
 
 export async function addForageFile(file: StorageBook) {
   const [arr, index] = await findForageFile(file.id);
-  if (index === -1) {
+  if (!isIndex(index)) {
     arr.push(file);
   } else {
     const result = [file] as unknown as any;
@@ -39,7 +40,7 @@ export async function deleteForageFile(id: string) {
 
 export async function hasForageFile(id: string) {
   const [, index] = await findForageFile(id);
-  return index !== -1;
+  return isIndex(index);
 }
 
 async function findForageFile(id: string): Promise<fileInfo> {

@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { getEpubCover } from "../file/epub";
 import { getPDFCover } from "../file/pdf";
 import {
   addBookToStore,
@@ -13,7 +14,8 @@ import {
   getForageFiles,
   hasForageFile,
 } from "../store/file";
-import { BookInfo, StorageBook } from "../type";
+import { Bookextname, BookInfo, StorageBook } from "../type";
+import { isIndex } from "../utils/utils";
 import { setBookId } from "./md5";
 
 /**
@@ -67,7 +69,7 @@ export async function addBook(bookInfo: BookInfo) {
 
 export async function deleteBook(bookId: string) {
   const index = books.value.findIndex((book) => book.id === bookId);
-  if (index !== -1) {
+  if (isIndex(index)) {
     books.value.splice(index, 1);
   }
   if (hasBookFromStore(bookId)) {
@@ -105,8 +107,11 @@ function generateBook(bookInfo: BookInfo): Promise<string> {
   return new Promise(async (resolve, reject) => {
     let cover: string = "";
     switch (extname) {
-      case "pdf":
+      case Bookextname.pdf:
         cover = await getPDFCover(fileContent);
+        break;
+      case Bookextname.epub:
+        cover = await getEpubCover(fileContent);
         break;
     }
     resolve(cover);
