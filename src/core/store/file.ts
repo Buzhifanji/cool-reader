@@ -24,7 +24,7 @@ export async function getForageFile(id: string): Promise<StorageBook | null> {
 
 export async function addForageFile(file: StorageBook) {
   const [arr, index] = await findForageFile(file.id);
-  if (index !== -1) {
+  if (index === -1) {
     arr.push(file);
   } else {
     const result = [file] as unknown as any;
