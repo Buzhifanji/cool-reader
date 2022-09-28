@@ -1,8 +1,8 @@
 import epubjs from "epubjs";
-import Navigation from "epubjs/types/navigation";
+import { NavItem } from "epubjs/types/navigation";
 import { StorageBook } from "../type";
 
-const epubCatalogs = new Map<string, Navigation>();
+const epubCatalogs = new Map<string, NavItem[]>();
 
 export function getEpubCover(fileContent: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -24,11 +24,26 @@ export function getEpub({ fileContent, id }: StorageBook) {
     book.renderTo("viewer").display();
 
     book.ready.then(() => {
-      epubCatalogs.set(id, book.navigation);
+      const catalog = book.navigation.toc;
+      formateEpubCatalog(catalog);
+      epubCatalogs.set(id, catalog);
     });
   });
 }
 
 export function getEpubCatalog(bookId: string) {
-  return epubCatalogs.get(bookId);
+  const result = epubCatalogs.get(bookId);
+  console.log("result", result);
+  return result ? result : [];
+}
+
+function formateEpubCatalog(arr: NavItem[]) {
+  arr.forEach((item) => {
+    const items = item.subitems;
+    if (items && items.length) {
+      formateEpubCatalog(items);
+    } else {
+      delete item.subitems;
+    }
+  });
 }

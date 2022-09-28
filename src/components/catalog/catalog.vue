@@ -3,9 +3,9 @@
     v-if="catalog.length"
     :collapsed-icon-size="22"
     :options="catalog"
-    key-field="title"
-    label-field="title"
-    children-field="items"
+    :key-field="menuFieds.key"
+    :label-field="menuFieds.label"
+    :children-field="menuFieds.children"
     @update:value="updateCatalog"
   />
   <n-result
@@ -27,7 +27,7 @@ interface Props {
 
 const { book } = defineProps<Props>();
 
-const { catalog } = useCatalog(book);
+const { catalog, menuFieds } = useCatalog(book);
 
 function updateCatalog(key: string, item: MenuOption) {
   const { id, extname } = book;
