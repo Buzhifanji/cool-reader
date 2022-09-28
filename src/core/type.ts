@@ -3,6 +3,7 @@
  */
 export const enum Bookextname {
   pdf = "pdf",
+  epub = "epub",
 }
 
 export interface BufType {
