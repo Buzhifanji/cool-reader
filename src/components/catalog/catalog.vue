@@ -31,8 +31,7 @@ const { catalog, menuFieds } = useCatalog(book);
 
 function updateCatalog(key: string, item: MenuOption) {
   const { id, extname } = book;
-  const desc = item.dest as unknown as any;
-  const param = { id, extname, desc };
+  const param = { id, extname, item };
   generateGotoPage(param);
 }
 </script>

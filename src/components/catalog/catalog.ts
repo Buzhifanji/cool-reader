@@ -1,5 +1,5 @@
 import { reactive, ref, toRaw } from "vue";
-import { getEpubCatalog } from "../../core/file/epub";
+import { epubGotoPage, getEpubCatalog } from "../../core/file/epub";
 import { getPdfBook, getPdfCatalogs } from "../../core/store/pdf";
 import { StorageBook } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
@@ -39,15 +39,18 @@ export const useCatalog = ({ extname, id }: StorageBook) => {
 export function generateGotoPage({
   id,
   extname,
-  desc,
+  item,
 }: {
   id: string;
   extname: string;
-  desc: any;
+  item: any;
 }) {
   switch (extname) {
     case Bookextname.pdf:
-      pdfGotoPage(id, desc);
+      pdfGotoPage(id, item.dest);
+      break;
+    case Bookextname.epub:
+      epubGotoPage(id, item.href);
       break;
   }
 }
