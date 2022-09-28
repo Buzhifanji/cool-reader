@@ -59,18 +59,22 @@ function listenDownloadFile(book: BaseBook, event: Promise<UnlistenFn>) {
     } else {
       const bookInfo = { ...book, fileContent };
       bookInfo.fileSize = readFileSize.value;
-      addBook(bookInfo).then(() => {
-        calculatePercentage(0);
-        setLoadFile(false);
-        // 取消 监听文件大小
-        event.then((done) => {
-          done();
+      addBook(bookInfo)
+        .then(() => {
+          calculatePercentage(0);
+          setLoadFile(false);
+          // 取消 监听文件大小
+          event.then((done) => {
+            done();
+          });
+          // 取消下载文件事件监听
+          unlisten.then((done) => {
+            done();
+          });
+        })
+        .catch((err) => {
+          console.log("error", err);
         });
-        // 取消下载文件事件监听
-        unlisten.then((done) => {
-          done();
-        });
-      });
     }
   });
 }
@@ -86,6 +90,7 @@ function handleFileName(path: string) {
   const extname = path
     .substring(lastIndexOfDots + 1, path.length)
     .toLocaleLowerCase();
-  const bookName = path.substring(0, lastIndexOfDots);
+  const lastIndxOfSlash = path.lastIndexOf("\\") + 1;
+  const bookName = path.substring(lastIndxOfSlash, lastIndexOfDots);
   return { bookName, extname };
 }
