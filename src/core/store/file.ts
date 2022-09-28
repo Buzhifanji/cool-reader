@@ -26,7 +26,7 @@ export async function getForageFile(id: string): Promise<StorageBook | null> {
 export async function addForageFile(file: StorageBook) {
   const [arr, index] = await findForageFile(file.id);
   let result = [file] as unknown as any;
-  if (!isIndex(index)) {
+  if (arr && !isIndex(index)) {
     arr.push(file);
     result = arr;
   }
@@ -36,6 +36,10 @@ export async function addForageFile(file: StorageBook) {
 export async function deleteForageFile(id: string) {
   const [arr, index] = await findForageFile(id);
   // todo: remove
+}
+
+export function clearAll() {
+  forage.removeItem({ key: BOOKLIST })();
 }
 
 export async function hasForageFile(id: string) {

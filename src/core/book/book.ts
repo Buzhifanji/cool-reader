@@ -28,7 +28,7 @@ let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
 export async function initBook() {
   if (!isLoadStoraged) {
     const list = await getForageFiles();
-    books.value = [...list];
+    books.value = list ? [...list] : [];
     isLoadStoraged = true;
   }
 }
