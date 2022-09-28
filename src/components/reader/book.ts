@@ -1,9 +1,10 @@
 import { reactive } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { books, openBook } from "../../core/book/book";
+import { getEpub } from "../../core/file/epub";
 import { getPdf } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
-import { StorageBook } from "../../core/type";
+import { Bookextname, StorageBook } from "../../core/type";
 
 export const rendingBook = reactive<StorageBook>(
   new ReadingBook("", "", 0, "", "", "", "", new Uint8Array())
@@ -11,6 +12,7 @@ export const rendingBook = reactive<StorageBook>(
 
 function initReadingBook(index: number) {
   const selectedBook = books.value[index];
+  console.log("selectedBook", selectedBook);
   rendingBook.bookName = selectedBook.bookName;
   rendingBook.extname = selectedBook.extname;
   rendingBook.fileSize = selectedBook.fileSize;
@@ -26,12 +28,22 @@ export const useReader = async (route: RouteLocationNormalizedLoaded) => {
   initReadingBook(index);
   const book = await openBook(rendingBook.id);
   if (book) {
-    const { fileContent } = book;
+    const { fileContent, extname } = book;
     if (fileContent) {
-      await getPdf(rendingBook);
-    } else {
-      // TODO:
-      console.log("没有数据");
+      switch (extname) {
+        case Bookextname.pdf:
+          await getPdf(rendingBook);
+          break;
+        case Bookextname.epub:
+          await getEpub(rendingBook);
+          break;
+      }
     }
+    // if (fileContent) {
+    //   await getPdf(rendingBook);
+    // } else {
+    //   // TODO:
+    //   console.log("没有数据");
+    // }
   }
 };
