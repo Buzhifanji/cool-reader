@@ -26,7 +26,11 @@ export function getEpubCover(fileContent: Uint8Array): Promise<string> {
 export function getEpub({ fileContent, id }: StorageBook) {
   return new Promise((resolve, reject) => {
     const book = epubjs(fileContent.buffer);
-    const rendition = book.renderTo("viewer");
+    const rendition = book.renderTo("viewer", {
+      flow: "scrolled",
+      width: "793px",
+      height: "100%",
+    });
 
     rendition.display();
 
