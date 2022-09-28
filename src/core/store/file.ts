@@ -25,12 +25,12 @@ export async function getForageFile(id: string): Promise<StorageBook | null> {
 
 export async function addForageFile(file: StorageBook) {
   const [arr, index] = await findForageFile(file.id);
+  let result = [file] as unknown as any;
   if (!isIndex(index)) {
     arr.push(file);
-  } else {
-    const result = [file] as unknown as any;
-    await forage.setItem({ key: BOOKLIST, value: result })();
+    result = arr;
   }
+  await forage.setItem({ key: BOOKLIST, value: result })();
 }
 
 export async function deleteForageFile(id: string) {
