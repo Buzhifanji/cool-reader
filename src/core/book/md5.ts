@@ -10,7 +10,7 @@ export function setBookId(book: BookInfo) {
     try {
       const { extname, fileContent } = book;
       if (extname === Bookextname.pdf) {
-        return setPdfMD5(book);
+        setPdfMD5(book).then((value) => resolve(value));
       } else {
         const hash = SparkMD5.ArrayBuffer.hash(fileContent);
         resolve(hash);
@@ -21,7 +21,11 @@ export function setBookId(book: BookInfo) {
   });
 }
 
-function setPdfMD5({ bookName, fileSize, fileContent }: BookInfo) {
+function setPdfMD5({
+  bookName,
+  fileSize,
+  fileContent,
+}: BookInfo): Promise<string> {
   return new Promise((resolve) => {
     getDocument(fileContent)
       .promise.then((pdfDoc: any) => {
