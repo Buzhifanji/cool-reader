@@ -22,7 +22,7 @@ export const openReaderWindow = ({ bookName, id }: StorageBook) => {
   // 处理：runtime error: Window labels must only include alphanumeric characters, `-`, `/`, `:` and `_`."
   const label = `reader${index}`;
   const readerWindow = new WebviewWindow(label, {
-    url: `/reader?id=${id}`,
+    url: `/reader?id=${encodeURIComponent(id)}`,
     title: bookName,
     width: 800,
     height: 600,

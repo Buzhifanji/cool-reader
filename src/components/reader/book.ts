@@ -27,8 +27,8 @@ async function initReadingBook(bookId: string) {
 
 export const useReader = async (route: RouteLocationNormalizedLoaded) => {
   const id = route.query.id as string;
-  initReadingBook(id);
-  const book = await openBook(id);
+  await initReadingBook(id);
+  const book = await openBook(rendingBook.id);
   if (book) {
     const { fileContent, extname } = book;
     if (fileContent) {

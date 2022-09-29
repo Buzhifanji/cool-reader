@@ -94,10 +94,21 @@ export async function openBook(id: string): Promise<BookInfo | null> {
   }
 }
 
-export async function findBook(id: string): Promise<StorageBook | null> {
+/**
+ * 通过书本 id，来确认多窗口数据共享是具体内容，但 由于浏览器会对 URI 编码处理，为了确保获取数据正确，所有需要对 id 进行编码处理。
+ * @param id 书本id
+ * @param isURI 判断是否需要 编码处理
+ * @returns
+ */
+export async function findBook(
+  id: string,
+  isURI = true
+): Promise<StorageBook | null> {
   const list = await getForageFiles();
   const books = list ? [...list] : [];
-  const index = books.findIndex((book) => book.id === id);
+  const getId = (id: string) =>
+    isURI ? decodeURIComponent(encodeURIComponent(id)) : id;
+  const index = books.findIndex((book) => getId(book.id) === id);
   return isIndex(index) ? books[index] : null;
 }
 
