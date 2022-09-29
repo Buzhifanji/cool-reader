@@ -5,6 +5,7 @@ import {
   NDivider,
   NDrawer,
   NDrawerContent,
+  NDropdown,
   NEllipsis,
   NEmpty,
   NGi,
@@ -51,5 +52,6 @@ export const naive = create({
     NTabs,
     NTabPane,
     NDivider,
+    NDropdown,
   ],
 });

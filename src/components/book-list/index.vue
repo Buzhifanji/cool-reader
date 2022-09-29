@@ -11,6 +11,7 @@
       hoverable
       v-for="item in books"
       :key="item.id"
+      @contextmenu="handleContextMenu"
       @click="openReaderWindow(item)"
     >
       <template #cover>
@@ -20,6 +21,16 @@
         {{ item.bookName }}
       </n-ellipsis>
     </n-card>
+    <n-dropdown
+      placement="bottom-start"
+      trigger="manual"
+      :x="xRef"
+      :y="yRef"
+      :options="menus"
+      :show="showDropdownRef"
+      :on-clickoutside="onClickoutside"
+      @select="handleSelect"
+    />
   </template>
 
   <n-result
@@ -35,12 +46,22 @@
 </template>
 
 <script setup lang="ts">
-import { books, initBook } from "../core/book/book";
-import { openFile } from "../core/file/file";
-import { percentage } from "../core/file/file-size";
-import { openReaderWindow } from "../core/system/window";
+import { books, initBook } from "../../core/book/book";
+import { openFile } from "../../core/file/file";
+import { percentage } from "../../core/file/file-size";
+import { openReaderWindow } from "../../core/system/window";
+import { useContextMenu } from "./book-list";
 
 initBook();
+const {
+  showDropdownRef,
+  xRef,
+  yRef,
+  handleSelect,
+  handleContextMenu,
+  onClickoutside,
+  menus,
+} = useContextMenu();
 </script>
 
 <style scoped>

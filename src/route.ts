@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-const Book = () => import("./components/book.vue");
+const Book = () => import("./components/book-list/index.vue");
 const HighLight = () => import("./components/highlight.vue");
 const Home = () => import("./components/home.vue");
 const Note = () => import("./components/note.vue");
