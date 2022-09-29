@@ -18,6 +18,7 @@ specifiers:
   vue: ^3.2.37
   vue-router: ^4.1.5
   vue-tsc: ^0.39.0
+  web-highlighter: ^0.7.4
 
 dependencies:
   '@tauri-apps/api': 1.0.2
@@ -39,6 +40,7 @@ devDependencies:
   typescript: 4.8.2
   vite: 3.0.9
   vue-tsc: 0.39.5_typescript@4.8.2
+  web-highlighter: 0.7.4
 
 packages:
 
@@ -1112,6 +1114,10 @@ packages:
       vdirs: 0.1.8_vue@3.2.38
       vooks: 0.2.12_vue@3.2.38
       vue: 3.2.38
+    dev: true
+
+  /web-highlighter/0.7.4:
+    resolution: {integrity: sha512-07mWw6ib+Abcr/fuKEWYPy1Y0MsCOz6yUUVw9xMpyt5UzyXWtSlcwzy2YqnccCP/LjtM9MZHQSo3dbGJII8h6w==}
     dev: true
 
   /web-streams-polyfill/3.2.1:
