@@ -93,6 +93,9 @@ function goHome() {
 </script>
 
 <style scoped>
+.n-drawer {
+  height: calc(100% - 17px);
+}
 .n-layout-content {
   height: calc(100% - 35px);
 }
@@ -110,6 +113,6 @@ function goHome() {
 #viewerContainer {
   margin-top: -32px;
   height: 100%;
-  overflow: scroll;
+  overflow-y: auto;
 }
 </style>
