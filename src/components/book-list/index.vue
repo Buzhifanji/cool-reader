@@ -67,6 +67,7 @@ const {
 .n-card {
   display: inline-flex;
   width: 180px;
+  height: 250px;
   margin-right: 20px;
   margin-top: 20px;
   cursor: pointer;
