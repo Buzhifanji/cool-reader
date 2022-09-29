@@ -69,3 +69,13 @@ export function epubGotoPage(bookId: string, href: string) {
   const book = epub.get(bookId);
   book?.rendition.display(href);
 }
+
+export function epubPageUp(bookId: string) {
+  const book = epub.get(bookId);
+  book?.rendition.prev();
+}
+
+export function epubPageDown(bookId: string) {
+  const book = epub.get(bookId);
+  book?.rendition.next();
+}

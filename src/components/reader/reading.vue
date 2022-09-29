@@ -11,6 +11,23 @@
       <div id="viewerContainer">
         <div id="viewer" class="pdfViewer"></div>
       </div>
+      <div class="anchor-wrapper">
+        <div>
+          <n-button @click="pageUp">
+            <template #icon>
+              <n-icon size="30" :component="ArrowUp" />
+            </template>
+          </n-button>
+        </div>
+        <div>
+          <n-button @click="pageDown">
+            <template #icon>
+              <n-icon size="30" :component="ArrowDown" />
+            </template>
+          </n-button>
+        </div>
+      </div>
+
       <!-- note -->
       <n-drawer
         v-model:show="active"
@@ -71,25 +88,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ArrowDown, ArrowUp } from "@vicons/carbon";
+import { useRoute } from "vue-router";
 import Catalog from "../catalog/catalog.vue";
-import { rendingBook, useReader } from "./book";
-
+import { useControlDrawer, usePageTurn, useReaderBook } from "./book";
 import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";
 
-const active = ref<boolean>(false);
-function openDrawer() {
-  active.value = true;
-}
-const router = useRouter();
 const route = useRoute();
-
-useReader(route);
-
-function goHome() {
-  router.push("/");
-}
+const { active, openDrawer } = useControlDrawer();
+const { pageUp, pageDown } = usePageTurn();
+const { rendingBook } = useReaderBook(route);
 </script>
 
 <style scoped>
@@ -99,6 +107,7 @@ function goHome() {
 .n-layout-content {
   height: calc(100% - 35px);
 }
+
 .n-tabs {
   height: calc(100% - 229px);
   overflow: hidden;
@@ -114,5 +123,13 @@ function goHome() {
   margin-top: -32px;
   height: 100%;
   overflow-y: auto;
+}
+.anchor-wrapper {
+  width: 100px;
+  overflow: visible;
+  position: fixed;
+  z-index: 5;
+  bottom: 48px;
+  right: 80px;
 }
 </style>
