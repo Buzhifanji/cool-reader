@@ -1,15 +1,31 @@
-import { getDocument, PageViewport, PDFPageProxy } from "pdfjs-dist";
+import {
+  getDocument,
+  PageViewport,
+  PDFDocumentProxy,
+  PDFPageProxy,
+} from "pdfjs-dist";
 import {
   EventBus,
   GenericL10n,
   PDFLinkService,
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
-import { setPdfBook } from "../store/pdf";
 import { StorageBook } from "../type";
 import { createEle, getEleById } from "../utils/utils";
 
 const scale = 1.7 * window.devicePixelRatio; // 展示比例
+
+/**
+ * 缓存 pdf 数据信息
+ */
+
+interface PdfBook {
+  pdfViewer: PDFViewer;
+  pdf: PDFDocumentProxy;
+  catalogs: any[]; // 目录
+}
+
+const pdfBooks = new Map<string, PdfBook>();
 
 export function getViewport(page: PDFPageProxy) {
   return page.getViewport({
@@ -47,7 +63,7 @@ export async function getPdf({ fileContent, id }: StorageBook) {
   const outline = await pdf.getOutline();
   const catalogs = formatePdfCatalog(outline);
 
-  setPdfBook(id, { pdfViewer, pdf, catalogs });
+  pdfBooks.set(id, { pdfViewer, pdf, catalogs });
 
   pdfViewer.setDocument(pdf);
 }
@@ -71,6 +87,20 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
         resolve("");
       });
   });
+}
+
+export function getPdfBook(bookId: string) {
+  return pdfBooks.get(bookId);
+}
+
+/**
+ * 获取 pdf 目录
+ * @param bookId
+ * @returns
+ */
+export function getPdfCatalogs(bookId: string) {
+  const book = getPdfBook(bookId);
+  return book ? book.catalogs : [];
 }
 
 function formatePdfCatalog(list: any[]) {

@@ -1,6 +1,6 @@
 import { reactive, ref, toRaw } from "vue";
 import { epubGotoPage, getEpubCatalog } from "../../core/file/epub";
-import { getPdfBook, getPdfCatalogs } from "../../core/store/pdf";
+import { getPdfBook, getPdfCatalogs } from "../../core/file/pdf";
 import { StorageBook } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 import { arrayHasData, isArray, isObj, isOwn } from "../../core/utils/utils";
