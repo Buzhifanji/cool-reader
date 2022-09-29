@@ -2,20 +2,13 @@
 import { NIcon, useNotification } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { books } from "../core/book/book";
 import { isLoadFile, openFile } from "../core/file/file";
-import { clearAll } from "../core/store/file";
 import { RouterName } from "../route";
 import BookIcon from "./icons/book.vue";
 import HighLightIcon from "./icons/highlight.vue";
 import NoteIcon from "./icons/note.vue";
 
 window.notification = useNotification();
-
-function clearStore() {
-  clearAll();
-  books.value = [];
-}
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
@@ -54,7 +47,6 @@ const siderMenuOptions = [
         <!-- <input type="file" @change="fileChange" :disabled="isLoadFile" /> -->
         <!-- <SetIcon /> -->
         <n-button @click="openFile" :disabled="isLoadFile">上传</n-button>
-        <n-button @click="clearStore" :disabled="isLoadFile">clear</n-button>
       </n-space>
     </n-layout-header>
     <n-layout has-sider>

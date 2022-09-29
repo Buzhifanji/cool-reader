@@ -1,9 +1,10 @@
 import { reactive } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
-import { findBook, openBook } from "../../core/book/book";
+import { findBook } from "../../core/book/book";
 import { getEpub } from "../../core/file/epub";
 import { getPdf } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
+import { getForageFile } from "../../core/store";
 import { StorageBook } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 
@@ -28,7 +29,7 @@ async function initReadingBook(bookId: string) {
 export const useReader = async (route: RouteLocationNormalizedLoaded) => {
   const id = route.query.id as string;
   await initReadingBook(id);
-  const book = await openBook(rendingBook.id);
+  const book = await getForageFile(rendingBook.id);
   if (book) {
     const { fileContent, extname } = book;
     if (fileContent) {

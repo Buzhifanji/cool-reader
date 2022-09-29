@@ -35,7 +35,10 @@ export async function addForageFile(file: StorageBook) {
 
 export async function deleteForageFile(id: string) {
   const [arr, index] = await findForageFile(id);
-  // todo: remove
+  if (isIndex(index)) {
+    arr.splice(index, 1);
+    forage.setItem({ key: BOOKLIST, value: arr as unknown as any })();
+  }
 }
 
 export function clearAll() {

@@ -1,38 +1,11 @@
-import { ref } from "vue";
+import { updateBook } from "../../components/book-list/book-list";
 import { getEpubCover } from "../file/epub";
 import { getPDFCover } from "../file/pdf";
-import {
-  addBookToStore,
-  getBookFromStore,
-  hasBookFromStore,
-  removeBookFromStore,
-} from "../store";
-import {
-  addForageFile,
-  deleteForageFile,
-  getForageFile,
-  getForageFiles,
-  hasForageFile,
-} from "../store/file";
+import { addForageFile, getForageFiles, hasForageFile } from "../store/file";
 import { BookInfo, StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { isIndex } from "../utils/utils";
 import { setBookId } from "./md5";
-
-/**
- * 已上传的书籍列表
- */
-export const books = ref<StorageBook[]>([]);
-
-let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
-
-export async function initBook() {
-  if (!isLoadStoraged) {
-    const list = await getForageFiles();
-    books.value = list ? [...list] : [];
-    isLoadStoraged = true;
-  }
-}
 
 export async function addBook(bookInfo: BookInfo) {
   const { bookName } = bookInfo;
@@ -56,41 +29,14 @@ export async function addBook(bookInfo: BookInfo) {
     // 离线缓存
     addForageFile(cacheBook);
     // 在线缓存
+    updateBook(cacheBook);
 
-    addBookToStore(bookId, cacheBook);
-    books.value.unshift(cacheBook);
     window.notification.success({
       content: "添加成功！",
       meta: bookName,
       duration: 2000,
       keepAliveOnHover: true,
     });
-  }
-}
-
-export async function deleteBook(bookId: string) {
-  const index = books.value.findIndex((book) => book.id === bookId);
-  if (isIndex(index)) {
-    books.value.splice(index, 1);
-  }
-  if (hasBookFromStore(bookId)) {
-    removeBookFromStore(bookId);
-  }
-  await deleteForageFile(bookId);
-  window.notification.success({
-    content: "删除成功！",
-    meta: "66666666",
-    duration: 2000,
-    keepAliveOnHover: true,
-  });
-}
-
-export async function openBook(id: string): Promise<BookInfo | null> {
-  const book = getBookFromStore(id);
-  if (book) {
-    return book;
-  } else {
-    return await getForageFile(id);
   }
 }
 
@@ -110,15 +56,6 @@ export async function findBook(
     isURI ? decodeURIComponent(encodeURIComponent(id)) : id;
   const index = books.findIndex((book) => getId(book.id) === id);
   return isIndex(index) ? books[index] : null;
-}
-
-function getBookContent(id: string): Uint8Array {
-  let result = new Uint8Array();
-  if (hasBookFromStore(id)) {
-  } else {
-    // TODO:
-  }
-  return result;
 }
 
 function generateBook(bookInfo: BookInfo): Promise<string> {

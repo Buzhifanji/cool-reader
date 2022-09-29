@@ -11,7 +11,7 @@
       hoverable
       v-for="item in books"
       :key="item.id"
-      @contextmenu="handleContextMenu"
+      @contextmenu="handleContextMenu($event, item.id)"
       @click="openReaderWindow(item)"
     >
       <template #cover>
@@ -46,13 +46,12 @@
 </template>
 
 <script setup lang="ts">
-import { books, initBook } from "../../core/book/book";
 import { openFile } from "../../core/file/file";
 import { percentage } from "../../core/file/file-size";
 import { openReaderWindow } from "../../core/system/window";
-import { useContextMenu } from "./book-list";
+import { useBooks, useContextMenu } from "./book-list";
 
-initBook();
+const { books } = useBooks();
 const {
   showDropdownRef,
   xRef,
