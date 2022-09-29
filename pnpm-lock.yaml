@@ -18,7 +18,6 @@ specifiers:
   vue: ^3.2.37
   vue-router: ^4.1.5
   vue-tsc: ^0.39.0
-  vue3-menus: ^1.1.2
 
 dependencies:
   '@tauri-apps/api': 1.0.2
@@ -40,7 +39,6 @@ devDependencies:
   typescript: 4.8.2
   vite: 3.0.9
   vue-tsc: 0.39.5_typescript@4.8.2
-  vue3-menus: 1.1.2
 
 packages:
 
@@ -1100,10 +1098,6 @@ packages:
       '@vue/server-renderer': 3.2.38_vue@3.2.38
       '@vue/shared': 3.2.38
     dev: false
-
-  /vue3-menus/1.1.2:
-    resolution: {integrity: sha512-MoX87TH25fbKmmE8PwC+c2kJOSGJheP4pBR2we0RkOrfUDQg7sK+akAZSmQU8o+7dF+xVF2NfKPhoVHOhlX9wQ==}
-    dev: true
 
   /vueuc/0.4.48_vue@3.2.38:
     resolution: {integrity: sha512-dQTBLxCzfaPuzD3c4/dIxAULtnyY+xwdotCRFUDgf0DJiwuR3tI+txJ9K8uJKmaHwc1JDUVqhRAj9Jd/pvInWg==}
