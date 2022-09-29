@@ -94,6 +94,13 @@ export async function openBook(id: string): Promise<BookInfo | null> {
   }
 }
 
+export async function findBook(id: string): Promise<StorageBook | null> {
+  const list = await getForageFiles();
+  const books = list ? [...list] : [];
+  const index = books.findIndex((book) => book.id === id);
+  return isIndex(index) ? books[index] : null;
+}
+
 function getBookContent(id: string): Uint8Array {
   let result = new Uint8Array();
   if (hasBookFromStore(id)) {
