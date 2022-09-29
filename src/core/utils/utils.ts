@@ -1,3 +1,6 @@
+import { NIcon } from "naive-ui";
+import { Component, h } from "vue";
+
 /**
  * 合并两个 Uint8Array，合并之后的顺序结果是： [...buf1, ...buf2]
  * @param buf1
@@ -26,6 +29,9 @@ export function getEleById(id: string) {
 export function selectorAll(selectors: string) {
   return document.querySelectorAll(selectors);
 }
+
+export const renderIcon = (icon: Component) => () =>
+  h(NIcon, null, { default: () => h(icon) });
 
 export const isArray = (value: any) => Array.isArray(value);
 export const arrayHasData = (value: any[]) => arrayHasData.length > 0;
