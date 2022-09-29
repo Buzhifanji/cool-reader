@@ -7,30 +7,32 @@
     processing
   />
   <template v-if="books.length">
-    <n-card
-      hoverable
-      v-for="item in books"
-      :key="item.id"
-      @contextmenu="handleContextMenu($event, item.id)"
-      @click="openReaderWindow(item)"
-    >
-      <template #cover>
-        <n-image :src="item.cover" preview-disabled />
-      </template>
-      <n-ellipsis :line-clamp="1">
-        {{ item.bookName }}
-      </n-ellipsis>
-    </n-card>
-    <n-dropdown
-      placement="bottom-start"
-      trigger="manual"
-      :x="xRef"
-      :y="yRef"
-      :options="menus"
-      :show="showDropdownRef"
-      :on-clickoutside="onClickoutside"
-      @select="handleSelect"
-    />
+    <div class="card-wrapper">
+      <n-card
+        hoverable
+        v-for="item in books"
+        :key="item.id"
+        @contextmenu="handleContextMenu($event, item.id)"
+        @click="openReaderWindow(item)"
+      >
+        <template #cover>
+          <n-image :src="item.cover" preview-disabled />
+        </template>
+        <n-ellipsis :line-clamp="1">
+          {{ item.bookName }}
+        </n-ellipsis>
+      </n-card>
+      <n-dropdown
+        placement="bottom-start"
+        trigger="manual"
+        :x="xRef"
+        :y="yRef"
+        :options="menus"
+        :show="showDropdownRef"
+        :on-clickoutside="onClickoutside"
+        @select="handleSelect"
+      />
+    </div>
   </template>
 
   <n-result
@@ -71,5 +73,8 @@ const {
   margin-right: 20px;
   margin-top: 20px;
   cursor: pointer;
+}
+.card-wrapper {
+  display: flex;
 }
 </style>
