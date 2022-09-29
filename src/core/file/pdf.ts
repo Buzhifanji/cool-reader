@@ -103,6 +103,16 @@ export function getPdfCatalogs(bookId: string) {
   return book ? book.catalogs : [];
 }
 
+export function pdfPageUp(bookId: string) {
+  const book = getPdfBook(bookId);
+  book?.pdfViewer.previousPage();
+}
+
+export function pdfPageDown(bookId: string) {
+  const book = getPdfBook(bookId);
+  book?.pdfViewer.nextPage();
+}
+
 function formatePdfCatalog(list: any[]) {
   // 处理 没有目录的特殊情况
   if (list.length === 1 && list[0].title === "目录") {

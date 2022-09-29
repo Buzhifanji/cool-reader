@@ -2,7 +2,7 @@ import { reactive, ref } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { findBook } from "../../core/book/book";
 import { epubPageDown, epubPageUp, getEpub } from "../../core/file/epub";
-import { getPdf } from "../../core/file/pdf";
+import { getPdf, pdfPageDown, pdfPageUp } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
 import { getForageFile } from "../../core/store";
 import { StorageBook } from "../../core/type";
@@ -59,20 +59,24 @@ export const useControlDrawer = () => {
 // 翻页
 export const usePageTurn = () => {
   function pageUp() {
-    switch (rendingBook.extname) {
+    const { id, extname } = rendingBook;
+    switch (extname) {
       case Bookextname.pdf:
+        pdfPageUp(id);
         break;
       case Bookextname.epub:
-        epubPageUp(rendingBook.id);
+        epubPageUp(id);
         break;
     }
   }
   function pageDown() {
-    switch (rendingBook.extname) {
+    const { id, extname } = rendingBook;
+    switch (extname) {
       case Bookextname.pdf:
+        pdfPageDown(id);
         break;
       case Bookextname.epub:
-        epubPageDown(rendingBook.id);
+        epubPageDown(id);
         break;
     }
   }
