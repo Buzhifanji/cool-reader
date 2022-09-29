@@ -2,7 +2,8 @@
   <n-layout>
     <n-layout-header bordered>
       <n-space justify="space-between">
-        <n-button @click="goHome">go home</n-button>
+        <!-- <n-button @click="goHome">go home</n-button> -->
+        <span></span>
         <n-button @click="openDrawer">Option</n-button>
       </n-space>
     </n-layout-header>

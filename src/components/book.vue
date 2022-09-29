@@ -9,8 +9,9 @@
   <template v-if="books.length">
     <n-card
       hoverable
-      v-for="(item, index) in books"
-      @click="openBook(item, index)"
+      v-for="item in books"
+      :key="item.id"
+      @click="openReaderWindow(item)"
     >
       <template #cover>
         <n-image :src="item.cover" preview-disabled />
@@ -34,22 +35,12 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import { books, initBook } from "../core/book/book";
 import { openFile } from "../core/file/file";
 import { percentage } from "../core/file/file-size";
-import { setOpenedBookId } from "../core/store";
-import { StorageBook } from "../core/type";
-import { RouterName } from "../route";
+import { openReaderWindow } from "../core/system/window";
 
 initBook();
-const router = useRouter();
-function openBook(book: StorageBook, index: number) {
-  setOpenedBookId(book.id);
-  router.push({ name: RouterName.reader, query: { index } });
-  console.log("kkkkkkkkkkkkk", book);
-  console.log("index", index);
-}
 </script>
 
 <style scoped>
