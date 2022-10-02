@@ -48,10 +48,13 @@
 </template>
 
 <script setup lang="ts">
+import Highlighter from "web-highlighter";
 import { openFile } from "../../core/file/file";
 import { percentage } from "../../core/file/file-size";
 import { openReaderWindow } from "../../core/system/window";
 import { useBooks, useContextMenu } from "./book-list";
+
+new Highlighter().run();
 
 const { books } = useBooks();
 const {

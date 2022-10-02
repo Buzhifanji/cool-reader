@@ -4,6 +4,7 @@ import { findBook } from "../../core/book/book";
 import { epubPageDown, epubPageUp, getEpub } from "../../core/file/epub";
 import { getPdf, pdfPageDown, pdfPageUp } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
+import { usehighlight } from "../../core/notes/highlight";
 import { getForageFile } from "../../core/store";
 import { StorageBook } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
@@ -29,6 +30,8 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   async function init() {
     const id = route.query.id as string;
     await initReadingBook(id);
+    // 开启高亮功能
+    usehighlight(rendingBook);
     const book = await getForageFile(rendingBook.id);
     if (book) {
       const { fileContent, extname } = book;
