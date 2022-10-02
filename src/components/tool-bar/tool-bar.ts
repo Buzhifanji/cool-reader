@@ -13,6 +13,10 @@ export const useControlToolBar = () => {
   return { toolBarStyle, toolBarRef, toolBarActive };
 };
 
+export function onToolBarActive(value: boolean) {
+  toolBarActive.value = value;
+}
+
 export const useToolBar = () => {
   const enum barEnum {
     Copy,
@@ -37,7 +41,16 @@ export const useToolBar = () => {
     },
   ];
 
-  function barAction(key: barEnum) {}
+  function barAction(key: barEnum) {
+    switch (key) {
+      case barEnum.Copy:
+        break;
+      case barEnum.TextUnderline:
+        break;
+      case barEnum.TextHighlight:
+        break;
+    }
+  }
 
   return { bars, barAction };
 };

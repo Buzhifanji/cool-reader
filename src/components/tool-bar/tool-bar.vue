@@ -15,14 +15,6 @@
         <n-icon :component="item.icon" size="16" />
         <div quaternary>{{ item.label }}</div>
       </n-space>
-      <!-- <n-space vertical>
-        <n-icon :component="TextUnderline" size="16" />
-        <div quaternary>下划线</div>
-      </n-space>
-      <n-space vertical>
-        <n-icon :component="TextHighlight" size="16" />
-        <div quaternary>高亮</div>
-      </n-space> -->
     </n-space>
   </div>
 </template>

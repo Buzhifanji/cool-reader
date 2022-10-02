@@ -8,7 +8,7 @@
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target">
-      <div id="viewerContainer">
+      <div id="viewerContainer" @mouseup="watchSelection">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>
@@ -91,6 +91,7 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
+import { watchSelection } from "../../core/notes/reader-tool";
 import Catalog from "../catalog/catalog.vue";
 import ToolBar from "../tool-bar/tool-bar.vue";
 import { useControlDrawer, usePageTurn, useReaderBook } from "./book";

@@ -1,14 +1,22 @@
 import { invoke } from "@tauri-apps/api";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
-import { CreateFrom, DomMeta } from "web-highlighter/dist/types";
+import { CreateFrom } from "web-highlighter/dist/types";
 import { handleToolBar } from "../../components/tool-bar/tool-bar";
-import { StorageBook } from "../../core/type";
-import { Bookextname } from "../../core/utils/enums";
-import { getEleById } from "../../core/utils/utils";
+import { StorageBook } from "../type";
+import { Bookextname } from "../utils/enums";
+import { getEleById } from "../utils/utils";
 import { HData, HEvent } from "./type";
 
-function getHighlightRoot(book: StorageBook) {
+let highlighter: Highlighter | null = null;
+
+/**
+ * 目的：为了获取解析电子的dom的根节点
+ * 原因：不同格式电子书，使用的解析库 也不一样，例如有些嵌套了 iframe,获取dom组件需要特殊处理
+ * @param book
+ * @returns
+ */
+function getReaderToolRoot(book: StorageBook) {
   switch (book.extname) {
     case Bookextname.pdf:
       return getEleById("viewer")!;
@@ -18,15 +26,33 @@ function getHighlightRoot(book: StorageBook) {
   return null;
 }
 
-// 高亮
-export const usehighlight = (book: StorageBook) => {
-  function init() {
-    const $root = getHighlightRoot(book);
-    if ($root) {
-      const highlighter = new Highlighter({
-        $root,
-        exceptSelectors: ["pre", "code"],
-      });
+function createReaderTool(book: StorageBook) {
+  const $root = getReaderToolRoot(book);
+  if ($root) {
+    highlighter = new Highlighter({
+      $root,
+      exceptSelectors: [".tool-bar-wrapper", "pre", "code"],
+    });
+  }
+}
+
+export function watchSelection(event: MouseEvent) {
+  const selection = window.getSelection();
+  if (selection) {
+    if (selection?.isCollapsed) {
+      return;
+    } else {
+      // 激活 创建工具栏
+      highlighter?.fromRange(selection.getRangeAt(0));
+      window.getSelection()!.removeAllRanges();
+    }
+  }
+}
+
+export const useReaderTool = (book: StorageBook) => {
+  createReaderTool(book);
+  function addhighlighterEvents() {
+    if (highlighter) {
       // 点击高亮区域
       highlighter.on(Highlighter.event.CLICK, clickrHighlight);
       // 鼠标移至高亮区域
@@ -37,7 +63,6 @@ export const usehighlight = (book: StorageBook) => {
       highlighter.on(Highlighter.event.CREATE, createHighlight);
       // 高亮区域被清除
       highlighter.on(Highlighter.event.REMOVE, removeHighlight);
-      highlighter.stop();
     }
   }
   function getHighlights() {
@@ -88,29 +113,5 @@ export const usehighlight = (book: StorageBook) => {
     },
     h: Highlighter
   ) {}
-  init();
-  // getHighlights();
+  addhighlighterEvents();
 };
-
-function handleDomDataParam({
-  parentTagName,
-  parentIndex,
-  textOffset,
-}: DomMeta) {
-  return {
-    parent_tag_name: parentTagName,
-    parent_index: parentIndex,
-    text_offset: textOffset,
-  };
-}
-
-function handleParams(source: HighlightSource, bookId: string) {
-  const { id, text, startMeta, endMeta } = source;
-  return {
-    book_id: bookId,
-    id,
-    text,
-    start_meta: handleDomDataParam(startMeta),
-    end_meta: handleDomDataParam(endMeta),
-  };
-}
