@@ -18,9 +18,36 @@ function getHighlightRoot(book: StorageBook) {
   return null;
 }
 
+function createHighlighter(book: StorageBook) {
+  let result: Highlighter | null = null;
+  const $root = getHighlightRoot(book);
+  if ($root) {
+    result = new Highlighter({
+      $root,
+      exceptSelectors: [".tool-bar-wrapper", "pre", "code"],
+    });
+  }
+  return result;
+}
+
 // 高亮
 export const usehighlight = (book: StorageBook) => {
+  const highlighter = createHighlighter(book);
+  function watchSelection() {
+    const selection = window.getSelection();
+    if (selection) {
+      if (selection?.isCollapsed) {
+        return;
+      } else {
+        // 激活高亮
+        highlighter?.fromRange(selection.getRangeAt(0));
+        window.getSelection()!.removeAllRanges();
+      }
+    }
+  }
+  function highlighterEvents() {}
   function init() {
+    let result: Highlighter | null = null;
     const $root = getHighlightRoot(book);
     if ($root) {
       const highlighter = new Highlighter({
@@ -88,6 +115,7 @@ export const usehighlight = (book: StorageBook) => {
     },
     h: Highlighter
   ) {}
+
   init();
   // getHighlights();
 };
