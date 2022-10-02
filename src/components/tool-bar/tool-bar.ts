@@ -1,20 +1,18 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 
-const toolBarActive = ref<boolean>(false);
-const toolBarRef = ref<HTMLElement | null>(null);
 const toolBarStyle = reactive({
   left: "0",
   top: "0",
 });
 
-// 控制 显示 tool-bar 已经显示位置
-export const useControlToolBar = () => {
-  return { toolBarStyle, toolBarRef, toolBarActive };
-};
+const toolBar = reactive({
+  id: "",
+  show: false,
+});
 
-export function onToolBarActive(value: boolean) {
-  toolBarActive.value = value;
+export function closeToolBar() {
+  toolBar.show = false;
 }
 
 export const useToolBar = () => {
@@ -51,19 +49,15 @@ export const useToolBar = () => {
         break;
     }
   }
-  return { bars, barAction };
+  return { bars, barAction, toolBarStyle, toolBar };
 };
 
 export function handleToolBar(node: HTMLElement, id: string) {
-  onToolBarActive(true);
-  setToolBarAttr(node, id);
-}
-
-function setToolBarAttr(node: HTMLElement, id: string) {
   const { top, left } = getPosition(node);
   toolBarStyle.left = `${left - 20}px`;
   toolBarStyle.top = `${top - 25}px`;
-  toolBarRef.value!.setAttribute("data-id", id);
+  toolBar.show = true;
+  toolBar.id = id;
 }
 
 function getPosition(node: HTMLElement) {

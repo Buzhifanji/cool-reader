@@ -3,7 +3,7 @@
     class="tool-bar-wrapper"
     :style="toolBarStyle"
     ref="toolBarRef"
-    v-show="toolBarActive"
+    v-show="toolBar.show"
   >
     <n-space>
       <n-space
@@ -20,9 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { useControlToolBar, useToolBar } from "./tool-bar";
-const { toolBarStyle, toolBarRef, toolBarActive } = useControlToolBar();
-const { bars, barAction } = useToolBar();
+import { useToolBar } from "./tool-bar";
+const { bars, barAction, toolBarStyle, toolBar } = useToolBar();
 </script>
 
 <style scoped>
