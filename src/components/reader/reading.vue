@@ -7,7 +7,10 @@
         <n-button @click="openDrawer">Option</n-button>
       </n-space>
     </n-layout-header>
-    <n-layout-content id="drawer-target">
+    <n-layout-content
+      id="drawer-target"
+      @click.capture="onToolBarActive(false)"
+    >
       <div id="viewerContainer" @mouseup="watchSelection">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
@@ -93,6 +96,7 @@ import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
 import { watchSelection } from "../../core/notes/reader-tool";
 import Catalog from "../catalog/catalog.vue";
+import { onToolBarActive } from "../tool-bar/tool-bar";
 import ToolBar from "../tool-bar/tool-bar.vue";
 import { useControlDrawer, usePageTurn, useReaderBook } from "./book";
 import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";

@@ -51,12 +51,11 @@ export const useToolBar = () => {
         break;
     }
   }
-
   return { bars, barAction };
 };
 
 export function handleToolBar(node: HTMLElement, id: string) {
-  toolBarActive.value = true;
+  onToolBarActive(true);
   setToolBarAttr(node, id);
 }
 
