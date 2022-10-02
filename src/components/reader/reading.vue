@@ -10,6 +10,7 @@
     <n-layout-content id="drawer-target">
       <div id="viewerContainer">
         <div id="viewer" class="pdfViewer"></div>
+        <ToolBar />
       </div>
       <div class="anchor-wrapper">
         <div>
@@ -91,6 +92,7 @@
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
 import Catalog from "../catalog/catalog.vue";
+import ToolBar from "../tool-bar/tool-bar.vue";
 import { useControlDrawer, usePageTurn, useReaderBook } from "./book";
 import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";
 
