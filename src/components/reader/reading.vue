@@ -11,7 +11,7 @@
       id="drawer-target"
       @click.capture="onToolBarActive(false)"
     >
-      <div id="viewerContainer" @mouseup="watchSelection">
+      <div id="viewerContainer" @click="watchSelection">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>
