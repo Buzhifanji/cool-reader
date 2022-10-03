@@ -3,6 +3,7 @@ import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom, DomMeta } from "web-highlighter/dist/types";
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
+import { message } from "../../naive";
 import { StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { getEleById } from "../utils/utils";
@@ -148,17 +149,19 @@ export function useReaderToolBar() {
 
 function saveHighlight(source: HighlightSource, className: string) {
   const { startMeta, endMeta, text, id } = source;
+
   highlighter!.setOption({ style: { className } });
   highlighter!.fromStore(startMeta, endMeta, text, id);
   toolBar.show = false;
   toolBar.save = true;
+
   const data = handleParam(source, className);
   invoke("add_highlight", { data })
     .then((value) => {
-      console.log("Highlight success", value);
+      message.success("添加成功");
     })
     .catch((err) => {
-      console.log("Highlight err", err);
+      message.error(err);
     });
 }
 
