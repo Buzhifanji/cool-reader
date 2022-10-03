@@ -18,9 +18,6 @@ fn main() {
         .manage(command::AsyncProcInputTx {
             inner: Mutex::new(async_proc_input_tx),
         })
-        .manage(data_base::highlight::HighlightState {
-            highlight: Mutex::new(data_base::highlight::HighlightData::new().unwrap()),
-        })
         .invoke_handler(tauri::generate_handler![
             command::download_local_file,        // 读取文件
             data_base::command::get_highlightes, // 获取书某本书全部高亮内容

@@ -10,15 +10,8 @@ pub fn get_highlightes(book_id: &str) -> Vec<Highlight> {
 
 #[tauri::command]
 pub fn add_highlight(data: Highlight) -> (bool, String) {
-    match HighlightData::new() {
-        Ok(mut handler) => {
-            let result = handler.insert_highlight(data);
-            handler.conn.close().unwrap();
-            result
-        }
-        Err(err) => {
-            println!("err:  {}", err);
-            (false, err.to_string())
-        }
-    }
+    let mut handler = HighlightData::new().unwrap();
+    let result = handler.insert_highlight(data);
+    handler.conn.close().unwrap();
+    result
 }

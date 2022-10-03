@@ -1,6 +1,5 @@
 use rusqlite::{named_params, Connection, Result};
 use serde::{Deserialize, Serialize};
-use tokio::sync::Mutex;
 
 /**
  * 存储 高亮、波浪线、下划线 笔记
@@ -21,10 +20,6 @@ pub struct Highlight {
     pub start_meta: DomMeta,
     pub end_meta: DomMeta,
     pub class_name: String,
-}
-
-pub struct HighlightState {
-    pub highlight: Mutex<HighlightData>,
 }
 
 pub struct HighlightData {
