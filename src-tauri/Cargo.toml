@@ -17,10 +17,11 @@ tauri-build = { version = "1.0.0", features = [] }
 serde_json = "1.0"
 time = "0.3.14"
 
-lopdf = "0.27.0"
 tokio = { version = "1.21.1", features = ["full"] }
 tracing = "0.1.36"
 tracing-subscriber = "0.3.15"
+rusqlite = { version = "0.28.0", features = ["bundled"] }
+
 
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0", features = ["api-all"] }
