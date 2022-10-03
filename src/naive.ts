@@ -1,5 +1,6 @@
 import {
   create,
+  createDiscreteApi,
   NButton,
   NCard,
   NDivider,
@@ -55,3 +56,9 @@ export const naive = create({
     NDropdown,
   ],
 });
+
+// naiveui 脱离上下文的 API
+export const { message, notification } = createDiscreteApi([
+  "message",
+  "notification",
+]);

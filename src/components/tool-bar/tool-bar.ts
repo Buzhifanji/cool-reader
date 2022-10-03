@@ -1,6 +1,7 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
 import HighlightSource from "web-highlighter/dist/model/source";
+import { message } from "../../naive";
 
 // 工具栏 显示的位置
 export const toolBarStyle = reactive({
@@ -60,7 +61,9 @@ export const useToolBar = () => {
 
 function copyText() {
   if (navigator.clipboard && toolBar.source) {
-    navigator.clipboard.writeText(toolBar.source.text);
+    navigator.clipboard.writeText(toolBar.source.text).then(() => {
+      message.success("复制成功！");
+    });
   } else {
     // 兼容性
   }
