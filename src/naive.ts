@@ -17,6 +17,8 @@ import {
   NLayoutContent,
   NLayoutHeader,
   NLayoutSider,
+  NList,
+  NListItem,
   NMenu,
   NNotificationProvider,
   NProgress,
@@ -54,6 +56,8 @@ export const naive = create({
     NTabPane,
     NDivider,
     NDropdown,
+    NList,
+    NListItem,
   ],
 });
 
