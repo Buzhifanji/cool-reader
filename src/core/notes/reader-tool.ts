@@ -129,17 +129,27 @@ export function deleteReaderTool() {
 }
 
 export function useReaderToolBar() {
-  // 高亮
-  function addTextHighlight() {
-    const { startMeta, endMeta, id, text } = toolBar.source!;
+  function create(
+    { startMeta, endMeta, id, text }: HighlightSource,
+    className: string
+  ) {
+    highlighter!.setOption({ style: { className } });
     highlighter!.fromStore(startMeta, endMeta, text, id);
     toolBar.show = false;
     toolBar.save = true;
   }
+  // 高亮
+  function addTextHighlight() {
+    create(toolBar.source!, "c-text-highlight");
+  }
   // 添加波浪线
-  function addTilde() {}
+  function addTilde() {
+    create(toolBar.source!, "c-tilde");
+  }
   // 添加直线
-  function addStraightLine() {}
+  function addStraightLine() {
+    create(toolBar.source!, "c-straight-line");
+  }
   return { addTextHighlight, addTilde, addStraightLine };
 }
 

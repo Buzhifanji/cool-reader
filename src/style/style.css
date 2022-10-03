@@ -113,3 +113,17 @@ button {
 .epub-container {
   margin: 5px auto 2px;
 }
+
+/*
+* 波浪线
+*/
+.c-tilde {
+  text-decoration: green wavy underline;
+}
+
+.c-straight-line {
+  text-decoration: underline overline #FF3028;
+}
+.c-text-highlight {
+  background-color: #0c08ed;
+}
