@@ -64,10 +64,13 @@
               :name="item.name"
               :tab="item.tab"
             >
+              <!-- 目录 -->
               <Catalog
                 :book="rendingBook"
                 v-if="isActiveTab(TabPaneEnum.catalog)"
               />
+              <!-- 高亮 -->
+              <Highlight v-if="isActiveTab(TabPaneEnum.highlight)" />
             </n-tab-pane>
           </n-tabs>
         </n-drawer-content>
@@ -93,6 +96,7 @@ import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
 import { addReaderTool, deleteReaderTool } from "../../core/notes/reader-tool";
 import Catalog from "../catalog/catalog.vue";
+import Highlight from "../highlight/highlight.vue";
 import ToolBar from "../tool-bar/tool-bar.vue";
 import { useControlDrawer, usePageTurn, useReaderBook } from "./book";
 import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";
@@ -117,7 +121,7 @@ const { rendingBook } = useReaderBook(route);
 }
 .n-tab-pane {
   height: 100%;
-  overflow: auto;
+  overflow: scroll;
 }
 .n-card {
   height: 180px;

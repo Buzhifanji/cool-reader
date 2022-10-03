@@ -1,13 +1,15 @@
 import { invoke } from "@tauri-apps/api";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
-import { CreateFrom, DomMeta } from "web-highlighter/dist/types";
+import { CreateFrom } from "web-highlighter/dist/types";
+import { highlights } from "../../components/highlight/highlight";
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { message } from "../../naive";
 import { StorageBook } from "../type";
+import { generateServiceParams } from "../utils/change-name";
 import { Bookextname } from "../utils/enums";
 import { getEleById } from "../utils/utils";
-import { HData, HEvent } from "./type";
+import { HData, HEvent, highlightParam, highlightResponse } from "./type";
 
 let highlighter: Highlighter | null = null;
 let book: StorageBook | null = null;
@@ -73,15 +75,7 @@ export const useReaderTool = (_book: StorageBook) => {
       highlighter.on(Highlighter.event.REMOVE, removeHighlight);
     }
   }
-  function getHighlights() {
-    invoke("get_highlightes", { bookId: book!.id })
-      .then((value) => {
-        console.log("value", value);
-      })
-      .catch((err) => {
-        console.log("error", err);
-      });
-  }
+
   function createHighlight(
     data: { sources: HighlightSource[]; type: CreateFrom },
     h: Highlighter
@@ -146,7 +140,7 @@ export function useReaderToolBar() {
   }
   return { addTextHighlight, addTilde, addStraightLine };
 }
-
+// 保存到数据库
 function saveHighlight(source: HighlightSource, className: string) {
   const { startMeta, endMeta, text, id } = source;
 
@@ -154,36 +148,29 @@ function saveHighlight(source: HighlightSource, className: string) {
   highlighter!.fromStore(startMeta, endMeta, text, id);
   toolBar.show = false;
   toolBar.save = true;
-
-  const data = handleParam(source, className);
+  const param = Object.assign(source, { bookId: book!.id, className });
+  const data = generateServiceParams<highlightParam, highlightResponse>(param);
   invoke("add_highlight", { data })
     .then((value) => {
       message.success("添加成功");
+      getHighlights();
     })
     .catch((err) => {
       message.error(err);
     });
 }
 
-function handleParam(
-  { startMeta, endMeta, id, text }: HighlightSource,
-  class_name: string
-) {
-  const domdata = ({ parentTagName, parentIndex, textOffset }: DomMeta) => {
-    return {
-      parent_tag_name: parentTagName,
-      parent_index: parentIndex,
-      text_offset: textOffset,
-    };
-  };
-  return {
-    book_id: book!.id,
-    id,
-    text,
-    class_name,
-    start_meta: domdata(startMeta),
-    end_meta: domdata(endMeta),
-  };
+// 从数据库获取之前保存好的数据
+function getHighlights() {
+  invoke("get_highlightes", { bookId: book!.id })
+    .then((value) => {
+      highlights.value = (value as highlightResponse[]).map((item) =>
+        generateServiceParams<highlightResponse, highlightParam>(item, false)
+      );
+    })
+    .catch((err) => {
+      message.error(err);
+    });
 }
 
 function setToolBarPosition(node: HTMLElement) {

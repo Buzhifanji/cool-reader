@@ -27,7 +27,7 @@ export function generateServiceParams<T extends object, V extends object>(
       ? camelCaseToUnderline(key)
       : underlineToCamelCase(key);
     if (isObj(value)) {
-      result[newKey] = generateServiceParams(value as object);
+      result[newKey] = generateServiceParams(value as object, isToUnderLine);
     } else {
       result[newKey] = value;
     }
