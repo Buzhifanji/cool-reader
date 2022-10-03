@@ -41,7 +41,7 @@ function createReaderTool(book: StorageBook) {
  * @param event
  * @returns
  */
-export function watchSelection(event: Event) {
+export function addReaderTool(event: Event) {
   const selection = window.getSelection();
   if (selection) {
     if (selection?.isCollapsed) {
