@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
-import { CreateFrom } from "web-highlighter/dist/types";
+import { CreateFrom, DomMeta } from "web-highlighter/dist/types";
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
@@ -9,15 +9,15 @@ import { getEleById } from "../utils/utils";
 import { HData, HEvent } from "./type";
 
 let highlighter: Highlighter | null = null;
-
+let book: StorageBook | null = null;
 /**
  * 目的：为了获取解析电子的dom的根节点
  * 原因：不同格式电子书，使用的解析库 也不一样，例如有些嵌套了 iframe,获取dom组件需要特殊处理
  * @param book
  * @returns
  */
-function getReaderToolRoot(book: StorageBook) {
-  switch (book.extname) {
+function getReaderToolRoot() {
+  switch (book!.extname) {
     case Bookextname.pdf:
       return getEleById("viewer")!;
     case Bookextname.epub:
@@ -26,8 +26,8 @@ function getReaderToolRoot(book: StorageBook) {
   return null;
 }
 
-function createReaderTool(book: StorageBook) {
-  const $root = getReaderToolRoot(book);
+function createReaderTool() {
+  const $root = getReaderToolRoot();
   if ($root) {
     highlighter = new Highlighter({
       $root,
@@ -55,8 +55,9 @@ export function addReaderTool(event: Event) {
   }
 }
 
-export const useReaderTool = (book: StorageBook) => {
-  createReaderTool(book);
+export const useReaderTool = (_book: StorageBook) => {
+  book = _book;
+  createReaderTool();
   function addhighlighterEvents() {
     if (highlighter) {
       // 点击高亮区域
@@ -72,14 +73,11 @@ export const useReaderTool = (book: StorageBook) => {
     }
   }
   function getHighlights() {
-    console.log("book.id", book.id);
-    invoke("get_highlightes", { bookId: book.id })
+    invoke("get_highlightes", { bookId: book!.id })
       .then((value) => {
-        debugger;
         console.log("value", value);
       })
       .catch((err) => {
-        debugger;
         console.log("error", err);
       });
   }
@@ -104,7 +102,10 @@ export const useReaderTool = (book: StorageBook) => {
     console.log(data);
   }
 
-  function clickrHighlight(data: HData, h: Highlighter, e: HEvent) {}
+  function clickrHighlight(data: HData, h: Highlighter, e: HEvent) {
+    console.log(data);
+    toolBar.id = data.id;
+  }
 
   function hoverHighlight(data: HData, h: Highlighter, e: HEvent) {}
 
@@ -117,6 +118,7 @@ export const useReaderTool = (book: StorageBook) => {
     h: Highlighter
   ) {}
   addhighlighterEvents();
+  getHighlights();
 };
 
 export function deleteReaderTool() {
@@ -129,28 +131,56 @@ export function deleteReaderTool() {
 }
 
 export function useReaderToolBar() {
-  function create(
-    { startMeta, endMeta, id, text }: HighlightSource,
-    className: string
-  ) {
-    highlighter!.setOption({ style: { className } });
-    highlighter!.fromStore(startMeta, endMeta, text, id);
-    toolBar.show = false;
-    toolBar.save = true;
-  }
   // 高亮
   function addTextHighlight() {
-    create(toolBar.source!, "c-text-highlight");
+    saveHighlight(toolBar.source!, "c-text-highlight");
   }
   // 添加波浪线
   function addTilde() {
-    create(toolBar.source!, "c-tilde");
+    saveHighlight(toolBar.source!, "c-tilde");
   }
   // 添加直线
   function addStraightLine() {
-    create(toolBar.source!, "c-straight-line");
+    saveHighlight(toolBar.source!, "c-straight-line");
   }
   return { addTextHighlight, addTilde, addStraightLine };
+}
+
+function saveHighlight(source: HighlightSource, className: string) {
+  const { startMeta, endMeta, text, id } = source;
+  highlighter!.setOption({ style: { className } });
+  highlighter!.fromStore(startMeta, endMeta, text, id);
+  toolBar.show = false;
+  toolBar.save = true;
+  const data = handleParam(source, className);
+  invoke("add_highlight", { data })
+    .then((value) => {
+      console.log("Highlight success", value);
+    })
+    .catch((err) => {
+      console.log("Highlight err", err);
+    });
+}
+
+function handleParam(
+  { startMeta, endMeta, id, text }: HighlightSource,
+  class_name: string
+) {
+  const domdata = ({ parentTagName, parentIndex, textOffset }: DomMeta) => {
+    return {
+      parent_tag_name: parentTagName,
+      parent_index: parentIndex,
+      text_offset: textOffset,
+    };
+  };
+  return {
+    book_id: book!.id,
+    id,
+    text,
+    class_name,
+    start_meta: domdata(startMeta),
+    end_meta: domdata(endMeta),
+  };
 }
 
 function setToolBarPosition(node: HTMLElement) {
