@@ -6,6 +6,7 @@ use tokio::sync::mpsc;
 use tokio::sync::Mutex;
 use tracing_subscriber;
 mod command;
+mod data_base;
 
 fn main() {
     tracing_subscriber::fmt::init();
@@ -17,7 +18,14 @@ fn main() {
         .manage(command::AsyncProcInputTx {
             inner: Mutex::new(async_proc_input_tx),
         })
-        .invoke_handler(tauri::generate_handler![command::download_local_file,])
+        .manage(data_base::highlight::HighlightState {
+            highlight: Mutex::new(data_base::highlight::HighlightData::new().unwrap()),
+        })
+        .invoke_handler(tauri::generate_handler![
+            command::download_local_file,        // 读取文件
+            data_base::command::get_highlightes, // 获取书某本书全部高亮内容
+            data_base::command::add_highlight,   // 新增一条高亮笔记
+        ])
         .setup(|app| {
             tauri::async_runtime::spawn(async move {
                 async_process_model(async_proc_input_rx, async_proc_output_tx).await
