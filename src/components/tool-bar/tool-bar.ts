@@ -1,5 +1,6 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
+import HighlightSource from "web-highlighter/dist/model/source";
 
 // 工具栏 显示的位置
 export const toolBarStyle = reactive({
@@ -7,10 +8,16 @@ export const toolBarStyle = reactive({
   top: "0",
 });
 
-export const toolBar = reactive({
+export const toolBar = reactive<{
+  id: string;
+  show: boolean;
+  save: boolean;
+  source: null | HighlightSource;
+}>({
   id: "", // 绑定数据的 id （Highlighter每创建一条数据都有一个id）
   show: false,
   save: false,
+  source: null,
 });
 
 export const useToolBar = () => {
@@ -40,6 +47,7 @@ export const useToolBar = () => {
   function barAction(key: barEnum) {
     switch (key) {
       case barEnum.Copy:
+        copyText();
         break;
       case barEnum.TextUnderline:
         break;
@@ -49,3 +57,11 @@ export const useToolBar = () => {
   }
   return { bars, barAction, toolBarStyle, toolBar };
 };
+
+function copyText() {
+  if (navigator.clipboard && toolBar.source) {
+    navigator.clipboard.writeText(toolBar.source.text);
+  } else {
+    // 兼容性
+  }
+}

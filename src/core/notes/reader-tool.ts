@@ -89,11 +89,8 @@ export const useReaderTool = (book: StorageBook) => {
   ) {
     const { sources, type } = data;
     sources.forEach((source) => {
-      const id = source.id;
-      const node = h.getDoms(id)[0];
-      setToolBarPosition(node);
-      toolBar.id = id;
-      toolBar.show = true;
+      setToolBarPosition(h.getDoms(source.id)[0]);
+      setToolBarData(source);
     });
     // if (sources.length) {
     //   invoke("add_highlight", { data: handleParams(sources[0], book.id) })
@@ -135,6 +132,12 @@ function setToolBarPosition(node: HTMLElement) {
   const { top, left } = getPosition(node);
   toolBarStyle.left = `${left - 20}px`;
   toolBarStyle.top = `${top - 25}px`;
+}
+
+function setToolBarData(data: HighlightSource) {
+  toolBar.id = data.id;
+  toolBar.show = true;
+  toolBar.source = data;
 }
 
 function getPosition(node: HTMLElement) {
