@@ -81,7 +81,7 @@ impl HighlightData {
         Ok(highlightes)
     }
     // pub fn update_highlight(&mut self, book_id: String, id: String) {}
-    pub fn insert_highlight(&mut self, data: Highlight) -> (bool, String) {
+    pub fn insert_highlight(&mut self, data: Highlight) -> Result<bool, String> {
         match self.conn.execute(
             "INSERT INTO Highlight 
             (book_id, id,text,class_name,start_parent_index,start_parent_tag_name, start_text_offset, end_parent_index, end_parent_tag_name, end_text_offset) 
@@ -99,10 +99,10 @@ impl HighlightData {
                 data.end_meta.text_offset.to_string(),
             ],
         ){
-          Ok(_) => (true, "成功".to_string()),
+          Ok(_) => Ok(true.into()),
           Err(err) => {
             println!("INSERT INTO Highlight: {}", err);
-            (false, err.to_string())
+            Err(err.to_string().into())
           }
         }
     }

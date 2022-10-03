@@ -9,7 +9,7 @@ pub fn get_highlightes(book_id: &str) -> Vec<Highlight> {
 }
 
 #[tauri::command]
-pub fn add_highlight(data: Highlight) -> (bool, String) {
+pub fn add_highlight(data: Highlight) -> Result<bool, String> {
     let mut handler = HighlightData::new().unwrap();
     let result = handler.insert_highlight(data);
     handler.conn.close().unwrap();
