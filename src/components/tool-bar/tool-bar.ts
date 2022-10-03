@@ -1,18 +1,27 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
+import Highlighter from "web-highlighter";
 
+// 工具栏 显示的位置
 const toolBarStyle = reactive({
   left: "0",
   top: "0",
 });
 
 const toolBar = reactive({
-  id: "",
+  id: "", // 绑定数据的 id （Highlighter每创建一条数据都有一个id）
   show: false,
 });
 
-export function closeToolBar() {
-  toolBar.show = false;
+export function showToolBar(value: boolean) {
+  toolBar.show = value;
+}
+
+export function removeCachedToolBar(highlighter: Highlighter) {
+  if (toolBar.show) {
+    highlighter.removeClass("highlight-mengshou-wrap", toolBar.id);
+    highlighter.remove(toolBar.id);
+  }
 }
 
 export const useToolBar = () => {
@@ -56,8 +65,8 @@ export function handleToolBar(node: HTMLElement, id: string) {
   const { top, left } = getPosition(node);
   toolBarStyle.left = `${left - 20}px`;
   toolBarStyle.top = `${top - 25}px`;
-  toolBar.show = true;
   toolBar.id = id;
+  toolBar.show = true;
 }
 
 function getPosition(node: HTMLElement) {

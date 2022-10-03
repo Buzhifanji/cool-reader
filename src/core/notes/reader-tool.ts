@@ -2,7 +2,10 @@ import { invoke } from "@tauri-apps/api";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom } from "web-highlighter/dist/types";
-import { handleToolBar } from "../../components/tool-bar/tool-bar";
+import {
+  handleToolBar,
+  removeCachedToolBar,
+} from "../../components/tool-bar/tool-bar";
 import { StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { getEleById } from "../utils/utils";
@@ -36,12 +39,13 @@ function createReaderTool(book: StorageBook) {
   }
 }
 
-export function watchSelection(event: MouseEvent) {
+export function watchSelection(event: Event) {
   const selection = window.getSelection();
   if (selection) {
     if (selection?.isCollapsed) {
       return;
     } else {
+      removeCachedToolBar(highlighter!);
       // 激活 创建工具栏
       highlighter?.fromRange(selection.getRangeAt(0));
       window.getSelection()!.removeAllRanges();
@@ -86,8 +90,6 @@ export const useReaderTool = (book: StorageBook) => {
       const id = source.id;
       const node = h.getDoms(id)[0];
       handleToolBar(node, id);
-      // const position = getPosition(node);
-      // createNoteToolBar(position.top, position.left, id);
     });
     // if (sources.length) {
     //   invoke("add_highlight", { data: handleParams(sources[0], book.id) })

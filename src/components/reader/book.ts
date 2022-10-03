@@ -30,7 +30,7 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   async function init() {
     const id = route.query.id as string;
     await initReadingBook(id);
-    // 开启笔记记录相关组件
+    // 开启高亮功能
     useReaderTool(rendingBook);
     const book = await getForageFile(rendingBook.id);
     if (book) {
