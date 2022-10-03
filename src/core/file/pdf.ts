@@ -13,7 +13,7 @@ import {
 import { StorageBook } from "../type";
 import { createEle, getEleById } from "../utils/utils";
 
-const scale = 1.7 * window.devicePixelRatio; // 展示比例
+const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
 /**
  * 缓存 pdf 数据信息
@@ -55,8 +55,7 @@ export async function getPdf({ fileContent, id }: StorageBook) {
     linkService: pdfLinkService,
     l10n: new GenericL10n("zh"),
   });
-  pdfViewer.currentScale = scale;
-
+  pdfViewer._setScale(scale);
   const loadingTask = getDocument(fileContent);
   const pdf = await loadingTask.promise;
 
