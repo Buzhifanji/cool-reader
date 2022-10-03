@@ -2,10 +2,7 @@ import { invoke } from "@tauri-apps/api";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom } from "web-highlighter/dist/types";
-import {
-  handleToolBar,
-  removeCachedToolBar,
-} from "../../components/tool-bar/tool-bar";
+import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { getEleById } from "../utils/utils";
@@ -39,13 +36,18 @@ function createReaderTool(book: StorageBook) {
   }
 }
 
+/**
+ * 监听鼠标选中的文字
+ * @param event
+ * @returns
+ */
 export function watchSelection(event: Event) {
   const selection = window.getSelection();
   if (selection) {
     if (selection?.isCollapsed) {
       return;
     } else {
-      removeCachedToolBar(highlighter!);
+      deleteReaderTool();
       // 激活 创建工具栏
       highlighter?.fromRange(selection.getRangeAt(0));
       window.getSelection()!.removeAllRanges();
@@ -89,7 +91,9 @@ export const useReaderTool = (book: StorageBook) => {
     sources.forEach((source) => {
       const id = source.id;
       const node = h.getDoms(id)[0];
-      handleToolBar(node, id);
+      setToolBarPosition(node);
+      toolBar.id = id;
+      toolBar.show = true;
     });
     // if (sources.length) {
     //   invoke("add_highlight", { data: handleParams(sources[0], book.id) })
@@ -117,3 +121,31 @@ export const useReaderTool = (book: StorageBook) => {
   ) {}
   addhighlighterEvents();
 };
+
+export function deleteReaderTool() {
+  toolBar.show = false;
+  if (!toolBar.save && highlighter) {
+    // 删除没有保存的数据
+    highlighter.removeClass("highlight-mengshou-wrap", toolBar.id);
+    highlighter.remove(toolBar.id);
+  }
+}
+
+function setToolBarPosition(node: HTMLElement) {
+  const { top, left } = getPosition(node);
+  toolBarStyle.left = `${left - 20}px`;
+  toolBarStyle.top = `${top - 25}px`;
+}
+
+function getPosition(node: HTMLElement) {
+  let offset = { top: 0, left: 0 };
+  while (node) {
+    offset.top += node.offsetTop;
+    offset.left += node.offsetLeft;
+    node = node.offsetParent as HTMLElement;
+    if (node.id === "viewerContainer") {
+      break;
+    }
+  }
+  return offset;
+}
