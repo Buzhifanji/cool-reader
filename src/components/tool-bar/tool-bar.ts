@@ -1,6 +1,7 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
 import HighlightSource from "web-highlighter/dist/model/source";
+import { useReaderToolBar } from "../../core/notes/reader-tool";
 import { message } from "../../naive";
 
 // 工具栏 显示的位置
@@ -24,8 +25,9 @@ export const toolBar = reactive<{
 export const useToolBar = () => {
   const enum barEnum {
     Copy,
-    TextUnderline,
     TextHighlight,
+    tilde,
+    straightLine,
   }
   const bars = [
     {
@@ -34,25 +36,35 @@ export const useToolBar = () => {
       icon: Copy,
     },
     {
-      label: "下划线",
-      key: barEnum.TextUnderline,
-      icon: TextUnderline,
-    },
-    {
       label: "高亮",
       key: barEnum.TextHighlight,
       icon: TextHighlight,
     },
+    {
+      label: "波浪线",
+      key: barEnum.tilde,
+      icon: TextUnderline,
+    },
+    {
+      label: "直线",
+      key: barEnum.straightLine,
+      icon: TextUnderline,
+    },
   ];
-
+  const { addTextHighlight, addTilde, addStraightLine } = useReaderToolBar();
   function barAction(key: barEnum) {
     switch (key) {
       case barEnum.Copy:
         copyText();
         break;
-      case barEnum.TextUnderline:
-        break;
       case barEnum.TextHighlight:
+        addTextHighlight();
+        break;
+      case barEnum.tilde:
+        addTilde();
+        break;
+      case barEnum.straightLine:
+        addStraightLine();
         break;
     }
   }

@@ -123,9 +123,24 @@ export function deleteReaderTool() {
   toolBar.show = false;
   if (!toolBar.save && highlighter) {
     // 删除没有保存的数据
-    highlighter.removeClass("highlight-mengshou-wrap", toolBar.id);
+    // highlighter.removeClass("highlight-mengshou-wrap", toolBar.id);
     highlighter.remove(toolBar.id);
   }
+}
+
+export function useReaderToolBar() {
+  // 高亮
+  function addTextHighlight() {
+    const { startMeta, endMeta, id, text } = toolBar.source!;
+    highlighter!.fromStore(startMeta, endMeta, text, id);
+    toolBar.show = false;
+    toolBar.save = true;
+  }
+  // 添加波浪线
+  function addTilde() {}
+  // 添加直线
+  function addStraightLine() {}
+  return { addTextHighlight, addTilde, addStraightLine };
 }
 
 function setToolBarPosition(node: HTMLElement) {
