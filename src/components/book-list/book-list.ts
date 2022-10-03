@@ -3,6 +3,7 @@ import { nextTick, ref } from "vue";
 import { deleteForageFile, getForageFiles } from "../../core/store";
 import { StorageBook } from "../../core/type";
 import { isIndex, renderIcon } from "../../core/utils/utils";
+import { notification } from "../../naive";
 
 const books = ref<StorageBook[]>([]);
 
@@ -11,7 +12,7 @@ function deleteBookList(bookId: string) {
   if (isIndex(index)) {
     const name = books.value[index].bookName;
     books.value.splice(index, 1);
-    window.notification.success({
+    notification.success({
       content: "删除成功！",
       meta: name,
       duration: 2000,

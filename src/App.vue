@@ -1,9 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <n-notification-provider>
-    <router-view></router-view>
-  </n-notification-provider>
+  <router-view></router-view>
 </template>
 
 <style scoped>

@@ -1,4 +1,5 @@
 import { updateBook } from "../../components/book-list/book-list";
+import { notification } from "../../naive";
 import { getEpubCover } from "../file/epub";
 import { getPDFCover } from "../file/pdf";
 import { addForageFile, getForageFiles, hasForageFile } from "../store/file";
@@ -12,7 +13,7 @@ export async function addBook(bookInfo: BookInfo) {
   const bookId = await setBookId(bookInfo);
   const value = await hasForageFile(bookId);
   if (value) {
-    window.notification.warning({
+    notification.warning({
       content: "书籍已存在！",
       meta: bookName,
       duration: 2000,
@@ -31,7 +32,7 @@ export async function addBook(bookInfo: BookInfo) {
     // 在线缓存
     updateBook(cacheBook);
 
-    window.notification.success({
+    notification.success({
       content: "添加成功！",
       meta: bookName,
       duration: 2000,

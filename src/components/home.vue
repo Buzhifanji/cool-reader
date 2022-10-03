@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NIcon, useNotification } from "naive-ui";
+import { NIcon } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
 import { isLoadFile, openFile } from "../core/file/file";
@@ -7,8 +7,6 @@ import { RouterName } from "../route";
 import BookIcon from "./icons/book.vue";
 import HighLightIcon from "./icons/highlight.vue";
 import NoteIcon from "./icons/note.vue";
-
-window.notification = useNotification();
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
