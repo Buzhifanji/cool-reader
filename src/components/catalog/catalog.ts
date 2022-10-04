@@ -26,7 +26,7 @@ export const useCatalog = ({ extname, id }: StorageBook) => {
         break;
       case Bookextname.epub:
         setField("id", "label", "subitems");
-        catalog.value = getEpubCatalog(id);
+        catalog.value = getEpubCatalog();
         break;
     }
   }
@@ -50,7 +50,7 @@ export function generateGotoPage({
       pdfGotoPage(id, item.dest);
       break;
     case Bookextname.epub:
-      epubGotoPage(id, item.href);
+      epubGotoPage(item.href);
       break;
   }
 }

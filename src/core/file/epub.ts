@@ -7,7 +7,8 @@ interface EpubContenxt {
   rendition: Rendition;
 }
 
-const epub = new Map<string, EpubContenxt>();
+let rendition: Rendition | null = null; // epub.js 渲染后的上下文
+let catalog: NavItem[] = []; // 目录
 
 export function getEpubCover(fileContent: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -23,31 +24,45 @@ export function getEpubCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-export function getEpub({ fileContent, id }: StorageBook) {
+export function renderEpub({ fileContent }: StorageBook) {
   return new Promise((resolve, reject) => {
     const book = epubjs(fileContent.buffer);
-    const rendition = book.renderTo("viewer", {
+    book.ready.then(() => {
+      catalog = book.navigation.toc;
+      formateEpubCatalog(catalog);
+    });
+
+    rendition = book.renderTo("viewer", {
       flow: "scrolled",
       width: "793px",
       height: "100%",
       allowScriptedContent: true,
     });
-    const themes = rendition.themes;
-    themes.fontSize(24 + "px");
+    rendition.themes.fontSize(24 + "px");
 
-    rendition.display();
-
-    book.ready.then(() => {
-      const catalog = book.navigation.toc;
-      formateEpubCatalog(catalog);
-      epub.set(id, { catalog, rendition });
-    });
+    return rendition.display();
   });
 }
 
-export function getEpubCatalog(bookId: string) {
-  const result = epub.get(bookId);
-  return result ? result.catalog : [];
+export function getEpubCatalog() {
+  return catalog;
+}
+
+/**
+ * 目录跳转
+ * @param bookId
+ * @param catalogId
+ */
+export function epubGotoPage(href: string) {
+  rendition?.display(href);
+}
+
+export function epubPageUp() {
+  rendition?.prev();
+}
+
+export function epubPageDown() {
+  rendition?.next();
 }
 
 function formateEpubCatalog(arr: NavItem[]) {
@@ -59,24 +74,4 @@ function formateEpubCatalog(arr: NavItem[]) {
       delete item.subitems;
     }
   });
-}
-
-/**
- * 目录跳转
- * @param bookId
- * @param catalogId
- */
-export function epubGotoPage(bookId: string, href: string) {
-  const book = epub.get(bookId);
-  book?.rendition.display(href);
-}
-
-export function epubPageUp(bookId: string) {
-  const book = epub.get(bookId);
-  book?.rendition.prev();
-}
-
-export function epubPageDown(bookId: string) {
-  const book = epub.get(bookId);
-  book?.rendition.next();
 }

@@ -1,7 +1,7 @@
 import { reactive, ref } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { findBook } from "../../core/book/book";
-import { epubPageDown, epubPageUp, getEpub } from "../../core/file/epub";
+import { epubPageDown, epubPageUp, renderEpub } from "../../core/file/epub";
 import { getPdf, pdfPageDown, pdfPageUp } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
 import { useReaderTool } from "../../core/notes/reader-tool";
@@ -28,24 +28,28 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
     }
   }
   async function init() {
-    const id = route.query.id as string;
-    await initReadingBook(id);
-    // 开启高亮功能
-    useReaderTool(rendingBook);
-    const book = await getForageFile(rendingBook.id);
-    if (book) {
-      const { fileContent, extname } = book;
-      if (fileContent) {
-        // 获取封面
-        switch (extname) {
-          case Bookextname.pdf:
-            await getPdf(rendingBook);
-            break;
-          case Bookextname.epub:
-            await getEpub(rendingBook);
-            break;
+    try {
+      const id = route.query.id as string;
+      await initReadingBook(id);
+      const book = await getForageFile(rendingBook.id);
+      if (book) {
+        const { fileContent, extname } = book;
+        if (fileContent) {
+          // 获取内容
+          switch (extname) {
+            case Bookextname.pdf:
+              await getPdf(rendingBook);
+              break;
+            case Bookextname.epub:
+              await renderEpub(rendingBook);
+              break;
+          }
+          // 开启高亮功能
+          useReaderTool(rendingBook);
         }
       }
+    } catch (error) {
+      console.error(error);
     }
   }
   init();
