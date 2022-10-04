@@ -8,7 +8,7 @@
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target" @click.capture="deleteReaderTool">
-      <div id="viewerContainer" @click="addReaderTool">
+      <div id="viewerContainer" @click="addReaderTool()">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>

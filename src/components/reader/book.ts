@@ -34,6 +34,7 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
       const book = await getForageFile(rendingBook.id);
       if (book) {
         const { fileContent, extname } = book;
+        let context = null;
         if (fileContent) {
           // 获取内容
           switch (extname) {
@@ -41,11 +42,11 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
               await getPdf(rendingBook);
               break;
             case Bookextname.epub:
-              await renderEpub(rendingBook);
+              context = await renderEpub(rendingBook);
               break;
           }
           // 开启高亮功能
-          useReaderTool(rendingBook);
+          useReaderTool(rendingBook, context);
         }
       }
     } catch (error) {
@@ -73,7 +74,7 @@ export const usePageTurn = () => {
         pdfPageUp(id);
         break;
       case Bookextname.epub:
-        epubPageUp(id);
+        epubPageUp();
         break;
     }
   }
@@ -84,7 +85,7 @@ export const usePageTurn = () => {
         pdfPageDown(id);
         break;
       case Bookextname.epub:
-        epubPageDown(id);
+        epubPageDown();
         break;
     }
   }
