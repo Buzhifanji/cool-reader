@@ -4,7 +4,7 @@
       <n-space justify="space-between">
         <!-- <n-button @click="goHome">go home</n-button> -->
         <span></span>
-        <n-button @click="openDrawer">Option</n-button>
+        <n-button @click="controlNodesSection(true)">Option</n-button>
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target" @click.capture="deleteReaderTool">
@@ -31,7 +31,7 @@
 
       <!-- note -->
       <n-drawer
-        v-model:show="active"
+        v-model:show="showNotes"
         :width="342"
         placement="left"
         :show-mask="false"
@@ -58,7 +58,7 @@
             </n-gi>
           </n-grid>
           <n-divider />
-          <n-tabs type="segment" v-model:value="activeTabRef">
+          <n-tabs type="segment" v-model:value="notesActiveTab">
             <n-tab-pane
               v-for="item in tabPanes"
               :name="item.name"
@@ -67,10 +67,10 @@
               <!-- 目录 -->
               <Catalog
                 :book="rendingBook"
-                v-if="isActiveTab(TabPaneEnum.catalog)"
+                v-if="isNotesTab(TabPaneEnum.catalog)"
               />
               <!-- 高亮 -->
-              <Highlight v-if="isActiveTab(TabPaneEnum.highlight)" />
+              <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
             </n-tab-pane>
           </n-tabs>
         </n-drawer-content>
@@ -98,11 +98,14 @@ import { addReaderTool, deleteReaderTool } from "../../core/notes/reader-tool";
 import Catalog from "../catalog/catalog.vue";
 import Highlight from "../highlight/highlight.vue";
 import ToolBar from "../tool-bar/tool-bar.vue";
-import { useControlDrawer, usePageTurn, useReaderBook } from "./book";
-import { activeTabRef, isActiveTab, TabPaneEnum, tabPanes } from "./tab-pene";
+import { usePageTurn, useReaderBook } from "./book";
+import { TabPaneEnum } from "./enum";
+import { useNotesSection } from "./notes";
 
 const route = useRoute();
-const { active, openDrawer } = useControlDrawer();
+// 笔记栏目相关逻辑
+const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
+  useNotesSection();
 const { pageUp, pageDown } = usePageTurn();
 const { rendingBook } = useReaderBook(route);
 </script>
