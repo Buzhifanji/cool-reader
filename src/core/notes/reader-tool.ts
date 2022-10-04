@@ -9,6 +9,7 @@ import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { message } from "../../naive";
 import { StorageBook } from "../type";
 import { generateServiceParams } from "../utils/change-name";
+import { getEleById } from "../utils/utils";
 import { getReaderToolRoot } from "./document";
 import { HData, HEvent, highlightParam, highlightResponse } from "./type";
 
@@ -17,7 +18,6 @@ let book: StorageBook | null = null;
 
 function createReaderTool() {
   const $root = getReaderToolRoot(book!);
-  console.log("$root", $root);
   if ($root) {
     highlighter = new Highlighter({
       $root,
@@ -32,7 +32,6 @@ function createReaderTool() {
  * @returns
  */
 export function addReaderTool(doc?: Document) {
-  debugger;
   const docum = doc ? doc : window;
   const selection = docum.getSelection();
   if (selection) {
@@ -40,7 +39,6 @@ export function addReaderTool(doc?: Document) {
       return;
     } else {
       deleteReaderTool();
-      console.log(selection.getRangeAt(0));
       // 激活 创建工具栏
       highlighter?.fromRange(selection.getRangeAt(0));
       docum.getSelection()!.removeAllRanges();
@@ -70,7 +68,9 @@ export const useReaderTool = (
 
     // epub.js 渲染文本采用了 iframe，原本监听的事件无效。所以需要重新处理事件
     if (context) {
-      context.on("click", () => {
+      const rendition = context;
+      rendition.on("click", () => {
+        // 关闭笔记栏
         controlNodesSection(false);
         const $root = getReaderToolRoot(book!);
         if ($root) {
@@ -84,8 +84,9 @@ export const useReaderTool = (
     data: { sources: HighlightSource[]; type: CreateFrom },
     h: Highlighter
   ) {
-    debugger;
     const { sources, type } = data;
+    // 当渲染文本 容器是 iframe的时候，页面发生了变化，比如进行了翻页操作，此时iframe里面的节点数据发生了变化，所以需要重置
+    h.setOption({ $root: getReaderToolRoot(book!)! });
     sources.forEach((source) => {
       setToolBarPosition(h.getDoms(source.id)[0]);
       if (type === "from-input") {
@@ -196,6 +197,10 @@ function getPosition(node: HTMLElement) {
     node = node.offsetParent as HTMLElement;
     if (node.id === "viewerContainer") {
       break;
+    }
+    if (node.tagName === "BODY") {
+      const contianer = getEleById("viewer")!;
+      node = contianer.getElementsByTagName("iframe")[0];
     }
   }
   return offset;
