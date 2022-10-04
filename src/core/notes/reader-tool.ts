@@ -4,6 +4,7 @@ import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom } from "web-highlighter/dist/types";
 import { highlights } from "../../components/highlight/highlight";
+import { controlNodesSection } from "../../components/reader/notes";
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { message } from "../../naive";
 import { StorageBook } from "../type";
@@ -70,6 +71,7 @@ export const useReaderTool = (
     // epub.js 渲染文本采用了 iframe，原本监听的事件无效。所以需要重新处理事件
     if (context) {
       context.on("click", () => {
+        controlNodesSection(false);
         const $root = getReaderToolRoot(book!);
         if ($root) {
           addReaderTool($root as Document);
