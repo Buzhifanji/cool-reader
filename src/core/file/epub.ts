@@ -30,6 +30,7 @@ export function getEpub({ fileContent, id }: StorageBook) {
       flow: "scrolled",
       width: "793px",
       height: "100%",
+      allowScriptedContent: true,
     });
     const themes = rendition.themes;
     themes.fontSize(24 + "px");
