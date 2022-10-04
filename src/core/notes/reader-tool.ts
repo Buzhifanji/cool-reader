@@ -83,17 +83,10 @@ export const useReaderTool = (_book: StorageBook) => {
     const { sources, type } = data;
     sources.forEach((source) => {
       setToolBarPosition(h.getDoms(source.id)[0]);
-      setToolBarData(source);
+      if (type === "from-input") {
+        setToolBarData(source);
+      }
     });
-    // if (sources.length) {
-    //   invoke("add_highlight", { data: handleParams(sources[0], book.id) })
-    //     .then((value) => {
-    //       console.log("Highlight success", value);
-    //     })
-    //     .catch((err) => {
-    //       console.log("Highlight err", err);
-    //     });
-    // }
     console.log(data);
   }
 
@@ -153,7 +146,7 @@ function saveHighlight(source: HighlightSource, className: string) {
   invoke("add_highlight", { data })
     .then((value) => {
       message.success("添加成功");
-      getHighlights();
+      // getHighlights();
     })
     .catch((err) => {
       message.error(err);
@@ -164,9 +157,14 @@ function saveHighlight(source: HighlightSource, className: string) {
 function getHighlights() {
   invoke("get_highlightes", { bookId: book!.id })
     .then((value) => {
-      highlights.value = (value as highlightResponse[]).map((item) =>
+      const list = (value as highlightResponse[]).map((item) =>
         generateServiceParams<highlightResponse, highlightParam>(item, false)
       );
+      highlights.value = [...list];
+      list.forEach(({ startMeta, endMeta, id, text }) =>
+        highlighter!.fromStore(startMeta, endMeta, text, id)
+      );
+      console.log(list);
     })
     .catch((err) => {
       message.error(err);
