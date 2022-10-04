@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { Rendition } from "epubjs";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom } from "web-highlighter/dist/types";
@@ -7,30 +8,15 @@ import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { message } from "../../naive";
 import { StorageBook } from "../type";
 import { generateServiceParams } from "../utils/change-name";
-import { Bookextname } from "../utils/enums";
-import { getEleById } from "../utils/utils";
+import { getReaderToolRoot } from "./document";
 import { HData, HEvent, highlightParam, highlightResponse } from "./type";
 
 let highlighter: Highlighter | null = null;
 let book: StorageBook | null = null;
-/**
- * 目的：为了获取解析电子的dom的根节点
- * 原因：不同格式电子书，使用的解析库 也不一样，例如有些嵌套了 iframe,获取dom组件需要特殊处理
- * @param book
- * @returns
- */
-function getReaderToolRoot() {
-  switch (book!.extname) {
-    case Bookextname.pdf:
-      return getEleById("viewer")!;
-    case Bookextname.epub:
-      break;
-  }
-  return null;
-}
 
 function createReaderTool() {
-  const $root = getReaderToolRoot();
+  const $root = getReaderToolRoot(book!);
+  console.log("$root", $root);
   if ($root) {
     highlighter = new Highlighter({
       $root,
@@ -44,24 +30,30 @@ function createReaderTool() {
  * @param event
  * @returns
  */
-export function addReaderTool(event: Event) {
-  const selection = window.getSelection();
+export function addReaderTool(doc?: Document) {
+  debugger;
+  const docum = doc ? doc : window;
+  const selection = docum.getSelection();
   if (selection) {
     if (selection?.isCollapsed) {
       return;
     } else {
       deleteReaderTool();
+      console.log(selection.getRangeAt(0));
       // 激活 创建工具栏
       highlighter?.fromRange(selection.getRangeAt(0));
-      window.getSelection()!.removeAllRanges();
+      docum.getSelection()!.removeAllRanges();
     }
   }
 }
 
-export const useReaderTool = (_book: StorageBook) => {
+export const useReaderTool = (
+  _book: StorageBook,
+  context: Rendition | null
+) => {
   book = _book;
   createReaderTool();
-  function addhighlighterEvents() {
+  function addEvents() {
     if (highlighter) {
       // 点击高亮区域
       highlighter.on(Highlighter.event.CLICK, clickrHighlight);
@@ -74,12 +66,23 @@ export const useReaderTool = (_book: StorageBook) => {
       // 高亮区域被清除
       highlighter.on(Highlighter.event.REMOVE, removeHighlight);
     }
+
+    // epub.js 渲染文本采用了 iframe，原本监听的事件无效。所以需要重新处理事件
+    if (context) {
+      context.on("click", () => {
+        const $root = getReaderToolRoot(book!);
+        if ($root) {
+          addReaderTool($root as Document);
+        }
+      });
+    }
   }
 
   function createHighlight(
     data: { sources: HighlightSource[]; type: CreateFrom },
     h: Highlighter
   ) {
+    debugger;
     const { sources, type } = data;
     sources.forEach((source) => {
       setToolBarPosition(h.getDoms(source.id)[0]);
@@ -105,7 +108,7 @@ export const useReaderTool = (_book: StorageBook) => {
     },
     h: Highlighter
   ) {}
-  addhighlighterEvents();
+  addEvents();
   getHighlights();
 };
 

@@ -2,11 +2,6 @@ import epubjs, { Rendition } from "epubjs";
 import { NavItem } from "epubjs/types/navigation";
 import { StorageBook } from "../type";
 
-interface EpubContenxt {
-  catalog: NavItem[]; // 目录
-  rendition: Rendition;
-}
-
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 let catalog: NavItem[] = []; // 目录
 
@@ -24,7 +19,7 @@ export function getEpubCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-export function renderEpub({ fileContent }: StorageBook) {
+export function renderEpub({ fileContent }: StorageBook): Promise<Rendition> {
   return new Promise((resolve, reject) => {
     const book = epubjs(fileContent.buffer);
     book.ready.then(() => {
@@ -40,7 +35,12 @@ export function renderEpub({ fileContent }: StorageBook) {
     });
     rendition.themes.fontSize(24 + "px");
 
-    return rendition.display();
+    rendition
+      .display()
+      .then(() => {
+        resolve(rendition!);
+      })
+      .catch((err) => reject(err));
   });
 }
 
