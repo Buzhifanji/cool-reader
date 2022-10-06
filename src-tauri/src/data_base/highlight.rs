@@ -20,6 +20,7 @@ pub struct Highlight {
     pub start_meta: DomMeta,
     pub end_meta: DomMeta,
     pub class_name: String,
+    pub page_number: usize,
 }
 
 pub struct HighlightData {
@@ -41,7 +42,8 @@ impl HighlightData {
               start_text_offset     integer  NOT NULL,
               end_parent_index      integer  NOT NULL,
               end_parent_tag_name   text     NOT NULL,
-              end_text_offset       integer  NOT NULL
+              end_text_offset       integer  NOT NULL,
+              page_number           integer  NOT NULL
           )",
             [],
         )?;
@@ -74,6 +76,7 @@ impl HighlightData {
                     parent_tag_name: row.get(8)?,
                     text_offset: row.get(9)?,
                 },
+                page_number: row.get(10)?,
             };
             highlightes.push(result)
         }
@@ -84,8 +87,8 @@ impl HighlightData {
     pub fn insert_highlight(&mut self, data: Highlight) -> Result<bool, String> {
         match self.conn.execute(
             "INSERT INTO Highlight 
-            (book_id, id,text,class_name,start_parent_index,start_parent_tag_name, start_text_offset, end_parent_index, end_parent_tag_name, end_text_offset) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (book_id, id,text,class_name,start_parent_index,start_parent_tag_name, start_text_offset, end_parent_index, end_parent_tag_name, end_text_offset, page_number) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 data.book_id,
                 data.id,
@@ -97,6 +100,7 @@ impl HighlightData {
                 data.end_meta.parent_index.to_string(),
                 data.end_meta.parent_tag_name,
                 data.end_meta.text_offset.to_string(),
+                data.page_number.to_string(),
             ],
         ){
           Ok(_) => Ok(true.into()),
