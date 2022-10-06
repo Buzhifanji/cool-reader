@@ -11,9 +11,11 @@ import { ExtnameFn, StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { getReaderToolRoot } from "./document";
 import { getPosition } from "./postion";
+import { Context } from "./type";
 
 let highlighter: Highlighter | null = null;
 let book: StorageBook | null = null;
+let context: Context = null;
 
 export function openReaderTool(doc?: Document) {
   const docum = doc ? doc : window;
@@ -106,8 +108,9 @@ function pdfEvent(pdfViewer: PDFViewer) {
   });
 }
 
-export function useReaderTool(_book: StorageBook, context: Rendition | null) {
+export function useReaderTool(_book: StorageBook, _context: Context) {
   book = _book;
+  context = _context;
   initHighlighter();
 
   // 处理不同格式数据的 监听事件
@@ -123,6 +126,11 @@ export function useReaderTool(_book: StorageBook, context: Rendition | null) {
 }
 
 export function useReaderToolBar() {
+  // 获取 当前笔记所在页数
+  const pageNoStatus: ExtnameFn = {
+    [Bookextname.pdf]: () => (context as PDFViewer).currentPageNumber,
+    [Bookextname.epub]: () => 1,
+  };
   function save(
     { startMeta, endMeta, text, id }: HighlightSource,
     className: string
@@ -130,8 +138,17 @@ export function useReaderToolBar() {
     highlighter!.setOption({ style: { className } });
     toolBar.show = false;
     toolBar.save = true;
+    const pageNumber = pageNoStatus[book!.extname]?.() || 1;
 
-    const param = { startMeta, endMeta, text, id, bookId: book!.id, className };
+    const param = {
+      startMeta,
+      endMeta,
+      text,
+      id,
+      bookId: book!.id,
+      className,
+      pageNumber,
+    };
     saveHighlight(param);
   }
   // 高亮
