@@ -10,8 +10,16 @@ import {
   PDFLinkService,
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
+import { toRaw } from "vue";
 import { StorageBook } from "../type";
-import { createEle, getEleById } from "../utils/utils";
+import {
+  arrayHasData,
+  createEle,
+  getEleById,
+  isArray,
+  isObj,
+  isOwn,
+} from "../utils/utils";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
@@ -19,13 +27,9 @@ const scale = 1.75 * window.devicePixelRatio; // 展示比例
  * 缓存 pdf 数据信息
  */
 
-interface PdfBook {
-  pdfViewer: PDFViewer;
-  pdf: PDFDocumentProxy;
-  catalogs: any[]; // 目录
-}
-
-const pdfBooks = new Map<string, PdfBook>();
+let pdfViewer: PDFViewer | null = null;
+let PDFDocumentProxy: PDFDocumentProxy | null = null;
+let catalogs: any[] = []; // 目录
 
 export function getViewport(page: PDFPageProxy) {
   return page.getViewport({
@@ -49,7 +53,7 @@ export async function getPdf({ fileContent, id }: StorageBook) {
     eventBus: new EventBus(),
   });
 
-  const pdfViewer = new PDFViewer({
+  pdfViewer = new PDFViewer({
     container: container,
     eventBus: new EventBus(),
     linkService: pdfLinkService,
@@ -57,14 +61,12 @@ export async function getPdf({ fileContent, id }: StorageBook) {
   });
   pdfViewer._setScale(scale);
   const loadingTask = getDocument(fileContent);
-  const pdf = await loadingTask.promise;
+  PDFDocumentProxy = await loadingTask.promise;
 
-  const outline = await pdf.getOutline();
-  const catalogs = formatePdfCatalog(outline);
+  const outline = await PDFDocumentProxy.getOutline();
+  catalogs = formatePdfCatalog(outline);
 
-  pdfBooks.set(id, { pdfViewer, pdf, catalogs });
-
-  pdfViewer.setDocument(pdf);
+  pdfViewer.setDocument(PDFDocumentProxy);
 }
 
 export function getPDFCover(fileContent: Uint8Array): Promise<string> {
@@ -88,28 +90,31 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-export function getPdfBook(bookId: string) {
-  return pdfBooks.get(bookId);
-}
-
 /**
  * 获取 pdf 目录
  * @param bookId
  * @returns
  */
-export function getPdfCatalogs(bookId: string) {
-  const book = getPdfBook(bookId);
-  return book ? book.catalogs : [];
+export function getPdfCatalogs() {
+  return catalogs;
 }
 
-export function pdfPageUp(bookId: string) {
-  const book = getPdfBook(bookId);
-  book?.pdfViewer.previousPage();
+export async function pdfGotoPage(desc: any) {
+  if (isArray(desc) && arrayHasData(desc)) {
+    const refProxy = toRaw(desc[0]);
+    if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
+      const pageNumber = await PDFDocumentProxy!.getPageIndex(refProxy);
+      pdfViewer!.scrollPageIntoView({ pageNumber });
+    }
+  }
 }
 
-export function pdfPageDown(bookId: string) {
-  const book = getPdfBook(bookId);
-  book?.pdfViewer.nextPage();
+export function pdfPageUp() {
+  pdfViewer?.previousPage();
+}
+
+export function pdfPageDown() {
+  pdfViewer?.nextPage();
 }
 
 function formatePdfCatalog(list: any[]) {

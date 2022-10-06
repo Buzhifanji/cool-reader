@@ -30,8 +30,7 @@ const { book } = defineProps<Props>();
 const { catalog, menuFieds } = useCatalog(book);
 
 function updateCatalog(key: string, item: MenuOption) {
-  const { id, extname } = book;
-  const param = { id, extname, item };
+  const param = { extname: book.extname, item };
   generateGotoPage(param);
 }
 </script>
