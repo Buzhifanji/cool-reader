@@ -1,10 +1,12 @@
+import { Bookextname } from "./utils/enums";
+
 export interface BufType {
   message: Uint8Array;
 }
 
 export interface BaseBook {
   bookName: string; // 书名
-  extname: string; // 书本文件格式类型，例如 pdf、azw3
+  extname: Bookextname; // 书本文件格式类型，例如 pdf、azw3
   fileSize: number; //  书本大小
   path: string; // md5
 }

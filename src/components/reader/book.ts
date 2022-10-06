@@ -11,7 +11,7 @@ import { Bookextname } from "../../core/utils/enums";
 import { PageTurnStatues } from "./type";
 
 const rendingBook = reactive<StorageBook>(
-  new ReadingBook("", "", 0, "", "", "", "", new Uint8Array())
+  new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array())
 );
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
@@ -40,9 +40,7 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
         let context = null;
         if (book.fileContent) {
           // 获取内容
-          context = await renderBookStatus[
-            rendingBook.extname as Bookextname
-          ]?.(rendingBook);
+          context = await renderBookStatus[rendingBook.extname]?.(rendingBook);
 
           // 开启高亮功能
           useReaderTool(rendingBook, context);
@@ -67,10 +65,10 @@ export const usePageTurn = () => {
     [Bookextname.epub]: epubPageDown,
   };
   function pageUp() {
-    pageUpStates[rendingBook.extname as Bookextname]?.();
+    pageUpStates[rendingBook.extname]?.();
   }
   function pageDown() {
-    pageDownStates[rendingBook.extname as Bookextname]?.();
+    pageDownStates[rendingBook.extname]?.();
   }
   return { pageUp, pageDown };
 };

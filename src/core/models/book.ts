@@ -1,9 +1,10 @@
 import { StorageBook } from "../type";
+import { Bookextname } from "../utils/enums";
 
 export class ReadingBook implements StorageBook {
   constructor(
     public bookName: string,
-    public extname: string,
+    public extname: Bookextname,
     public fileSize: number,
     public path: string,
     public category: string,
