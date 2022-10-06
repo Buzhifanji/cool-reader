@@ -19,9 +19,10 @@ fn main() {
             inner: Mutex::new(async_proc_input_tx),
         })
         .invoke_handler(tauri::generate_handler![
-            command::download_local_file,        // 读取文件
-            data_base::command::get_highlightes, // 获取书某本书全部高亮内容
-            data_base::command::add_highlight,   // 新增一条高亮笔记
+            command::download_local_file,         // 读取文件
+            data_base::command::get_highlightes,  // 获取书某本书全部高亮内容
+            data_base::command::add_highlight,    // 新增一条高亮笔记
+            data_base::command::delete_highlight, // 删除一条高亮笔记
         ])
         .setup(|app| {
             tauri::async_runtime::spawn(async move {

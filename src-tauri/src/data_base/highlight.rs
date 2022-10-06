@@ -22,6 +22,11 @@ pub struct Highlight {
     pub class_name: String,
     pub page_number: usize,
 }
+#[derive(Serialize, Deserialize, Clone)]
+pub struct DeleteHightIds {
+    pub book_id: String,
+    pub id: String,
+}
 
 pub struct HighlightData {
     pub conn: Connection,
@@ -110,5 +115,16 @@ impl HighlightData {
           }
         }
     }
-    // pub fn dellete_highlight(&mut self, book_id: String, id: String) {}
+    pub fn dellete_highlight(&mut self, data: DeleteHightIds) -> Result<bool, String> {
+        match self.conn.execute(
+            "DELETE FROM Highlight as h where h.book_id = ?1 and h.id = ?2",
+            [data.book_id, data.id],
+        ) {
+            Ok(_) => Ok(true.into()),
+            Err(err) => {
+                println!("INSERT INTO Highlight: {}", err);
+                Err(err.to_string().into())
+            }
+        }
+    }
 }
