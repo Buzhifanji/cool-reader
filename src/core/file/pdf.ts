@@ -109,9 +109,13 @@ export async function pdfGotoPage(desc: any) {
     const refProxy = toRaw(desc[0]);
     if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
       const pageNumber = await PDFDocumentProxy!.getPageIndex(refProxy);
-      pdfViewer!.scrollPageIntoView({ pageNumber });
+      pdfJumpToPage(pageNumber);
     }
   }
+}
+
+export function pdfJumpToPage(pageNumber: number) {
+  pdfViewer!.scrollPageIntoView({ pageNumber });
 }
 
 export function pdfPageUp() {
