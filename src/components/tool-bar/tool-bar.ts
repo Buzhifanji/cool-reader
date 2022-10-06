@@ -52,21 +52,14 @@ export const useToolBar = () => {
     },
   ];
   const { addTextHighlight, addTilde, addStraightLine } = useReaderToolBar();
+  const barActionStatus: Record<barEnum, Function> = {
+    [barEnum.Copy]: copyText,
+    [barEnum.TextHighlight]: addTextHighlight,
+    [barEnum.tilde]: addTilde,
+    [barEnum.straightLine]: addStraightLine,
+  };
   function barAction(key: barEnum) {
-    switch (key) {
-      case barEnum.Copy:
-        copyText();
-        break;
-      case barEnum.TextHighlight:
-        addTextHighlight();
-        break;
-      case barEnum.tilde:
-        addTilde();
-        break;
-      case barEnum.straightLine:
-        addStraightLine();
-        break;
-    }
+    barActionStatus[key]();
   }
   return { bars, barAction, toolBarStyle, toolBar };
 };

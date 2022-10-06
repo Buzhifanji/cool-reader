@@ -1,15 +1,13 @@
-import { StorageBook } from "../type";
+import { ExtnameFn, StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { getEleById } from "../utils/utils";
 
-export function getReaderToolRoot(book: StorageBook) {
-  switch (book!.extname) {
-    case Bookextname.pdf:
-      return getEleById("viewer")!;
-    case Bookextname.epub:
-      return getIframe();
-  }
-  return null;
+export function getReaderToolRoot({ extname }: StorageBook) {
+  const rootStatus: ExtnameFn = {
+    [Bookextname.pdf]: () => getEleById("viewer")!,
+    [Bookextname.epub]: getIframe,
+  };
+  return rootStatus[extname]?.();
 }
 
 export function getIframe() {

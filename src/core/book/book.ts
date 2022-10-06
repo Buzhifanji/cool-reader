@@ -3,7 +3,7 @@ import { notification } from "../../naive";
 import { getEpubCover } from "../file/epub";
 import { getPDFCover } from "../file/pdf";
 import { addForageFile, getForageFiles, hasForageFile } from "../store/file";
-import { BookInfo, StorageBook } from "../type";
+import { BookInfo, ExtnameFn, StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 import { isIndex } from "../utils/utils";
 import { setBookId } from "./md5";
@@ -20,11 +20,11 @@ export async function addBook(bookInfo: BookInfo) {
       keepAliveOnHover: true,
     });
   } else {
-    const cover = await generateBook(bookInfo);
+    const cover = await generateBookCover(bookInfo);
     const cacheBook: StorageBook = {
       ...bookInfo,
       id: bookId,
-      cover,
+      cover: cover ? cover : "",
       category: "",
     };
     // 离线缓存
@@ -59,18 +59,13 @@ export async function findBook(
   return isIndex(index) ? books[index] : null;
 }
 
-function generateBook(bookInfo: BookInfo): Promise<string> {
-  const { fileContent, extname } = bookInfo;
-  return new Promise(async (resolve, reject) => {
-    let cover: string = "";
-    switch (extname) {
-      case Bookextname.pdf:
-        cover = await getPDFCover(fileContent);
-        break;
-      case Bookextname.epub:
-        cover = await getEpubCover(fileContent);
-        break;
-    }
-    resolve(cover);
-  });
+function generateBookCover({
+  fileContent,
+  extname,
+}: BookInfo): Promise<string> {
+  const BooCoverkStatus: ExtnameFn = {
+    [Bookextname.pdf]: getPDFCover,
+    [Bookextname.epub]: getEpubCover,
+  };
+  return BooCoverkStatus[extname]?.(fileContent);
 }
