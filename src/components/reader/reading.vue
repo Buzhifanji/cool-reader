@@ -7,8 +7,8 @@
         <n-button @click="controlNodesSection(true)">Option</n-button>
       </n-space>
     </n-layout-header>
-    <n-layout-content id="drawer-target" @click.capture="deleteReaderTool">
-      <div id="viewerContainer" @click="addReaderTool()">
+    <n-layout-content id="drawer-target" @click.capture="closeReanderTool">
+      <div id="viewerContainer" @click="openReaderTool()">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>
@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
-import { addReaderTool, deleteReaderTool } from "../../core/notes/reader-tool";
+import { closeReanderTool, openReaderTool } from "../../core/notes/reader-tool";
 import Catalog from "../catalog/catalog.vue";
 import Highlight from "../highlight/highlight.vue";
 import ToolBar from "../tool-bar/tool-bar.vue";

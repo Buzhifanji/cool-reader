@@ -1,4 +1,4 @@
-import HighlightSource from "web-highlighter/dist/model/source";
+import { DomMeta } from "web-highlighter/dist/types";
 
 export type HEvent = MouseEvent | TouchEvent;
 export interface HData {
@@ -16,10 +16,17 @@ interface bookInfo {
   class_name: string;
 }
 
-export interface highlightResponse extends bookInfo{
+export interface highlightResponse extends bookInfo {
   id: string;
   text: string;
   start_meta: DomMetaRespone;
   end_meta: DomMetaRespone;
 }
-export type highlightParam = HighlightSource extends bookInfo;
+export interface highlightParam {
+  bookId: string;
+  className: string;
+  startMeta: DomMeta;
+  endMeta: DomMeta;
+  text: string;
+  id: string;
+}
