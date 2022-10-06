@@ -6,9 +6,8 @@ import { pdfPageDown, pdfPageUp, renderPdf } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
 import { useReaderTool } from "../../core/notes/reader-tool";
 import { getForageFile } from "../../core/store";
-import { StorageBook } from "../../core/type";
+import { ExtnameFn, StorageBook } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
-import { PageTurnStatues } from "./type";
 
 const rendingBook = reactive<StorageBook>(
   new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array())
@@ -32,7 +31,7 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
     try {
       await initReadingBook(route.query.id as string);
       const book = await getForageFile(rendingBook.id);
-      const renderBookStatus: PageTurnStatues = {
+      const renderBookStatus: ExtnameFn = {
         [Bookextname.pdf]: renderPdf,
         [Bookextname.epub]: renderEpub,
       };
@@ -56,11 +55,11 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
 
 // 翻页
 export const usePageTurn = () => {
-  const pageUpStates: PageTurnStatues = {
+  const pageUpStates: ExtnameFn = {
     [Bookextname.pdf]: pdfPageUp,
     [Bookextname.epub]: pdfPageUp,
   };
-  const pageDownStates: PageTurnStatues = {
+  const pageDownStates: ExtnameFn = {
     [Bookextname.pdf]: pdfPageDown,
     [Bookextname.epub]: epubPageDown,
   };

@@ -21,3 +21,5 @@ export interface StorageBook extends BaseBook {
   id: string; // md5
   fileContent: Uint8Array; // 用于 方便开发功能 ，开发完就删除掉
 }
+
+export type ExtnameFn = Record<Bookextname, Function>;
