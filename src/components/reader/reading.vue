@@ -44,14 +44,14 @@
             <n-gi>
               <n-card hoverable size="small">
                 <template #cover>
-                  <n-image :src="rendingBook.cover" preview-disabled />
+                  <n-image :src="readingBook.cover" preview-disabled />
                 </template>
               </n-card>
             </n-gi>
             <n-gi>
               <n-space vertical>
                 <n-ellipsis>
-                  {{ rendingBook.bookName }}
+                  {{ readingBook.bookName }}
                 </n-ellipsis>
                 <span>作者：佚名</span>
               </n-space>
@@ -66,7 +66,7 @@
             >
               <!-- 目录 -->
               <Catalog
-                :book="rendingBook"
+                :book="readingBook"
                 v-if="isNotesTab(TabPaneEnum.catalog)"
               />
               <!-- 高亮 -->
@@ -107,7 +107,7 @@ const route = useRoute();
 const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
   useNotesSection();
 const { pageUp, pageDown } = usePageTurn();
-const { rendingBook } = useReaderBook(route);
+const { readingBook } = useReaderBook(route);
 </script>
 
 <style scoped>

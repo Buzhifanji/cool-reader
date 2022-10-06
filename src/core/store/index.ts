@@ -5,4 +5,4 @@ export {
   getForageFiles,
   hasForageFile,
 } from "./file";
-export { getOpenedBookId, setOpenedBookId } from "./open-book";
+export { getReadingBook, setReadingBook } from "./reading-book";

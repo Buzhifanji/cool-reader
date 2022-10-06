@@ -7,14 +7,14 @@ import { highlights } from "../../components/highlight/highlight";
 import { controlNodesSection } from "../../components/reader/notes";
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { getHighlights, saveHighlight } from "../service/highlight";
-import { ExtnameFn, StorageBook } from "../type";
+import { getReadingBook } from "../store";
+import { ExtnameFn } from "../type";
 import { Bookextname } from "../utils/enums";
 import { getReaderToolRoot } from "./document";
 import { getPosition } from "./postion";
 import { Context } from "./type";
 
 let highlighter: Highlighter | null = null;
-let book: StorageBook | null = null;
 let context: Context = null;
 
 export function openReaderTool(doc?: Document) {
@@ -42,7 +42,7 @@ export function closeReanderTool() {
 }
 
 function initHighlighter() {
-  const $root = getReaderToolRoot(book!);
+  const $root = getReaderToolRoot();
   if ($root) {
     highlighter = new Highlighter({
       $root,
@@ -67,7 +67,7 @@ function createHighlight(
 ) {
   const { sources, type } = data;
   // 当渲染文本 容器是 iframe的时候，页面发生了变化，比如进行了翻页操作，此时iframe里面的节点数据发生了变化，所以需要重置
-  h.setOption({ $root: getReaderToolRoot(book!)! });
+  h.setOption({ $root: getReaderToolRoot()! });
   sources.forEach((source) => {
     setToolBarPosition(h.getDoms(source.id)[0]);
     if (type === "from-input") {
@@ -94,7 +94,7 @@ function epubEvent(rendition: Rendition) {
   rendition.on("click", () => {
     // 关闭笔记栏
     controlNodesSection(false);
-    const $root = getReaderToolRoot(book!);
+    const $root = getReaderToolRoot();
     if ($root) {
       openReaderTool($root as Document);
     }
@@ -108,21 +108,20 @@ function pdfEvent(pdfViewer: PDFViewer) {
   });
 }
 
-export function useReaderTool(_book: StorageBook, _context: Context) {
-  book = _book;
+export function useReaderTool(_context: Context) {
   context = _context;
   initHighlighter();
-
+  const readingBook = getReadingBook();
   // 处理不同格式数据的 监听事件
   if (context) {
     const contextEventStatus: ExtnameFn = {
       [Bookextname.pdf]: pdfEvent,
       [Bookextname.epub]: epubEvent,
     };
-    contextEventStatus[book.extname]?.(context);
+    contextEventStatus[readingBook.extname]?.(context);
   }
 
-  getHighlights(book!.id).then((value) => (highlights.value = value));
+  getHighlights(readingBook.id).then((value) => (highlights.value = value));
 }
 
 export function useReaderToolBar() {
@@ -138,14 +137,15 @@ export function useReaderToolBar() {
     highlighter!.setOption({ style: { className } });
     toolBar.show = false;
     toolBar.save = true;
-    const pageNumber = pageNoStatus[book!.extname]?.() || 1;
+    const readingBook = getReadingBook();
+    const pageNumber = pageNoStatus[readingBook.extname]?.() || 1;
 
     const param = {
       startMeta,
       endMeta,
       text,
       id,
-      bookId: book!.id,
+      bookId: readingBook.id,
       className,
       pageNumber,
     };

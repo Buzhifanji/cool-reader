@@ -1,36 +1,21 @@
-import { reactive } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
-import { findBook } from "../../core/book/book";
 import { epubPageDown, renderEpub } from "../../core/file/epub";
 import { pdfPageDown, pdfPageUp, renderPdf } from "../../core/file/pdf";
-import { ReadingBook } from "../../core/models/book";
 import { useReaderTool } from "../../core/notes/reader-tool";
-import { getForageFile } from "../../core/store";
-import { ExtnameFn, StorageBook } from "../../core/type";
+import {
+  getForageFile,
+  getReadingBook,
+  setReadingBook,
+} from "../../core/store";
+import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 
-const rendingBook = reactive<StorageBook>(
-  new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array())
-);
-
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
-  async function initReadingBook(bookId: string) {
-    const book = await findBook(bookId);
-    if (book) {
-      rendingBook.bookName = book.bookName;
-      rendingBook.extname = book.extname;
-      rendingBook.fileSize = book.fileSize;
-      rendingBook.path = book.path;
-      rendingBook.category = book.category;
-      rendingBook.cover = book.cover;
-      rendingBook.id = book.id;
-      rendingBook.fileContent = book.fileContent;
-    }
-  }
+  const readingBook = getReadingBook();
   async function init() {
     try {
-      await initReadingBook(route.query.id as string);
-      const book = await getForageFile(rendingBook.id);
+      await setReadingBook(route.query.id as string);
+      const book = await getForageFile(readingBook.id);
       const renderBookStatus: ExtnameFn = {
         [Bookextname.pdf]: renderPdf,
         [Bookextname.epub]: renderEpub,
@@ -39,10 +24,9 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
         let context = null;
         if (book.fileContent) {
           // 获取内容
-          context = await renderBookStatus[rendingBook.extname]?.(rendingBook);
-
+          context = await renderBookStatus[readingBook.extname]?.(readingBook);
           // 开启高亮功能
-          useReaderTool(rendingBook, context);
+          useReaderTool(context);
         }
       }
     } catch (error) {
@@ -50,11 +34,12 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
     }
   }
   init();
-  return { rendingBook };
+  return { readingBook };
 };
 
 // 翻页
 export const usePageTurn = () => {
+  const readingBook = getReadingBook();
   const pageUpStates: ExtnameFn = {
     [Bookextname.pdf]: pdfPageUp,
     [Bookextname.epub]: pdfPageUp,
@@ -64,10 +49,10 @@ export const usePageTurn = () => {
     [Bookextname.epub]: epubPageDown,
   };
   function pageUp() {
-    pageUpStates[rendingBook.extname]?.();
+    pageUpStates[readingBook.extname]?.();
   }
   function pageDown() {
-    pageDownStates[rendingBook.extname]?.();
+    pageDownStates[readingBook.extname]?.();
   }
   return { pageUp, pageDown };
 };

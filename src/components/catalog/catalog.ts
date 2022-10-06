@@ -1,10 +1,12 @@
 import { reactive, ref } from "vue";
 import { epubGotoPage, getEpubCatalog } from "../../core/file/epub";
 import { getPdfCatalogs, pdfGotoPage } from "../../core/file/pdf";
-import { ExtnameFn, StorageBook } from "../../core/type";
+import { getReadingBook } from "../../core/store";
+import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 
-export const useCatalog = ({ extname }: StorageBook) => {
+export const useCatalog = () => {
+  const readingBook = getReadingBook();
   const catalog = ref<any[]>([]);
   const menuFieds = reactive({
     key: "key",
@@ -28,21 +30,16 @@ export const useCatalog = ({ extname }: StorageBook) => {
     },
   };
 
-  catalogStatus[extname]?.();
+  catalogStatus[readingBook.extname]?.();
 
   return { catalog, menuFieds };
 };
 
-export function generateGotoPage({
-  extname,
-  item,
-}: {
-  extname: Bookextname;
-  item: any;
-}) {
+export function generateGotoPage(item: any) {
+  const readingBook = getReadingBook();
   const pageStatus: ExtnameFn = {
     [Bookextname.pdf]: () => pdfGotoPage(item.dest),
     [Bookextname.epub]: () => epubGotoPage(item.href),
   };
-  pageStatus[extname]?.();
+  pageStatus[readingBook.extname]?.();
 }
