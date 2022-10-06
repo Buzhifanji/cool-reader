@@ -46,7 +46,7 @@ function createCanvas({ width, height, viewBox }: PageViewport) {
   return { canvasContext, canvas };
 }
 
-export async function getPdf({ fileContent, id }: StorageBook) {
+export async function renderPdf({ fileContent, id }: StorageBook) {
   const container = getEleById("viewerContainer")! as HTMLDivElement;
 
   const pdfLinkService = new PDFLinkService({

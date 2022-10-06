@@ -1,13 +1,14 @@
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { findBook } from "../../core/book/book";
-import { epubPageDown, epubPageUp, renderEpub } from "../../core/file/epub";
-import { getPdf, pdfPageDown, pdfPageUp } from "../../core/file/pdf";
+import { epubPageDown, renderEpub } from "../../core/file/epub";
+import { pdfPageDown, pdfPageUp, renderPdf } from "../../core/file/pdf";
 import { ReadingBook } from "../../core/models/book";
 import { useReaderTool } from "../../core/notes/reader-tool";
 import { getForageFile } from "../../core/store";
 import { StorageBook } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
+import { PageTurnStatues } from "./type";
 
 const rendingBook = reactive<StorageBook>(
   new ReadingBook("", "", 0, "", "", "", "", new Uint8Array())
@@ -29,22 +30,20 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   }
   async function init() {
     try {
-      const id = route.query.id as string;
-      await initReadingBook(id);
+      await initReadingBook(route.query.id as string);
       const book = await getForageFile(rendingBook.id);
+      const renderBookStatus: PageTurnStatues = {
+        [Bookextname.pdf]: renderPdf,
+        [Bookextname.epub]: renderEpub,
+      };
       if (book) {
-        const { fileContent, extname } = book;
         let context = null;
-        if (fileContent) {
+        if (book.fileContent) {
           // 获取内容
-          switch (extname) {
-            case Bookextname.pdf:
-              await getPdf(rendingBook);
-              break;
-            case Bookextname.epub:
-              context = await renderEpub(rendingBook);
-              break;
-          }
+          context = await renderBookStatus[
+            rendingBook.extname as Bookextname
+          ]?.(rendingBook);
+
           // 开启高亮功能
           useReaderTool(rendingBook, context);
         }
@@ -57,37 +56,21 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   return { rendingBook };
 };
 
-export const useControlDrawer = () => {
-  const active = ref<boolean>(false);
-  function openDrawer() {
-    active.value = true;
-  }
-  return { active, openDrawer };
-};
-
 // 翻页
 export const usePageTurn = () => {
+  const pageUpStates: PageTurnStatues = {
+    [Bookextname.pdf]: pdfPageUp,
+    [Bookextname.epub]: pdfPageUp,
+  };
+  const pageDownStates: PageTurnStatues = {
+    [Bookextname.pdf]: pdfPageDown,
+    [Bookextname.epub]: epubPageDown,
+  };
   function pageUp() {
-    const { id, extname } = rendingBook;
-    switch (extname) {
-      case Bookextname.pdf:
-        pdfPageUp(id);
-        break;
-      case Bookextname.epub:
-        epubPageUp();
-        break;
-    }
+    pageUpStates[rendingBook.extname as Bookextname]?.();
   }
   function pageDown() {
-    const { id, extname } = rendingBook;
-    switch (extname) {
-      case Bookextname.pdf:
-        pdfPageDown(id);
-        break;
-      case Bookextname.epub:
-        epubPageDown();
-        break;
-    }
+    pageDownStates[rendingBook.extname as Bookextname]?.();
   }
   return { pageUp, pageDown };
 };
