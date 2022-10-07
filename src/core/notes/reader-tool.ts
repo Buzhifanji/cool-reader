@@ -149,7 +149,7 @@ export function useReaderToolBar() {
       className,
       pageNumber,
     };
-    saveHighlight(param);
+    saveHighlight(param).then(() => updateHighlights());
   }
   // 高亮
   function addTextHighlight() {

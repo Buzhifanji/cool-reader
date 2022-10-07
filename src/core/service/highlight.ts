@@ -23,7 +23,7 @@ function sortHighlights(arr: highlightParam[]) {
 
 export function saveHighlight(param: highlightParam) {
   const data = generateServiceParams<highlightParam, highlightResponse>(param);
-  invoke("add_highlight", { data })
+  return invoke("add_highlight", { data })
     .then(() => {
       message.success("添加成功");
     })
