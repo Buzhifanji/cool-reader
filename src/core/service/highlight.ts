@@ -48,3 +48,14 @@ export function getHighlights(bookId: string): Promise<highlightParam[]> {
       });
   });
 }
+
+export function removeHighlight(book_id: string, id: string) {
+  const data = { book_id, id };
+  return invoke("delete_highlight", { data })
+    .then(() => {
+      message.success("删除成功");
+    })
+    .catch((err) => {
+      message.error(err);
+    });
+}

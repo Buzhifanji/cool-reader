@@ -3,10 +3,10 @@ import { PDFViewer } from "pdfjs-dist/web/pdf_viewer";
 import Highlighter from "web-highlighter";
 import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom } from "web-highlighter/dist/types";
-import { highlights } from "../../components/highlight/highlight";
+import { updateHighlights } from "../../components/highlight/highlight";
 import { controlNodesSection } from "../../components/reader/notes";
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
-import { getHighlights, saveHighlight } from "../service/highlight";
+import { saveHighlight } from "../service/highlight";
 import { getReadingBook } from "../store";
 import { ExtnameFn } from "../type";
 import { Bookextname } from "../utils/enums";
@@ -121,7 +121,7 @@ export function useReaderTool(_context: Context) {
     contextEventStatus[readingBook.extname]?.(context);
   }
 
-  getHighlights(readingBook.id).then((value) => (highlights.value = value));
+  updateHighlights();
 }
 
 export function useReaderToolBar() {
