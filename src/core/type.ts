@@ -1,3 +1,5 @@
+import { Rendition } from "epubjs";
+import { PDFViewer } from "pdfjs-dist/web/pdf_viewer";
 import { Bookextname } from "./utils/enums";
 
 export interface BufType {
@@ -23,3 +25,5 @@ export interface StorageBook extends BaseBook {
 }
 
 export type ExtnameFn = Record<Bookextname, Function>;
+
+export type BookContext = PDFViewer | Rendition | null;
