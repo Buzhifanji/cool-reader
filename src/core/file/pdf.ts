@@ -65,10 +65,10 @@ export async function renderPdf({ fileContent, id }: StorageBook) {
 
   const outline = await PDFDocumentProxy.getOutline();
   catalogs = formatePdfCatalog(outline);
-  pdfViewer.eventBus.on("pagechanging", (value: any) => {
-    console.log("pagechanging", value);
-    console.log(pdfViewer!.currentPageNumber);
-  });
+  // pdfViewer.eventBus.on("pagechanging", (value: any) => {
+  //   console.log("pagechanging", value);
+  //   console.log(pdfViewer!.currentPageNumber);
+  // });
 
   pdfViewer.setDocument(PDFDocumentProxy);
   return pdfViewer;
