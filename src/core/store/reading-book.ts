@@ -1,13 +1,15 @@
 import { reactive } from "vue";
 import { findBook } from "../book/book";
 import { ReadingBook } from "../models/book";
-import { StorageBook } from "../type";
+import { BookContext, StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
 
 // 当前打开书本的数据
 const readingBook = reactive<StorageBook>(
   new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array())
 );
+
+let _content: BookContext = null;
 
 export async function setReadingBook(bookId: string) {
   const book = await findBook(bookId);
@@ -25,4 +27,12 @@ export async function setReadingBook(bookId: string) {
 
 export function getReadingBook() {
   return readingBook;
+}
+
+export function setBookContext(context: BookContext) {
+  _content = context;
+}
+
+export function getBookContext() {
+  return _content;
 }
