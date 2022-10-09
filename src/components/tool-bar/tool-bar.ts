@@ -1,26 +1,34 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
-import HighlightSource from "web-highlighter/dist/model/source";
 import { useReaderToolBar } from "../../core/notes/reader-tool";
 import { message } from "../../naive";
+import { ToolBar, ToolBarStyle } from "./interface";
+
+function toolBarStyleModel(): ToolBarStyle {
+  return {
+    left: "0",
+    top: "0",
+  };
+}
+
+function toolBarModel(): ToolBar {
+  return {
+    id: "", // 绑定数据的 id （Highlighter每创建一条数据都有一个id）
+    show: false,
+    save: false,
+    source: null,
+  };
+}
 
 // 工具栏 显示的位置
-export const toolBarStyle = reactive({
-  left: "0",
-  top: "0",
-});
+export const toolBarStyle = reactive<ToolBarStyle>(toolBarStyleModel());
 
-export const toolBar = reactive<{
-  id: string;
-  show: boolean;
-  save: boolean;
-  source: null | HighlightSource;
-}>({
-  id: "", // 绑定数据的 id （Highlighter每创建一条数据都有一个id）
-  show: false,
-  save: false,
-  source: null,
-});
+export const toolBar = reactive<ToolBar>(toolBarModel());
+
+export function resetToolBar() {
+  Object.assign(toolBarStyle, toolBarStyleModel());
+  Object.assign(toolBar, toolBarModel());
+}
 
 export const useToolBar = () => {
   const enum barEnum {
