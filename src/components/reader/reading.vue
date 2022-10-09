@@ -8,7 +8,7 @@
       </n-space>
     </n-layout-header>
     <n-layout-content id="drawer-target" @click.capture="closeReanderTool">
-      <div id="viewerContainer" @click="openReaderTool()">
+      <div id="viewerContainer" @click="openTooBar()">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>
@@ -94,7 +94,8 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
-import { closeReanderTool, openReaderTool } from "../../core/notes/reader-tool";
+import { closeReanderTool } from "../../core/notes/reader-tool";
+import { openTooBar } from "../../core/notes/toobar";
 import Catalog from "../catalog/catalog.vue";
 import Highlight from "../highlight/highlight.vue";
 import ToolBar from "../tool-bar/tool-bar.vue";

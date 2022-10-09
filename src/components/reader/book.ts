@@ -7,6 +7,7 @@ import {
   getReadingBook,
   setReadingBook,
 } from "../../core/store";
+import { setBookContext } from "../../core/store/reading-book";
 import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 
@@ -25,6 +26,7 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
         if (book.fileContent) {
           // 获取内容
           context = await renderBookStatus[readingBook.extname]?.(readingBook);
+          setBookContext(context);
           // 开启高亮功能
           useReaderTool(context);
         }
