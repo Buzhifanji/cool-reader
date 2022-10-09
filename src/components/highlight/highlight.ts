@@ -9,11 +9,17 @@ import { message } from "../../naive";
 
 export const highlights = ref<highlightParam[]>([]);
 
+// 更新
 export function updateHighlights() {
   const readingBook = getReadingBook();
   return getHighlights(readingBook.id).then(
     (value) => (highlights.value = value)
   );
+}
+
+// 根据 pageNumber 过滤出当前页数据
+export function getPageHighlights(pageNumber: number) {
+  return highlights.value.filter((value) => value.pageNumber === pageNumber);
 }
 
 export const useHighlights = () => {
@@ -22,9 +28,11 @@ export const useHighlights = () => {
     [Bookextname.pdf]: pdfJumpToPage,
     [Bookextname.epub]: () => message.warning("功能待开发中！"),
   };
+  // 删除
   function remove(value: highlightParam) {
     removeHighlight(value.bookId, value.id).then(() => updateHighlights());
   }
+  // 跳转
   function jump(value: highlightParam) {
     pageJumpStatus[readingBook.extname]?.(value.pageNumber);
   }
