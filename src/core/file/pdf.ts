@@ -13,7 +13,7 @@ import {
 import { toRaw } from "vue";
 import { StorageBook } from "../type";
 import { createEle, getEleById } from "../utils/dom";
-import { arrayHasData, isArray, isObj, isOwn } from "../utils/utils";
+import { arrayHasData, isArray, isObj, isOwn } from "../utils/is";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 

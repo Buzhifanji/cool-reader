@@ -1,6 +1,6 @@
 import { forage } from "@tauri-apps/tauri-forage";
 import { StorageBook } from "../type";
-import { isIndex } from "../utils/utils";
+import { isIndex } from "../utils/is";
 
 const BOOKLIST = "_tauri_book_list_";
 

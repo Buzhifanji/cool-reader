@@ -3,7 +3,7 @@ import { nextTick, ref } from "vue";
 import { deleteForageFile, getForageFiles } from "../../core/store";
 import { StorageBook } from "../../core/type";
 import { renderIcon } from "../../core/utils/dom";
-import { isIndex } from "../../core/utils/utils";
+import { isIndex } from "../../core/utils/is";
 import { notification } from "../../naive";
 
 const books = ref<StorageBook[]>([]);

@@ -5,7 +5,7 @@ import { getPDFCover } from "../file/pdf";
 import { addForageFile, getForageFiles, hasForageFile } from "../store/file";
 import { BookInfo, ExtnameFn, StorageBook } from "../type";
 import { Bookextname } from "../utils/enums";
-import { isIndex } from "../utils/utils";
+import { isIndex } from "../utils/is";
 import { setBookId } from "./md5";
 
 export async function addBook(bookInfo: BookInfo) {

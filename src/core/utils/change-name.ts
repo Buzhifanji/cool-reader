@@ -1,4 +1,4 @@
-import { isObj } from "./utils";
+import { isObj } from "./is";
 
 // 驼峰转下划线
 export const camelCaseToUnderline = (name: string) =>
