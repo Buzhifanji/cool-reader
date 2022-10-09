@@ -125,7 +125,7 @@ function paintSpaceElments(source: PaintSource) {
       const content = getDomContent(current);
       const n = content.length;
       if (current === startParent) {
-        paintAction(current, start, n - start, id, content);
+        paintAction(current, start, n - start + 1, id, content);
       } else if (current === endParent) {
         paintAction(current, 0, end, id, content);
         break;
