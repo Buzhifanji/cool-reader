@@ -1,4 +1,4 @@
-import { getEleById } from "../utils/utils";
+import { getEleById } from "../utils/dom";
 
 export function getPosition(node: HTMLElement) {
   let offset = { top: 0, left: 0 };

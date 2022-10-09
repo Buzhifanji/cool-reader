@@ -12,14 +12,8 @@ import {
 } from "pdfjs-dist/web/pdf_viewer";
 import { toRaw } from "vue";
 import { StorageBook } from "../type";
-import {
-  arrayHasData,
-  createEle,
-  getEleById,
-  isArray,
-  isObj,
-  isOwn,
-} from "../utils/utils";
+import { createEle, getEleById } from "../utils/dom";
+import { arrayHasData, isArray, isObj, isOwn } from "../utils/utils";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 

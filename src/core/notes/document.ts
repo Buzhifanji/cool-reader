@@ -1,7 +1,7 @@
 import { getReadingBook } from "../store";
 import { ExtnameFn } from "../type";
+import { getEleById } from "../utils/dom";
 import { Bookextname } from "../utils/enums";
-import { getEleById } from "../utils/utils";
 
 export function getReaderToolRoot() {
   const readingBook = getReadingBook();

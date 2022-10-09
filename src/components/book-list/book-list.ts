@@ -2,7 +2,8 @@ import { Delete, Edit, Export } from "@vicons/carbon";
 import { nextTick, ref } from "vue";
 import { deleteForageFile, getForageFiles } from "../../core/store";
 import { StorageBook } from "../../core/type";
-import { isIndex, renderIcon } from "../../core/utils/utils";
+import { renderIcon } from "../../core/utils/dom";
+import { isIndex } from "../../core/utils/utils";
 import { notification } from "../../naive";
 
 const books = ref<StorageBook[]>([]);
