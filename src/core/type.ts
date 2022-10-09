@@ -27,3 +27,5 @@ export interface StorageBook extends BaseBook {
 export type ExtnameFn = Record<Bookextname, Function>;
 
 export type BookContext = PDFViewer | Rendition | null;
+
+export type Intervals = [number, number];

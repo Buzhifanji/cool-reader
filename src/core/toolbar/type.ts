@@ -24,5 +24,3 @@ export interface PaintSource {
   endDom: Node;
   id: string;
 }
-
-export type Intervals = [number, number];

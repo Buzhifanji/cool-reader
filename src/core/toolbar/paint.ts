@@ -1,10 +1,12 @@
 import { getDomSource } from "../store/dom-source";
+import { Intervals } from "../type";
 import { DATA_SOURCE_ID } from "../utils/constant";
 import { createEle } from "../utils/dom";
 import { isTextNode } from "../utils/is";
+import { mergeIntervals } from "../utils/union";
 import { getOrinalParent } from "./dom";
 import { getTextOffset, getTextOffsetById } from "./offset";
-import { Intervals, PaintSource } from "./type";
+import { PaintSource } from "./type";
 
 function createWrapper(text: string, id: string) {
   const className = getDomSource(id)?.className || "wrapper_source";
@@ -44,33 +46,6 @@ function getPaintRange(nodes: HTMLElement): [number, number][] {
     }
   });
   return paintedRange;
-}
-
-// 合并区间
-function mergeIntervals(list: Intervals[], newList: Intervals): Intervals[] {
-  const intervals = [...list, newList].sort((a, b) => a[0] - b[0]); // 排序从小到大;
-
-  if (intervals.length < 2) {
-    return intervals;
-  }
-
-  let current = intervals[0];
-
-  const result: Intervals[] = [];
-
-  for (let interval of intervals) {
-    if (current[1] >= interval[0]) {
-      // 重叠 更新 右边界
-      current[1] = Math.max(current[1], interval[1]);
-    } else {
-      result.push(current);
-      current = interval;
-    }
-  }
-
-  result.push(current);
-
-  return result;
 }
 
 function paintRangeText(list: Intervals[], id: string, content: string) {

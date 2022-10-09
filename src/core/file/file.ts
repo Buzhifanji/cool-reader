@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { ref } from "vue";
 import { addBook } from "../book/book";
 import { BaseBook } from "../type";
-import { mergerUint8Array } from "../utils/utils";
+import { mergerUint8Array } from "../utils/union";
 import { calculatePercentage, listFileSize, readFileSize } from "./file-size";
 
 /**
