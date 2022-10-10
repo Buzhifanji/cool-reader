@@ -7,7 +7,7 @@ import { DomSource } from "./type";
 
 export function domSourceFromRange(
   range: Range,
-  parentDom: HTMLElement,
+  contianer: HTMLElement,
   pageNumber: number
 ) {
   const {
@@ -17,8 +17,8 @@ export function domSourceFromRange(
     endOffset,
   } = range;
 
-  const startMeta = getDomMeta(parentDom, startDom, startOffset);
-  const endMeta = getDomMeta(parentDom, endDom, endOffset);
+  const startMeta = getDomMeta(contianer, startDom, startOffset);
+  const endMeta = getDomMeta(contianer, endDom, endOffset);
 
   const text = range.toString();
   const id = SparkMD5.hash(text);
@@ -33,10 +33,20 @@ export function domSourceFromRange(
   };
   if (!hasDomSource(id)) {
     saveDomSource(source);
-    paintWrap({ parentDom, startDom, endDom, id });
+    paintWrap({ parentDom: contianer, startDom, endDom, id });
+    return source;
   } else {
+    return null;
     console.log("todo: same text");
   }
+}
+
+export function getStartParantDom(source: DomSource, parentDom: HTMLElement) {
+  const {
+    startMeta: { parentIndex: startIndex, parentTagName: startTagName },
+  } = source;
+  const startDom = selectorAll(startTagName, parentDom)[startIndex];
+  return startDom;
 }
 
 export function domSourceFromStore(source: DomSource, parentDom: HTMLElement) {
