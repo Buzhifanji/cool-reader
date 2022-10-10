@@ -1,13 +1,14 @@
+import { selectorAll } from "../utils/dom";
 import { getTextOffset } from "./offset";
 import { DomMeta } from "./type";
 
-// 查找 子元素所在位置
 function queryChildDomIndex(
   container: HTMLElement,
   taget: HTMLElement
 ): number {
+  const nodes = selectorAll(taget.tagName, container);
   let result = -1;
-  container.childNodes.forEach((node, index) => {
+  nodes.forEach((node, index) => {
     if (node === taget) {
       result = index;
     }
@@ -32,18 +33,15 @@ export function getOrinalParent(
 }
 
 export function getDomMeta(
-  parentElement: HTMLElement,
-  contianer: Node,
+  contianer: HTMLElement,
+  tagetDom: Node,
   textOffset: number
 ): DomMeta {
-  const contianerParent = getOrinalParent(
-    parentElement,
-    contianer.parentElement!
-  );
-  const preNodeOffset = getTextOffset(contianerParent, contianer);
+  const tagetDomParent = getOrinalParent(contianer, tagetDom.parentElement!);
+  const preNodeOffset = getTextOffset(tagetDomParent, tagetDom);
   return {
-    parentTagName: contianerParent.tagName,
-    parentIndex: queryChildDomIndex(parentElement, contianerParent),
+    parentTagName: tagetDomParent.tagName,
+    parentIndex: queryChildDomIndex(contianer, tagetDomParent),
     textOffset: preNodeOffset + textOffset,
   };
 }
