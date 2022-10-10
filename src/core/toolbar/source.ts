@@ -21,7 +21,9 @@ export function domSourceFromRange(
   const endMeta = getDomMeta(contianer, endDom, endOffset);
 
   const text = range.toString();
-  const id = SparkMD5.hash(text);
+
+  // 解决获取不到dom 问题，由于 querySelector是按css规范来实现的，所以它传入的字符串中第一个字符不能是数字、特殊字符，
+  const id = "a" + SparkMD5.hash(text);
 
   const source: DomSource = {
     id,
