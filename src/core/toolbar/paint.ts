@@ -1,6 +1,10 @@
 import { getDomSource } from "../store/dom-source";
 import { Intervals } from "../type";
-import { DATA_SOURCE_ID } from "../utils/constant";
+import {
+  DATA_SOURCE_ID,
+  DEFAULT_DOM_CLASS_NAME,
+  WARP_TAG_NAME,
+} from "../utils/constant";
 import { createEle } from "../utils/dom";
 import { isTextNode } from "../utils/is";
 import { mergeIntervals } from "../utils/union";
@@ -9,9 +13,9 @@ import { getTextOffset, getTextOffsetById } from "./offset";
 import { PaintSource } from "./type";
 
 function createWrapper(text: string, id: string) {
-  const className = getDomSource(id)?.className || "wrapper_source";
+  const className = getDomSource(id)?.className || DEFAULT_DOM_CLASS_NAME;
   const textNode = document.createTextNode(text);
-  const wrapper = createEle("i");
+  const wrapper = createEle(WARP_TAG_NAME);
   wrapper.setAttribute("class", className);
   wrapper.setAttribute(DATA_SOURCE_ID, id);
   wrapper.appendChild(textNode);
