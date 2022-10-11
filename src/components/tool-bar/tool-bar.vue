@@ -38,6 +38,7 @@ const { bars, barAction, toolBarStyle, toolBar } = useToolBar();
   cursor: pointer;
   line-height: 18px;
   overflow: visible;
+  z-index: 9;
 }
 
 .tool-bar-wrapper::after {

@@ -7,9 +7,9 @@
         <n-button @click="controlNodesSection(true)">Option</n-button>
       </n-space>
     </n-layout-header>
-    <n-layout-content id="drawer-target" @click.capture="closeTooBar">
-      <div id="viewerContainer" @click="openTooBar">
-        <div id="viewer" class="pdfViewer"></div>
+    <n-layout-content id="drawer-target">
+      <div id="viewerContainer" @click="closeTooBar">
+        <div id="viewer" class="pdfViewer" @click="openTooBar"></div>
         <ToolBar />
       </div>
       <div class="anchor-wrapper">

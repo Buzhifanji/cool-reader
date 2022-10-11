@@ -41,12 +41,13 @@ function toolBarAction(data: DomSource) {
   });
 }
 
-export function openTooBar() {
+export function openTooBar(event: Event) {
   const domRange = new DomRange();
   const range = domRange.getDomRange();
   if (range) {
     const source = domSourceFromRange(range);
     if (source) {
+      event.stopPropagation();
       toolBarAction(source);
     }
   }

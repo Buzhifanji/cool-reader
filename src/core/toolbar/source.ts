@@ -1,4 +1,5 @@
 import { getDomContianer, getPageNumber } from ".";
+import { getReadingBook } from "../store";
 import {
   hasDomSource,
   removeDomSource,
@@ -31,6 +32,7 @@ export function domSourceFromRange(range: Range) {
       startMeta,
       endMeta,
       pageNumber: getPageNumber(),
+      bookId: getReadingBook().id,
       className: "wrapper_source",
     };
     if (!hasDomSource(id)) {

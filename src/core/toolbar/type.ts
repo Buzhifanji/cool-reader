@@ -16,6 +16,7 @@ export interface DomSource {
   id: string;
   pageNumber: number;
   className: string;
+  bookId: string;
 }
 
 export interface PaintSource {

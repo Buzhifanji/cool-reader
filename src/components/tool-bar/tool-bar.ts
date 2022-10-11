@@ -1,7 +1,8 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
-import { useReaderToolBar } from "../../core/notes/reader-tool";
+import { saveHighlight } from "../../core/service/highlight";
 import { message } from "../../naive";
+import { updateHighlights } from "../highlight/highlight";
 import { ToolBar, ToolBarStyle } from "./interface";
 
 function toolBarStyleModel(): ToolBarStyle {
@@ -59,7 +60,19 @@ export const useToolBar = () => {
       icon: TextUnderline,
     },
   ];
-  const { addTextHighlight, addTilde, addStraightLine } = useReaderToolBar();
+  // 高亮
+  function addTextHighlight() {
+    toolBar.show = false;
+    toolBar.save = true;
+    const source = toolBar.source;
+    if (source) {
+      saveHighlight(source).then(() => updateHighlights());
+    }
+  }
+  // 波浪线
+  function addTilde() {}
+  // 直线
+  function addStraightLine() {}
   const barActionStatus: Record<barEnum, Function> = {
     [barEnum.Copy]: copyText,
     [barEnum.TextHighlight]: addTextHighlight,
