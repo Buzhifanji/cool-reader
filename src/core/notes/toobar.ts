@@ -1,6 +1,10 @@
 import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
 import { getDomSource } from "../store/dom-source";
-import { domSourceFromRange, getDomContianer } from "../toolbar";
+import {
+  deleteDomSource,
+  domSourceFromRange,
+  getDomContianer,
+} from "../toolbar";
 import { DomRange } from "../toolbar/selection";
 import { DomSource } from "../toolbar/type";
 import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
@@ -26,6 +30,7 @@ function setToolBarPosition(id: string) {
 function setToolBarData(data: DomSource) {
   toolBar.id = data.id;
   toolBar.show = true;
+  toolBar.save = false;
   toolBar.source = data;
 }
 
@@ -48,5 +53,8 @@ export function openTooBar() {
 }
 
 export function closeTooBar() {
-  console.log("dddd");
+  if (!toolBar.save && toolBar.source) {
+    deleteDomSource(toolBar.source);
+    toolBar.show = false;
+  }
 }

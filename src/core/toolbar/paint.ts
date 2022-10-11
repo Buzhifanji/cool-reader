@@ -192,25 +192,23 @@ function removeWrap(parent: HTMLElement) {
   parent.innerText = content;
 }
 
-function removeSamePaint(source: PaintSource) {
-  const { startParent } = generateDom(source);
-  removeWrap(startParent);
+function removeSamePaint(dom: HTMLElement) {
+  removeWrap(dom);
 }
 
-function removeSpacePaint(source: PaintSource) {
-  const { startParent, endParent } = generateDom(source);
-  let current = startParent;
+function removeSpacePaint({ startDom, endDom }: PaintSource) {
+  let current = startDom as HTMLElement;
   while (current) {
     removeWrap(current);
-    if (current === endParent) break;
+    if (current === endDom) break;
     current = current.nextSibling as HTMLElement;
   }
 }
 
 export function removePaint(source: PaintSource) {
-  const { startParent, endParent } = generateDom(source);
-  if (startParent === endParent) {
-    removeSamePaint(source);
+  const { startDom, endDom } = source;
+  if (startDom === endDom) {
+    removeSamePaint(startDom as HTMLElement);
   } else {
     removeSpacePaint(source);
   }
