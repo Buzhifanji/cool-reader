@@ -93,7 +93,9 @@
 
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
+import { removeContextEvent } from "../../core/notes/event";
 import { closeTooBar, openTooBar } from "../../core/notes/toobar";
 import Catalog from "../catalog/catalog.vue";
 import Highlight from "../highlight/highlight.vue";
@@ -108,6 +110,10 @@ const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
   useNotesSection();
 const { pageUp, pageDown } = usePageTurn();
 const { readingBook } = useReaderBook(route);
+
+onMounted(() => {
+  removeContextEvent();
+})
 </script>
 
 <style scoped>

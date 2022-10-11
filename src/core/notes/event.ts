@@ -18,19 +18,35 @@ function epubEvent(rendition: Rendition) {
   });
 }
 
-function pdfEvent(pdfViewer: PDFViewer) {
-  pdfViewer.eventBus.on("pagechanging", (value: any) => {
-    console.log(value);
-    updatePageNumber(value.pageNumber);
-  });
+let changePage: null | Function = null;
+
+function addFdfEvent(pdfViewer: PDFViewer) {
+  changePage = () => updatePageNumber(pdfViewer.currentPageNumber);
+  pdfViewer.eventBus.on("textlayerrendered", changePage);
+}
+
+function removePDfEvent(pdfViewer: PDFViewer) {
+  if (changePage) {
+    pdfViewer.eventBus.on("textlayerrendered", changePage);
+  }
 }
 
 export function useContextEvent() {
   const readingBook = getReadingBook();
   const context = getBookContext();
   const contextEventStatus: ExtnameFn = {
-    [Bookextname.pdf]: pdfEvent,
+    [Bookextname.pdf]: addFdfEvent,
     [Bookextname.epub]: epubEvent,
+  };
+  contextEventStatus[readingBook.extname]?.(context);
+}
+
+export function removeContextEvent() {
+  const readingBook = getReadingBook();
+  const context = getBookContext();
+  const contextEventStatus: ExtnameFn = {
+    [Bookextname.pdf]: removePDfEvent,
+    [Bookextname.epub]: () => console.log("totd: epub event"),
   };
   contextEventStatus[readingBook.extname]?.(context);
 }

@@ -15,7 +15,6 @@ const pageNumber = ref<number>(1);
 watchEffect(() => {
   const list = getPageHighlights(pageNumber.value);
   domSourceFromStore(list);
-  console.log(list);
 });
 
 export function updatePageNumber(number: number) {
