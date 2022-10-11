@@ -42,6 +42,22 @@ export function domSourceFromRange(range: Range) {
   return null;
 }
 
+export function domSourceFromStore(source: DomSource) {
+  const paintSource = getPaintSource(source);
+  if (paintSource && paintSource.startDom && paintSource.endDom) {
+    saveDomSource(source);
+    paintWrap(paintSource);
+  }
+}
+
+export function deleteDomSource(source: DomSource) {
+  const paintSource = getPaintSource(source);
+  if (paintSource) {
+    removeDomSource(source.id);
+    removePaint(paintSource);
+  }
+}
+
 function getPaintSource(source: DomSource): PaintSource | null {
   const contianer = getDomContianer();
   let result: PaintSource | null = null;
@@ -57,20 +73,4 @@ function getPaintSource(source: DomSource): PaintSource | null {
     result = { parentDom: contianer, startDom, endDom, id };
   }
   return result;
-}
-
-export function domSourceFromStore(source: DomSource) {
-  const paintSource = getPaintSource(source);
-  if (paintSource && paintSource.startDom && paintSource.endDom) {
-    saveDomSource(source);
-    paintWrap(paintSource);
-  }
-}
-
-export function deleteDomSource(source: DomSource) {
-  const paintSource = getPaintSource(source);
-  if (paintSource) {
-    removeDomSource(source.id);
-    removePaint(paintSource);
-  }
 }
