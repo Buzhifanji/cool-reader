@@ -185,3 +185,33 @@ export function paintWrap(source: PaintSource) {
     paintSpaceElments(source);
   }
 }
+
+function removeWrap(parent: HTMLElement) {
+  const content = getDomContent(parent);
+  parent.innerHTML = "";
+  parent.innerText = content;
+}
+
+function removeSamePaint(source: PaintSource) {
+  const { startParent } = generateDom(source);
+  removeWrap(startParent);
+}
+
+function removeSpacePaint(source: PaintSource) {
+  const { startParent, endParent } = generateDom(source);
+  let current = startParent;
+  while (current) {
+    removeWrap(current);
+    if (current === endParent) break;
+    current = current.nextSibling as HTMLElement;
+  }
+}
+
+export function removePaint(source: PaintSource) {
+  const { startParent, endParent } = generateDom(source);
+  if (startParent === endParent) {
+    removeSamePaint(source);
+  } else {
+    removeSpacePaint(source);
+  }
+}

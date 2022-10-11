@@ -7,8 +7,8 @@
         <n-button @click="controlNodesSection(true)">Option</n-button>
       </n-space>
     </n-layout-header>
-    <n-layout-content id="drawer-target" @click.capture="closeReanderTool">
-      <div id="viewerContainer" @click="openTooBar()">
+    <n-layout-content id="drawer-target" @click.capture="closeTooBar">
+      <div id="viewerContainer" @click="openTooBar">
         <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>
@@ -94,8 +94,7 @@
 <script setup lang="ts">
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
 import { useRoute } from "vue-router";
-import { closeReanderTool } from "../../core/notes/reader-tool";
-import { openTooBar } from "../../core/notes/toobar";
+import { closeTooBar, openTooBar } from "../../core/notes/toobar";
 import Catalog from "../catalog/catalog.vue";
 import Highlight from "../highlight/highlight.vue";
 import ToolBar from "../tool-bar/tool-bar.vue";

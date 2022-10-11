@@ -5,4 +5,9 @@ export {
   getForageFiles,
   hasForageFile,
 } from "./file";
-export { getReadingBook, setReadingBook } from "./reading-book";
+export {
+  getBookContext,
+  getReadingBook,
+  setBookContext,
+  setReadingBook,
+} from "./reading-book";
