@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { useToolBar } from "./tool-bar";
+import { useToolBar } from "./toolbar";
 const { bars, barAction, toolBarStyle, toolBar } = useToolBar();
 </script>
 

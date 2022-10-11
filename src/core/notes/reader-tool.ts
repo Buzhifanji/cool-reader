@@ -5,7 +5,7 @@ import HighlightSource from "web-highlighter/dist/model/source";
 import { CreateFrom } from "web-highlighter/dist/types";
 import { updateHighlights } from "../../components/highlight/highlight";
 import { controlNodesSection } from "../../components/reader/notes";
-import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
+import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
 import { saveHighlight } from "../service/highlight";
 import { getReadingBook } from "../store";
 import { ExtnameFn } from "../type";

@@ -1,4 +1,4 @@
-import { toolBar, toolBarStyle } from "../../components/tool-bar/tool-bar";
+import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
 import { getDomSource } from "../store/dom-source";
 import {
   deleteDomSource,

@@ -97,7 +97,7 @@ import { useRoute } from "vue-router";
 import { closeTooBar, openTooBar } from "../../core/notes/toobar";
 import Catalog from "../catalog/catalog.vue";
 import Highlight from "../highlight/highlight.vue";
-import ToolBar from "../tool-bar/tool-bar.vue";
+import ToolBar from "../toolbar/toolbar.vue";
 import { usePageTurn, useReaderBook } from "./book";
 import { TabPaneEnum } from "./enum";
 import { useNotesSection } from "./notes";
