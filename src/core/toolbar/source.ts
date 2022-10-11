@@ -1,6 +1,6 @@
-import SparkMD5 from "spark-md5";
 import { hasDomSource, saveDomSource } from "../store/dom-source";
 import { selectorAll } from "../utils/dom";
+import { stringTohash } from "../utils/union";
 import { getDomMeta } from "./dom";
 import { paintWrap } from "./paint";
 import { DomSource } from "./type";
@@ -22,9 +22,7 @@ export function domSourceFromRange(
 
   const text = range.toString();
 
-  // 解决获取不到dom 问题，由于 querySelector是按css规范来实现的，所以它传入的字符串中第一个字符不能是数字、特殊字符，
-  const id = "a" + SparkMD5.hash(text);
-
+  const id = stringTohash(text);
   const source: DomSource = {
     id,
     text,

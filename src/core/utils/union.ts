@@ -1,3 +1,4 @@
+import SparkMD5 from "spark-md5";
 import { Intervals } from "../type";
 
 /**
@@ -50,4 +51,9 @@ export function mergeIntervals(
   result.push(current);
 
   return result;
+}
+
+export function stringTohash(text: string): string {
+  // 由于 querySelector是按css规范来实现的，所以它传入的字符串中第一个字符不能是数字、特殊字符，
+  return "a" + SparkMD5.hash(text);
 }
