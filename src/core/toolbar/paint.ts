@@ -52,13 +52,18 @@ function getPaintRange(nodes: HTMLElement): [number, number][] {
   return paintedRange;
 }
 
-function paintRangeText(list: Intervals[], id: string, content: string) {
+function paintRangeText(
+  list: Intervals[],
+  id: string,
+  content: string,
+  oldEL: Map<string, HTMLElement>
+) {
   const fragment = document.createDocumentFragment();
 
   // 用标签包裹笔记内容
   const paintWrap = (start: number, end: number) => {
     const text = content.substring(start, end);
-    const wrapper = createWrapper(text, id);
+    const wrapper = oldEL.get(text) || createWrapper(text, id);
     fragment.appendChild(wrapper);
   };
 
@@ -92,6 +97,29 @@ function paintRangeText(list: Intervals[], id: string, content: string) {
   return fragment;
 }
 
+/**
+ *
+ * @param parent
+ * @param content parent 里的全部文字内容
+ * @returns
+ */
+function getOldElement(parent: HTMLElement, content: string) {
+  const result = new Map<string, HTMLElement>();
+  parent.childNodes.forEach((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = node as HTMLElement;
+      if (el.hasAttribute(DATA_SOURCE_ID)) {
+        const text = el.innerText;
+        // 如果 text 与 content 相等，则代表着覆盖，需要更新 id
+        if (text !== content) {
+          result.set(text, el);
+        }
+      }
+    }
+  });
+  return result;
+}
+
 function paintAction(
   parent: HTMLElement, // 父节点
   start: number, // 开始偏移量
@@ -102,7 +130,8 @@ function paintAction(
   if (content.length) {
     const paintedRange = getPaintRange(parent);
     const result = mergeIntervals(paintedRange, [start, end]);
-    const wrapper = paintRangeText(result, id, content);
+    const oldEl = getOldElement(parent, content);
+    const wrapper = paintRangeText(result, id, content, oldEl);
     parent.innerHTML = "";
     parent.appendChild(wrapper);
   }
