@@ -1,3 +1,4 @@
+import { VIEWER } from "../utils/constant";
 import { getEleById } from "../utils/dom";
 
 export function getPosition(node: HTMLElement) {
@@ -10,7 +11,7 @@ export function getPosition(node: HTMLElement) {
       break;
     }
     if (node.tagName === "BODY") {
-      const contianer = getEleById("viewer")!;
+      const contianer = getEleById(VIEWER)!;
       node = contianer.getElementsByTagName("iframe")[0];
     }
   }

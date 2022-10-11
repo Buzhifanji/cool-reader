@@ -6,7 +6,11 @@ import { getBookContext } from "../store/reading-book";
 import { domSourceFromRange } from "../toolbar";
 import { DomRange } from "../toolbar/selection";
 import { DomSource } from "../toolbar/type";
-import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
+import {
+  DATA_SOURCE_ID,
+  DEFAULT_DOM_CLASS_NAME,
+  VIEWER,
+} from "../utils/constant";
 import { getEleById, getPDFPageSelector, selector } from "../utils/dom";
 import { Bookextname } from "../utils/enums";
 import { getPosition } from "./postion";
@@ -40,7 +44,7 @@ function handlePdfToolbar(range: Range, context: PDFViewer) {
   const pageNumber = context.currentPageNumber;
   const contianer = selector(
     getPDFPageSelector(pageNumber),
-    getEleById("viewer")!
+    getEleById(VIEWER)!
   )!;
   const source = domSourceFromRange(range, contianer, pageNumber);
   if (source) {

@@ -1,6 +1,7 @@
 import epubjs, { Rendition } from "epubjs";
 import { NavItem } from "epubjs/types/navigation";
 import { StorageBook } from "../type";
+import { VIEWER } from "../utils/constant";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 let catalog: NavItem[] = []; // 目录
@@ -27,7 +28,7 @@ export function renderEpub({ fileContent }: StorageBook): Promise<Rendition> {
       formateEpubCatalog(catalog);
     });
 
-    rendition = book.renderTo("viewer", {
+    rendition = book.renderTo(VIEWER, {
       flow: "scrolled",
       width: "793px",
       height: "100%",
