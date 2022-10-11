@@ -30,9 +30,6 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
           setBookContext(context);
           useContextEvent();
           updateHighlights();
-
-          // 开启高亮功能
-          // useReaderTool(context);
         }
       }
     } catch (error) {
