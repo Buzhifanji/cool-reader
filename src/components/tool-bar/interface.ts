@@ -1,4 +1,4 @@
-import HighlightSource from "web-highlighter/dist/model/source";
+import { DomSource } from "../../core/toolbar/type";
 
 export interface ToolBarStyle {
   left: string;
@@ -9,5 +9,5 @@ export interface ToolBar {
   id: string;
   show: boolean;
   save: boolean;
-  source: null | HighlightSource;
+  source: null | DomSource;
 }

@@ -71,7 +71,7 @@ function createHighlight(
   sources.forEach((source) => {
     setToolBarPosition(h.getDoms(source.id)[0]);
     if (type === "from-input") {
-      setToolBarData(source);
+      // setToolBarData(source);
     }
   });
   console.log(data);
