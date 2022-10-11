@@ -1,13 +1,26 @@
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { pdfJumpToPage } from "../../core/file/pdf";
 import { highlightParam } from "../../core/notes/type";
 import { getHighlights, removeHighlight } from "../../core/service/highlight";
 import { getReadingBook } from "../../core/store";
+import { domSourceFromStore } from "../../core/toolbar";
 import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 import { message } from "../../naive";
 
 export const highlights = ref<highlightParam[]>([]);
+
+const pageNumber = ref<number>(1);
+
+watchEffect(() => {
+  const list = getPageHighlights(pageNumber.value);
+  domSourceFromStore(list);
+  console.log(list);
+});
+
+export function updatePageNumber(number: number) {
+  pageNumber.value = number;
+}
 
 // 更新
 export function updateHighlights() {

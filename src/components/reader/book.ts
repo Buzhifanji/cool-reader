@@ -10,6 +10,7 @@ import {
 import { setBookContext } from "../../core/store/reading-book";
 import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
+import { updateHighlights } from "../highlight/highlight";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   const readingBook = getReadingBook();
@@ -28,6 +29,8 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
           context = await renderBookStatus[readingBook.extname]?.(readingBook);
           setBookContext(context);
           useContextEvent();
+          updateHighlights();
+
           // 开启高亮功能
           // useReaderTool(context);
         }
