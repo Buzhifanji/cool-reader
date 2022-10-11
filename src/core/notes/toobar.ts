@@ -53,7 +53,7 @@ export function openTooBar() {
 }
 
 export function closeTooBar() {
-  if (!toolBar.save && toolBar.source) {
+  if (!toolBar.save && toolBar.source && toolBar.show) {
     deleteDomSource(toolBar.source);
     toolBar.show = false;
   }
