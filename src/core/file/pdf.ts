@@ -12,6 +12,7 @@ import {
 } from "pdfjs-dist/web/pdf_viewer";
 import { toRaw } from "vue";
 import { StorageBook } from "../type";
+import { VIEWERCONTAINER } from "../utils/constant";
 import { createEle, getEleById } from "../utils/dom";
 import { arrayHasData, isArray, isObj, isOwn } from "../utils/is";
 
@@ -41,7 +42,7 @@ function createCanvas({ width, height, viewBox }: PageViewport) {
 }
 
 export async function renderPdf({ fileContent, id }: StorageBook) {
-  const container = getEleById("viewerContainer")! as HTMLDivElement;
+  const container = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
 
   const pdfLinkService = new PDFLinkService({
     eventBus: new EventBus(),

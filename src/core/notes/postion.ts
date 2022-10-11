@@ -1,4 +1,4 @@
-import { VIEWER } from "../utils/constant";
+import { VIEWER, VIEWERCONTAINER } from "../utils/constant";
 import { getEleById } from "../utils/dom";
 
 export function getPosition(node: HTMLElement) {
@@ -7,7 +7,7 @@ export function getPosition(node: HTMLElement) {
     offset.top += node.offsetTop;
     offset.left += node.offsetLeft;
     node = node.offsetParent as HTMLElement;
-    if (node.id === "viewerContainer") {
+    if (node.id === VIEWERCONTAINER) {
       break;
     }
     if (node.tagName === "BODY") {
