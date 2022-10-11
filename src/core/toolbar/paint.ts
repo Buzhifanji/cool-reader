@@ -143,7 +143,9 @@ function paintSameElement(source: PaintSource) {
   const offset = getTextOffsetById(id);
   if (offset) {
     const content = getDomContent(startParent);
-    paintAction(startParent, offset.start, offset.end, id, content);
+    if (startParent.innerText !== content) {
+      paintAction(startParent, offset.start, offset.end, id, content);
+    }
   }
 }
 
@@ -171,6 +173,7 @@ function paintSpaceElments(source: PaintSource) {
 }
 
 export function paintWrap(source: PaintSource) {
+  debugger;
   const { startParent, endParent } = generateDom(source);
   if (startParent === endParent) {
     paintSameElement(source);
