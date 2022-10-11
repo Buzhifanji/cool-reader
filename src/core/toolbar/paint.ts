@@ -6,9 +6,9 @@ import {
   WARP_TAG_NAME,
 } from "../utils/constant";
 import { createEle } from "../utils/dom";
-import { isTextNode } from "../utils/is";
+import { DomSourceType } from "../utils/enums";
 import { mergeIntervals } from "../utils/union";
-import { getOrinalParent } from "./dom";
+import { getDomContent, getOldElement, getOrinalParent } from "./dom";
 import { getTextOffset, getTextOffsetById } from "./offset";
 import { PaintSource } from "./type";
 
@@ -22,23 +22,10 @@ function createWrapper(text: string, id: string) {
   return wrapper;
 }
 
-function generateDom(source: PaintSource) {
-  const { startDom, endDom, parentDom, id } = source;
+function generateDom({ startDom, endDom, parentDom, id }: PaintSource) {
   const startParent = getOrinalParent(parentDom, startDom.parentElement!); // 开始文本父节点
   const endParent = getOrinalParent(parentDom, endDom.parentElement!); // 结束文本父节点
   return { id, startParent, endParent };
-}
-
-function getDomContent(nodes: HTMLElement): string {
-  let content = "";
-  nodes.childNodes.forEach((node) => {
-    if (node instanceof HTMLElement && node.hasAttribute(DATA_SOURCE_ID)) {
-      content += node.innerText;
-    } else if (isTextNode(node as Text)) {
-      content += (node as Text).textContent!;
-    }
-  });
-  return content;
 }
 
 function getPaintRange(nodes: HTMLElement): [number, number][] {
@@ -97,29 +84,6 @@ function paintRangeText(
   return fragment;
 }
 
-/**
- *
- * @param parent
- * @param content parent 里的全部文字内容
- * @returns
- */
-function getOldElement(parent: HTMLElement, content: string) {
-  const result = new Map<string, HTMLElement>();
-  parent.childNodes.forEach((node) => {
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      const el = node as HTMLElement;
-      if (el.hasAttribute(DATA_SOURCE_ID)) {
-        const text = el.innerText;
-        // 如果 text 与 content 相等，则代表着覆盖，需要更新 id
-        if (text !== content) {
-          result.set(text, el);
-        }
-      }
-    }
-  });
-  return result;
-}
-
 function paintAction(
   parent: HTMLElement, // 父节点
   start: number, // 开始偏移量
@@ -138,35 +102,37 @@ function paintAction(
 }
 
 // 相同节点
-function paintSameElement(source: PaintSource) {
-  const { id, startParent } = generateDom(source);
+function paintSameElement(node: HTMLElement, id: string) {
   const offset = getTextOffsetById(id);
   if (offset) {
-    const content = getDomContent(startParent);
+    const content = getDomContent(node);
     if (
-      startParent.childNodes.length === 1 &&
-      startParent.firstChild!.nodeType === Node.ELEMENT_NODE
+      node.childNodes.length === 1 &&
+      node.firstChild!.nodeType === Node.ELEMENT_NODE
     ) {
       return;
     } else {
-      paintAction(startParent, offset.start, offset.end, id, content);
+      paintAction(node, offset.start, offset.end, id, content);
     }
   }
 }
 
 // 有间隔的节点
-function paintSpaceElments(source: PaintSource) {
-  const { startParent, endParent, id } = generateDom(source);
+function paintSpaceElments(
+  startNode: HTMLElement,
+  endNode: HTMLElement,
+  id: string
+) {
   const offset = getTextOffsetById(id);
   if (offset) {
     const { start, end } = offset;
-    let current = startParent;
+    let current = startNode;
     while (current) {
       const content = getDomContent(current);
       const n = content.length;
-      if (current === startParent) {
+      if (current === startNode) {
         paintAction(current, start, n - start + 1, id, content);
-      } else if (current === endParent) {
+      } else if (current === endNode) {
         paintAction(current, 0, end, id, content);
         break;
       } else {
@@ -177,39 +143,16 @@ function paintSpaceElments(source: PaintSource) {
   }
 }
 
-export function paintWrap(source: PaintSource) {
-  const { startParent, endParent } = generateDom(source);
-  if (startParent === endParent) {
-    paintSameElement(source);
-  } else {
-    paintSpaceElments(source);
+export function paintWrap(source: PaintSource, from: DomSourceType) {
+  let { startDom, endDom, id } = source;
+  if (from === DomSourceType.range) {
+    const { startParent, endParent } = generateDom(source);
+    startDom = startParent;
+    endDom = endParent;
   }
-}
-
-function removeWrap(parent: HTMLElement) {
-  const content = getDomContent(parent);
-  parent.innerHTML = "";
-  parent.innerText = content;
-}
-
-function removeSamePaint(dom: HTMLElement) {
-  removeWrap(dom);
-}
-
-function removeSpacePaint({ startDom, endDom }: PaintSource) {
-  let current = startDom as HTMLElement;
-  while (current) {
-    removeWrap(current);
-    if (current === endDom) break;
-    current = current.nextSibling as HTMLElement;
-  }
-}
-
-export function removePaint(source: PaintSource) {
-  const { startDom, endDom } = source;
   if (startDom === endDom) {
-    removeSamePaint(startDom as HTMLElement);
+    paintSameElement(startDom as HTMLElement, id);
   } else {
-    removeSpacePaint(source);
+    paintSpaceElments(startDom as HTMLElement, endDom as HTMLElement, id);
   }
 }

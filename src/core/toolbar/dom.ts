@@ -1,4 +1,6 @@
+import { DATA_SOURCE_ID } from "../utils/constant";
 import { selectorAll } from "../utils/dom";
+import { isTextNode } from "../utils/is";
 import { getTextOffset } from "./offset";
 import { DomMeta } from "./type";
 
@@ -44,4 +46,33 @@ export function getDomMeta(
     parentIndex: queryChildDomIndex(contianer, tagetDomParent),
     textOffset: preNodeOffset + textOffset,
   };
+}
+
+export function getDomContent(nodes: HTMLElement): string {
+  let content = "";
+  nodes.childNodes.forEach((node) => {
+    if (node instanceof HTMLElement && node.hasAttribute(DATA_SOURCE_ID)) {
+      content += node.innerText;
+    } else if (isTextNode(node as Text)) {
+      content += (node as Text).textContent!;
+    }
+  });
+  return content;
+}
+
+export function getOldElement(parent: HTMLElement, content: string) {
+  const result = new Map<string, HTMLElement>();
+  parent.childNodes.forEach((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const el = node as HTMLElement;
+      if (el.hasAttribute(DATA_SOURCE_ID)) {
+        const text = el.innerText;
+        // 如果 text 与 content 相等，则代表着覆盖，需要更新 id
+        if (text !== content) {
+          result.set(text, el);
+        }
+      }
+    }
+  });
+  return result;
 }
