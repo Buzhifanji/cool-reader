@@ -1,7 +1,7 @@
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { epubPageDown, renderEpub } from "../../core/file/epub";
 import { pdfPageDown, pdfPageUp, renderPdf } from "../../core/file/pdf";
-import { useReaderTool } from "../../core/notes/reader-tool";
+import { useContextEvent } from "../../core/notes/event";
 import {
   getForageFile,
   getReadingBook,
@@ -27,8 +27,9 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
           // 获取内容
           context = await renderBookStatus[readingBook.extname]?.(readingBook);
           setBookContext(context);
+          useContextEvent();
           // 开启高亮功能
-          useReaderTool(context);
+          // useReaderTool(context);
         }
       }
     } catch (error) {
