@@ -60,19 +60,29 @@ export const useToolBar = () => {
       icon: TextUnderline,
     },
   ];
-  // 高亮
-  function addTextHighlight() {
+  function save(className?: string) {
     toolBar.show = false;
     toolBar.save = true;
     const source = toolBar.source;
     if (source) {
+      if (className) {
+        source.className = className;
+      }
       saveHighlight(source).then(() => updateHighlights());
     }
   }
+  // 高亮
+  function addTextHighlight() {
+    save();
+  }
   // 波浪线
-  function addTilde() {}
+  function addTilde() {
+    save("c-tilde");
+  }
   // 直线
-  function addStraightLine() {}
+  function addStraightLine() {
+    save("c-straight-line");
+  }
   const barActionStatus: Record<barEnum, Function> = {
     [barEnum.Copy]: copyText,
     [barEnum.TextHighlight]: addTextHighlight,
