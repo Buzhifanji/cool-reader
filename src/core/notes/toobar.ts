@@ -1,5 +1,5 @@
 import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
-import { deleteDomSource, getDomContianer, getMeteDom } from "../toolbar";
+import { getDomContianer, getMeteDom } from "../toolbar";
 import { DomRange } from "../toolbar/selection";
 import { initDomSource } from "../toolbar/source";
 import { DomSource } from "../toolbar/type";
@@ -39,7 +39,7 @@ export function openTooBar(event: Event) {
 
 export function closeTooBar() {
   if (!toolBar.save && toolBar.source && toolBar.show) {
-    deleteDomSource(toolBar.source);
     toolBar.show = false;
+    toolBar.source = null;
   }
 }
