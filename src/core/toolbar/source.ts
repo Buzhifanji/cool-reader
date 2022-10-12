@@ -1,10 +1,6 @@
 import { getDomContianer, getPageNumber } from ".";
 import { getReadingBook } from "../store";
-import {
-  hasDomSource,
-  removeDomSource,
-  saveDomSource,
-} from "../store/dom-source";
+import { removeDomSource, saveDomSource } from "../store/dom-source";
 import { DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
 import { stringTohash } from "../utils/union";
 import { removePaint } from "./delete";
@@ -25,7 +21,7 @@ export function initDomSource(range: Range): DomSource | null {
     const text = range.toString();
     const id = stringTohash(text);
 
-    const source: DomSource = {
+    return {
       id,
       text,
       startMeta: setMeteDom(contianer, startDom, startOffset),
@@ -34,10 +30,6 @@ export function initDomSource(range: Range): DomSource | null {
       bookId: getReadingBook().id,
       className: DEFAULT_DOM_CLASS_NAME,
     };
-    if (!hasDomSource(id)) {
-      saveDomSource(source);
-      return source;
-    }
   }
   return null;
 }
