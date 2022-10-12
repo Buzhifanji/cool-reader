@@ -1,11 +1,7 @@
 import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
-import {
-  deleteDomSource,
-  domSourceFromRange,
-  getDomContianer,
-  getMeteDom,
-} from "../toolbar";
+import { deleteDomSource, getDomContianer, getMeteDom } from "../toolbar";
 import { DomRange } from "../toolbar/selection";
+import { initDomSource } from "../toolbar/source";
 import { DomSource } from "../toolbar/type";
 import { getPosition } from "./postion";
 
@@ -32,7 +28,7 @@ export function openTooBar(event: Event) {
   const domRange = new DomRange();
   const range = domRange.getDomRange();
   if (range) {
-    const source = domSourceFromRange(range);
+    const source = initDomSource(range);
     if (source) {
       event.stopPropagation();
       setToolBarPosition(source);

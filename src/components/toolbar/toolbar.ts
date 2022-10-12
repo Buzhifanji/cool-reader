@@ -1,6 +1,7 @@
 import { Copy, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { reactive } from "vue";
 import { saveHighlight } from "../../core/service/highlight";
+import { domSourceFromRange } from "../../core/toolbar";
 import { message } from "../../naive";
 import { updateHighlights } from "../highlight/highlight";
 import { ToolBar, ToolBarStyle } from "./interface";
@@ -68,7 +69,9 @@ export const useToolBar = () => {
       if (className) {
         source.className = className;
       }
-      saveHighlight(source).then(() => updateHighlights());
+      if (domSourceFromRange(source)) {
+        saveHighlight(source).then(() => updateHighlights());
+      }
     }
   }
   // 高亮

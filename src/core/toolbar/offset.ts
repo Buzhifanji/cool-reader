@@ -1,4 +1,3 @@
-import { getDomSource } from "../store/dom-source";
 import { isTextNode } from "../utils/is";
 
 // 获取 相对于父元素的文本偏移量
@@ -29,14 +28,4 @@ export function getTextOffset(root: Node, text: Node) {
   }
 
   return offset;
-}
-
-export function getTextOffsetById(id: string) {
-  const domSource = getDomSource(id);
-  if (domSource) {
-    const start = domSource.startMeta.textOffset;
-    const end = domSource.endMeta.textOffset;
-    return { start, end };
-  }
-  return null;
 }
