@@ -2,7 +2,7 @@ import { DATA_SOURCE_ID } from "../utils/constant";
 import { selectorAll } from "../utils/dom";
 import { isTextNode } from "../utils/is";
 import { getTextOffset } from "./offset";
-import { DomMeta } from "./type";
+import { DomMeta, DomSource } from "./type";
 
 function queryChildDomIndex(
   container: HTMLElement,
@@ -83,4 +83,13 @@ export function hasPaint(node: HTMLElement): boolean {
     node.childNodes.length === 1 &&
     node.firstChild!.nodeType === Node.ELEMENT_NODE
   );
+}
+
+export function getMeteDom(
+  source: DomSource,
+  key: "startMeta" | "endMeta",
+  contianer: HTMLElement
+) {
+  const { parentTagName, parentIndex } = source[key];
+  return selectorAll(parentTagName, contianer)[parentIndex];
 }
