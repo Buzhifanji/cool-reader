@@ -1,18 +1,12 @@
-import { getDomSource } from "../store/dom-source";
 import { Intervals } from "../type";
-import {
-  DATA_SOURCE_ID,
-  DEFAULT_DOM_CLASS_NAME,
-  WARP_TAG_NAME,
-} from "../utils/constant";
+import { DATA_SOURCE_ID, WARP_TAG_NAME } from "../utils/constant";
 import { createEle } from "../utils/dom";
 import { mergeIntervals } from "../utils/union";
 import { getDomContent, getOldElement, hasPaint } from "./dom";
 import { getTextOffset } from "./offset";
 import { DomSource, PaintSource } from "./type";
 
-function createWrapper(text: string, id: string) {
-  const className = getDomSource(id)?.className || DEFAULT_DOM_CLASS_NAME;
+function createWrapper(text: string, id: string, className: string) {
   const textNode = document.createTextNode(text);
   const wrapper = createEle(WARP_TAG_NAME);
   wrapper.setAttribute("class", className);
@@ -36,14 +30,15 @@ function paintRangeText(
   list: Intervals[],
   id: string,
   content: string,
-  oldEL: Map<string, HTMLElement>
+  oldEL: Map<string, HTMLElement>,
+  className: string
 ) {
   const fragment = document.createDocumentFragment();
 
   // 用标签包裹笔记内容
   const paintWrap = (start: number, end: number) => {
     const text = content.substring(start, end);
-    const wrapper = oldEL.get(text) || createWrapper(text, id);
+    const wrapper = oldEL.get(text) || createWrapper(text, id, className);
     fragment.appendChild(wrapper);
   };
 
@@ -82,13 +77,14 @@ function paintAction(
   start: number, // 开始偏移量
   end: number, // 结束偏移量
   id: string,
-  content: string // 父节点下的整个文本内容
+  content: string, // 父节点下的整个文本内容,
+  className: string
 ) {
   if (content.length) {
     const paintedRange = getPaintRange(parent);
     const result = mergeIntervals(paintedRange, [start, end]);
     const oldEl = getOldElement(parent, content);
-    const wrapper = paintRangeText(result, id, content, oldEl);
+    const wrapper = paintRangeText(result, id, content, oldEl, className);
     parent.innerHTML = "";
     parent.appendChild(wrapper);
   }
@@ -101,8 +97,15 @@ function paintSameElement(paintSource: PaintSource, domSource: DomSource) {
   if (hasPaint(node)) {
     return false;
   } else {
-    const { startMeta, endMeta, id } = domSource;
-    paintAction(node, startMeta.textOffset, endMeta.textOffset, content, id);
+    const { startMeta, endMeta, id, className } = domSource;
+    paintAction(
+      node,
+      startMeta.textOffset,
+      endMeta.textOffset,
+      id,
+      content,
+      className
+    );
     return true;
   }
 }
@@ -139,7 +142,7 @@ function paintSpaceElments(paintSource: PaintSource, domSource: DomSource) {
   // 判断是否做过笔记
   const isPaint = isSpaceElementPaint(startDom, endDom);
   if (!isPaint) {
-    const { startMeta, endMeta, id } = domSource;
+    const { startMeta, endMeta, id, className } = domSource;
     const start = startMeta.textOffset;
     const end = endMeta.textOffset;
     let current = startDom;
@@ -147,12 +150,12 @@ function paintSpaceElments(paintSource: PaintSource, domSource: DomSource) {
       const content = getDomContent(current);
       const n = content.length;
       if (current === startDom) {
-        paintAction(current, start, n - start + 1, id, content);
+        paintAction(current, start, n - start + 1, id, content, className);
       } else if (current === endDom) {
-        paintAction(current, 0, end, id, content);
+        paintAction(current, 0, end, id, content, className);
         break;
       } else {
-        paintAction(current, 0, n, id, content);
+        paintAction(current, 0, n, id, content, className);
       }
       current = current.nextSibling as HTMLElement;
     }
