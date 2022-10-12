@@ -76,3 +76,11 @@ export function getOldElement(parent: HTMLElement, content: string) {
   });
   return result;
 }
+
+// 判断某个节点是否全部做成了笔记内容
+export function hasPaint(node: HTMLElement): boolean {
+  return (
+    node.childNodes.length === 1 &&
+    node.firstChild!.nodeType === Node.ELEMENT_NODE
+  );
+}

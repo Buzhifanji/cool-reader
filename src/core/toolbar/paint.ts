@@ -8,7 +8,7 @@ import {
 import { createEle } from "../utils/dom";
 import { DomSourceType } from "../utils/enums";
 import { mergeIntervals } from "../utils/union";
-import { getDomContent, getOldElement, getOrinalParent } from "./dom";
+import { getDomContent, getOldElement, getOrinalParent, hasPaint } from "./dom";
 import { getTextOffset, getTextOffsetById } from "./offset";
 import { PaintSource } from "./type";
 
@@ -20,12 +20,6 @@ function createWrapper(text: string, id: string) {
   wrapper.setAttribute(DATA_SOURCE_ID, id);
   wrapper.appendChild(textNode);
   return wrapper;
-}
-
-function generateDom({ startDom, endDom, parentDom, id }: PaintSource) {
-  const startParent = getOrinalParent(parentDom, startDom.parentElement!); // 开始文本父节点
-  const endParent = getOrinalParent(parentDom, endDom.parentElement!); // 结束文本父节点
-  return { id, startParent, endParent };
 }
 
 function getPaintRange(nodes: HTMLElement): [number, number][] {
@@ -106,15 +100,38 @@ function paintSameElement(node: HTMLElement, id: string) {
   const offset = getTextOffsetById(id);
   if (offset) {
     const content = getDomContent(node);
-    if (
-      node.childNodes.length === 1 &&
-      node.firstChild!.nodeType === Node.ELEMENT_NODE
-    ) {
-      return;
+    if (hasPaint(node)) {
+      return false;
     } else {
       paintAction(node, offset.start, offset.end, id, content);
+      return true;
     }
   }
+  return false;
+}
+
+function isSpaceElementPaint(
+  startNode: HTMLElement,
+  endNode: HTMLElement
+): boolean {
+  let current = startNode;
+  let result = true;
+  while (current) {
+    // 过滤换行节点
+    if (current.tagName.toLowerCase() !== "br") {
+      if (hasPaint(current)) {
+        result = true;
+      } else {
+        result = false;
+        break;
+      }
+    }
+    if (current === endNode) {
+      break;
+    }
+    current = current.nextSibling as HTMLElement;
+  }
+  return result;
 }
 
 // 有间隔的节点
@@ -124,7 +141,9 @@ function paintSpaceElments(
   id: string
 ) {
   const offset = getTextOffsetById(id);
-  if (offset) {
+  // 判断是否做过笔记
+  const isPaint = isSpaceElementPaint(startNode, endNode);
+  if (offset && !isPaint) {
     const { start, end } = offset;
     let current = startNode;
     while (current) {
@@ -140,19 +159,26 @@ function paintSpaceElments(
       }
       current = current.nextSibling as HTMLElement;
     }
+    return true;
   }
+  return false;
 }
 
 export function paintWrap(source: PaintSource, from: DomSourceType) {
-  let { startDom, endDom, id } = source;
+  let { startDom, endDom, id, parentDom } = source;
+
   if (from === DomSourceType.range) {
-    const { startParent, endParent } = generateDom(source);
-    startDom = startParent;
-    endDom = endParent;
+    startDom = getOrinalParent(parentDom, startDom.parentElement!); // 开始文本父节点;
+    endDom = getOrinalParent(parentDom, endDom.parentElement!); // 结束文本父节点
   }
+
   if (startDom === endDom) {
-    paintSameElement(startDom as HTMLElement, id);
+    return paintSameElement(startDom as HTMLElement, id);
   } else {
-    paintSpaceElments(startDom as HTMLElement, endDom as HTMLElement, id);
+    return paintSpaceElments(
+      startDom as HTMLElement,
+      endDom as HTMLElement,
+      id
+    );
   }
 }

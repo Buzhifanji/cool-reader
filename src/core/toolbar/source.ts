@@ -41,11 +41,13 @@ export function domSourceFromRange(range: Range) {
     };
     if (!hasDomSource(id)) {
       saveDomSource(source);
-      paintWrap(
-        { parentDom: contianer, startDom, endDom, id },
-        DomSourceType.range
-      );
-      return source;
+      const param = { parentDom: contianer, startDom, endDom, id };
+      const result = paintWrap(param, DomSourceType.range);
+      if (result) {
+        return source;
+      } else {
+        removeDomSource(id);
+      }
     }
   }
   return null;
