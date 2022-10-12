@@ -34,7 +34,7 @@ export function getOrinalParent(
   return result;
 }
 
-export function getDomMeta(
+export function setMeteDom(
   contianer: HTMLElement,
   tagetDom: Node,
   textOffset: number

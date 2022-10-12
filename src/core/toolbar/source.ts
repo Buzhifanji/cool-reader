@@ -9,11 +9,9 @@ import { DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
 import { DomSourceType } from "../utils/enums";
 import { stringTohash } from "../utils/union";
 import { removePaint } from "./delete";
-import { getDomMeta, getMeteDom } from "./dom";
+import { getMeteDom, setMeteDom } from "./dom";
 import { paintWrap } from "./paint";
 import { DomSource, PaintSource } from "./type";
-
-function calculateLocation() {}
 
 // 从 Range 对象中 创建 高亮笔记
 export function domSourceFromRange(range: Range) {
@@ -25,14 +23,12 @@ export function domSourceFromRange(range: Range) {
       startOffset,
       endOffset,
     } = range;
-    const startMeta = getDomMeta(contianer, startDom, startOffset);
-    console.log(startMeta);
 
-    const endMeta = getDomMeta(contianer, endDom, endOffset);
-
+    const startMeta = setMeteDom(contianer, startDom, startOffset);
+    const endMeta = setMeteDom(contianer, endDom, endOffset);
     const text = range.toString();
-
     const id = stringTohash(text);
+
     const source: DomSource = {
       id,
       text,
@@ -43,6 +39,7 @@ export function domSourceFromRange(range: Range) {
       className: DEFAULT_DOM_CLASS_NAME,
     };
     if (!hasDomSource(id)) {
+      saveDomSource(source);
       return source;
       // saveDomSource(source);
       // const param = { parentDom: contianer, startDom, endDom, id };
