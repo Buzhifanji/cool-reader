@@ -127,4 +127,16 @@ impl HighlightData {
             }
         }
     }
+    pub fn update_highlight(&mut self, data: Highlight) -> Result<bool, String> {
+        match self.conn.execute(
+            "UPDATE Highlight as h set class_name = ?1 where h.book_id = ?2 and h.id = ?3",
+            [data.class_name, data.book_id, data.id],
+        ) {
+            Ok(_) => Ok(true.into()),
+            Err(err) => {
+                println!("UPDATE FROM Highlight: {}", err);
+                Err(err.to_string().into())
+            }
+        }
+    }
 }

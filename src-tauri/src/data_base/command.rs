@@ -23,3 +23,11 @@ pub fn delete_highlight(data: DeleteHightIds) -> Result<bool, String> {
     handler.conn.close().unwrap();
     result
 }
+
+#[tauri::command]
+pub fn update_highlight(data: Highlight) -> Result<bool, String> {
+    let mut handler = HighlightData::new().unwrap();
+    let result = handler.update_highlight(data);
+    handler.conn.close().unwrap();
+    result
+}
