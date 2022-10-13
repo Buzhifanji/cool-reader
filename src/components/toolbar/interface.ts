@@ -9,5 +9,6 @@ export interface ToolBar {
   id: string;
   show: boolean;
   save: boolean;
+  edit: boolean;
   source: null | DomSource;
 }
