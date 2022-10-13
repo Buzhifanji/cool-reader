@@ -13,6 +13,7 @@ import {
   NGrid,
   NIcon,
   NImage,
+  NInput,
   NLayout,
   NLayoutContent,
   NLayoutHeader,
@@ -58,6 +59,7 @@ export const naive = create({
     NDropdown,
     NList,
     NListItem,
+    NInput,
   ],
 });
 
