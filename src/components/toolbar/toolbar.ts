@@ -1,8 +1,10 @@
 import { Copy, Delete, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { computed, reactive } from "vue";
 import { useRemoveHighlight } from "../../core/notes/toobar";
-import { saveHighlight } from "../../core/service/highlight";
+import { saveHighlight, updateHighlight } from "../../core/service/highlight";
 import { domSourceFromRange } from "../../core/toolbar";
+import { updateDomSource } from "../../core/toolbar/source";
+import { DEFAULT_DOM_CLASS_NAME } from "../../core/utils/constant";
 import { message } from "../../naive";
 import { updateHighlights } from "../highlight/highlight";
 import { ToolBar, ToolBarStyle } from "./interface";
@@ -20,7 +22,7 @@ function toolBarModel(): ToolBar {
     show: false,
     save: false,
     source: null,
-    remove: false,
+    edit: false,
   };
 }
 
@@ -40,7 +42,7 @@ export const useToolBar = () => {
     TextHighlight,
     tilde,
     straightLine,
-    remove,
+    edit,
   }
   const list = [
     {
@@ -65,37 +67,47 @@ export const useToolBar = () => {
     },
   ];
   const bars = computed(() => {
-    if (toolBar.remove) {
-      const editer = { label: "删除", key: barEnum.remove, icon: Delete };
+    if (toolBar.edit) {
+      const editer = { label: "删除", key: barEnum.edit, icon: Delete };
       return [...list, editer];
     } else {
       return [...list];
     }
   });
-  function save(className?: string) {
-    toolBar.show = false;
-    toolBar.save = true;
+
+  function action(className: string) {
     const source = toolBar.source;
     if (source) {
-      if (className) {
-        source.className = className;
-      }
-      if (domSourceFromRange(source)) {
-        saveHighlight(source).then(() => updateHighlights());
+      const oldClassName = source.className;
+      source.className = className;
+      if (toolBar.edit) {
+        // 更新 高亮笔记类型
+        if (oldClassName !== className) {
+          updateHighlight(source).then(() => {
+            updateDomSource(source, oldClassName);
+            updateHighlights();
+          });
+        }
+      } else {
+        // 新增高亮笔记
+        resetToolBar();
+        if (domSourceFromRange(source)) {
+          saveHighlight(source).then(() => updateHighlights());
+        }
       }
     }
   }
   // 高亮
   function addTextHighlight() {
-    save();
+    action(DEFAULT_DOM_CLASS_NAME);
   }
   // 波浪线
   function addTilde() {
-    save("c-tilde");
+    action("c-tilde");
   }
   // 直线
   function addStraightLine() {
-    save("c-straight-line");
+    action("c-straight-line");
   }
   function remove() {
     const { bookId, id } = toolBar.source!;
@@ -106,7 +118,7 @@ export const useToolBar = () => {
     [barEnum.TextHighlight]: addTextHighlight,
     [barEnum.tilde]: addTilde,
     [barEnum.straightLine]: addStraightLine,
-    [barEnum.remove]: remove,
+    [barEnum.edit]: remove,
   };
   function barAction(key: barEnum) {
     barActionStatus[key]();

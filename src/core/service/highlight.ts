@@ -32,6 +32,17 @@ export function saveHighlight(param: highlightParam) {
     });
 }
 
+export function updateHighlight(param: highlightParam) {
+  const data = generateServiceParams<highlightParam, highlightResponse>(param);
+  return invoke("update_highlight", { data })
+    .then(() => {
+      message.success("修改成功");
+    })
+    .catch((err) => {
+      message.error(err);
+    });
+}
+
 export function getHighlights(bookId: string): Promise<highlightParam[]> {
   return new Promise((resolve) => {
     invoke("get_highlightes", { bookId })

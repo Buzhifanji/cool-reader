@@ -1,6 +1,7 @@
 import { getDomContianer, getPageNumber } from ".";
 import { getReadingBook, removeDomSource, saveDomSource } from "../store";
-import { DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
+import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
+import { selectorAll } from "../utils/dom";
 import { stringTohash } from "../utils/union";
 import { removePaint } from "./delete";
 import { getMeteDom, setMeteDom } from "./dom";
@@ -53,6 +54,19 @@ export function deleteDomSource(source: DomSource) {
   const paintSource = getPaintSource(source);
   if (paintSource) {
     removePaint(paintSource);
+  }
+}
+
+export function updateDomSource(source: DomSource, className: string) {
+  const paintSource = getPaintSource(source);
+  if (paintSource) {
+    const nodes = selectorAll(
+      `.${className}[${DATA_SOURCE_ID}=${source.id}]`,
+      paintSource.parentDom
+    );
+    nodes.forEach((node) => {
+      node.className = source.className;
+    });
   }
 }
 

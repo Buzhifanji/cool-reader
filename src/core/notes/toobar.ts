@@ -64,7 +64,7 @@ function setToolBarData(source: DomSource, isEdit: boolean) {
   toolBar.id = source.id;
   toolBar.show = true;
   toolBar.save = false;
-  toolBar.remove = isEdit;
+  toolBar.edit = isEdit;
   toolBar.source = source;
 }
 
