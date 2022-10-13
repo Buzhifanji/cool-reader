@@ -1,6 +1,6 @@
 import { DATA_SOURCE_ID } from "../utils/constant";
 import { selectorAll } from "../utils/dom";
-import { isTextNode } from "../utils/is";
+import { isElementNode, isTextNode } from "../utils/is";
 import { getTextOffset } from "./offset";
 import { DomMeta, DomSource } from "./type";
 
@@ -18,20 +18,26 @@ function queryChildDomIndex(
   return result;
 }
 
-export function getOrinalParent(
-  container: HTMLElement,
-  tagetNode: HTMLElement
-): HTMLElement {
-  let result = container;
-  let current: HTMLElement = tagetNode;
-  while (current && current.parentElement) {
-    if (current.parentElement === container) {
-      result = current;
-      break;
+function getOrinalParent(node: HTMLElement): HTMLElement {
+  if (isElementNode(node)) {
+    if (node.hasAttribute(DATA_SOURCE_ID)) {
+      return node.parentElement!;
+    } else {
+      return node;
     }
-    current = current.parentElement;
+  } else {
+    return node.parentElement!;
   }
-  return result;
+  // let result = container;
+  // let current: HTMLElement = tagetNode;
+  // while (current && current.parentElement) {
+  //   if (current.parentElement === container) {
+  //     result = current;
+  //     break;
+  //   }
+  //   current = current.parentElement;
+  // }
+  // return result;
 }
 
 export function setMeteDom(
@@ -39,7 +45,7 @@ export function setMeteDom(
   tagetDom: Node,
   textOffset: number
 ): DomMeta {
-  const tagetDomParent = getOrinalParent(contianer, tagetDom.parentElement!);
+  const tagetDomParent = getOrinalParent(tagetDom.parentElement!);
   const preNodeOffset = getTextOffset(tagetDomParent, tagetDom);
   return {
     parentTagName: tagetDomParent.tagName,
@@ -63,7 +69,7 @@ export function getDomContent(nodes: HTMLElement): string {
 export function getOldElement(parent: HTMLElement, content: string) {
   const result = new Map<string, HTMLElement>();
   parent.childNodes.forEach((node) => {
-    if (node.nodeType === Node.ELEMENT_NODE) {
+    if (isElementNode(node as HTMLElement)) {
       const el = node as HTMLElement;
       if (el.hasAttribute(DATA_SOURCE_ID)) {
         const text = el.innerText;
@@ -81,7 +87,7 @@ export function getOldElement(parent: HTMLElement, content: string) {
 export function hasPaint(node: HTMLElement): boolean {
   return (
     node.childNodes.length === 1 &&
-    node.firstChild!.nodeType === Node.ELEMENT_NODE
+    isElementNode(node.firstChild! as HTMLElement)
   );
 }
 

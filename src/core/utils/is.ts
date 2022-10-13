@@ -7,6 +7,9 @@ export const isIndex = (index: number) => index !== -1;
 export const isTextNode = (node: Text): boolean =>
   node.nodeType === Node.TEXT_NODE;
 
+export const isElementNode = (node: HTMLElement): boolean =>
+  node.nodeType === Node.ELEMENT_NODE;
+
 export const isObjEqual = <T extends object>(x: T, y: T) => {
   if (x === y) {
     return true;

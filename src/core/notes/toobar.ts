@@ -1,6 +1,10 @@
 import { toRaw } from "vue";
 import { updateHighlights } from "../../components/highlight/highlight";
-import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
+import {
+  resetToolBar,
+  toolBar,
+  toolBarStyle,
+} from "../../components/toolbar/toolbar";
 import { removeHighlight } from "../service/highlight";
 import { getDomSource, removeDomSource } from "../store";
 import {
@@ -116,8 +120,6 @@ export function useRemoveHighlight(bookId: string, id: string) {
     removeHighlight(bookId, id).then(() => {
       updateHighlights();
     });
-    toolBar.source = null;
-    toolBar.save = false;
-    toolBar.show = false;
+    resetToolBar();
   }
 }
