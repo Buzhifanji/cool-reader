@@ -44,7 +44,7 @@ const { bars, barAction, toolBarStyle, toolBar } = useToolBar();
 .tool-bar-wrapper::after {
   content: "";
   position: absolute;
-  left: 16px;
+  left: 50%;
   bottom: -4px;
   border-color: #444 transparent transparent;
   border-width: 4px 4px 0;

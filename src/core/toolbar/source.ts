@@ -58,7 +58,7 @@ export function deleteDomSource(source: DomSource) {
   }
 }
 
-function getPaintSource(source: DomSource): PaintSource | null {
+export function getPaintSource(source: DomSource): PaintSource | null {
   const contianer = getDomContianer();
   let result: PaintSource | null = null;
   if (contianer) {

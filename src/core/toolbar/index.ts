@@ -5,4 +5,6 @@ export {
   deleteDomSource,
   domSourceFromRange,
   domSourceFromStore,
+  getPaintSource,
+  initDomSource,
 } from "./source";
