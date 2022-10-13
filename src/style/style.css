@@ -119,14 +119,17 @@ button {
 */
 .wrapper_source {
   background-color: #24c8db;
+  cursor: pointer;
 }
 /*
 * 波浪线
 */
 .c-tilde {
   text-decoration: green wavy underline;
+  cursor: pointer;
 }
 
 .c-straight-line {
   text-decoration: underline #FF3028;
+  cursor: pointer;
 }
