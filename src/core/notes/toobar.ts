@@ -1,7 +1,10 @@
 import { toRaw } from "vue";
+import { updateHighlights } from "../../components/highlight/highlight";
 import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
-import { getDomSource } from "../store";
+import { removeHighlight } from "../service/highlight";
+import { getDomSource, removeDomSource } from "../store";
 import {
+  deleteDomSource,
   getDomContianer,
   getMeteDom,
   getPaintSource,
@@ -57,7 +60,7 @@ function setToolBarData(source: DomSource, isEdit: boolean) {
   toolBar.id = source.id;
   toolBar.show = true;
   toolBar.save = false;
-  toolBar.edit = isEdit;
+  toolBar.remove = isEdit;
   toolBar.source = source;
 }
 
@@ -99,5 +102,22 @@ export function closeTooBar() {
   if (!toolBar.save && toolBar.source && toolBar.show) {
     toolBar.show = false;
     toolBar.source = null;
+  }
+}
+
+export function useRemoveHighlight(bookId: string, id: string) {
+  const source = getDomSource(id);
+  if (source) {
+    // 清楚缓存
+    deleteDomSource(source);
+    // 清楚 ui
+    removeDomSource(id);
+    // 清楚数据库
+    removeHighlight(bookId, id).then(() => {
+      updateHighlights();
+    });
+    toolBar.source = null;
+    toolBar.save = false;
+    toolBar.show = false;
   }
 }

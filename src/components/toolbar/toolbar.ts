@@ -1,5 +1,6 @@
 import { Copy, Delete, TextHighlight, TextUnderline } from "@vicons/carbon";
 import { computed, reactive } from "vue";
+import { useRemoveHighlight } from "../../core/notes/toobar";
 import { saveHighlight } from "../../core/service/highlight";
 import { domSourceFromRange } from "../../core/toolbar";
 import { message } from "../../naive";
@@ -19,7 +20,7 @@ function toolBarModel(): ToolBar {
     show: false,
     save: false,
     source: null,
-    edit: false,
+    remove: false,
   };
 }
 
@@ -39,7 +40,7 @@ export const useToolBar = () => {
     TextHighlight,
     tilde,
     straightLine,
-    edit,
+    remove,
   }
   const list = [
     {
@@ -64,8 +65,8 @@ export const useToolBar = () => {
     },
   ];
   const bars = computed(() => {
-    if (toolBar.edit) {
-      const editer = { label: "删除", key: barEnum.edit, icon: Delete };
+    if (toolBar.remove) {
+      const editer = { label: "删除", key: barEnum.remove, icon: Delete };
       return [...list, editer];
     } else {
       return [...list];
@@ -96,12 +97,16 @@ export const useToolBar = () => {
   function addStraightLine() {
     save("c-straight-line");
   }
+  function remove() {
+    const { bookId, id } = toolBar.source!;
+    useRemoveHighlight(bookId, id);
+  }
   const barActionStatus: Record<barEnum, Function> = {
     [barEnum.Copy]: copyText,
     [barEnum.TextHighlight]: addTextHighlight,
     [barEnum.tilde]: addTilde,
     [barEnum.straightLine]: addStraightLine,
-    [barEnum.edit]: () => {},
+    [barEnum.remove]: remove,
   };
   function barAction(key: barEnum) {
     barActionStatus[key]();

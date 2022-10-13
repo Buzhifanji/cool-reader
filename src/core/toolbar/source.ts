@@ -52,7 +52,6 @@ export function domSourceFromStore(source: DomSource | DomSource[]) {
 export function deleteDomSource(source: DomSource) {
   const paintSource = getPaintSource(source);
   if (paintSource) {
-    removeDomSource(source.id);
     removePaint(paintSource);
   }
 }

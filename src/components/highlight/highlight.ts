@@ -1,7 +1,8 @@
 import { ref, watchEffect } from "vue";
 import { pdfJumpToPage } from "../../core/file/pdf";
+import { useRemoveHighlight } from "../../core/notes/toobar";
 import { highlightParam } from "../../core/notes/type";
-import { getHighlights, removeHighlight } from "../../core/service/highlight";
+import { getHighlights } from "../../core/service/highlight";
 import { getReadingBook } from "../../core/store";
 import { domSourceFromStore } from "../../core/toolbar";
 import { ExtnameFn } from "../../core/type";
@@ -41,8 +42,8 @@ export const useHighlights = () => {
     [Bookextname.epub]: () => message.warning("功能待开发中！"),
   };
   // 删除
-  function remove(value: highlightParam) {
-    removeHighlight(value.bookId, value.id).then(() => updateHighlights());
+  function remove({ bookId, id }: highlightParam) {
+    useRemoveHighlight(bookId, id);
   }
   // 跳转
   function jump(value: highlightParam) {
