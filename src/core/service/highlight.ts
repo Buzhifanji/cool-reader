@@ -60,11 +60,11 @@ export function getHighlights(bookId: string): Promise<highlightParam[]> {
   });
 }
 
-export function removeHighlight(book_id: string, id: string) {
+export function removeHighlight(book_id: string, id: string, isTip = true) {
   const data = { book_id, id };
   return invoke("delete_highlight", { data })
     .then(() => {
-      message.success("删除成功");
+      isTip && message.success("删除成功");
     })
     .catch((err) => {
       message.error(err);

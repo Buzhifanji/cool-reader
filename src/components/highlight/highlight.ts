@@ -42,8 +42,8 @@ export const useHighlights = () => {
     [Bookextname.epub]: () => message.warning("功能待开发中！"),
   };
   // 删除
-  function remove({ bookId, id }: highlightParam) {
-    useRemoveHighlight(bookId, id);
+  function remove({ id }: highlightParam) {
+    useRemoveHighlight(id);
   }
   // 跳转
   function jump(value: highlightParam) {

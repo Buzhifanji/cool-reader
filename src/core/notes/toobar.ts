@@ -6,7 +6,7 @@ import {
   toolBarStyle,
 } from "../../components/toolbar/toolbar";
 import { removeHighlight } from "../service/highlight";
-import { getDomSource, removeDomSource } from "../store";
+import { getDomSource, getReadingBook, removeDomSource } from "../store";
 import {
   deleteDomSource,
   getDomContianer,
@@ -109,7 +109,8 @@ export function closeTooBar() {
   }
 }
 
-export function useRemoveHighlight(bookId: string, id: string) {
+export function useRemoveHighlight(id: string, isTip = true) {
+  const readingBook = getReadingBook();
   const source = getDomSource(id);
   if (source) {
     // 清楚缓存
@@ -117,7 +118,7 @@ export function useRemoveHighlight(bookId: string, id: string) {
     // 清楚 ui
     removeDomSource(id);
     // 清楚数据库
-    removeHighlight(bookId, id).then(() => {
+    removeHighlight(readingBook.id, id, isTip).then(() => {
       updateHighlights();
     });
     resetToolBar();

@@ -1,6 +1,7 @@
 import { Intervals } from "../type";
 import { DATA_SOURCE_ID, WARP_TAG_NAME } from "../utils/constant";
 import { createEle } from "../utils/dom";
+import { isElementNode } from "../utils/is";
 import { mergeIntervals } from "../utils/union";
 import { getDomContent, getOldElement, hasPaint } from "./dom";
 import { getTextOffset } from "./offset";
@@ -81,13 +82,27 @@ function paintAction(
   className: string
 ) {
   if (content.length) {
+    const deleteIds = getDeleteWrapper(parent);
     const paintedRange = getPaintRange(parent);
     const result = mergeIntervals(paintedRange, [start, end]);
     const oldEl = getOldElement(parent, content);
     const wrapper = paintRangeText(result, id, content, oldEl, className);
     parent.innerHTML = "";
     parent.appendChild(wrapper);
+    return deleteIds;
   }
+  return [];
+}
+
+function getDeleteWrapper(node: HTMLElement) {
+  const result: string[] = []; // 被覆盖的 data-source-id
+  node.childNodes.forEach((child) => {
+    const current = child as HTMLElement;
+    if (isElementNode(current) && current.hasAttribute(DATA_SOURCE_ID)) {
+      result.push(current.getAttribute(DATA_SOURCE_ID)!);
+    }
+  });
+  return result;
 }
 
 // 相同节点
@@ -95,10 +110,10 @@ function paintSameElement(paintSource: PaintSource, domSource: DomSource) {
   const node = paintSource.startDom as HTMLElement;
   const content = getDomContent(node);
   if (hasPaint(node)) {
-    return false;
+    return { result: false, deleteIds: [] };
   } else {
     const { startMeta, endMeta, id, className } = domSource;
-    paintAction(
+    const deleteIds = paintAction(
       node,
       startMeta.textOffset,
       endMeta.textOffset,
@@ -106,7 +121,7 @@ function paintSameElement(paintSource: PaintSource, domSource: DomSource) {
       content,
       className
     );
-    return true;
+    return { result: true, deleteIds };
   }
 }
 
@@ -138,7 +153,7 @@ function isSpaceElementPaint(
 function paintSpaceElments(paintSource: PaintSource, domSource: DomSource) {
   const startDom = paintSource.startDom as HTMLElement;
   const endDom = paintSource.endDom as HTMLElement;
-
+  let deleteIds: string[] = [];
   // 判断是否做过笔记
   const isPaint = isSpaceElementPaint(startDom, endDom);
   if (!isPaint) {
@@ -150,18 +165,28 @@ function paintSpaceElments(paintSource: PaintSource, domSource: DomSource) {
       const content = getDomContent(current);
       const n = content.length;
       if (current === startDom) {
-        paintAction(current, start, n - start + 1, id, content, className);
+        const ids = paintAction(
+          current,
+          start,
+          n - start + 1,
+          id,
+          content,
+          className
+        );
+        deleteIds = deleteIds.concat(ids);
       } else if (current === endDom) {
-        paintAction(current, 0, end, id, content, className);
+        const ids = paintAction(current, 0, end, id, content, className);
+        deleteIds = deleteIds.concat(ids);
         break;
       } else {
-        paintAction(current, 0, n, id, content, className);
+        const ids = paintAction(current, 0, n, id, content, className);
+        deleteIds = deleteIds.concat(ids);
       }
       current = current.nextSibling as HTMLElement;
     }
-    return true;
+    return { result: true, deleteIds };
   }
-  return false;
+  return { result: false, deleteIds };
 }
 
 export function paintWrap(paintSource: PaintSource, domSource: DomSource) {

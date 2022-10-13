@@ -91,8 +91,12 @@ export const useToolBar = () => {
       } else {
         // 新增高亮笔记
         resetToolBar();
-        if (domSourceFromRange(source)) {
+        const { result, deleteIds } = domSourceFromRange(source);
+        if (result) {
           saveHighlight(source).then(() => updateHighlights());
+          deleteIds.forEach((id) => {
+            useRemoveHighlight(id, false);
+          });
         }
       }
     }
@@ -110,8 +114,7 @@ export const useToolBar = () => {
     action("c-straight-line");
   }
   function remove() {
-    const { bookId, id } = toolBar.source!;
-    useRemoveHighlight(bookId, id);
+    useRemoveHighlight(toolBar.source!.id);
   }
   const barActionStatus: Record<barEnum, Function> = {
     [barEnum.Copy]: copyText,

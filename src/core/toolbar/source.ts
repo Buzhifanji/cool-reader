@@ -85,12 +85,12 @@ function paintSourceAction(source: DomSource) {
   const paintSource = getPaintSource(source);
   if (paintSource && paintSource.startDom && paintSource.endDom) {
     const result = paintWrap(paintSource, source);
-    if (result) {
+    if (result.result) {
       saveDomSource(source);
     } else {
       removeDomSource(source.id);
     }
     return result;
   }
-  return false;
+  return { result: false, deleteIds: [] };
 }
