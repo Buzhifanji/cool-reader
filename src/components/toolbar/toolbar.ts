@@ -1,5 +1,11 @@
-import { Copy, Delete, TextHighlight, TextUnderline } from "@vicons/carbon";
-import { computed, reactive } from "vue";
+import {
+  Copy,
+  Delete,
+  Idea,
+  TextHighlight,
+  TextUnderline,
+} from "@vicons/carbon";
+import { computed, reactive, ref } from "vue";
 import { useRemoveHighlight } from "../../core/notes/toobar";
 import { saveHighlight, updateHighlight } from "../../core/service/highlight";
 import { domSourceFromRange } from "../../core/toolbar";
@@ -20,9 +26,9 @@ function toolBarModel(): ToolBar {
   return {
     id: "", // 绑定数据的 id （Highlighter每创建一条数据都有一个id）
     show: false,
-    save: false,
     source: null,
     edit: false,
+    input: false,
   };
 }
 
@@ -31,19 +37,22 @@ export const toolBarStyle = reactive<ToolBarStyle>(toolBarStyleModel());
 
 export const toolBar = reactive<ToolBar>(toolBarModel());
 
+enum barEnum {
+  Copy,
+  TextHighlight,
+  tilde,
+  straightLine,
+  edit,
+  idea,
+}
+
 export function resetToolBar() {
   Object.assign(toolBarStyle, toolBarStyleModel());
   Object.assign(toolBar, toolBarModel());
 }
 
 export const useToolBar = () => {
-  const enum barEnum {
-    Copy,
-    TextHighlight,
-    tilde,
-    straightLine,
-    edit,
-  }
+  const ideaValue = ref<string>("");
   const list = [
     {
       label: "复制",
@@ -64,6 +73,11 @@ export const useToolBar = () => {
       label: "直线",
       key: barEnum.straightLine,
       icon: TextUnderline,
+    },
+    {
+      label: "笔记",
+      key: barEnum.idea,
+      icon: Idea,
     },
   ];
   const bars = computed(() => {
@@ -116,17 +130,21 @@ export const useToolBar = () => {
   function remove() {
     useRemoveHighlight(toolBar.source!.id);
   }
+  function ideaInput() {
+    toolBar.input = true;
+  }
   const barActionStatus: Record<barEnum, Function> = {
     [barEnum.Copy]: copyText,
     [barEnum.TextHighlight]: addTextHighlight,
     [barEnum.tilde]: addTilde,
     [barEnum.straightLine]: addStraightLine,
     [barEnum.edit]: remove,
+    [barEnum.idea]: ideaInput,
   };
   function barAction(key: barEnum) {
     barActionStatus[key]();
   }
-  return { bars, barAction, toolBarStyle, toolBar };
+  return { bars, barAction, toolBarStyle, toolBar, ideaValue };
 };
 
 function copyText() {

@@ -8,7 +8,7 @@ export interface ToolBarStyle {
 export interface ToolBar {
   id: string;
   show: boolean;
-  save: boolean;
   edit: boolean;
+  input: boolean;
   source: null | DomSource;
 }

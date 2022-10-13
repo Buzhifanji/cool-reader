@@ -63,7 +63,6 @@ function setToolBarPosition(source: DomSource) {
 function setToolBarData(source: DomSource, isEdit: boolean) {
   toolBar.id = source.id;
   toolBar.show = true;
-  toolBar.save = false;
   toolBar.edit = isEdit;
   toolBar.source = source;
 }
@@ -103,9 +102,8 @@ export function openTooBar(event: Event) {
 }
 
 export function closeTooBar() {
-  if (!toolBar.save && toolBar.source && toolBar.show) {
-    toolBar.show = false;
-    toolBar.source = null;
+  if (toolBar.source && toolBar.show && !toolBar.input) {
+    resetToolBar();
   }
 }
 

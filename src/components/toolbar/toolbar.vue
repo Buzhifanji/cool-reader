@@ -5,12 +5,18 @@
     ref="toolBarRef"
     v-show="toolBar.show"
   >
-    <n-space>
+    <n-input
+      v-if="toolBar.input"
+      v-model:value="ideaValue"
+      type="textarea"
+      placeholder="输入你的想法"
+    />
+    <n-space v-else>
       <n-space
         vertical
         v-for="item in bars"
         :key="item.key"
-        @click="barAction(item.key)"
+        @click.stop="barAction(item.key)"
       >
         <n-icon :component="item.icon" size="16" />
         <div quaternary>{{ item.label }}</div>
@@ -21,7 +27,7 @@
 
 <script setup lang="ts">
 import { useToolBar } from "./toolbar";
-const { bars, barAction, toolBarStyle, toolBar } = useToolBar();
+const { bars, barAction, toolBarStyle, toolBar, ideaValue } = useToolBar();
 </script>
 
 <style scoped>
