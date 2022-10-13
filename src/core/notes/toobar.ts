@@ -1,3 +1,4 @@
+import { toRaw } from "vue";
 import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
 import {
   getDomContianer,
@@ -8,6 +9,7 @@ import {
 import { getDomContent } from "../toolbar/dom";
 import { DomRange } from "../toolbar/selection";
 import { DomSource } from "../toolbar/type";
+import { isObjEqual } from "../utils/is";
 import { getTextWidth } from "../utils/text";
 import { getPosition } from "./postion";
 
@@ -61,7 +63,10 @@ export function openTooBar(event: Event) {
   const range = domRange.getDomRange();
   if (range) {
     const source = initDomSource(range);
-    if (source) {
+    if (
+      source &&
+      !isObjEqual<DomSource>(toRaw<DomSource>(toolBar.source!), source)
+    ) {
       event.stopPropagation();
       setToolBarPosition(source);
       setToolBarData(source);
