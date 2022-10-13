@@ -71,7 +71,6 @@ export const useToolBar = () => {
       return [...list];
     }
   });
-  console.log(bars);
   function save(className?: string) {
     toolBar.show = false;
     toolBar.save = true;

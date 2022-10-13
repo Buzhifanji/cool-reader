@@ -67,12 +67,10 @@ function showToolBar(source: DomSource, isEdit: boolean) {
 }
 
 function editeToolBar(node: HTMLElement) {
-  if (node.hasAttribute(DATA_SOURCE_ID)) {
-    const id = node.getAttribute(DATA_SOURCE_ID)!;
-    const source = getDomSource(id);
-    if (source) {
-      showToolBar(source, true);
-    }
+  const id = node.getAttribute(DATA_SOURCE_ID)!;
+  const source = getDomSource(id);
+  if (source) {
+    showToolBar(source, true);
   }
 }
 
@@ -89,8 +87,11 @@ export function openTooBar(event: Event) {
       showToolBar(source, false);
     }
   } else {
-    event.stopPropagation();
-    editeToolBar(event.target as HTMLElement);
+    const node = event.target as HTMLElement;
+    if (node.hasAttribute(DATA_SOURCE_ID)) {
+      event.stopPropagation();
+      editeToolBar(node);
+    }
   }
 }
 
