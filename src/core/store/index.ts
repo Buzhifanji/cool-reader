@@ -1,4 +1,10 @@
 export {
+  getDomSource,
+  hasDomSource,
+  removeDomSource,
+  saveDomSource,
+} from "./dom-source";
+export {
   addForageFile,
   deleteForageFile,
   getForageFile,

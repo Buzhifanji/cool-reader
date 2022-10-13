@@ -1,6 +1,5 @@
 import { getDomContianer, getPageNumber } from ".";
-import { getReadingBook } from "../store";
-import { removeDomSource, saveDomSource } from "../store/dom-source";
+import { getReadingBook, removeDomSource, saveDomSource } from "../store";
 import { DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
 import { stringTohash } from "../utils/union";
 import { removePaint } from "./delete";

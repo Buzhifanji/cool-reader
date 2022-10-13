@@ -1,6 +1,6 @@
 import { toRaw } from "vue";
 import { toolBar, toolBarStyle } from "../../components/toolbar/toolbar";
-import { getDomSource } from "../store/dom-source";
+import { getDomSource } from "../store";
 import {
   getDomContianer,
   getMeteDom,
