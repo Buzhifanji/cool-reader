@@ -7,15 +7,23 @@
   >
     <template v-if="toolBar.input">
       <div @click.stop>
-        <n-input
-          v-model:value="ideaValue"
-          type="textarea"
-          placeholder="输入你的想法"
-        />
-        <n-space justify="end">
-          <n-button>Oops!</n-button>
-          <n-button>Oops!</n-button>
-        </n-space>
+        <n-form ref="formRef" :model="formModel" :rules="rules">
+          <n-form-item path="text">
+            <n-input
+              v-model:value="formModel.text"
+              type="textarea"
+              placeholder="输入你的想法"
+            />
+          </n-form-item>
+          <n-row :gutter="[0, 24]">
+            <n-col :span="24">
+              <div style="display: flex; justify-content: flex-end">
+                <n-button round type="primary" @click="submit"> 取消 </n-button>
+                <n-button round type="primary" @click="submit"> 确认 </n-button>
+              </div>
+            </n-col>
+          </n-row>
+        </n-form>
       </div>
     </template>
     <n-space v-else>
@@ -33,8 +41,9 @@
 </template>
 
 <script setup lang="ts">
-import { useToolBar } from "./toolbar";
+import { useFormModel, useToolBar } from "./toolbar";
 const { bars, barAction, toolBarStyle, toolBar, ideaValue } = useToolBar();
+const { formRef, formModel, rules, submit } = useFormModel();
 </script>
 
 <style scoped>

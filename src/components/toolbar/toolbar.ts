@@ -5,6 +5,7 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
+import { FormInst } from "naive-ui";
 import { computed, reactive, ref } from "vue";
 import { useRemoveHighlight } from "../../core/notes/toobar";
 import { saveHighlight, updateHighlight } from "../../core/service/highlight";
@@ -145,6 +146,32 @@ export const useToolBar = () => {
     barActionStatus[key]();
   }
   return { bars, barAction, toolBarStyle, toolBar, ideaValue };
+};
+
+export const useFormModel = () => {
+  const formRef = ref<FormInst | null>(null);
+  const formModel = ref({
+    text: "",
+  });
+  const rules = {
+    text: {
+      required: true,
+      trigger: ["blur", "input"],
+      message: "请输入你的想法",
+    },
+  };
+  function submit(e: MouseEvent) {
+    e.preventDefault();
+    formRef.value?.validate((errors) => {
+      if (!errors) {
+        message.success("验证成功");
+      } else {
+        console.log(errors);
+        message.error("验证失败");
+      }
+    });
+  }
+  return { formRef, formModel, rules, submit };
 };
 
 function copyText() {
