@@ -5,12 +5,19 @@
     ref="toolBarRef"
     v-show="toolBar.show"
   >
-    <n-input
-      v-if="toolBar.input"
-      v-model:value="ideaValue"
-      type="textarea"
-      placeholder="输入你的想法"
-    />
+    <template v-if="toolBar.input">
+      <div @click.stop>
+        <n-input
+          v-model:value="ideaValue"
+          type="textarea"
+          placeholder="输入你的想法"
+        />
+        <n-space justify="end">
+          <n-button>Oops!</n-button>
+          <n-button>Oops!</n-button>
+        </n-space>
+      </div>
+    </template>
     <n-space v-else>
       <n-space
         vertical

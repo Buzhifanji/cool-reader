@@ -102,7 +102,7 @@ export function openTooBar(event: Event) {
 }
 
 export function closeTooBar() {
-  if (toolBar.source && toolBar.show && !toolBar.input) {
+  if (toolBar.source && toolBar.show) {
     resetToolBar();
   }
 }
