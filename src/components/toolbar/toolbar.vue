@@ -1,19 +1,10 @@
 <template>
-  <div
-    class="tool-bar-wrapper"
-    :style="toolBarStyle"
-    ref="toolBarRef"
-    v-show="toolBar.show"
-  >
+  <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
     <template v-if="toolBar.input">
       <div @click.stop>
         <n-form ref="formRef" :model="formModel" :rules="rules">
           <n-form-item path="text">
-            <n-input
-              v-model:value="formModel.text"
-              type="textarea"
-              placeholder="输入你的想法"
-            />
+            <n-input v-model:value="formModel.text" type="textarea" placeholder="输入你的想法" />
           </n-form-item>
           <n-row :gutter="[0, 24]">
             <n-col :span="24">
@@ -27,12 +18,7 @@
       </div>
     </template>
     <n-space v-else>
-      <n-space
-        vertical
-        v-for="item in bars"
-        :key="item.key"
-        @click.stop="barAction(item.key)"
-      >
+      <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">
         <n-icon :component="item.icon" size="16" />
         <div quaternary>{{ item.label }}</div>
       </n-space>

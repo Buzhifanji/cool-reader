@@ -1,22 +1,17 @@
+import { RouterName } from "@enums/index";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-const Book = () => import("./components/book-list/index.vue");
-const HighLight = () => import("./components/highlight.vue");
-const Home = () => import("./components/home.vue");
-const Note = () => import("./components/note.vue");
-const Reader = () => import("./components/reader/reading.vue");
 
-export enum RouterName {
-  book = "book",
-  note = "note",
-  highlight = "highlight",
-  reader = "reader",
-}
+const Book = () => import("@views/books/books.vue");
+const HighLight = () => import("@views/highlight/highlight.vue");
+const Note = () => import("@views/notes/notes.vue");
+const Reader = () => import("@views/reader/reader.vue");
+const Layout = () => import("@layouts/index.vue");
 
 const routes: RouteRecordRaw[] = [
   { path: "/", redirect: "/home" },
   {
     path: "/home",
-    component: Home,
+    component: Layout,
     name: RouterName.book,
     redirect: "/home/book",
     children: [
