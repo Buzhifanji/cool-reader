@@ -14,6 +14,22 @@ export default defineConfig({
     port: 1420,
     strictPort: true,
   },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src"),
+      "@components": resolve(__dirname, "./src/components"),
+      "@views": resolve(__dirname, "./src/views"),
+      "@layouts": resolve(__dirname, "./src/layouts"),
+      "@utils": resolve(__dirname, "./src/utils"),
+      "@server": resolve(__dirname, "./src/server"),
+      "@interfaces": resolve(__dirname, "./src/interfaces"),
+      "@constants": resolve(__dirname, "./src/constants"),
+      "@store": resolve(__dirname, "./src/store"),
+      "@enums": resolve("./src/enums"),
+      "@core": resolve("./src/core"),
+    },
+    extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
+  },
   // to make use of `TAURI_DEBUG` and other env variables
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
   envPrefix: ["VITE_", "TAURI_"],
