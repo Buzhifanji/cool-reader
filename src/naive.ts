@@ -3,6 +3,7 @@ import {
   createDiscreteApi,
   NButton,
   NCard,
+  NConfigProvider,
   NDivider,
   NDrawer,
   NDrawerContent,
@@ -60,6 +61,7 @@ export const naive = create({
     NList,
     NListItem,
     NInput,
+    NConfigProvider,
   ],
 });
 

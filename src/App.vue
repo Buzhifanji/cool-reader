@@ -1,15 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { lightTheme } from "naive-ui";
+</script>
 
 <template>
-  <router-view></router-view>
+  <n-config-provider :theme="lightTheme">
+    <router-view></router-view>
+  </n-config-provider>
 </template>
 
 <style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
+.n-config-provider {
+  height: 100vh;
+  display: flex;
+  width: 100%;
 }
 </style>
