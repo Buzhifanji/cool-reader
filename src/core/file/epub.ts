@@ -2,14 +2,12 @@ import { VIEWER } from "@/constants";
 import { updateReadingBook } from "@/store";
 import epubjs, { Rendition } from "epubjs";
 import { NavItem } from "epubjs/types/navigation";
-import { StorageBook } from "../type";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
-let catalog: NavItem[] = []; // 目录
 
-export function getEpubCover(fileContent: Uint8Array): Promise<string> {
+export function getEpubCover(content: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
-    const book = epubjs(fileContent.buffer);
+    const book = epubjs(content.buffer);
     book
       .coverUrl()
       .then((value) => {
@@ -21,9 +19,9 @@ export function getEpubCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-export function renderEpub({ fileContent }: StorageBook): Promise<Rendition> {
+export function renderEpub(content: Uint8Array): Promise<Rendition> {
   return new Promise((resolve, reject) => {
-    const book = epubjs(fileContent.buffer);
+    const book = epubjs(content.buffer);
     book.ready.then(() => {
       let catalog = book.navigation.toc;
       formateEpubCatalog(catalog);
@@ -49,26 +47,19 @@ export function renderEpub({ fileContent }: StorageBook): Promise<Rendition> {
   });
 }
 
-export function getEpubCatalog() {
-  return catalog;
-}
+export const useEpubChangePage = () => {
+  function epubJumpFromCatalog(href: string) {
+    rendition?.display(href);
+  }
+  function epubPageUp() {
+    rendition?.prev();
+  }
+  function epubPageDown() {
+    rendition?.next();
+  }
 
-/**
- * 目录跳转
- * @param bookId
- * @param catalogId
- */
-export function epubGotoPage(href: string) {
-  rendition?.display(href);
-}
-
-export function epubPageUp() {
-  rendition?.prev();
-}
-
-export function epubPageDown() {
-  rendition?.next();
-}
+  return { epubJumpFromCatalog, epubPageUp, epubPageDown };
+};
 
 function formateEpubCatalog(arr: NavItem[]) {
   arr.forEach((item) => {

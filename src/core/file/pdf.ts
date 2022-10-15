@@ -1,10 +1,14 @@
+import { VIEWERCONTAINER } from "@/constants";
 import { updateReadingBook } from "@/store";
 import {
-  getDocument,
-  PageViewport,
-  PDFDocumentProxy,
-  PDFPageProxy,
-} from "pdfjs-dist";
+  arrayHasData,
+  createEle,
+  getEleById,
+  isArray,
+  isObj,
+  isOwn,
+} from "@/utils";
+import { getDocument, PageViewport, PDFPageProxy } from "pdfjs-dist";
 import {
   EventBus,
   GenericL10n,
@@ -12,10 +16,6 @@ import {
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
 import { toRaw } from "vue";
-import { StorageBook } from "../type";
-import { VIEWERCONTAINER } from "../utils/constant";
-import { createEle, getEleById } from "../utils/dom";
-import { arrayHasData, isArray, isObj, isOwn } from "../utils/is";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
@@ -24,10 +24,8 @@ const scale = 1.75 * window.devicePixelRatio; // 展示比例
  */
 
 let pdfViewer: PDFViewer | null = null;
-let PDFDocumentProxy: PDFDocumentProxy | null = null;
-let catalogs: any[] = []; // 目录
 
-export function getViewport(page: PDFPageProxy) {
+function getViewport(page: PDFPageProxy) {
   return page.getViewport({
     scale, // 展示比例
     rotation: 0, // 旋转角度
@@ -42,7 +40,7 @@ function createCanvas({ width, height, viewBox }: PageViewport) {
   return { canvasContext, canvas };
 }
 
-export async function renderPdf({ fileContent, id }: StorageBook) {
+export async function renderPdf(content: Uint8Array) {
   const container = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
 
   const pdfLinkService = new PDFLinkService({
@@ -56,16 +54,16 @@ export async function renderPdf({ fileContent, id }: StorageBook) {
     l10n: new GenericL10n("zh"),
   });
   pdfViewer._setScale(scale);
-  const loadingTask = getDocument(fileContent);
-  PDFDocumentProxy = await loadingTask.promise;
+  const loadingTask = getDocument(content);
+  const pdfDocument = await loadingTask.promise;
 
-  const outline = await PDFDocumentProxy.getOutline();
+  const outline = await pdfDocument.getOutline();
 
   const catalog = formatePdfCatalog(outline);
 
-  pdfViewer.setDocument(PDFDocumentProxy);
+  pdfViewer.setDocument(pdfDocument);
 
-  updateReadingBook({ context: pdfViewer, catalog });
+  updateReadingBook({ catalog });
 
   return pdfViewer;
 }
@@ -91,36 +89,30 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-/**
- * 获取 pdf 目录
- * @param bookId
- * @returns
- */
-export function getPdfCatalogs() {
-  return catalogs;
-}
-
-export async function pdfGotoPage(desc: any) {
-  if (isArray(desc) && arrayHasData(desc)) {
-    const refProxy = toRaw(desc[0]);
-    if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
-      const pageNumber = await PDFDocumentProxy!.getPageIndex(refProxy);
-      pdfJumpToPage(pageNumber);
+export const usePdfChangePage = () => {
+  async function pdfJumpFromCatalog(desc: any) {
+    if (isArray(desc) && arrayHasData(desc)) {
+      const refProxy = toRaw(desc[0]);
+      if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
+        const pageNumber = await pdfViewer?.pdfDocument!.getPageIndex(refProxy);
+        pdfJumpToPage(pageNumber!);
+      }
     }
   }
-}
+  function pdfJumpToPage(pageNumber: number) {
+    pdfViewer?.scrollPageIntoView({ pageNumber });
+  }
 
-export function pdfJumpToPage(pageNumber: number) {
-  pdfViewer!.scrollPageIntoView({ pageNumber });
-}
+  function pdfPageUp() {
+    pdfViewer?.previousPage();
+  }
 
-export function pdfPageUp() {
-  pdfViewer?.previousPage();
-}
+  function pdfPageDown() {
+    pdfViewer?.nextPage();
+  }
 
-export function pdfPageDown() {
-  pdfViewer?.nextPage();
-}
+  return { pdfJumpFromCatalog, pdfPageUp, pdfJumpToPage, pdfPageDown };
+};
 
 function formatePdfCatalog(list: any[]) {
   // 处理 没有目录的特殊情况

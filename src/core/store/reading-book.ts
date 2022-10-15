@@ -6,7 +6,7 @@ import { Bookextname } from "../utils/enums";
 
 // 当前打开书本的数据
 const readingBook = reactive<StorageBook>(
-  new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array())
+  new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array(), [])
 );
 
 let _content: BookContext = null;
@@ -23,6 +23,7 @@ export async function setReadingBook(bookId: string) {
     readingBook.id = book.id;
     readingBook.fileContent = book.fileContent;
   }
+  return readingBook;
 }
 
 export function getReadingBook() {

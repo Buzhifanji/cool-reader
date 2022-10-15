@@ -1,13 +1,12 @@
-import { reactive, ref } from "vue";
-import { epubGotoPage, getEpubCatalog } from "../../core/file/epub";
-import { getPdfCatalogs, pdfGotoPage } from "../../core/file/pdf";
-import { getReadingBook } from "../../core/store";
+import { getReadingBook } from "@/store";
+import { useEpubChangePage } from "@core/file/epub";
+import { usePdfChangePage } from "@core/file/pdf";
+import { reactive } from "vue";
 import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 
 export const useCatalog = () => {
-  const readingBook = getReadingBook();
-  const catalog = ref<any[]>([]);
+  const { readingBook } = getReadingBook();
   const menuFieds = reactive({
     key: "key",
     label: "label",
@@ -20,26 +19,21 @@ export const useCatalog = () => {
     menuFieds.children = children;
   }
   const catalogStatus: ExtnameFn = {
-    [Bookextname.pdf]: () => {
-      setField("title", "title", "items");
-      catalog.value = getPdfCatalogs();
-    },
-    [Bookextname.epub]: () => {
-      setField("id", "label", "subitems");
-      catalog.value = getEpubCatalog();
-    },
+    [Bookextname.pdf]: () => setField("title", "title", "items"),
+    [Bookextname.epub]: () => setField("id", "label", "subitems"),
   };
-
   catalogStatus[readingBook.extname]?.();
 
-  return { catalog, menuFieds };
+  return { menuFieds, readingBook };
 };
 
 export function generateGotoPage(item: any) {
-  const readingBook = getReadingBook();
+  const { pdfJumpFromCatalog } = usePdfChangePage();
+  const { epubJumpFromCatalog } = useEpubChangePage();
+  const { readingBook } = getReadingBook();
   const pageStatus: ExtnameFn = {
-    [Bookextname.pdf]: () => pdfGotoPage(item.dest),
-    [Bookextname.epub]: () => epubGotoPage(item.href),
+    [Bookextname.pdf]: () => pdfJumpFromCatalog(item.dest),
+    [Bookextname.epub]: () => epubJumpFromCatalog(item.href),
   };
   pageStatus[readingBook.extname]?.();
 }

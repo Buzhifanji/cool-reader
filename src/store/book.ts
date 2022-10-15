@@ -22,6 +22,8 @@ const readingBook = reactive<BookData>(
   )
 );
 
+let context: BookContext = null;
+
 export async function setReadingBook(id: string, context: BookContext) {
   const book = await getBookById(id);
   if (book) {
@@ -36,18 +38,20 @@ export async function setReadingBook(id: string, context: BookContext) {
     readingBook.context = context;
     readingBook.catalog = book.catalog;
   }
+  return readingBook;
 }
 
 export function getReadingBook() {
-  return readingBook;
+  return { readingBook, context };
 }
 
 export function updateReadingBook({ content, context, catalog }: UpdateBook) {
   if (content) {
     readingBook.content = content;
   }
+  // 由于 绑定 context 到 readingBook 上，调用方法时候，会报错：Cannot access private method，所有需要单独缓存
   if (context) {
-    readingBook.context = context;
+    context = context;
   }
   if (catalog) {
     readingBook.catalog = catalog;

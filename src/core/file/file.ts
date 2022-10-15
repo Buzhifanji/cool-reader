@@ -1,11 +1,12 @@
 import { Bookextname } from "@/enums";
-import { addBook, useLoadFile } from "@/store";
+import { useLoadFile } from "@/store";
+import { mergerUint8Array } from "@/utils";
 import { open } from "@tauri-apps/api/dialog";
 import { listen } from "@tauri-apps/api/event";
 import { appDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
-import { mergerUint8Array } from "../utils/union";
+import { cacheBook } from "./book";
 
 const { setLoadFile, percentage } = useLoadFile();
 
@@ -77,7 +78,7 @@ export async function downloadFile() {
         };
         calculatePercentage(0, size);
 
-        await addBook(book);
+        await cacheBook(book);
 
         const doneSize = await stop.then();
         doneSize();

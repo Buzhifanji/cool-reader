@@ -1,5 +1,5 @@
+import { usePdfChangePage } from "@/core/file";
 import { ref, watchEffect } from "vue";
-import { pdfJumpToPage } from "../../core/file/pdf";
 import { useRemoveHighlight } from "../../core/notes/toobar";
 import { highlightParam } from "../../core/notes/type";
 import { getHighlights } from "../../core/service/highlight";
@@ -37,6 +37,7 @@ export function getPageHighlights(pageNumber: number) {
 
 export const useHighlights = () => {
   const readingBook = getReadingBook();
+  const { pdfJumpToPage } = usePdfChangePage();
   const pageJumpStatus: ExtnameFn = {
     [Bookextname.pdf]: pdfJumpToPage,
     [Bookextname.epub]: () => message.warning("功能待开发中！"),
