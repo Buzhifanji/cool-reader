@@ -1,7 +1,7 @@
+import { controlNodesSection } from "@/views/reader/notes";
 import { Rendition } from "epubjs";
 import { PDFViewer } from "pdfjs-dist/web/pdf_viewer";
 import { updatePageNumber } from "../../components/highlight/highlight";
-import { controlNodesSection } from "../../components/reader/notes";
 import { getBookContext, getReadingBook } from "../store";
 import { ExtnameFn } from "../type";
 import { Bookextname } from "../utils/enums";
