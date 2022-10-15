@@ -1,12 +1,13 @@
+import { BookData } from "@/interfaces";
 import { notification } from "@/naive";
-import { deleteForageFile, getForageFiles } from "@core/store";
-import { StorageBook } from "@core/type";
+import { getAllBooks } from "@/store";
+import { deleteForageFile } from "@core/store";
 import { renderIcon } from "@core/utils/dom";
 import { isIndex } from "@core/utils/is";
 import { Delete, Edit, Export } from "@vicons/carbon";
 import { nextTick, ref } from "vue";
 
-const books = ref<StorageBook[]>([]);
+const books = ref<BookData[]>([]);
 
 function deleteBookList(bookId: string) {
   const index = books.value.findIndex((book) => book.id === bookId);
@@ -22,7 +23,7 @@ function deleteBookList(bookId: string) {
   }
 }
 
-export function updateBook(book: StorageBook) {
+export function updateBook(book: BookData) {
   books.value.unshift(book);
 }
 
@@ -97,7 +98,7 @@ let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
 export const useBooks = () => {
   async function initBook() {
     if (!isLoadStoraged) {
-      const list = await getForageFiles();
+      const list = await getAllBooks();
       books.value = list ? [...list] : [];
       isLoadStoraged = true;
     }

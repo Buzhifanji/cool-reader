@@ -11,15 +11,20 @@ export function setBookId(book: BookInfo) {
     try {
       const { extname, fileContent } = book;
       if (extname === Bookextname.pdf) {
-        setPdfMD5(book).then((value) => resolve(value));
+        setPdfMD5(book).then((value) => resolve(formatId(value)));
       } else {
         const hash = SparkMD5.ArrayBuffer.hash(fileContent);
-        resolve(hash);
+        resolve(formatId(hash));
       }
     } catch (error) {
       reject("set book id is error: " + error);
     }
   });
+}
+
+// 通过书本 id，来确认多窗口数据共享是具体内容，但 由于浏览器会对 URI 编码处理，为了确保获取数据正确，所有需要对 id 进行编码处理。
+function formatId(id: string): string {
+  return decodeURIComponent(encodeURIComponent(id));
 }
 
 function setPdfMD5({

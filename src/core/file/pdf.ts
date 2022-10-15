@@ -1,3 +1,4 @@
+import { updateReadingBook } from "@/store";
 import {
   getDocument,
   PageViewport,
@@ -59,13 +60,13 @@ export async function renderPdf({ fileContent, id }: StorageBook) {
   PDFDocumentProxy = await loadingTask.promise;
 
   const outline = await PDFDocumentProxy.getOutline();
-  catalogs = formatePdfCatalog(outline);
-  // pdfViewer.eventBus.on("pagechanging", (value: any) => {
-  //   console.log("pagechanging", value);
-  //   console.log(pdfViewer!.currentPageNumber);
-  // });
+
+  const catalog = formatePdfCatalog(outline);
 
   pdfViewer.setDocument(PDFDocumentProxy);
+
+  updateReadingBook({ context: pdfViewer, catalog });
+
   return pdfViewer;
 }
 

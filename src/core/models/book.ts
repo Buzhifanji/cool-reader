@@ -10,6 +10,7 @@ export class ReadingBook implements StorageBook {
     public category: string,
     public cover: string,
     public id: string,
-    public fileContent: Uint8Array
+    public fileContent: Uint8Array,
+    public content: null
   ) {}
 }

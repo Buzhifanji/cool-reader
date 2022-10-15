@@ -1,7 +1,8 @@
+import { VIEWER } from "@/constants";
+import { updateReadingBook } from "@/store";
 import epubjs, { Rendition } from "epubjs";
 import { NavItem } from "epubjs/types/navigation";
 import { StorageBook } from "../type";
-import { VIEWER } from "../utils/constant";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 let catalog: NavItem[] = []; // 目录
@@ -24,8 +25,9 @@ export function renderEpub({ fileContent }: StorageBook): Promise<Rendition> {
   return new Promise((resolve, reject) => {
     const book = epubjs(fileContent.buffer);
     book.ready.then(() => {
-      catalog = book.navigation.toc;
+      let catalog = book.navigation.toc;
       formateEpubCatalog(catalog);
+      updateReadingBook({ catalog: catalog });
     });
 
     rendition = book.renderTo(VIEWER, {
@@ -42,6 +44,8 @@ export function renderEpub({ fileContent }: StorageBook): Promise<Rendition> {
         resolve(rendition!);
       })
       .catch((err) => reject(err));
+
+    updateReadingBook({ context: rendition });
   });
 }
 

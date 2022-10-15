@@ -1,13 +1,12 @@
 
 
 <script setup lang="ts">
-import { openFile } from "@core/file/file";
-import { percentage } from "@core/file/file-size";
+import { useLoadFile } from "@/store";
+import { downloadFile } from "@core/file/file";
 import { openReaderWindow } from "@core/system/window";
-import Highlighter from "web-highlighter";
 import { useBooks, useContextMenu } from "./book";
 
-new Highlighter().run();
+const { percentage } = useLoadFile();
 
 const { books } = useBooks();
 const {
@@ -41,7 +40,7 @@ const {
 
   <n-result v-else status="418" title="暂无书本可读" description="一切尽在不言中">
     <template #footer>
-      <n-button @click="openFile">从本地导入</n-button>
+      <n-button @click="downloadFile">从本地导入</n-button>
     </template>
   </n-result>
 </template>

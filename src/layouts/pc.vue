@@ -8,9 +8,6 @@ import Menu from "./menu.vue";
   <n-layout>
     <n-layout-header bordered>
       <Header />
-      <!-- <n-space justify="end">
-        <n-button @click="openFile" :disabled="isLoadFile">上传</n-button>
-      </n-space> -->
     </n-layout-header>
     <n-layout has-sider>
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"

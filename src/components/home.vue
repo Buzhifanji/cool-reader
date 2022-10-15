@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { RouterName } from "@/enums";
 import { NIcon } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { RouterLink } from "vue-router";
-import { isLoadFile, openFile } from "../core/file/file";
-import { RouterName } from "../route";
 import BookIcon from "./icons/book.vue";
 import HighLightIcon from "./icons/highlight.vue";
 import NoteIcon from "./icons/note.vue";
@@ -44,26 +43,13 @@ const siderMenuOptions = [
       <n-space justify="end">
         <!-- <input type="file" @change="fileChange" :disabled="isLoadFile" /> -->
         <!-- <SetIcon /> -->
-        <n-button @click="openFile" :disabled="isLoadFile">上传</n-button>
+        <!-- <n-button @click="openFile" :disabled="isLoadFile">上传</n-button> -->
       </n-space>
     </n-layout-header>
     <n-layout has-sider>
-      <n-layout-sider
-        bordered
-        show-trigger
-        collapse-mode="width"
-        :collapsed-width="64"
-        :width="160"
-        :native-scrollbar="false"
-        :inverted="inverted"
-        style="max-height: 320px"
-      >
-        <n-menu
-          :inverted="inverted"
-          :collapsed-width="64"
-          :collapsed-icon-size="22"
-          :options="siderMenuOptions"
-        />
+      <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"
+        :native-scrollbar="false" :inverted="inverted" style="max-height: 320px">
+        <n-menu :inverted="inverted" :collapsed-width="64" :collapsed-icon-size="22" :options="siderMenuOptions" />
       </n-layout-sider>
       <n-layout-content>
         <router-view></router-view>
