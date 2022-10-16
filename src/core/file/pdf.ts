@@ -1,8 +1,10 @@
+import { updatePageNumber } from "@/components/highlight/highlight";
 import { VIEWERCONTAINER } from "@/constants";
 import { updateReadingBook } from "@/store";
 import {
   arrayHasData,
   createEle,
+  formateCatalog,
   getEleById,
   isArray,
   isObj,
@@ -65,6 +67,8 @@ export async function renderPdf(content: Uint8Array) {
 
   updateReadingBook({ catalog });
 
+  pdfViewer.eventBus.on("textlayerrendered", pageNumberChange);
+
   return pdfViewer;
 }
 
@@ -114,6 +118,18 @@ export const usePdfChangePage = () => {
   return { pdfJumpFromCatalog, pdfPageUp, pdfJumpToPage, pdfPageDown };
 };
 
+function pageNumberChange() {
+  updatePageNumber(pdfViewer!.currentPageNumber);
+}
+
+export function getPdfCurrentPageNumber() {
+  return pdfViewer?._currentPageNumber;
+}
+
+export function removePdfEvent() {
+  pdfViewer?.eventBus?.on("textlayerrendered", pageNumberChange);
+}
+
 function formatePdfCatalog(list: any[]) {
   // 处理 没有目录的特殊情况
   if (list.length === 1 && list[0].title === "目录") {
@@ -121,16 +137,6 @@ function formatePdfCatalog(list: any[]) {
   }
 
   // 处理没有 子数据的时候 不显示图标的情况
-  const handle = (arr: any[]) => {
-    arr.forEach((item) => {
-      const items = item.items;
-      if (items && items.length) {
-        handle(items);
-      } else {
-        delete item.items;
-      }
-    });
-  };
-  handle(list);
+  formateCatalog(list, "items");
   return list;
 }

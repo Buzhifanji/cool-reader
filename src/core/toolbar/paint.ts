@@ -1,11 +1,8 @@
-import { Intervals } from "../type";
-import { DATA_SOURCE_ID, WARP_TAG_NAME } from "../utils/constant";
-import { createEle } from "../utils/dom";
-import { isElementNode } from "../utils/is";
-import { mergeIntervals } from "../utils/union";
+import { DATA_SOURCE_ID, WARP_TAG_NAME } from "@/constants";
+import { DomSource, Intervals, PaintSource } from "@/interfaces";
+import { createEle, isElementNode, mergeIntervals } from "@/utils";
 import { getDomContent, getOldElement, hasPaint } from "./dom";
 import { getTextOffset } from "./offset";
-import { DomSource, PaintSource } from "./type";
 
 function createWrapper(text: string, id: string, className: string) {
   const textNode = document.createTextNode(text);

@@ -1,7 +1,7 @@
 import { VIEWER } from "@/constants";
 import { updateReadingBook } from "@/store";
+import { formateCatalog } from "@/utils";
 import epubjs, { Rendition } from "epubjs";
-import { NavItem } from "epubjs/types/navigation";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 
@@ -24,7 +24,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     const book = epubjs(content.buffer);
     book.ready.then(() => {
       let catalog = book.navigation.toc;
-      formateEpubCatalog(catalog);
+      formateCatalog(catalog, "subitems");
       updateReadingBook({ catalog: catalog });
     });
 
@@ -60,14 +60,3 @@ export const useEpubChangePage = () => {
 
   return { epubJumpFromCatalog, epubPageUp, epubPageDown };
 };
-
-function formateEpubCatalog(arr: NavItem[]) {
-  arr.forEach((item) => {
-    const items = item.subitems;
-    if (items && items.length) {
-      formateEpubCatalog(items);
-    } else {
-      delete item.subitems;
-    }
-  });
-}

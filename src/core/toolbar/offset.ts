@@ -1,4 +1,4 @@
-import { isTextNode } from "../utils/is";
+import { isTextNode } from "@/utils";
 
 // 获取 相对于父元素的文本偏移量
 export function getTextOffset(root: Node, text: Node) {

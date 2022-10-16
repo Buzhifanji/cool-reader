@@ -8,18 +8,7 @@ import { reactive } from "vue";
 
 // 当前打开书本的数据
 const readingBook = reactive<BookData>(
-  new ReadingBook(
-    "",
-    Bookextname.pdf,
-    0,
-    "",
-    "",
-    "",
-    "",
-    new Uint8Array(),
-    null,
-    []
-  )
+  new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array(), [])
 );
 
 let context: BookContext = null;
@@ -35,23 +24,18 @@ export async function setReadingBook(id: string, context: BookContext) {
     readingBook.cover = book.cover;
     readingBook.id = id;
     readingBook.content = book.content;
-    readingBook.context = context;
     readingBook.catalog = book.catalog;
   }
   return readingBook;
 }
 
 export function getReadingBook() {
-  return { readingBook, context };
+  return readingBook;
 }
 
-export function updateReadingBook({ content, context, catalog }: UpdateBook) {
+export function updateReadingBook({ content, catalog }: UpdateBook) {
   if (content) {
-    readingBook.content = content;
-  }
-  // 由于 绑定 context 到 readingBook 上，调用方法时候，会报错：Cannot access private method，所有需要单独缓存
-  if (context) {
-    context = context;
+    content = content;
   }
   if (catalog) {
     readingBook.catalog = catalog;

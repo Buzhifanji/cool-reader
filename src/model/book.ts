@@ -11,7 +11,6 @@ export class ReadingBook implements BookData {
     public cover: string,
     public id: string,
     public content: Uint8Array,
-    public context: null,
     public catalog: []
   ) {}
 }

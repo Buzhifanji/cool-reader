@@ -1,10 +1,10 @@
 
 
 <script setup lang="ts">
+import { removePdfEvent } from "@/core/file";
 import Catalog from "@components/catalog/catalog.vue";
 import Highlight from "@components/highlight/highlight.vue";
 import ToolBar from "@components/toolbar/toolbar.vue";
-import { removeContextEvent } from "@core/notes/event";
 import { closeTooBar, openTooBar } from "@core/notes/toobar";
 import { TabPaneEnum } from "@enums/index";
 import { ArrowDown, ArrowUp } from "@vicons/carbon";
@@ -17,11 +17,12 @@ const route = useRoute();
 // 笔记栏目相关逻辑
 const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
   useNotesSection();
+//翻页功能
 const { pageUp, pageDown } = usePageTurn();
 const { readingBook } = useReaderBook(route);
 
 onMounted(() => {
-  removeContextEvent();
+  removePdfEvent();
 })
 </script>
 

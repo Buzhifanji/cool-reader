@@ -6,7 +6,7 @@ import { ExtnameFn } from "../../core/type";
 import { Bookextname } from "../../core/utils/enums";
 
 export const useCatalog = () => {
-  const { readingBook } = getReadingBook();
+  const readingBook = getReadingBook();
   const menuFieds = reactive({
     key: "key",
     label: "label",
@@ -30,7 +30,7 @@ export const useCatalog = () => {
 export function generateGotoPage(item: any) {
   const { pdfJumpFromCatalog } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
-  const { readingBook } = getReadingBook();
+  const readingBook = getReadingBook();
   const pageStatus: ExtnameFn = {
     [Bookextname.pdf]: () => pdfJumpFromCatalog(item.dest),
     [Bookextname.epub]: () => epubJumpFromCatalog(item.href),

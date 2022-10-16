@@ -1,12 +1,12 @@
+import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "@/constants";
+import { DomSource, PaintSource } from "@/interfaces";
+import { getReadingBook } from "@/store";
+import { selectorAll, stringTohash } from "@/utils";
 import { getDomContianer, getPageNumber } from ".";
-import { getReadingBook, removeDomSource, saveDomSource } from "../store";
-import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "../utils/constant";
-import { selectorAll } from "../utils/dom";
-import { stringTohash } from "../utils/union";
+import { removeDomSource, saveDomSource } from "../store";
 import { removePaint } from "./delete";
 import { getMeteDom, setMeteDom } from "./dom";
 import { paintWrap } from "./paint";
-import { DomSource, PaintSource } from "./type";
 
 export function initDomSource(range: Range): DomSource | null {
   const contianer = getDomContianer();

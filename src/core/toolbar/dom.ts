@@ -1,8 +1,7 @@
-import { DATA_SOURCE_ID } from "../utils/constant";
-import { selectorAll } from "../utils/dom";
-import { isElementNode, isTextNode } from "../utils/is";
+import { DATA_SOURCE_ID } from "@/constants";
+import { DomMeta, DomSource } from "@/interfaces";
+import { isElementNode, isTextNode, selectorAll } from "@/utils";
 import { getTextOffset } from "./offset";
-import { DomMeta, DomSource } from "./type";
 
 function queryChildDomIndex(
   container: HTMLElement,
@@ -28,16 +27,6 @@ function getOrinalParent(node: HTMLElement): HTMLElement {
   } else {
     return node.parentElement!;
   }
-  // let result = container;
-  // let current: HTMLElement = tagetNode;
-  // while (current && current.parentElement) {
-  //   if (current.parentElement === container) {
-  //     result = current;
-  //     break;
-  //   }
-  //   current = current.parentElement;
-  // }
-  // return result;
 }
 
 export function setMeteDom(
