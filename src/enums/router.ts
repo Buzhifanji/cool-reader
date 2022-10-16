@@ -1,6 +1,6 @@
 export enum RouterName {
   book = "book",
-  note = "note",
+  notes = "notes",
   highlight = "highlight",
   reader = "reader",
 }

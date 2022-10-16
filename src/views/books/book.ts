@@ -1,9 +1,7 @@
 import { BookData } from "@/interfaces";
 import { notification } from "@/naive";
-import { getAllBooks } from "@/store";
-import { deleteForageFile } from "@core/store";
-import { renderIcon } from "@core/utils/dom";
-import { isIndex } from "@core/utils/is";
+import { getAllBooks, removeBook } from "@/store";
+import { isIndex, renderIcon } from "@/utils";
 import { Delete, Edit, Export } from "@vicons/carbon";
 import { nextTick, ref } from "vue";
 
@@ -64,7 +62,7 @@ export const useContextMenu = () => {
     switch (key) {
       case menusKey.delete:
         deleteBookList(selectedBookId!);
-        deleteForageFile(selectedBookId!);
+        removeBook(selectedBookId!);
         break;
     }
   }

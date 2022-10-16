@@ -17,7 +17,7 @@ const menu = [
     icon: renderIcon(Book),
   },
   {
-    label: renderRouterLink(RouterName.note, "我的笔记"),
+    label: renderRouterLink(RouterName.notes, "我的笔记"),
     key: "my-nodes",
     icon: renderIcon(Idea),
   },
