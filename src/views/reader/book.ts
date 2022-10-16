@@ -18,7 +18,6 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
       if (book.content) {
         await renderBookStatus[book.extname]?.(book.content);
         // 获取内容
-        // useContextEvent();
         updateHighlights();
       }
     } catch (error) {

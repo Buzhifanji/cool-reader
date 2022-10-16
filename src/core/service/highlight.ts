@@ -1,7 +1,7 @@
+import { highlightParam, highlightResponse } from "@/interfaces";
+import { message } from "@/naive";
+import { generateServiceParams } from "@/utils";
 import { invoke } from "@tauri-apps/api";
-import { message } from "../../naive";
-import { highlightParam, highlightResponse } from "../notes/type";
-import { generateServiceParams } from "../utils/fied";
 
 function sortHighlights(arr: highlightParam[]) {
   return [...arr].sort((a, b) => {

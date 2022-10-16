@@ -7,4 +7,5 @@ export {
   domSourceFromStore,
   getPaintSource,
   initDomSource,
+  updateDomSource,
 } from "./source";

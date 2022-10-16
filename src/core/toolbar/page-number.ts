@@ -1,6 +1,6 @@
+import { Bookextname } from "@/enums";
 import { getReadingBook } from "@/store";
 import { getPdfCurrentPageNumber } from "@core/file";
-import { Bookextname } from "../utils/enums";
 
 export function getPageNumber() {
   const readingBook = getReadingBook();

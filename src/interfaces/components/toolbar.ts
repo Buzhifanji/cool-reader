@@ -1,9 +1,4 @@
-import { DomSource } from "../../core/toolbar/type";
-
-export interface ToolBarStyle {
-  left: string;
-  top: string;
-}
+import { DomSource } from "../store";
 
 export interface ToolBar {
   id: string;

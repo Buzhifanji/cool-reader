@@ -1,8 +1,8 @@
-import { getReadingBook } from "../store";
-import { ExtnameFn } from "../type";
-import { VIEWER } from "../utils/constant";
-import { getEleById } from "../utils/dom";
-import { Bookextname } from "../utils/enums";
+import { VIEWER } from "@/constants";
+import { Bookextname } from "@/enums";
+import { ExtnameFn } from "@/interfaces";
+import { getReadingBook } from "@/store";
+import { getEleById } from "@/utils";
 
 export function getReaderToolRoot() {
   const readingBook = getReadingBook();

@@ -1,5 +1,5 @@
-import { VIEWER, VIEWERCONTAINER } from "../utils/constant";
-import { getEleById } from "../utils/dom";
+import { VIEWER, VIEWERCONTAINER } from "@/constants";
+import { getEleById } from "@/utils";
 
 export function getPosition(node: HTMLElement) {
   let offset = { top: 0, left: 0 };

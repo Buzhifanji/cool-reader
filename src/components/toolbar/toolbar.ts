@@ -1,3 +1,9 @@
+import { DEFAULT_DOM_CLASS_NAME } from "@/constants";
+import { useRemoveHighlight } from "@/core/notes/toobar";
+import { ToolBar } from "@/interfaces";
+import { message } from "@/naive";
+import { saveHighlight, updateHighlight } from "@/server/highlight";
+import { domSourceFromRange, updateDomSource } from "@core/toolbar";
 import {
   Copy,
   Delete,
@@ -7,23 +13,16 @@ import {
 } from "@vicons/carbon";
 import { FormInst } from "naive-ui";
 import { computed, reactive, ref } from "vue";
-import { useRemoveHighlight } from "../../core/notes/toobar";
-import { saveHighlight, updateHighlight } from "../../core/service/highlight";
-import { domSourceFromRange } from "../../core/toolbar";
-import { updateDomSource } from "../../core/toolbar/source";
-import { DEFAULT_DOM_CLASS_NAME } from "../../core/utils/constant";
-import { message } from "../../naive";
 import { updateHighlights } from "../highlight/highlight";
-import { ToolBar, ToolBarStyle } from "./interface";
 
-function toolBarStyleModel(): ToolBarStyle {
+function toolBarStyleModel() {
   return {
     left: "0",
     top: "0",
   };
 }
 
-function toolBarModel(): ToolBar {
+function toolBarModel() {
   return {
     id: "", // 绑定数据的 id （Highlighter每创建一条数据都有一个id）
     show: false,
@@ -34,7 +33,7 @@ function toolBarModel(): ToolBar {
 }
 
 // 工具栏 显示的位置
-export const toolBarStyle = reactive<ToolBarStyle>(toolBarStyleModel());
+export const toolBarStyle = reactive(toolBarStyleModel());
 
 export const toolBar = reactive<ToolBar>(toolBarModel());
 

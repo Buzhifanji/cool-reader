@@ -1,12 +1,16 @@
-import { toRaw } from "vue";
-import { updateHighlights } from "../../components/highlight/highlight";
+import { updateHighlights } from "@/components/highlight/highlight";
 import {
   resetToolBar,
   toolBar,
   toolBarStyle,
-} from "../../components/toolbar/toolbar";
+} from "@/components/toolbar/toolbar";
+import { DATA_SOURCE_ID } from "@/constants";
+import { DomSource } from "@/interfaces";
+import { getDomSource, getReadingBook, removeDomSource } from "@/store";
+import { getTextWidth, isObjEqual } from "@/utils";
+import { toRaw } from "vue";
+
 import { removeHighlight } from "../service/highlight";
-import { getDomSource, getReadingBook, removeDomSource } from "../store";
 import {
   deleteDomSource,
   getDomContianer,
@@ -16,10 +20,6 @@ import {
 } from "../toolbar";
 import { getDomContent } from "../toolbar/dom";
 import { DomRange } from "../toolbar/selection";
-import { DomSource } from "../toolbar/type";
-import { DATA_SOURCE_ID } from "../utils/constant";
-import { isObjEqual } from "../utils/is";
-import { getTextWidth } from "../utils/text";
 import { getPosition } from "./postion";
 
 function calculateTextWidth(node: HTMLElement, source: DomSource) {
