@@ -1,5 +1,11 @@
+<script setup lang="ts">
+import { Delete, FaceWink } from "@vicons/carbon";
+import { highlights, useHighlights } from "./highlight";
+const { remove, jump } = useHighlights();
+</script>
+
 <template>
-  <n-list hoverable clickable>
+  <n-list hoverable clickable v-if="highlights.length">
     <n-list-item v-for="item in highlights" :key="item.id" @click="jump(item)">
       <template #suffix>
         <n-icon size="16" :component="Delete" @click.stop="remove(item)" />
@@ -9,10 +15,11 @@
       </n-ellipsis>
     </n-list-item>
   </n-list>
+  <n-empty description="空空如也" v-else>
+    <template #icon>
+      <n-icon>
+        <FaceWink />
+      </n-icon>
+    </template>
+  </n-empty>
 </template>
-
-<script setup lang="ts">
-import { Delete } from "@vicons/carbon";
-import { highlights, useHighlights } from "./highlight";
-const { remove, jump } = useHighlights();
-</script>
