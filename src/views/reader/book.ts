@@ -1,9 +1,9 @@
 import { updateHighlights } from "@/components/highlight/highlight";
+import { Bookextname } from "@/enums";
+import { ExtnameFn } from "@/interfaces";
 import { getReadingBook, setReadingBook } from "@/store";
 import { renderEpub, useEpubChangePage } from "@core/file/epub";
 import { renderPdf, usePdfChangePage } from "@core/file/pdf";
-import { ExtnameFn } from "@core/type";
-import { Bookextname } from "@core/utils/enums";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
