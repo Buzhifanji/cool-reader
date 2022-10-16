@@ -1,13 +1,12 @@
 import { usePdfChangePage } from "@/core/file";
+import { useRemoveHighlight } from "@/core/notes/toobar";
+import { domSourceFromStore } from "@/core/toolbar";
+import { Bookextname } from "@/enums";
+import { ExtnameFn, highlightParam } from "@/interfaces";
+import { message } from "@/naive";
+import { getHighlights } from "@/server/highlight";
+import { getReadingBook } from "@/store";
 import { ref, watchEffect } from "vue";
-import { useRemoveHighlight } from "../../core/notes/toobar";
-import { highlightParam } from "../../core/notes/type";
-import { getHighlights } from "../../core/service/highlight";
-import { getReadingBook } from "../../core/store";
-import { domSourceFromStore } from "../../core/toolbar";
-import { ExtnameFn } from "../../core/type";
-import { Bookextname } from "../../core/utils/enums";
-import { message } from "../../naive";
 
 export const highlights = ref<highlightParam[]>([]);
 
