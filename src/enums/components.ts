@@ -1,6 +1,6 @@
 export enum TabPaneEnum {
   catalog,
   bookmark,
-  note,
+  notes,
   highlight,
 }

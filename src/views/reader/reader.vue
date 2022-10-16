@@ -4,6 +4,7 @@
 import { removePdfEvent } from "@/core/file";
 import Catalog from "@components/catalog/catalog.vue";
 import Highlight from "@components/highlight/highlight.vue";
+import Notes from "@components/notes/notes.vue";
 import ToolBar from "@components/toolbar/toolbar.vue";
 import { closeTooBar, openTooBar } from "@core/notes/toobar";
 import { TabPaneEnum } from "@enums/index";
@@ -82,9 +83,11 @@ onMounted(() => {
           <n-tabs type="segment" v-model:value="notesActiveTab">
             <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
               <!-- 目录 -->
-              <Catalog :book="readingBook" v-if="isNotesTab(TabPaneEnum.catalog)" />
+              <Catalog v-if="isNotesTab(TabPaneEnum.catalog)" />
               <!-- 高亮 -->
               <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
+              <!-- 笔记 -->
+              <Notes v-if="isNotesTab(TabPaneEnum.notes)" />
             </n-tab-pane>
           </n-tabs>
         </n-drawer-content>
