@@ -1,3 +1,16 @@
+
+
+<script setup lang="ts">
+import { onBeforeUnmount } from "vue";
+import { removeMessage } from "./idea";
+import { useFormModel, useToolBar } from "./toolbar";
+const { bars, barAction, toolBarStyle, toolBar, ideaValue } = useToolBar();
+const { formRef, formModel, rules, submit } = useFormModel();
+
+onBeforeUnmount(removeMessage)
+
+</script>
+
 <template>
   <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
     <template v-if="toolBar.input">
@@ -25,13 +38,6 @@
     </n-space>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useFormModel, useToolBar } from "./toolbar";
-const { bars, barAction, toolBarStyle, toolBar, ideaValue } = useToolBar();
-const { formRef, formModel, rules, submit } = useFormModel();
-</script>
-
 <style scoped>
 .tool-bar-wrapper {
   box-sizing: border-box;

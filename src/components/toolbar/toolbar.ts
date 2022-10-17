@@ -14,6 +14,7 @@ import {
 import { FormInst } from "naive-ui";
 import { computed, reactive, ref } from "vue";
 import { updateHighlights } from "../highlight/highlight";
+import { openIdea } from "./idea";
 
 function toolBarStyleModel() {
   return {
@@ -131,7 +132,8 @@ export const useToolBar = () => {
     useRemoveHighlight(toolBar.source!.id);
   }
   function ideaInput() {
-    toolBar.input = true;
+    resetToolBar();
+    openIdea();
   }
   const barActionStatus: Record<barEnum, Function> = {
     [barEnum.Copy]: copyText,

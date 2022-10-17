@@ -1,10 +1,10 @@
 import { TabPaneEnum } from "@/enums";
 import { ref } from "vue";
 
-const showNotes = ref<boolean>(false);
-
 export const useNotesSection = () => {
   const notesActiveTab = ref<TabPaneEnum>(TabPaneEnum.catalog);
+  const showNotes = ref<boolean>(false);
+
   const tabPanes = [
     { name: TabPaneEnum.catalog, tab: "目录" },
     { name: TabPaneEnum.bookmark, tab: "书签" },
@@ -14,6 +14,11 @@ export const useNotesSection = () => {
   function isNotesTab(tab: TabPaneEnum): boolean {
     return tab === notesActiveTab.value;
   }
+  function controlNodesSection(value: boolean) {
+    if (showNotes.value !== value) {
+      showNotes.value = value;
+    }
+  }
   return {
     showNotes,
     notesActiveTab,
@@ -22,7 +27,3 @@ export const useNotesSection = () => {
     isNotesTab,
   };
 };
-
-export function controlNodesSection(value: boolean) {
-  showNotes.value = value;
-}

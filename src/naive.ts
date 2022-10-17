@@ -1,6 +1,7 @@
 import {
   create,
   createDiscreteApi,
+  NAlert,
   NButton,
   NCard,
   NCol,
@@ -70,6 +71,7 @@ export const naive = create({
     NFormItem,
     NRow,
     NCol,
+    NAlert,
   ],
 });
 
