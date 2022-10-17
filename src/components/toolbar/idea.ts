@@ -1,32 +1,51 @@
-import {
-  createDiscreteApi,
-  MessageReactive,
-  MessageRenderMessage,
-  NAlert,
-} from "naive-ui";
-import { h } from "vue";
+import { createDiscreteApi, MessageReactive, NButton, NInput } from "naive-ui";
+import { h, ref, VNodeChild } from "vue";
 
 let messageReactive: MessageReactive | null = null;
 
-const renderMessage: MessageRenderMessage = (props) => {
-  const { type } = props;
+const text = ref<string>("");
+
+const renderButton = () => {
+  return h("div", { style: { display: "flex", justifyContent: "flex-end" } }, [
+    h(NButton, { round: true, type: "primary" }, { default: () => "添加" }),
+  ]);
+};
+
+const renderInput = (): VNodeChild => {
+  return h(NInput, {
+    type: "textarea",
+    placeholder: "输入你的想法",
+    clearable: true,
+    round: true,
+    showCount: true,
+    size: "large",
+    rows: 6,
+    maxlength: 999,
+    style: {
+      maxWidth: "calc(100vw - 32px)",
+      maxHeight: "600px",
+      width: "480px",
+      marginBottom: "10px",
+    },
+    onChange: (value) => {
+      text.value = value;
+    },
+  });
+};
+
+const renderMessage = (): VNodeChild => {
   return h(
-    NAlert,
+    "div",
     {
-      closable: false,
-      onClose: props.onClose,
-      type: type === "loading" ? "default" : type,
-      title: "你看你手上拿的是什么啊",
       style: {
+        padding: "10px 14px",
         boxShadow: "var(--n-box-shadow)",
-        maxWidth: "calc(100vw - 32px)",
-        width: "480px",
+        background: "var(--n-color)",
+        borderRadius: "var(--n-border-radius)",
         cursor: "pointer",
       },
     },
-    {
-      default: () => props.content,
-    }
+    [renderInput(), renderButton()]
   );
 };
 
@@ -37,7 +56,7 @@ export function openIdea() {
       containerStyle: { bottom: "50px" },
     },
   });
-  messageReactive = message.create("那东西我们早就不屑啦，哈哈哈", {
+  messageReactive = message.create("", {
     render: renderMessage,
     closable: true,
     duration: 0,

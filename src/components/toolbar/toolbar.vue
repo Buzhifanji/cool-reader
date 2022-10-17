@@ -42,11 +42,12 @@ onBeforeUnmount(removeMessage)
 .tool-bar-wrapper {
   box-sizing: border-box;
   position: absolute;
-  border: 1px solid #fff;
-  border-radius: 3px;
+  border: 1px solid var(--n-border-color);
+  border-radius: var(--n-border-radius);
   padding: 10px 14px;
   color: #fff;
-  background: #444;
+  background-color: rgba(38, 38, 38, 1);
+  transition: box-shadow .3s var(--n-bezier), background-color .3s var(--n-bezier), color .3s var(--n-bezier);
   text-align: center;
   font-size: 14px;
   cursor: pointer;
