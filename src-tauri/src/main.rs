@@ -24,6 +24,10 @@ fn main() {
             data_base::command::add_highlight,    // 新增一条高亮笔记
             data_base::command::delete_highlight, // 删除一条高亮笔记
             data_base::command::update_highlight, // 更新一条高亮笔记
+            data_base::command::get_notes,        // 获取书某本书全部笔记内容
+            data_base::command::add_notes,        // 新增一条笔记
+            data_base::command::delete_notes,     // 更新一条笔记
+            data_base::command::update_notes,     // 删除一条笔记
         ])
         .setup(|app| {
             tauri::async_runtime::spawn(async move {
