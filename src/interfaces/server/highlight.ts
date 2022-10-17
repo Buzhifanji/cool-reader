@@ -15,4 +15,7 @@ export interface highlightResponse extends bookInfo {
   start_meta: DomMetaRespone;
   end_meta: DomMetaRespone;
   page_number: number;
+  book_id: string;
+  class_name: string;
+  notes?: string;
 }
