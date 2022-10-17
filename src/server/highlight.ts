@@ -1,25 +1,8 @@
 import { DomSource, highlightResponse } from "@/interfaces";
 import { message } from "@/naive";
 import { generateServiceParams } from "@/utils";
+import { sortNotes } from "@/utils/sort";
 import { invoke } from "@tauri-apps/api";
-
-function sortHighlights(arr: DomSource[]) {
-  return [...arr].sort((a, b) => {
-    if (a.pageNumber > b.pageNumber) {
-      return 1;
-    } else if (a.pageNumber < b.pageNumber) {
-      return -1;
-    } else {
-      if (a.startMeta.parentIndex > b.startMeta.parentIndex) {
-        return 1;
-      } else if (a.startMeta.parentIndex < b.startMeta.parentIndex) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-  });
-}
 
 export function saveHighlight(param: DomSource) {
   const data = generateServiceParams<DomSource, highlightResponse>(param);
@@ -50,8 +33,7 @@ export function getHighlights(bookId: string): Promise<DomSource[]> {
         const result = (value as highlightResponse[]).map((item) =>
           generateServiceParams<highlightResponse, DomSource>(item, false)
         );
-        console.log("result", sortHighlights(result));
-        resolve(sortHighlights(result));
+        resolve(sortNotes(result));
       })
       .catch((err) => {
         message.error(err);
