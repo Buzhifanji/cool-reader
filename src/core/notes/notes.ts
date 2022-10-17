@@ -20,7 +20,6 @@ export const useNoteJumpAndRemove = () => {
   };
   // 删除
   function remove({ id }: DomSource) {
-    debugger;
     useRemoveHighlight(id);
   }
   // 跳转

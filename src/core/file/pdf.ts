@@ -112,7 +112,6 @@ export const usePdfChangePage = () => {
   }
 
   function pdfPageDown() {
-    debugger;
     pdfViewer?.nextPage();
   }
 
@@ -120,7 +119,6 @@ export const usePdfChangePage = () => {
 };
 
 function pageNumberChange() {
-  debugger;
   updatePageNumber(pdfViewer!.currentPageNumber);
 }
 
