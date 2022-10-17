@@ -1,5 +1,6 @@
 import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "@/constants";
 import { DomSource, PaintSource } from "@/interfaces";
+import { NotesModel } from "@/model";
 import { getReadingBook, removeDomSource, saveDomSource } from "@/store";
 import { selectorAll, stringTohash } from "@/utils";
 import { getDomContianer, getPageNumber } from ".";
@@ -20,15 +21,17 @@ export function initDomSource(range: Range): DomSource | null {
     const text = range.toString();
     const id = stringTohash(text);
 
-    return {
+    const notes = new NotesModel(
       id,
+      getReadingBook().id,
+      DEFAULT_DOM_CLASS_NAME,
+      getPageNumber(),
       text,
-      startMeta: setMeteDom(contianer, startDom, startOffset),
-      endMeta: setMeteDom(contianer, endDom, endOffset),
-      pageNumber: getPageNumber(),
-      bookId: getReadingBook().id,
-      className: DEFAULT_DOM_CLASS_NAME,
-    };
+      setMeteDom(contianer, startDom, startOffset),
+      setMeteDom(contianer, endDom, endOffset)
+    );
+
+    return notes;
   }
   return null;
 }

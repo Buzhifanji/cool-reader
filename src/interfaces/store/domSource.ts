@@ -8,6 +8,7 @@ export interface DomSource {
   startMeta: DomMeta;
   endMeta: DomMeta;
   text: string;
+  notes?: string;
   id: string;
   pageNumber: number;
   className: string;
