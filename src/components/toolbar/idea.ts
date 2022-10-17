@@ -1,13 +1,30 @@
+import { message } from "@/naive";
 import { createDiscreteApi, MessageReactive, NButton, NInput } from "naive-ui";
-import { h, ref, VNodeChild } from "vue";
+import { h, ref, unref, VNodeChild } from "vue";
 
 let messageReactive: MessageReactive | null = null;
 
 const text = ref<string>("");
 
+function submit() {
+  const value = unref(text);
+  if (value) {
+  } else {
+    message.error("您还未填写笔记！");
+  }
+}
+
 const renderButton = () => {
   return h("div", { style: { display: "flex", justifyContent: "flex-end" } }, [
-    h(NButton, { round: true, type: "primary" }, { default: () => "添加" }),
+    h(
+      NButton,
+      {
+        round: true,
+        type: "primary",
+        onClick: submit,
+      },
+      { default: () => "添加" }
+    ),
   ]);
 };
 
