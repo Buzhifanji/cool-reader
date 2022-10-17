@@ -1,6 +1,7 @@
 import { message } from "@/naive";
 import { createDiscreteApi, MessageReactive, NButton, NInput } from "naive-ui";
 import { h, ref, unref, VNodeChild } from "vue";
+import { toolBar } from "./toolbar";
 
 let messageReactive: MessageReactive | null = null;
 
@@ -9,6 +10,7 @@ const text = ref<string>("");
 function submit() {
   const value = unref(text);
   if (value) {
+    console.log(toolBar);
   } else {
     message.error("您还未填写笔记！");
   }

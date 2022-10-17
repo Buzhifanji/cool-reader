@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useNoteJumpAndRemove } from "@/core/notes/notes";
 import { Delete, FaceWink } from "@vicons/carbon";
-import { notes, useHighlights } from "./notes";
-const { remove, jump } = useHighlights();
+import { notes } from "./notes";
+const { remove, jump } = useNoteJumpAndRemove();
 </script>
 
 <template>

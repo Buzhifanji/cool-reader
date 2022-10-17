@@ -28,7 +28,7 @@ export default defineConfig({
       "@enums": resolve("./src/enums"),
       "@core": resolve("./src/core"),
     },
-    extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json"],
+    extensions: [".mjs", ".js", ".ts", ".jsx", ".vue", ".tsx", ".json"],
   },
   // to make use of `TAURI_DEBUG` and other env variables
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand

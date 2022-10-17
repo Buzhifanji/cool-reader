@@ -9,7 +9,7 @@ export function updateNotes(param: DomSource) {
   return changeNotes(param, "update_notes", "修改成功");
 }
 
-export function getHighlights(bookId: string): Promise<DomSource[]> {
+export function getNotes(bookId: string): Promise<DomSource[]> {
   return _getNotes(bookId, "get_notes");
 }
 

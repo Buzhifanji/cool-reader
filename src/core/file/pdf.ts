@@ -1,4 +1,3 @@
-import { updatePageNumber } from "@/components/highlight/highlight";
 import { VIEWERCONTAINER } from "@/constants";
 import { updateReadingBook } from "@/store";
 import {
@@ -18,6 +17,7 @@ import {
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
 import { toRaw } from "vue";
+import { updatePageNumber } from "../notes/notes";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
@@ -112,6 +112,7 @@ export const usePdfChangePage = () => {
   }
 
   function pdfPageDown() {
+    debugger;
     pdfViewer?.nextPage();
   }
 
@@ -119,6 +120,7 @@ export const usePdfChangePage = () => {
 };
 
 function pageNumberChange() {
+  debugger;
   updatePageNumber(pdfViewer!.currentPageNumber);
 }
 
@@ -127,7 +129,7 @@ export function getPdfCurrentPageNumber() {
 }
 
 export function removePdfEvent() {
-  pdfViewer?.eventBus?.on("textlayerrendered", pageNumberChange);
+  // pdfViewer?.eventBus?.on("textlayerrendered", pageNumberChange);
 }
 
 function formatePdfCatalog(list: any[]) {
