@@ -1,16 +1,18 @@
 use rusqlite::{named_params, Connection, Result};
 use serde::{Deserialize, Serialize};
 
+use super::common::{DeleteIds, DomMeta};
+
 /**
  * 存储 高亮、波浪线、下划线 笔记
  */
 
-#[derive(Serialize, Deserialize, Clone)]
-pub struct DomMeta {
-    pub parent_tag_name: String,
-    pub parent_index: usize,
-    pub text_offset: usize,
-}
+// #[derive(Serialize, Deserialize, Clone)]
+// pub struct DomMeta {
+//     pub parent_tag_name: String,
+//     pub parent_index: usize,
+//     pub text_offset: usize,
+// }
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Highlight {
@@ -21,11 +23,6 @@ pub struct Highlight {
     pub end_meta: DomMeta,
     pub class_name: String,
     pub page_number: usize,
-}
-#[derive(Serialize, Deserialize, Clone)]
-pub struct DeleteHightIds {
-    pub book_id: String,
-    pub id: String,
 }
 
 pub struct HighlightData {
@@ -115,7 +112,7 @@ impl HighlightData {
           }
         }
     }
-    pub fn dellete_highlight(&mut self, data: DeleteHightIds) -> Result<bool, String> {
+    pub fn dellete_highlight(&mut self, data: DeleteIds) -> Result<bool, String> {
         match self.conn.execute(
             "DELETE FROM Highlight as h where h.book_id = ?1 and h.id = ?2",
             [data.book_id, data.id],
