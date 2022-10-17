@@ -2,13 +2,13 @@ import { usePdfChangePage } from "@/core/file";
 import { useRemoveHighlight } from "@/core/notes/toobar";
 import { domSourceFromStore } from "@/core/toolbar";
 import { Bookextname } from "@/enums";
-import { ExtnameFn, highlightParam } from "@/interfaces";
+import { DomSource, ExtnameFn } from "@/interfaces";
 import { message } from "@/naive";
 import { getHighlights } from "@/server/highlight";
 import { getReadingBook } from "@/store";
 import { ref, watchEffect } from "vue";
 
-export const highlights = ref<highlightParam[]>([]);
+export const highlights = ref<DomSource[]>([]);
 
 const pageNumber = ref<number>(1);
 
@@ -42,11 +42,11 @@ export const useHighlights = () => {
     [Bookextname.epub]: () => message.warning("功能待开发中！"),
   };
   // 删除
-  function remove({ id }: highlightParam) {
+  function remove({ id }: DomSource) {
     useRemoveHighlight(id);
   }
   // 跳转
-  function jump(value: highlightParam) {
+  function jump(value: DomSource) {
     pageJumpStatus[readingBook.extname]?.(value.pageNumber);
   }
   return { remove, jump };

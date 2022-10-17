@@ -1,9 +1,9 @@
-import { highlightParam, highlightResponse } from "@/interfaces";
+import { DomSource, highlightResponse } from "@/interfaces";
 import { message } from "@/naive";
 import { generateServiceParams } from "@/utils";
 import { invoke } from "@tauri-apps/api";
 
-function sortHighlights(arr: highlightParam[]) {
+function sortHighlights(arr: DomSource[]) {
   return [...arr].sort((a, b) => {
     if (a.pageNumber > b.pageNumber) {
       return 1;
@@ -21,8 +21,8 @@ function sortHighlights(arr: highlightParam[]) {
   });
 }
 
-export function saveHighlight(param: highlightParam) {
-  const data = generateServiceParams<highlightParam, highlightResponse>(param);
+export function saveHighlight(param: DomSource) {
+  const data = generateServiceParams<DomSource, highlightResponse>(param);
   return invoke("add_highlight", { data })
     .then(() => {
       message.success("添加成功");
@@ -32,8 +32,8 @@ export function saveHighlight(param: highlightParam) {
     });
 }
 
-export function updateHighlight(param: highlightParam) {
-  const data = generateServiceParams<highlightParam, highlightResponse>(param);
+export function updateHighlight(param: DomSource) {
+  const data = generateServiceParams<DomSource, highlightResponse>(param);
   return invoke("update_highlight", { data })
     .then(() => {
       message.success("修改成功");
@@ -43,12 +43,12 @@ export function updateHighlight(param: highlightParam) {
     });
 }
 
-export function getHighlights(bookId: string): Promise<highlightParam[]> {
+export function getHighlights(bookId: string): Promise<DomSource[]> {
   return new Promise((resolve) => {
     invoke("get_highlightes", { bookId })
       .then((value) => {
         const result = (value as highlightResponse[]).map((item) =>
-          generateServiceParams<highlightResponse, highlightParam>(item, false)
+          generateServiceParams<highlightResponse, DomSource>(item, false)
         );
         console.log("result", sortHighlights(result));
         resolve(sortHighlights(result));

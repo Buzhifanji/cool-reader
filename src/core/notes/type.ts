@@ -1,6 +1,5 @@
 import { Rendition } from "epubjs";
 import { PDFViewer } from "pdfjs-dist/web/pdf_viewer";
-import { DomMeta } from "web-highlighter/dist/types";
 
 export type HEvent = MouseEvent | TouchEvent;
 export type Context = PDFViewer | Rendition | null;
@@ -27,12 +26,12 @@ export interface highlightResponse extends bookInfo {
   end_meta: DomMetaRespone;
   page_number: number;
 }
-export interface highlightParam {
-  bookId: string;
-  pageNumber: number;
-  className: string;
-  startMeta: DomMeta;
-  endMeta: DomMeta;
-  text: string;
-  id: string;
-}
+// export interface highlightParam {
+//   bookId: string;
+//   pageNumber: number;
+//   className: string;
+//   startMeta: DomMeta;
+//   endMeta: DomMeta;
+//   text: string;
+//   id: string;
+// }
