@@ -6,11 +6,11 @@ import {
 } from "@/components/toolbar/toolbar";
 import { DATA_SOURCE_ID } from "@/constants";
 import { DomSource } from "@/interfaces";
+import { removeHighlight } from "@/server/highlight";
 import { getDomSource, getReadingBook, removeDomSource } from "@/store";
 import { getTextWidth, isObjEqual } from "@/utils";
 import { toRaw } from "vue";
 
-import { removeHighlight } from "../service/highlight";
 import {
   deleteDomSource,
   getDomContianer,
