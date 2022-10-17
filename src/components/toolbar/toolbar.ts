@@ -12,7 +12,7 @@ import {
   TextUnderline,
 } from "@vicons/carbon";
 import { FormInst } from "naive-ui";
-import { computed, reactive, ref } from "vue";
+import { computed, ref, shallowReactive } from "vue";
 import { updateHighlights } from "../highlight/highlight";
 import { openIdea } from "./idea";
 
@@ -34,9 +34,9 @@ function toolBarModel() {
 }
 
 // 工具栏 显示的位置
-export const toolBarStyle = reactive(toolBarStyleModel());
+export const toolBarStyle = shallowReactive(toolBarStyleModel());
 
-export const toolBar = reactive<ToolBar>(toolBarModel());
+export const toolBar = shallowReactive<ToolBar>(toolBarModel());
 
 enum barEnum {
   Copy,
