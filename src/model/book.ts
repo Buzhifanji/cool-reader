@@ -1,7 +1,7 @@
 import { Bookextname } from "@/enums";
 import { BookData } from "@/interfaces";
 
-export class ReadingBook implements BookData {
+export class BookModel implements BookData {
   constructor(
     public bookName: string,
     public extname: Bookextname,

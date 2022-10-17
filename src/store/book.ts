@@ -1,14 +1,14 @@
 import { BOOKLIST } from "@/constants";
 import { Bookextname } from "@/enums";
 import { BookContext, BookData, UpdateBook } from "@/interfaces";
-import { ReadingBook } from "@/model";
+import { BookModel } from "@/model";
 import { isIndex } from "@/utils";
 import { forage } from "@tauri-apps/tauri-forage";
 import { reactive } from "vue";
 
 // 当前打开书本的数据
 const readingBook = reactive<BookData>(
-  new ReadingBook("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array(), [])
+  new BookModel("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array(), [])
 );
 
 let context: BookContext = null;
