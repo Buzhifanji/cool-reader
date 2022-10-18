@@ -13,8 +13,14 @@
   </span>
 
  */
+
+let _range: Range | null = null;
+
 export class DomRange {
   private _root: Document | Window = window;
+  static getRange() {
+    return this;
+  }
   constructor(private $root?: Document) {
     if ($root) {
       this._root = $root;
@@ -26,7 +32,8 @@ export class DomRange {
       if (selection.isCollapsed) {
         return null;
       } else {
-        return selection.getRangeAt(0);
+        _range = selection.getRangeAt(0);
+        return _range;
       }
     } else {
       return null;
@@ -34,5 +41,21 @@ export class DomRange {
   }
   removeAllDomRange() {
     this._root.getSelection()?.removeAllRanges();
+  }
+}
+
+// 还原 range
+export function reductRange() {
+  const selection = window.getSelection();
+  if (_range && selection) {
+    selection.removeAllRanges();
+    selection.addRange(_range);
+  }
+}
+
+// 释放 range
+export function detachRange() {
+  if (_range) {
+    _range.detach();
   }
 }

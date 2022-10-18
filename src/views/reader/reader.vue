@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { removeMessage } from "@/components/toolbar/idea";
 import { removePdfEvent } from "@/core/file";
+import { detachRange } from "@/core/toolbar/selection";
 import Catalog from "@components/catalog/catalog.vue";
 import Highlight from "@components/highlight/highlight.vue";
 import Notes from "@components/notes/notes.vue";
@@ -22,6 +23,7 @@ const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
 const { readingBook } = useReaderBook(route);
 
 const onContainer = () => {
+  detachRange();
   removeMessage();
   closeTooBar();
 }

@@ -1,5 +1,6 @@
 import { NOTES_LINE_CLASS_NAME } from "@/constants";
 import { domSourceFromRange } from "@/core/toolbar";
+import { reductRange } from "@/core/toolbar/selection";
 import { message } from "@/naive";
 import { saveNotes } from "@/server/notes";
 import { createDiscreteApi, MessageReactive, NButton, NInput } from "naive-ui";
@@ -96,6 +97,7 @@ export function openIdea() {
     duration: 0,
     showIcon: false,
   });
+  reductRange();
 }
 
 export function removeMessage() {
