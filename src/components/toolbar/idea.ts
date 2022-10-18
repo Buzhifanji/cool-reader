@@ -89,6 +89,7 @@ export function openIdea() {
       containerStyle: { bottom: "50px" },
     },
   });
+  removeMessage();
   messageReactive = message.create("", {
     render: renderMessage,
     closable: true,
