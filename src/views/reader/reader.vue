@@ -23,9 +23,9 @@ const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
 const { readingBook } = useReaderBook(route);
 
 const onContainer = () => {
+  closeTooBar();
   detachRange();
   removeMessage();
-  closeTooBar();
 }
 
 onMounted(() => {
