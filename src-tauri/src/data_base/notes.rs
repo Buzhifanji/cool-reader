@@ -36,7 +36,7 @@ impl NotestData {
           end_parent_tag_name   text     NOT NULL,
           end_text_offset       integer  NOT NULL,
           page_number           integer  NOT NULL,
-          notes                 text     NOT NULL,
+          notes                 text     NOT NULL
       )",
             [],
         )?;
