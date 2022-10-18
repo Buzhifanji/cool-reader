@@ -57,7 +57,7 @@ pub fn add_notes(data: Notes) -> Result<bool, String> {
 #[tauri::command]
 pub fn delete_notes(data: DeleteIds) -> Result<bool, String> {
     let mut handler = NotestData::new().unwrap();
-    let result = handler.dellete_notes(data);
+    let result = handler.delete_notes(data);
     handler.conn.close().unwrap();
     result
 }

@@ -102,7 +102,7 @@ impl NotestData {
         }
       }
     }
-    pub fn dellete_notes(&mut self, data: DeleteIds) -> Result<bool, String> {
+    pub fn delete_notes(&mut self, data: DeleteIds) -> Result<bool, String> {
         match self.conn.execute(
             "DELETE FROM Notes as h where h.book_id = ?1 and h.id = ?2",
             [data.book_id, data.id],
