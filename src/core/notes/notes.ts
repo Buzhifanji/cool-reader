@@ -1,18 +1,22 @@
+import { updateNodes } from "@/components/notes/notes";
+import { resetToolBar } from "@/components/toolbar/toolbar";
 import { Bookextname } from "@/enums";
 import { DomSource, ExtnameFn } from "@/interfaces";
 import { message } from "@/naive";
-import { getReadingBook } from "@/store";
+import { removeNotes } from "@/server/notes";
+import { getDomSource, getReadingBook, removeDomSource } from "@/store";
 import { ref } from "vue";
 import { usePdfChangePage } from "../file";
-import { useRemoveHighlight } from "./toobar";
+import { deleteDomSource } from "../toolbar";
 
 export const pageNumber = ref<number>(1);
+const readingBook = getReadingBook();
+
 export function updatePageNumber(number: number) {
   pageNumber.value = number;
 }
 
 export const useNoteJumpAndRemove = () => {
-  const readingBook = getReadingBook();
   const { pdfJumpToPage } = usePdfChangePage();
   const pageJumpStatus: ExtnameFn = {
     [Bookextname.pdf]: pdfJumpToPage,
@@ -20,7 +24,7 @@ export const useNoteJumpAndRemove = () => {
   };
   // 删除
   function remove({ id }: DomSource) {
-    useRemoveHighlight(id);
+    useRemoveNotes(id);
   }
   // 跳转
   function jump(value: DomSource) {
@@ -28,3 +32,18 @@ export const useNoteJumpAndRemove = () => {
   }
   return { remove, jump };
 };
+
+function useRemoveNotes(id: string, isTip = true) {
+  const source = getDomSource(id);
+  if (source) {
+    // 清楚缓存
+    deleteDomSource(source);
+    // 清楚 ui
+    removeDomSource(id);
+    // 清楚数据库
+    removeNotes(readingBook.id, id, isTip).then(() => {
+      updateNodes();
+    });
+    resetToolBar();
+  }
+}

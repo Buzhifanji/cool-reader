@@ -13,7 +13,7 @@ export function getNotes(bookId: string): Promise<DomSource[]> {
   return _getNotes(bookId, "get_notes");
 }
 
-export function removeHighlight(book_id: string, id: string, isTip = true) {
+export function removeNotes(book_id: string, id: string, isTip = true) {
   const data = { book_id, id };
   return deleteNotes(data, "delete_notes", isTip);
 }

@@ -1,4 +1,3 @@
-import { updateHighlights } from "@/components/highlight/highlight";
 import {
   resetToolBar,
   toolBar,
@@ -6,13 +5,11 @@ import {
 } from "@/components/toolbar/toolbar";
 import { DATA_SOURCE_ID } from "@/constants";
 import { DomSource } from "@/interfaces";
-import { removeHighlight } from "@/server/highlight";
-import { getDomSource, getReadingBook, removeDomSource } from "@/store";
+import { getDomSource } from "@/store";
 import { getTextWidth, isObjEqual } from "@/utils";
 import { toRaw } from "vue";
 
 import {
-  deleteDomSource,
   getDomContianer,
   getMeteDom,
   getPaintSource,
@@ -103,22 +100,6 @@ export function openTooBar(event: Event) {
 
 export function closeTooBar() {
   if (toolBar.source && toolBar.show) {
-    resetToolBar();
-  }
-}
-
-export function useRemoveHighlight(id: string, isTip = true) {
-  const readingBook = getReadingBook();
-  const source = getDomSource(id);
-  if (source) {
-    // 清楚缓存
-    deleteDomSource(source);
-    // 清楚 ui
-    removeDomSource(id);
-    // 清楚数据库
-    removeHighlight(readingBook.id, id, isTip).then(() => {
-      updateHighlights();
-    });
     resetToolBar();
   }
 }
