@@ -1,5 +1,4 @@
 import { DEFAULT_DOM_CLASS_NAME } from "@/constants";
-import { useRemoveHighlight } from "@/core/notes/toobar";
 import { ToolBar } from "@/interfaces";
 import { message } from "@/naive";
 import { saveHighlight, updateHighlight } from "@/server/highlight";
@@ -13,7 +12,7 @@ import {
 } from "@vicons/carbon";
 import { FormInst } from "naive-ui";
 import { computed, ref, shallowReactive } from "vue";
-import { updateHighlights } from "../highlight/highlight";
+import { updateHighlights, useRemoveHighlight } from "../highlight/highlight";
 import { openIdea } from "./idea";
 
 function toolBarStyleModel() {
