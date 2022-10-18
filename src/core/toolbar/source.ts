@@ -1,4 +1,8 @@
-import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "@/constants";
+import {
+  DATA_SOURCE_ID,
+  DEFAULT_DOM_CLASS_NAME,
+  NOTES_LINE_CLASS_NAME,
+} from "@/constants";
 import { DomSource, PaintSource } from "@/interfaces";
 import { NotesModel } from "@/model";
 import { getReadingBook, removeDomSource, saveDomSource } from "@/store";
@@ -83,9 +87,26 @@ export function getPaintSource(source: DomSource): PaintSource | null {
   return result;
 }
 
+/**
+ * 为了处理，高亮和用户输入笔记 对应的内容相同的情况，此时id是一致，所以为了区分，需要额外处理id
+ * @param source
+ * @param paintSource
+ */
+function fomateId(source: DomSource, paintSource: PaintSource) {
+  if (source.className === NOTES_LINE_CLASS_NAME) {
+    const str = "_n";
+    if (!source.id.endsWith(str)) {
+      const id = source.id + str;
+      source.id = id;
+      paintSource.id = id;
+    }
+  }
+}
+
 function paintSourceAction(source: DomSource) {
   const paintSource = getPaintSource(source);
   if (paintSource && paintSource.startDom && paintSource.endDom) {
+    fomateId(source, paintSource);
     const result = paintWrap(paintSource, source);
     if (result.result) {
       saveDomSource(source);
