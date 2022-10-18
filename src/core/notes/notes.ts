@@ -1,3 +1,4 @@
+import { updateHighlights } from "@/components/highlight/highlight";
 import { updateNodes } from "@/components/notes/notes";
 import { resetToolBar } from "@/components/toolbar/toolbar";
 import { Bookextname } from "@/enums";
@@ -42,6 +43,7 @@ function useRemoveNotes(id: string, isTip = true) {
     removeDomSource(id);
     // 清楚数据库
     removeNotes(readingBook.id, id, isTip).then(() => {
+      updateHighlights();
       updateNodes();
     });
     resetToolBar();

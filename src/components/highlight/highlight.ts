@@ -4,6 +4,7 @@ import { DomSource } from "@/interfaces";
 import { getHighlights, removeHighlight } from "@/server/highlight";
 import { getDomSource, getReadingBook, removeDomSource } from "@/store";
 import { ref, watchEffect } from "vue";
+import { updateNodes } from "../notes/notes";
 import { resetToolBar } from "../toolbar/toolbar";
 
 export const highlights = ref<DomSource[]>([]);
@@ -35,6 +36,7 @@ export function useRemoveHighlight(id: string, isTip = true) {
     // 清楚数据库
     removeHighlight(readingBook.id, id, isTip).then(() => {
       updateHighlights();
+      updateNodes();
     });
     resetToolBar();
   }

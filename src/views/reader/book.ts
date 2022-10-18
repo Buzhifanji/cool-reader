@@ -18,10 +18,10 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
       };
       if (book.content) {
         await renderBookStatus[book.extname]?.(book.content);
-        // 获取高亮内容
-        updateHighlights();
         // 获取笔记内容
         updateNodes();
+        // 获取高亮内容
+        updateHighlights();
       }
     } catch (error) {
       console.error(error);
