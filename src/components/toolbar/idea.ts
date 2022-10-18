@@ -23,6 +23,7 @@ function submit() {
         saveNotes({ ...source, notes: value }).then(() => {
           updateNodes();
           resetToolBar();
+          removeMessage();
         });
       }
     }
