@@ -81,6 +81,7 @@ export function openTooBar(event: Event) {
   const domRange = new DomRange();
   const range = domRange.getDomRange();
   if (range) {
+    // 新增
     const source = initDomSource(range);
     if (
       source &&
@@ -90,6 +91,7 @@ export function openTooBar(event: Event) {
       showToolBar(source, false);
     }
   } else {
+    // 编辑
     const node = event.target as HTMLElement;
     if (node.hasAttribute(DATA_SOURCE_ID)) {
       event.stopPropagation();
