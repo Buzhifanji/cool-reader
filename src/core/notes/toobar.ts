@@ -80,6 +80,7 @@ function editeToolBar(node: HTMLElement) {
 export function openTooBar(event: Event) {
   const domRange = new DomRange();
   const range = domRange.getDomRange();
+  resetToolBar();
   if (range) {
     // 新增
     const source = initDomSource(range);
