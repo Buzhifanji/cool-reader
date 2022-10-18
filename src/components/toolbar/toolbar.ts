@@ -132,7 +132,7 @@ export const useToolBar = () => {
     useRemoveHighlight(toolBar.source!.id);
   }
   function ideaInput() {
-    resetToolBar();
+    toolBar.show = false;
     openIdea();
   }
   const barActionStatus: Record<barEnum, Function> = {

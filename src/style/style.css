@@ -133,3 +133,8 @@ button {
   text-decoration: underline #FF3028;
   cursor: pointer;
 }
+
+.c-notes-line {
+  text-decoration: underline #0c1fca;
+  cursor: pointer;
+}

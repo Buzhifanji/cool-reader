@@ -1,4 +1,5 @@
 import { updateHighlights } from "@/components/highlight/highlight";
+import { updateNodes } from "@/components/notes/notes";
 import { Bookextname } from "@/enums";
 import { ExtnameFn } from "@/interfaces";
 import { getReadingBook, setReadingBook } from "@/store";
@@ -17,8 +18,10 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
       };
       if (book.content) {
         await renderBookStatus[book.extname]?.(book.content);
-        // 获取内容
+        // 获取高亮内容
         updateHighlights();
+        // 获取笔记内容
+        updateNodes();
       }
     } catch (error) {
       console.error(error);

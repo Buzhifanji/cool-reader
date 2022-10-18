@@ -1,7 +1,10 @@
+import { domSourceFromRange } from "@/core/toolbar";
 import { message } from "@/naive";
+import { saveNotes } from "@/server/notes";
 import { createDiscreteApi, MessageReactive, NButton, NInput } from "naive-ui";
 import { h, ref, unref, VNodeChild } from "vue";
-import { toolBar } from "./toolbar";
+import { updateNodes } from "../notes/notes";
+import { resetToolBar, toolBar } from "./toolbar";
 
 let messageReactive: MessageReactive | null = null;
 
@@ -10,6 +13,17 @@ const text = ref<string>("");
 function submit() {
   const value = unref(text);
   if (value) {
+    const source = toolBar.source;
+    if (source) {
+      source.className = "c-notes-line";
+      const { result } = domSourceFromRange(source);
+      if (result) {
+        saveNotes({ ...source, notes: value }).then(() => {
+          updateNodes();
+          resetToolBar();
+        });
+      }
+    }
     console.log(toolBar);
   } else {
     message.error("您还未填写笔记！");
