@@ -1,3 +1,4 @@
+import { NOTES_LINE_CLASS_NAME } from "@/constants";
 import { domSourceFromRange } from "@/core/toolbar";
 import { message } from "@/naive";
 import { saveNotes } from "@/server/notes";
@@ -15,7 +16,7 @@ function submit() {
   if (value) {
     const source = toolBar.source;
     if (source) {
-      source.className = "c-notes-line";
+      source.className = NOTES_LINE_CLASS_NAME;
       const { result } = domSourceFromRange(source);
       if (result) {
         saveNotes({ ...source, notes: value }).then(() => {
@@ -24,7 +25,6 @@ function submit() {
         });
       }
     }
-    console.log(toolBar);
   } else {
     message.error("您还未填写笔记！");
   }

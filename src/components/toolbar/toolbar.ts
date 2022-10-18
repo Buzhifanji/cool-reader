@@ -1,4 +1,8 @@
-import { DEFAULT_DOM_CLASS_NAME } from "@/constants";
+import {
+  DEFAULT_DOM_CLASS_NAME,
+  HIGHLIGHT_STRAIGHT_CLASS_NAME,
+  HIGHLIGHT_TIIDE_CLASS_NAME,
+} from "@/constants";
 import { ToolBar } from "@/interfaces";
 import { message } from "@/naive";
 import { saveHighlight, updateHighlight } from "@/server/highlight";
@@ -121,11 +125,11 @@ export const useToolBar = () => {
   }
   // 波浪线
   function addTilde() {
-    action("c-tilde");
+    action(HIGHLIGHT_TIIDE_CLASS_NAME);
   }
   // 直线
   function addStraightLine() {
-    action("c-straight-line");
+    action(HIGHLIGHT_STRAIGHT_CLASS_NAME);
   }
   function remove() {
     useRemoveHighlight(toolBar.source!.id);

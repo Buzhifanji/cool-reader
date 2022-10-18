@@ -6,3 +6,7 @@ export const DEFAULT_DOM_CLASS_NAME = "wrapper_source";
 
 export const VIEWER = "viewer";
 export const VIEWERCONTAINER = "viewerContainer";
+
+export const NOTES_LINE_CLASS_NAME = "c-notes-line";
+export const HIGHLIGHT_TIIDE_CLASS_NAME = "c-tilde";
+export const HIGHLIGHT_STRAIGHT_CLASS_NAME = "c-straight-line";
