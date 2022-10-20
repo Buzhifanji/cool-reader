@@ -3,7 +3,7 @@ import {
   toolBar,
   toolBarStyle,
 } from "@/components/toolbar/toolbar";
-import { DATA_SOURCE_ID } from "@/constants";
+import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
 import { DomSource } from "@/interfaces";
 import { getDomSource } from "@/store";
 import { getTextWidth, isObjEqual } from "@/utils";
@@ -69,6 +69,20 @@ function showToolBar(source: DomSource, isEdit: boolean) {
   setToolBarData(source, isEdit);
 }
 
+function reductToolBar(
+  event: Event,
+  node: HTMLElement,
+  attr: string,
+  isEdit: boolean
+) {
+  if (node.hasAttribute(attr)) {
+    event.stopPropagation();
+    const id = node.getAttribute(attr)!;
+    const source = getDomSource(id);
+    source && showToolBar(source, isEdit);
+  }
+}
+
 function editeToolBar(node: HTMLElement) {
   const id = node.getAttribute(DATA_SOURCE_ID)!;
   const source = getDomSource(id);
@@ -92,12 +106,11 @@ export function openTooBar(event: Event) {
       showToolBar(source, false);
     }
   } else {
-    // 编辑
     const node = event.target as HTMLElement;
-    if (node.hasAttribute(DATA_SOURCE_ID)) {
-      event.stopPropagation();
-      editeToolBar(node);
-    }
+    // 编辑高亮
+    reductToolBar(event, node, DATA_SOURCE_ID, true);
+    // 编辑笔记
+    reductToolBar(event, node, NOTES_ID, false);
   }
 }
 

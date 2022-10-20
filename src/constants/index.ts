@@ -1,6 +1,7 @@
 export const BOOKLIST = "_tauri_book_list_";
 
-export const DATA_SOURCE_ID = "data-source-id";
+export const DATA_SOURCE_ID = "hightlight-id";
+export const NOTES_ID = "notes-id";
 export const WARP_TAG_NAME = "i";
 export const DEFAULT_DOM_CLASS_NAME = "wrapper_source";
 

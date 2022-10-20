@@ -1,12 +1,8 @@
-import {
-  DATA_SOURCE_ID,
-  DEFAULT_DOM_CLASS_NAME,
-  NOTES_LINE_CLASS_NAME,
-} from "@/constants";
+import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "@/constants";
 import { DomSource, PaintSource } from "@/interfaces";
 import { NotesModel } from "@/model";
 import { getReadingBook, removeDomSource, saveDomSource } from "@/store";
-import { selectorAll, stringTohash } from "@/utils";
+import { isEndsWith, isNotes, selectorAll, stringTohash } from "@/utils";
 import { getDomContianer, getPageNumber } from ".";
 import { removePaint } from "./delete";
 import { getMeteDom, setMeteDom } from "./dom";
@@ -93,17 +89,25 @@ export function getPaintSource(source: DomSource): PaintSource | null {
  * @param paintSource
  */
 function fomateId(source: DomSource, paintSource: PaintSource) {
-  if (source.className === NOTES_LINE_CLASS_NAME) {
-    const str = "_n";
-    if (!source.id.endsWith(str)) {
-      const id = source.id + str;
-      source.id = id;
-      paintSource.id = id;
+  const id = source.id;
+  const str = "_n";
+  const updateId = (id: string) => {
+    source.id = id;
+    paintSource.id = id;
+  };
+  if (isNotes(source.className)) {
+    if (!isEndsWith(id, str)) {
+      updateId(id + str);
+    }
+  } else {
+    if (isEndsWith(id, str)) {
+      updateId(id.substring(0, id.length - 2));
     }
   }
 }
 
 function paintSourceAction(source: DomSource) {
+  debugger;
   const paintSource = getPaintSource(source);
   if (paintSource && paintSource.startDom && paintSource.endDom) {
     fomateId(source, paintSource);

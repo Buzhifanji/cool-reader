@@ -1,3 +1,5 @@
+import { DATA_SOURCE_ID, NOTES_ID, NOTES_LINE_CLASS_NAME } from "@/constants";
+
 export const isArray = (value: any) => Array.isArray(value);
 export const arrayHasData = (value: any[]) => arrayHasData.length > 0;
 export const isObj = (value: any) =>
@@ -29,3 +31,14 @@ export const isObjEqual = <T extends object>(x: T, y: T) => {
     return false;
   }
 };
+
+export const isNotes = (className: string): boolean =>
+  className === NOTES_LINE_CLASS_NAME;
+
+export const hasNotes = (node: HTMLElement): boolean =>
+  node.hasAttribute(NOTES_ID);
+export const hasHighlight = (node: HTMLElement): boolean =>
+  node.hasAttribute(DATA_SOURCE_ID);
+
+export const isEndsWith = (str: string, value: string): boolean =>
+  str.endsWith(value);

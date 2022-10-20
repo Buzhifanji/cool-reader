@@ -1,6 +1,12 @@
-import { DATA_SOURCE_ID } from "@/constants";
+import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
 import { DomMeta, DomSource } from "@/interfaces";
-import { isElementNode, isTextNode, selectorAll } from "@/utils";
+import {
+  hasHighlight,
+  hasNotes,
+  isElementNode,
+  isTextNode,
+  selectorAll,
+} from "@/utils";
 import { getTextOffset } from "./offset";
 
 function queryChildDomIndex(
@@ -18,8 +24,9 @@ function queryChildDomIndex(
 }
 
 function getOrinalParent(node: HTMLElement): HTMLElement {
+  debugger;
   if (isElementNode(node)) {
-    if (node.hasAttribute(DATA_SOURCE_ID)) {
+    if (hasNotes(node) || hasHighlight(node)) {
       return node.parentElement!;
     } else {
       return node;
@@ -46,7 +53,7 @@ export function setMeteDom(
 export function getDomContent(nodes: HTMLElement): string {
   let content = "";
   nodes.childNodes.forEach((node) => {
-    if (node instanceof HTMLElement && node.hasAttribute(DATA_SOURCE_ID)) {
+    if (node instanceof HTMLElement && (hasNotes(node) || hasHighlight(node))) {
       content += node.innerText;
     } else if (isTextNode(node as Text)) {
       content += (node as Text).textContent!;
@@ -60,7 +67,8 @@ export function getOldElement(parent: HTMLElement, content: string) {
   parent.childNodes.forEach((node) => {
     if (isElementNode(node as HTMLElement)) {
       const el = node as HTMLElement;
-      if (el.hasAttribute(DATA_SOURCE_ID)) {
+      const has = (attr: string) => el.hasAttribute(attr);
+      if (has(DATA_SOURCE_ID) || has(NOTES_ID)) {
         const text = el.innerText;
         // 如果 text 与 content 相等，则代表着覆盖，需要更新 id
         if (text !== content) {
@@ -87,4 +95,14 @@ export function getMeteDom(
 ) {
   const { parentTagName, parentIndex } = source[key];
   return selectorAll(parentTagName, contianer)[parentIndex];
+}
+
+export class HanderEleClassName {
+  constructor(public el: HTMLElement) {}
+  has(className: string): boolean {
+    return this.el.className.includes(className);
+  }
+  update(className: string): string {
+    return (this.el.className = className);
+  }
 }

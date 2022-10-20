@@ -1,14 +1,32 @@
-import { DATA_SOURCE_ID, WARP_TAG_NAME } from "@/constants";
+import {
+  DATA_SOURCE_ID,
+  NOTES_ID,
+  NOTES_LINE_CLASS_NAME,
+  WARP_TAG_NAME,
+} from "@/constants";
 import { DomSource, Intervals, PaintSource } from "@/interfaces";
-import { createEle, isElementNode, mergeIntervals } from "@/utils";
-import { getDomContent, getOldElement, hasPaint } from "./dom";
+import {
+  createEle,
+  hasHighlight,
+  hasNotes,
+  isElementNode,
+  isNotes,
+  mergeIntervals,
+} from "@/utils";
+import {
+  getDomContent,
+  getOldElement,
+  HanderEleClassName,
+  hasPaint,
+} from "./dom";
 import { getTextOffset } from "./offset";
 
 function createWrapper(text: string, id: string, className: string) {
   const textNode = document.createTextNode(text);
   const wrapper = createEle(WARP_TAG_NAME);
   wrapper.setAttribute("class", className);
-  wrapper.setAttribute(DATA_SOURCE_ID, id);
+  let attrName = isNotes(className) ? NOTES_ID : DATA_SOURCE_ID;
+  wrapper.setAttribute(attrName, id);
   wrapper.appendChild(textNode);
   return wrapper;
 }
@@ -17,7 +35,7 @@ function getPaintRange(nodes: HTMLElement): [number, number][] {
   const paintedRange: [number, number][] = [];
   nodes.childNodes.forEach((node) => {
     const offset = getTextOffset(nodes, node);
-    if (node instanceof HTMLElement && node.hasAttribute(DATA_SOURCE_ID)) {
+    if (node instanceof HTMLElement && (hasNotes(node) || hasHighlight(node))) {
       paintedRange.push([offset, offset + node.innerText.length]);
     }
   });
@@ -36,8 +54,22 @@ function paintRangeText(
   // 用标签包裹笔记内容
   const paintWrap = (start: number, end: number) => {
     const text = content.substring(start, end);
-    const wrapper = oldEL.get(text) || createWrapper(text, id, className);
-    fragment.appendChild(wrapper);
+    if (oldEL.has(text)) {
+      const el = oldEL.get(text)!;
+      const handler = new HanderEleClassName(el);
+      if (handler.has(className)) {
+        fragment.appendChild(el);
+      } else {
+        if (isNotes(className) || handler.has(NOTES_LINE_CLASS_NAME)) {
+          handler.update(`${NOTES_LINE_CLASS_NAME} ${className}`);
+          fragment.appendChild(el);
+        } else {
+          fragment.appendChild(el);
+        }
+      }
+    } else {
+      fragment.appendChild(createWrapper(text, id, className));
+    }
   };
 
   // 不是笔记的文本内容
@@ -86,6 +118,7 @@ function paintAction(
     const wrapper = paintRangeText(result, id, content, oldEl, className);
     parent.innerHTML = "";
     parent.appendChild(wrapper);
+    console.log(parent);
     return deleteIds;
   }
   return [];
@@ -187,6 +220,7 @@ function paintSpaceElments(paintSource: PaintSource, domSource: DomSource) {
 }
 
 export function paintWrap(paintSource: PaintSource, domSource: DomSource) {
+  debugger;
   if (paintSource.startDom === paintSource.endDom) {
     return paintSameElement(paintSource, domSource);
   } else {
