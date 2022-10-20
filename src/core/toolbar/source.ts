@@ -107,7 +107,6 @@ function fomateId(source: DomSource, paintSource: PaintSource) {
 }
 
 function paintSourceAction(source: DomSource) {
-  debugger;
   const paintSource = getPaintSource(source);
   if (paintSource && paintSource.startDom && paintSource.endDom) {
     fomateId(source, paintSource);

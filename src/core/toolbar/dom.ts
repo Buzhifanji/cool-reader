@@ -24,7 +24,6 @@ function queryChildDomIndex(
 }
 
 function getOrinalParent(node: HTMLElement): HTMLElement {
-  debugger;
   if (isElementNode(node)) {
     if (hasNotes(node) || hasHighlight(node)) {
       return node.parentElement!;
@@ -97,12 +96,18 @@ export function getMeteDom(
   return selectorAll(parentTagName, contianer)[parentIndex];
 }
 
-export class HanderEleClassName {
+export class HanderEleAttr {
   constructor(public el: HTMLElement) {}
   has(className: string): boolean {
     return this.el.className.includes(className);
   }
-  update(className: string): string {
+  updateClass(className: string): string {
     return (this.el.className = className);
+  }
+  name() {
+    return this.el.className;
+  }
+  updateAttr(atrr: string, value: string) {
+    return this.el.setAttribute(atrr, value);
   }
 }
