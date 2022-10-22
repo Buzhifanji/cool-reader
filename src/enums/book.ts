@@ -5,3 +5,8 @@ export enum Bookextname {
   pdf = "pdf",
   epub = "epub",
 }
+
+export enum NotesType {
+  notes,
+  highlight,
+}
