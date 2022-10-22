@@ -22,7 +22,7 @@ import { getTextOffset } from "./offset";
 class Paint {
   private startDom: HTMLElement;
   private endDom: HTMLElement;
-  constructor(private paintSource: PaintSource, private domSource: DomSource) {
+  constructor(paintSource: PaintSource, private domSource: DomSource) {
     this.startDom = paintSource.startDom as HTMLElement;
     this.endDom = paintSource.endDom as HTMLElement;
   }
@@ -259,6 +259,7 @@ class PaintDom {
 
     this.container.innerHTML = "";
     this.container.appendChild(fragment);
+    return { intervals };
   }
 }
 

@@ -1,11 +1,16 @@
-import { DATA_SOURCE_ID, DEFAULT_DOM_CLASS_NAME } from "@/constants";
+import {
+  DATA_SOURCE_ID,
+  DEFAULT_DOM_CLASS_NAME,
+  NOTES_ID,
+  WARP_TAG_NAME,
+} from "@/constants";
 import { DomSource, PaintSource } from "@/interfaces";
 import { NotesModel } from "@/model";
 import { getReadingBook, removeDomSource, saveDomSource } from "@/store";
 import { isEndsWith, isNotes, selectorAll, stringTohash } from "@/utils";
 import { getDomContianer, getPageNumber } from ".";
 import { removePaint } from "./delete";
-import { getMeteDom, setMeteDom } from "./dom";
+import { getDomContent, getMeteDom, getOrinalParent, setMeteDom } from "./dom";
 import { paintWrap } from "./paint";
 
 export function initDomSource(range: Range): DomSource | null {
@@ -111,6 +116,12 @@ function paintSourceAction(source: DomSource) {
   if (paintSource && paintSource.startDom && paintSource.endDom) {
     fomateId(source, paintSource);
     const result = paintWrap(paintSource, source);
+
+    if (result.deleteIds.length) {
+      // 处理 合并高亮和笔记的特殊情况
+      updateSource(source, paintSource);
+    }
+
     if (result.result) {
       saveDomSource(source);
     } else {
@@ -119,4 +130,44 @@ function paintSourceAction(source: DomSource) {
     return result;
   }
   return { result: false, deleteIds: [] };
+}
+
+function updateSource(source: DomSource, paintSource: PaintSource) {
+  const { id, className } = source;
+  const attrName = isNotes(className) ? NOTES_ID : DATA_SOURCE_ID;
+  const nodes = selectorAll(
+    `${WARP_TAG_NAME}[${attrName}=${id}]`,
+    paintSource.parentDom
+  );
+
+  const action = (text: string, start: number, end: number) => {
+    source.text = text;
+    source.startMeta.textOffset = start;
+    source.endMeta.textOffset = end;
+  };
+
+  const findIndex = (node: HTMLElement) => {
+    const text = node.innerText;
+    const parent = getOrinalParent(node);
+    const allText = getDomContent(parent);
+    return allText.search(text);
+  };
+
+  const n = nodes.length;
+  if (n === 1) {
+    const current = nodes[0];
+    const text = current.innerText;
+    const start = findIndex(current);
+    const end = text.length + start;
+
+    action(text, start, end);
+  } else if (n > 1) {
+    let text = "";
+    nodes.forEach((node) => {
+      text += node.innerText;
+    });
+    const start = findIndex(nodes[0]);
+    const end = findIndex(nodes[n - 1]);
+    action(text, start, end);
+  }
 }

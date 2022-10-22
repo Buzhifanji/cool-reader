@@ -23,7 +23,7 @@ function queryChildDomIndex(
   return result;
 }
 
-function getOrinalParent(node: HTMLElement): HTMLElement {
+export function getOrinalParent(node: HTMLElement): HTMLElement {
   if (isElementNode(node)) {
     if (hasNotes(node) || hasHighlight(node)) {
       return node.parentElement!;
