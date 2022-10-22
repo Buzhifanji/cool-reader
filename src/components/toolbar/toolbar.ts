@@ -14,8 +14,7 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { FormInst } from "naive-ui";
-import { computed, ref, shallowReactive } from "vue";
+import { computed, shallowReactive } from "vue";
 import { updateHighlights, useRemoveHighlight } from "../highlight/highlight";
 import { openIdea } from "./idea";
 
@@ -32,7 +31,6 @@ function toolBarModel() {
     show: false,
     source: null,
     edit: false,
-    input: false,
   };
 }
 
@@ -56,7 +54,6 @@ export function resetToolBar() {
 }
 
 export const useToolBar = () => {
-  const ideaValue = ref<string>("");
   const list = [
     {
       label: "复制",
@@ -149,33 +146,7 @@ export const useToolBar = () => {
   function barAction(key: barEnum) {
     barActionStatus[key]();
   }
-  return { bars, barAction, toolBarStyle, toolBar, ideaValue };
-};
-
-export const useFormModel = () => {
-  const formRef = ref<FormInst | null>(null);
-  const formModel = ref({
-    text: "",
-  });
-  const rules = {
-    text: {
-      required: true,
-      trigger: ["blur", "input"],
-      message: "请输入你的想法",
-    },
-  };
-  function submit(e: MouseEvent) {
-    e.preventDefault();
-    formRef.value?.validate((errors) => {
-      if (!errors) {
-        message.success("验证成功");
-      } else {
-        console.log(errors);
-        message.error("验证失败");
-      }
-    });
-  }
-  return { formRef, formModel, rules, submit };
+  return { bars, barAction, toolBarStyle, toolBar };
 };
 
 function copyText() {
