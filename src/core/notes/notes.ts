@@ -42,12 +42,12 @@ function useRemoveNotes(id: string, type: NotesType) {
     deleteDomSource(source);
     // 清除 ui
     removeDomSource(id);
-    // 清除数据库
-    const fn = type === NotesType.notes ? removeNotes : removeHighlight;
-    fn(readingBook.id, id, true).then(() => {
-      updateHighlights();
-      updateNodes();
-    });
-    resetToolBar();
   }
+  // 清除数据库
+  const fn = type === NotesType.notes ? removeNotes : removeHighlight;
+  fn(readingBook.id, id, true).then(() => {
+    updateHighlights();
+    updateNodes();
+  });
+  resetToolBar();
 }
