@@ -29,11 +29,11 @@ export function useRemoveHighlight(id: string, isTip = true) {
   const readingBook = getReadingBook();
   const source = getDomSource(id);
   if (source) {
-    // 清楚缓存
+    // 清除缓存
     deleteDomSource(source);
-    // 清楚 ui
+    // 清除 ui
     removeDomSource(id);
-    // 清楚数据库
+    // 清除数据库
     removeHighlight(readingBook.id, id, isTip).then(() => {
       updateHighlights();
       updateNodes();
