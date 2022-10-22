@@ -3,10 +3,10 @@ import {
   toolBar,
   toolBarStyle,
 } from "@/components/toolbar/toolbar";
-import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
+import { DATA_SOURCE_ID } from "@/constants";
 import { DomSource } from "@/interfaces";
 import { getDomSource } from "@/store";
-import { getTextWidth, isObjEqual } from "@/utils";
+import { getTextWidth, hasHighlight, isObjEqual } from "@/utils";
 import { toRaw } from "vue";
 
 import {
@@ -83,11 +83,12 @@ function reductToolBar(
   }
 }
 
-function editeToolBar(node: HTMLElement) {
-  const id = node.getAttribute(DATA_SOURCE_ID)!;
-  const source = getDomSource(id);
-  if (source) {
-    showToolBar(source, true);
+function editeToolBar(event: Event, node: HTMLElement) {
+  if (hasHighlight(node)) {
+    event.stopPropagation();
+    const id = node.getAttribute(DATA_SOURCE_ID)!;
+    const source = getDomSource(id);
+    source && showToolBar(source, true);
   }
 }
 
@@ -108,9 +109,9 @@ export function openTooBar(event: Event) {
   } else {
     const node = event.target as HTMLElement;
     // 编辑高亮
-    reductToolBar(event, node, DATA_SOURCE_ID, true);
+    editeToolBar(event, node);
     // 编辑笔记
-    reductToolBar(event, node, NOTES_ID, false);
+    // reductToolBar(event, node, NOTES_ID, false);
   }
 }
 
