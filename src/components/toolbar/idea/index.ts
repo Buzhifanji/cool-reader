@@ -50,7 +50,8 @@ export const useInputIdea = () => {
         if (result) {
           let prevIdea = unref(ideas).join(",");
           const idea = prevIdea ? `${value},${prevIdea}` : value;
-          const param = { ...source, id: _source!.id, notes: idea };
+          const id = _source ? _source.id : source.id;
+          const param = { ...source, id, notes: idea };
 
           const fn = prevIdea ? updateNotes : saveNotes;
           fn(param).then(() => {
