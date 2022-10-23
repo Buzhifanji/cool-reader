@@ -6,7 +6,7 @@ export function saveNotes(param: DomSource) {
 }
 
 export function updateNotes(param: DomSource) {
-  return changeNotes(param, "update_notes", "修改成功");
+  return changeNotes(param, "update_notes", "添加成功");
 }
 
 export function getNotes(bookId: string): Promise<DomSource[]> {

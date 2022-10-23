@@ -3,7 +3,7 @@ import { domSourceFromRange } from "@/core/toolbar";
 import { reductRange } from "@/core/toolbar/selection";
 import { DomSource } from "@/interfaces";
 import { message } from "@/naive";
-import { saveNotes } from "@/server/notes";
+import { saveNotes, updateNotes } from "@/server/notes";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { Component, h, ref, unref } from "vue";
 import { updateNodes } from "../../notes/notes";
@@ -12,6 +12,9 @@ import Edit from "./edit.vue";
 import Input from "./input.vue";
 
 let messageReactive: MessageReactive | null = null;
+const ideas = ref<string[]>([]);
+let _id: null | string = null;
+
 const createMsg = (c: Component) => {
   const { message } = createDiscreteApi(["message"], {
     messageProviderProps: {
@@ -45,7 +48,12 @@ export const useInputIdea = () => {
         source.className = NOTES_LINE_CLASS_NAME;
         const { result } = domSourceFromRange(source);
         if (result) {
-          saveNotes({ ...source, notes: value }).then(() => {
+          let prevIdea = unref(ideas).join(",");
+          const idea = prevIdea ? `${value},${prevIdea}` : value;
+          const param = { ...source, id: _id as string, notes: idea };
+
+          const fn = prevIdea ? updateNotes : saveNotes;
+          fn(param).then(() => {
             updateNodes();
             resetToolBar();
             removeMessage();
@@ -63,9 +71,6 @@ export function openIdea() {
   createMsg(Input);
   reductRange();
 }
-
-const ideas = ref<string[]>([]);
-let _id: null | string = null;
 
 export const useEditIdea = () => {
   function remove() {}
