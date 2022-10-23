@@ -1,12 +1,14 @@
 import { NOTES_LINE_CLASS_NAME } from "@/constants";
 import { domSourceFromRange } from "@/core/toolbar";
 import { reductRange } from "@/core/toolbar/selection";
+import { DomSource } from "@/interfaces";
 import { message } from "@/naive";
 import { saveNotes } from "@/server/notes";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { Component, h, ref, unref } from "vue";
 import { updateNodes } from "../../notes/notes";
 import { resetToolBar, toolBar } from "../toolbar";
+import Edit from "./edit.vue";
 import Input from "./input.vue";
 
 let messageReactive: MessageReactive | null = null;
@@ -62,10 +64,18 @@ export function openIdea() {
   reductRange();
 }
 
+const ideas = ref<string[]>([]);
+let _id: null | string = null;
+
 export const useEditIdea = () => {
-  const list = ref([]);
   function remove() {}
-  return { list, remove };
+  return { ideas, remove };
 };
 
-export function editIdea() {}
+export function editIdea({ notes, id }: DomSource) {
+  if (notes) {
+    _id = id;
+    ideas.value = notes.split(",");
+    createMsg(Edit);
+  }
+}

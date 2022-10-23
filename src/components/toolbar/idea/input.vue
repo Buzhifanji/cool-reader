@@ -15,18 +15,8 @@ const { text, submit } = useInputIdea()
 </template>
 
 <style scoped>
-.idea-container {
-  padding: 10px 14px;
-  box-shadow: var(--n-box-shadow);
-  background: var(--n-color);
-  border-radius: var(--n-border-radius);
-  cursor: pointer;
-}
-
 .idea-input {
-  max-width: calc(100vw - 32px);
   max-height: 600px;
-  width: 480px;
   margin-bottom: 10px;
 }
 

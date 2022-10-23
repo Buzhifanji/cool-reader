@@ -138,3 +138,36 @@ button {
   text-decoration: underline #0c1fca;
   cursor: pointer;
 }
+
+@media (max-width: 767px) {
+  .idea-container  {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .idea-container  {
+    width: 560px;
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+}
+
+@media (max-width: 1365px) {
+  .idea-container  {
+    width: 760px;
+    padding-left: 72px;
+    padding-right: 72px;
+  }
+}
+
+.idea-container {
+  padding: 10px 14px;
+  width: 1000px;
+  box-shadow: var(--n-box-shadow);
+  background: var(--n-color);
+  border-radius: var(--n-border-radius);
+  cursor: pointer;
+}

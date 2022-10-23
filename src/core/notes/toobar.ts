@@ -1,12 +1,13 @@
+import { editIdea } from "@/components/toolbar/idea";
 import {
   resetToolBar,
   toolBar,
   toolBarStyle,
 } from "@/components/toolbar/toolbar";
-import { DATA_SOURCE_ID } from "@/constants";
+import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
 import { DomSource } from "@/interfaces";
 import { getDomSource } from "@/store";
-import { getTextWidth, hasHighlight, isObjEqual } from "@/utils";
+import { getTextWidth, hasHighlight, hasNotes, isObjEqual } from "@/utils";
 import { toRaw } from "vue";
 
 import {
@@ -92,6 +93,15 @@ function editeToolBar(event: Event, node: HTMLElement) {
   }
 }
 
+function editIdeaBar(event: Event, node: HTMLElement) {
+  if (hasNotes(node)) {
+    event.stopPropagation();
+    const id = node.getAttribute(NOTES_ID)!;
+    const source = getDomSource(id);
+    source && editIdea(source);
+  }
+}
+
 export function openTooBar(event: Event) {
   const domRange = new DomRange();
   const range = domRange.getDomRange();
@@ -111,7 +121,7 @@ export function openTooBar(event: Event) {
     // 编辑高亮
     editeToolBar(event, node);
     // 编辑笔记
-    // reductToolBar(event, node, NOTES_ID, false);
+    editIdeaBar(event, node);
   }
 }
 
