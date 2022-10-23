@@ -70,38 +70,6 @@ function showToolBar(source: DomSource, isEdit: boolean) {
   setToolBarData(source, isEdit);
 }
 
-function reductToolBar(
-  event: Event,
-  node: HTMLElement,
-  attr: string,
-  isEdit: boolean
-) {
-  if (node.hasAttribute(attr)) {
-    event.stopPropagation();
-    const id = node.getAttribute(attr)!;
-    const source = getDomSource(id);
-    source && showToolBar(source, isEdit);
-  }
-}
-
-function editeToolBar(event: Event, node: HTMLElement) {
-  if (hasHighlight(node)) {
-    event.stopPropagation();
-    const id = node.getAttribute(DATA_SOURCE_ID)!;
-    const source = getDomSource(id);
-    source && showToolBar(source, true);
-  }
-}
-
-function editIdeaBar(event: Event, node: HTMLElement) {
-  if (hasNotes(node)) {
-    event.stopPropagation();
-    const id = node.getAttribute(NOTES_ID)!;
-    const source = getDomSource(id);
-    source && editIdea(source);
-  }
-}
-
 export function openTooBar(event: Event) {
   const domRange = new DomRange();
   const range = domRange.getDomRange();
@@ -118,10 +86,25 @@ export function openTooBar(event: Event) {
     }
   } else {
     const node = event.target as HTMLElement;
-    // 编辑高亮
-    editeToolBar(event, node);
+    const hander = (attr: string) => {
+      event.stopPropagation();
+      const id = node.getAttribute(attr)!;
+      return getDomSource(id)!;
+    };
+    let source: DomSource | null = null;
     // 编辑笔记
-    editIdeaBar(event, node);
+    if (hasNotes(node)) {
+      source = hander(NOTES_ID);
+      source && editIdea(source);
+    }
+    // 编辑高亮
+    if (hasHighlight(node)) {
+      const source = hander(DATA_SOURCE_ID);
+      source && showToolBar(source, true);
+    } else if (source) {
+      // 有笔记 无高亮
+      showToolBar(source, false);
+    }
   }
 }
 
