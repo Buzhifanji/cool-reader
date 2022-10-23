@@ -3,7 +3,7 @@ import { domSourceFromRange } from "@/core/toolbar";
 import { reductRange } from "@/core/toolbar/selection";
 import { DomSource } from "@/interfaces";
 import { message } from "@/naive";
-import { saveNotes, updateNotes } from "@/server/notes";
+import { removeNotes, saveNotes, updateNotes } from "@/server/notes";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { Component, h, ref, unref } from "vue";
 import { updateNodes } from "../../notes/notes";
@@ -13,7 +13,7 @@ import Input from "./input.vue";
 
 let messageReactive: MessageReactive | null = null;
 const ideas = ref<string[]>([]);
-let _id: null | string = null;
+let _source: DomSource | null = null;
 
 const createMsg = (c: Component) => {
   const { message } = createDiscreteApi(["message"], {
@@ -50,7 +50,7 @@ export const useInputIdea = () => {
         if (result) {
           let prevIdea = unref(ideas).join(",");
           const idea = prevIdea ? `${value},${prevIdea}` : value;
-          const param = { ...source, id: _id as string, notes: idea };
+          const param = { ...source, id: _source!.id, notes: idea };
 
           const fn = prevIdea ? updateNotes : saveNotes;
           fn(param).then(() => {
@@ -73,13 +73,24 @@ export function openIdea() {
 }
 
 export const useEditIdea = () => {
-  function remove() {}
+  async function remove(index: number) {
+    ideas.value.splice(index, 1);
+    const idea = ideas.value.join(",");
+    if (idea) {
+      await updateNotes({ ..._source!, notes: idea }, "删除成功");
+    } else {
+      const { bookId, id } = _source!;
+      await removeNotes(bookId, id);
+    }
+    updateNodes();
+  }
   return { ideas, remove };
 };
 
-export function editIdea({ notes, id }: DomSource) {
+export function editIdea(source: DomSource) {
+  _source = source;
+  const { notes } = source;
   if (notes) {
-    _id = id;
     ideas.value = notes.split(",");
     createMsg(Edit);
   }

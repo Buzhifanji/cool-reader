@@ -6,11 +6,11 @@ const { ideas, remove } = useEditIdea()
 </script>
 <template>
   <div class="idea-container">
-    <template v-for="item in ideas" :key="item">
+    <template v-for="(item, index) in ideas" :key="index">
       <n-scrollbar style="max-height: 216px;">
         {{item}}
       </n-scrollbar>
-      <n-button quaternary round size="tiny" type="primary">
+      <n-button quaternary round size="tiny" type="primary" @click="remove(index)">
         删除
       </n-button>
       <n-divider />
