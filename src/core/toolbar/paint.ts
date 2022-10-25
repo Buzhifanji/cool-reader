@@ -121,6 +121,7 @@ class Paint {
         }
         current = current.nextSibling as HTMLElement;
       }
+      return { result: true, deleteIds };
     }
     return { result: false, deleteIds };
   }

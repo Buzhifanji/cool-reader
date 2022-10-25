@@ -38,9 +38,9 @@ export const useNoteJumpAndRemove = (type: NotesType) => {
 function useRemoveNotes(id: string, type: NotesType) {
   const source = getDomSource(id);
   if (source) {
-    // 清除缓存
-    deleteDomSource(source);
     // 清除 ui
+    deleteDomSource(source);
+    // 清除缓存
     removeDomSource(id);
   }
   // 清除数据库

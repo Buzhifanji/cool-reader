@@ -2,7 +2,12 @@ import { pageNumber } from "@/core/notes/notes";
 import { deleteDomSource, domSourceFromStore } from "@/core/toolbar";
 import { DomSource } from "@/interfaces";
 import { getHighlights, removeHighlight } from "@/server/highlight";
-import { getDomSource, getReadingBook, removeDomSource } from "@/store";
+import {
+  getDomSource,
+  getReadingBook,
+  removeDomSource,
+  saveDomSource,
+} from "@/store";
 import { ref, watchEffect } from "vue";
 import { updateNodes } from "../notes/notes";
 import { resetToolBar } from "../toolbar/toolbar";
@@ -20,9 +25,10 @@ watchEffect(() => {
 
 // 更新
 export function updateHighlights() {
-  return getHighlights(readingBook.id).then(
-    (value) => (highlights.value = value)
-  );
+  return getHighlights(readingBook.id).then((value) => {
+    highlights.value = value;
+    saveDomSource(value);
+  });
 }
 
 export function useRemoveHighlight(id: string, isTip = true) {

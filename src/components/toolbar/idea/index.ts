@@ -1,12 +1,13 @@
 import { NOTES_LINE_CLASS_NAME } from "@/constants";
-import { domSourceFromRange } from "@/core/toolbar";
+import { deleteDomSource, domSourceFromRange } from "@/core/toolbar";
 import { reductRange } from "@/core/toolbar/selection";
 import { DomSource } from "@/interfaces";
 import { message } from "@/naive";
 import { removeNotes, saveNotes, updateNotes } from "@/server/notes";
+import { removeDomSource } from "@/store";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { Component, h, ref, unref } from "vue";
-import { updateNodes } from "../../notes/notes";
+import { notes, updateNodes } from "../../notes/notes";
 import { resetToolBar, toolBar } from "../toolbar";
 import Edit from "./edit.vue";
 import Input from "./input.vue";
@@ -40,26 +41,29 @@ export function removeMessage() {
 
 export const useInputIdea = () => {
   const text = ref<string>("");
-  function submit() {
+  async function submit() {
     const value = unref(text);
     if (value) {
       const source = toolBar.source;
       if (source) {
+        debugger;
         source.className = NOTES_LINE_CLASS_NAME;
-        const { result } = domSourceFromRange(source);
-        if (result) {
-          let prevIdea = unref(ideas).join(",");
-          const idea = prevIdea ? `${value},${prevIdea}` : value;
-          const id = _source ? _source.id : source.id;
-          const param = { ...source, id, notes: idea };
 
-          const fn = prevIdea ? updateNotes : saveNotes;
-          fn(param).then(() => {
-            updateNodes();
-            resetToolBar();
-            removeMessage();
-          });
+        let param = { ...source, notes: value };
+        if (_source && _source.id === source.id) {
+          // 往旧的笔记里添加新的笔记
+          const old = notes.value.find((item) => item.id === _source!.id);
+          param = { ..._source, notes: `${value},${old!.notes}` };
+          await updateNotes(param);
+        } else {
+          // 第一次新增
+          await saveNotes(param);
+          domSourceFromRange(param);
         }
+        _source = param;
+        updateNodes();
+        resetToolBar();
+        removeMessage();
       }
     } else {
       message.error("您还未填写笔记！");
@@ -78,10 +82,17 @@ export const useEditIdea = () => {
     ideas.value.splice(index, 1);
     const idea = ideas.value.join(",");
     if (idea) {
-      await updateNotes({ ..._source!, notes: idea }, "删除成功");
+      const param = { ..._source!, notes: idea };
+      await updateNotes(param, "删除成功");
     } else {
       const { bookId, id } = _source!;
+      // 清除 ui
+      deleteDomSource(_source!);
+      // 清除缓存
+      removeDomSource(id);
       await removeNotes(bookId, id);
+      resetToolBar();
+      removeMessage();
     }
     updateNodes();
   }
