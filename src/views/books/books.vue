@@ -24,12 +24,15 @@ const {
   <n-progress v-if="percentage" type="line" :percentage="percentage" :indicator-placement="'inside'" processing />
   <template v-if="books.length">
     <div class="card-wrapper">
-      <n-card hoverable v-for="item in books" :key="item.id" @contextmenu="handleContextMenu($event, item.id)"
+      <n-card :bordered="false" v-for="item in books" :key="item.id" @contextmenu="handleContextMenu($event, item.id)"
         @click="openReaderWindow(item)">
         <template #cover>
-          <n-image :src="item.cover" preview-disabled />
+          <div class="book-cover">
+            <n-image :src="item.cover" preview-disabled />
+            <span class="book-cover-detor"></span>
+          </div>
         </template>
-        <n-ellipsis :line-clamp="1">
+        <n-ellipsis :line-clamp="2">
           {{ item.bookName }}
         </n-ellipsis>
       </n-card>
@@ -46,16 +49,76 @@ const {
 </template>
 
 <style scoped>
+@media (max-width: 516px) {
+  .n-card {
+    margin-left: 0;
+    width: calc((100vw - 72px)/3);
+    max-width: 148px;
+  }
+
+  .cover {
+    width: calc((100vw - 72px)/3);
+    height: calc((100vw - 72px)/3*1.45);
+    max-width: 148px;
+    max-height: 214.6px;
+  }
+}
+
+@media (max-width: 960px) {
+  .n-card {
+    margin-left: 30px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .n-card {
+    margin-left: 40px;
+  }
+}
+
 .n-card {
-  display: inline-flex;
-  width: 180px;
-  height: 250px;
-  margin-right: 20px;
-  margin-top: 20px;
+  display: block;
+  width: 128px;
+  height: auto;
+  margin-left: 36px;
+  margin-bottom: 44px;
   cursor: pointer;
 }
 
 .card-wrapper {
   display: flex;
+}
+
+.book-cover {
+  display: block;
+  width: 100%;
+  height: 174px;
+  box-shadow: 0 2px 16px rgb(0 0 0 / 8%);
+  background: #d8d8d8;
+  position: relative;
+}
+
+.book-cover-detor {
+  background-image: linear-gradient(90deg, hsla(0, 0%, 63.1%, .25), rgba(21, 21, 20, .1) 1%, hsla(0, 0%, 100%, .15) 4%, hsla(0, 0%, 58%, .1) 8%, hsla(0, 0%, 89%, 0) 57%, rgba(223, 218, 218, .03) 91%, rgba(223, 218, 218, .05) 98%, hsla(0, 0%, 100%, .1));
+  box-shadow: inset 0 0 0 0 rgb(0 0 0 / 10%);
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.n-card :deep(.n-card__content) {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 18px;
+  height: 36px;
+  max-height: 36px;
+  padding: 0;
+}
+
+.n-image {
+  height: 100%;
 }
 </style>
