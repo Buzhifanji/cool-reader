@@ -2,6 +2,7 @@
 
 <script setup lang="ts">
 import { useLoadFile } from "@/store";
+import DefaultBookCover from '@assets/book_cover.png';
 import { downloadFile } from "@core/file/file";
 import { openReaderWindow } from "@core/system/window";
 import { useBooks, useContextMenu } from "./book";
@@ -28,7 +29,7 @@ const {
         @click="openReaderWindow(item)">
         <template #cover>
           <div class="book-cover">
-            <n-image :src="item.cover" preview-disabled />
+            <n-image :src="item.cover" :fallback-src="DefaultBookCover" preview-disabled />
             <span class="book-cover-detor"></span>
           </div>
         </template>
@@ -120,5 +121,6 @@ const {
 
 .n-image {
   height: 100%;
+  width: 100%;
 }
 </style>
