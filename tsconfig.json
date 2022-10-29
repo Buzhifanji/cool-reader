@@ -24,7 +24,8 @@
       "@interfaces/*": ["./src/interfaces/*"],
       "@constants/*": ["./src/constants/*"],
       "@store/*": ["./src/store/*"],
-      "@core/*": ["./src/core/*"]
+      "@core/*": ["./src/core/*"],
+      "@assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
