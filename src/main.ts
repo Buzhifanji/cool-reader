@@ -1,11 +1,11 @@
 import { GlobalWorkerOptions } from "pdfjs-dist";
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import { createApp } from "vue";
 import App from "./App.vue";
 import { naive } from "./naive";
 import { router } from "./route";
 
-GlobalWorkerOptions.workerSrc = pdfjsWorker;
+GlobalWorkerOptions.workerSrc =
+  "../node_modules/pdfjs-dist/build/pdf.worker.js";
 
 import "./style/style.css";
 import "./style/viewer.css";
