@@ -1,8 +1,8 @@
 [package]
 name = "cool-reader"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
+version = "0.0.1"
+description = "A Reader App"
+authors = ["buzhifanji"]
 license = ""
 repository = ""
 edition = "2021"
