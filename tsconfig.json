@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "module": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
@@ -26,8 +26,22 @@
       "@store/*": ["./src/store/*"],
       "@core/*": ["./src/core/*"],
       "@assets/*": ["./src/assets/*"]
-    }
+    },
+    "types": [
+      "node",
+      "webdriverio/async",
+      "@wdio/mocha-framework",
+      "@types/mocha"
+    ]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "./test/**/*.ts",
+    "wdio.conf.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
