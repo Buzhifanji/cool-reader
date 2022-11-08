@@ -1,5 +1,5 @@
+import { BookData } from "@/interfaces";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { StorageBook } from "../type";
 
 let index = 0;
 
@@ -17,7 +17,7 @@ export function getWiewWindow(bookId: string) {
   return null;
 }
 
-export const openReaderWindow = ({ bookName, id }: StorageBook) => {
+export const openReaderWindow = ({ bookName, id }: BookData) => {
   index += 1;
   // 处理：runtime error: Window labels must only include alphanumeric characters, `-`, `/`, `:` and `_`."
   const label = `reader${index}`;
