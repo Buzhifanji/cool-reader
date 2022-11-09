@@ -28,6 +28,7 @@ export default defineConfig({
       "@enums": resolve("./src/enums"),
       "@core": resolve("./src/core"),
       "@assets": resolve("./src/assets"),
+      "@i18n": resolve("./src/i18n"),
     },
     extensions: [".mjs", ".js", ".ts", ".jsx", ".vue", ".tsx", ".json"],
   },
