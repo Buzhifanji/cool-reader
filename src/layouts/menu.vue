@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { renderIcon } from '@/utils';
 import { RouterName } from '@enums/index';
+import { langField, language } from "@i18n/index";
 import { Book, Idea, TextHighlight } from "@vicons/carbon";
-import { h } from 'vue';
+import { h, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';
 
 function renderRouterLink(routerName: string, label: string) {
@@ -10,23 +11,36 @@ function renderRouterLink(routerName: string, label: string) {
     h(RouterLink, { to: { name: routerName } }, { default: () => label });
 }
 
-const menu = [
-  {
-    label: renderRouterLink(RouterName.book, "全部图书"),
-    key: "all-books",
-    icon: renderIcon(Book),
-  },
-  {
-    label: renderRouterLink(RouterName.notes, "我的笔记"),
-    key: "my-nodes",
-    icon: renderIcon(Idea),
-  },
-  {
-    label: renderRouterLink(RouterName.highlight, "我的高亮"),
-    key: "my-hight",
-    icon: renderIcon(TextHighlight),
-  },
-];
+function getMenu() {
+  const lang = langField.value;
+  return [
+    {
+      label: renderRouterLink(RouterName.book, lang.menuBook),
+      key: "all-books",
+      icon: renderIcon(Book),
+    },
+    {
+      label: renderRouterLink(RouterName.notes, lang.menuNotes),
+      key: "my-nodes",
+      icon: renderIcon(Idea),
+    },
+    {
+      label: renderRouterLink(RouterName.highlight, lang.menuHighlight),
+      key: "my-hight",
+      icon: renderIcon(TextHighlight),
+    },
+  ]
+}
+
+const menu = ref<any>(getMenu())
+
+watchEffect(() => {
+  if (language.value) {
+    menu.value = getMenu()
+  }
+})
+
+
 </script>
 
 <template>
