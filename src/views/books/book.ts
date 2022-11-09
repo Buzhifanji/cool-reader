@@ -76,7 +76,7 @@ export const useContextMenu = () => {
       yRef.value = e.clientY;
     });
   }
-  function onClickoutside() {
+  function onClickOutside() {
     showDropdownRef.value = false;
   }
 
@@ -86,7 +86,7 @@ export const useContextMenu = () => {
     yRef,
     handleSelect,
     handleContextMenu,
-    onClickoutside,
+    onClickOutside,
     menus,
   };
 };

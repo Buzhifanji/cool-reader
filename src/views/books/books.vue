@@ -17,7 +17,7 @@ const {
   yRef,
   handleSelect,
   handleContextMenu,
-  onClickoutside,
+  onClickOutside,
   menus,
 } = useContextMenu();
 </script>
@@ -31,7 +31,7 @@ const {
         <template #cover>
           <div class="book-cover">
             <n-image :src="item.cover" :fallback-src="DefaultBookCover" preview-disabled />
-            <span class="book-cover-detor"></span>
+            <span class="book-cover-detour"></span>
           </div>
         </template>
         <n-ellipsis :line-clamp="2">
@@ -39,7 +39,7 @@ const {
         </n-ellipsis>
       </n-card>
       <n-dropdown placement="bottom-start" trigger="manual" :x="xRef" :y="yRef" :options="menus" :show="showDropdownRef"
-        :on-clickoutside="onClickoutside" @select="handleSelect" />
+        :on-clickoutside="onClickOutside" @select="handleSelect" />
     </div>
   </template>
 
@@ -100,7 +100,7 @@ const {
   position: relative;
 }
 
-.book-cover-detor {
+.book-cover-detour {
   background-image: linear-gradient(90deg, hsla(0, 0%, 63.1%, .25), rgba(21, 21, 20, .1) 1%, hsla(0, 0%, 100%, .15) 4%, hsla(0, 0%, 58%, .1) 8%, hsla(0, 0%, 89%, 0) 57%, rgba(223, 218, 218, .03) 91%, rgba(223, 218, 218, .05) 98%, hsla(0, 0%, 100%, .1));
   box-shadow: inset 0 0 0 0 rgb(0 0 0 / 10%);
 
