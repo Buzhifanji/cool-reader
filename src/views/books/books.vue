@@ -6,6 +6,7 @@ import DefaultBookCover from '@assets/book_cover.png';
 import { downloadFile } from "@core/file/file";
 import { openReaderWindow } from "@core/system/window";
 import { useBooks, useContextMenu } from "./book";
+import { langField } from "@i18n/index";
 
 const { percentage } = useLoadFile();
 
@@ -42,9 +43,9 @@ const {
     </div>
   </template>
 
-  <n-result v-else status="418" title="暂无书本可读" description="一切尽在不言中">
+  <n-result v-else status="418" :title="langField.noBookTitle" :description="langField.noBookDesc">
     <template #footer>
-      <n-button @click="downloadFile">从本地导入</n-button>
+      <n-button @click="downloadFile">{{langField.noBookUpload}}</n-button>
     </template>
   </n-result>
 </template>
