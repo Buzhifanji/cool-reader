@@ -24,8 +24,9 @@ export const openReaderWindow = ({ bookName, id }: BookData) => {
   const readerWindow = new WebviewWindow(label, {
     url: `/reader?id=${encodeURIComponent(id)}`,
     title: bookName,
-    width: 800,
-    height: 600,
+    center: true,
+    width: 1000,
+    height: 700,
   });
   readerWindow.once("tauri://created", function (value) {
     windowLabel.set(id, index.toString());

@@ -69,10 +69,17 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
+        "center": true,
         "title": "cool-reader",
-        "width": 800
+        "x": 0,
+        "y": 0,
+        "width": 1000,
+        "height": 700,
+        "minWidth": 1000,
+        "minHeight": 700,
+        "transparent": true,
+        "maximized": true
       }
     ]
   }

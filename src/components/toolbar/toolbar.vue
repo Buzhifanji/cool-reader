@@ -1,5 +1,3 @@
-
-
 <script setup lang="ts">
 import { onBeforeUnmount } from "vue";
 import { removeMessage } from "./idea";
