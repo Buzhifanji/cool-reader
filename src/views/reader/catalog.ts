@@ -1,5 +1,4 @@
 import { onKeyStroke } from "@vueuse/core";
-import { onMounted, ref } from "vue";
 
 export const useCatalogSection = () => {
   const showCatalog = ref<boolean>(false);

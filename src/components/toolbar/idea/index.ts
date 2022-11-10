@@ -6,7 +6,6 @@ import { message } from "@/naive";
 import { removeNotes, saveNotes, updateNotes } from "@/server/notes";
 import { removeDomSource } from "@/store";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
-import { Component, h, ref, unref } from "vue";
 import { notes, updateNodes } from "../../notes/notes";
 import { resetToolBar, toolBar } from "../toolbar";
 import Edit from "./edit.vue";

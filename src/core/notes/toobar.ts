@@ -8,7 +8,6 @@ import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
 import { DomSource } from "@/interfaces";
 import { getDomSource } from "@/store";
 import { getTextWidth, hasHighlight, hasNotes, isObjEqual } from "@/utils";
-import { toRaw } from "vue";
 
 import {
   getDomContianer,

@@ -3,7 +3,6 @@ import { domSourceFromStore } from "@/core/toolbar";
 import { DomSource } from "@/interfaces";
 import { getNotes } from "@/server/notes";
 import { getReadingBook, saveDomSource } from "@/store";
-import { ref, watchEffect } from "vue";
 
 export const notes = ref<DomSource[]>([]);
 

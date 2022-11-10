@@ -14,7 +14,6 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { computed, shallowReactive } from "vue";
 import { updateHighlights, useRemoveHighlight } from "../highlight/highlight";
 import { openIdea } from "./idea";
 

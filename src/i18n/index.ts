@@ -1,7 +1,6 @@
 import { LangField } from "@/interfaces";
 import { useNavigatorLanguage } from "@vueuse/core";
 import { dateEnUS, dateZhCN, enUS, NDateLocale, NLocale, zhCN } from "naive-ui";
-import { reactive, ref, watch } from "vue";
 import { enUS as enUSLocal } from "./en";
 import { zhCN as zhCNLocal } from "./zh";
 

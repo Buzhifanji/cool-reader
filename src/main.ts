@@ -1,5 +1,4 @@
 import { GlobalWorkerOptions } from "pdfjs-dist";
-import { createApp } from "vue";
 import App from "./App.vue";
 import { naive } from "./naive";
 import { router } from "./route";

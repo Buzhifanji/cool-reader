@@ -3,7 +3,6 @@ import { notification } from "@/naive";
 import { getAllBooks, removeBook } from "@/store";
 import { isIndex, renderIcon } from "@/utils";
 import { Delete, Edit, Export } from "@vicons/carbon";
-import { nextTick, ref } from "vue";
 
 const books = ref<BookData[]>([]);
 

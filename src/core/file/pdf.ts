@@ -16,7 +16,6 @@ import {
   PDFLinkService,
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
-import { toRaw } from "vue";
 import { updatePageNumber } from "../notes/notes";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例

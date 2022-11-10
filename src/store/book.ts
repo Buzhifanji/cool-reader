@@ -4,7 +4,6 @@ import { BookContext, BookData, UpdateBook } from "@/interfaces";
 import { BookModel } from "@/model";
 import { isIndex } from "@/utils";
 import { forage } from "@tauri-apps/tauri-forage";
-import { reactive } from "vue";
 
 // 当前打开书本的数据
 const readingBook = reactive<BookData>(

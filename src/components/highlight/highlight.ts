@@ -8,7 +8,6 @@ import {
   removeDomSource,
   saveDomSource,
 } from "@/store";
-import { ref, watchEffect } from "vue";
 import { updateNodes } from "../notes/notes";
 import { resetToolBar } from "../toolbar/toolbar";
 

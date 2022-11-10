@@ -7,7 +7,6 @@ import { message } from "@/naive";
 import { removeHighlight } from "@/server/highlight";
 import { removeNotes } from "@/server/notes";
 import { getDomSource, getReadingBook, removeDomSource } from "@/store";
-import { ref } from "vue";
 import { usePdfChangePage } from "../file";
 import { deleteDomSource } from "../toolbar";
 
