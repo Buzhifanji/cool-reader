@@ -61,7 +61,10 @@ onMounted(() => {
         :block-scroll="false"
         to="#drawer-target"
       >
-        <n-drawer-content :closable="false" body-content-style="padding: 5px">
+        <n-drawer-content
+          :closable="false"
+          body-content-style="padding: 5px;overflow: hidden"
+        >
           <n-grid x-gap="12" :cols="2">
             <n-gi>
               <n-card hoverable size="small">
