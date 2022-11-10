@@ -4,11 +4,16 @@
   "version": "0.0.1",
   "type": "commonjs",
   "scripts": {
+    "start": "concurrently \"tauri dev\" \"pnpm devtools\"",
+    "tsc": "vue-tsc --noEmit",
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "test": "wdio run wdio.conf.ts"
+    "devtools": "pnpm vue-devtools",
+    "test": "wdio run wdio.conf.ts",
+    "ts-check": "vue-tsc --noEmit",
+    "check": "cd src-tauri && cargo check"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.1.0",
@@ -25,12 +30,14 @@
     "@types/spark-md5": "^3.0.2",
     "@vicons/carbon": "^0.12.0",
     "@vitejs/plugin-vue": "^3.2.0",
+    "@vue/devtools": "^6.4.5",
     "@vueuse/core": "^9.4.0",
     "@wdio/local-runner": "^7.25.4",
     "@wdio/mocha-framework": "^7.25.4",
     "@wdio/spec-reporter": "^7.25.4",
     "@wdio/types": "^7.25.4",
     "chai": "^4.3.7",
+    "concurrently": "^7.5.0",
     "epubjs": "^0.3.93",
     "msedgedriver": "^91.0.0",
     "naive-ui": "^2.33.5",
