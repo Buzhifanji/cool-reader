@@ -1,5 +1,3 @@
-import { onKeyStroke } from "@vueuse/core";
-
 export const useCatalogSection = () => {
   const showCatalog = ref<boolean>(false);
   const catalogWidth = 312;

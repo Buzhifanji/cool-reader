@@ -17,7 +17,7 @@ export default defineConfig({
         /\.md$/, // .md
       ],
       dts: "./src/auto-imports.d.ts",
-      imports: ["vue", "vue-router"],
+      imports: ["vue", "vue-router", "@vueuse/core"],
     }),
     ViteComponents({
       dts: "./src/components.d.ts",

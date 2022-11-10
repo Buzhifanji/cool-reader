@@ -1,5 +1,4 @@
 import { TabPaneEnum } from "@/enums";
-import { onKeyStroke } from "@vueuse/core";
 
 export const useNotesSection = () => {
   const notesActiveTab = ref<TabPaneEnum>(TabPaneEnum.catalog);
