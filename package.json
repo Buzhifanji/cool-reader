@@ -51,7 +51,6 @@
     "vite": "^3.2.3",
     "vue-tsc": "^0.39.5",
     "wdio-edgedriver-service": "^2.0.0",
-    "web-highlighter": "^0.7.4",
     "webdriverio": "^7.25.4"
   }
 }
