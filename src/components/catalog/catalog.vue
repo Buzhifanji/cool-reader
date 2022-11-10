@@ -19,7 +19,7 @@ function updateCatalog(key: string, item: MenuOption) {
 <style scoped>
 .n-menu {
   height: calc(100% - 180px - 20px);
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: -24px;
 }
 </style>
