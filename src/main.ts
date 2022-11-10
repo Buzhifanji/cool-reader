@@ -1,6 +1,5 @@
 import { GlobalWorkerOptions } from "pdfjs-dist";
 import App from "./App.vue";
-import { naive } from "./naive";
 import { router } from "./route";
 import devtools from "@vue/devtools";
 
@@ -14,4 +13,4 @@ GlobalWorkerOptions.workerSrc =
 import "./style/style.css";
 import "./style/viewer.css";
 
-createApp(App).use(router).use(naive).mount("#app");
+createApp(App).use(router).mount("#app");
