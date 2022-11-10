@@ -3,28 +3,32 @@ import { ExtnameFn } from "@/interfaces";
 import { getReadingBook } from "@/store";
 import { useEpubChangePage } from "@core/file/epub";
 import { usePdfChangePage } from "@core/file/pdf";
-import { reactive } from "vue";
+import { computed } from "vue";
 
 export const useCatalog = () => {
   const readingBook = getReadingBook();
-  const menuFieds = reactive({
-    key: "key",
-    label: "label",
-    children: "children",
+
+  class Keys {
+    constructor(
+      public key: string,
+      public label: string,
+      public children: string
+    ) {}
+  }
+
+  const menuKes = computed(() => {
+    switch (readingBook.extname) {
+      case Bookextname.pdf:
+        return new Keys("title", "title", "items");
+      case Bookextname.epub:
+        return new Keys("id", "label", "subitems");
+      default:
+        console.warn("TODO: Unknown readingBook.extname");
+        return new Keys("key", "label", "children");
+    }
   });
 
-  function setField(key: string, label: string, children: string) {
-    menuFieds.key = key;
-    menuFieds.label = label;
-    menuFieds.children = children;
-  }
-  const catalogStatus: ExtnameFn = {
-    [Bookextname.pdf]: () => setField("title", "title", "items"),
-    [Bookextname.epub]: () => setField("id", "label", "subitems"),
-  };
-  catalogStatus[readingBook.extname]?.();
-
-  return { menuFieds, readingBook };
+  return { readingBook, menuKes };
 };
 
 export function generateGotoPage(item: any) {
