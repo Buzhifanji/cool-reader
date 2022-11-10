@@ -34,7 +34,6 @@ specifiers:
   vue-router: ^4.1.6
   vue-tsc: ^0.39.5
   wdio-edgedriver-service: ^2.0.0
-  web-highlighter: ^0.7.4
   webdriverio: ^7.25.4
 
 dependencies:
@@ -73,7 +72,6 @@ devDependencies:
   vite: 3.2.3_@types+node@18.11.9
   vue-tsc: 0.39.5_typescript@4.8.4
   wdio-edgedriver-service: 2.0.0_xb2htaj2sopzwz437mdc2mru6q
-  web-highlighter: 0.7.4
   webdriverio: 7.25.4_typescript@4.8.4
 
 packages:
@@ -5093,10 +5091,6 @@ packages:
       tcp-port-used: 1.0.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /web-highlighter/0.7.4:
-    resolution: {integrity: sha512-07mWw6ib+Abcr/fuKEWYPy1Y0MsCOz6yUUVw9xMpyt5UzyXWtSlcwzy2YqnccCP/LjtM9MZHQSo3dbGJII8h6w==}
     dev: true
 
   /web-streams-polyfill/3.2.1:
