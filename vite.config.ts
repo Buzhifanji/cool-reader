@@ -1,10 +1,29 @@
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import { defineConfig } from "vite";
+import AutoImport from "unplugin-auto-import/vite";
+import ViteComponents from "unplugin-vue-components/vite";
+import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    AutoImport({
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/,
+        /\.vue\?vue/, // .vue
+        /\.md$/, // .md
+      ],
+      dts: "./src/auto-imports.d.ts",
+      imports: ["vue", "vue-router"],
+    }),
+    ViteComponents({
+      dts: "./src/components.d.ts",
+      resolvers: [NaiveUiResolver()],
+    }),
+  ],
 
   // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors

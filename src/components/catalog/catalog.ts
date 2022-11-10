@@ -3,7 +3,6 @@ import { ExtnameFn } from "@/interfaces";
 import { getReadingBook } from "@/store";
 import { useEpubChangePage } from "@core/file/epub";
 import { usePdfChangePage } from "@core/file/pdf";
-import { computed } from "vue";
 
 export const useCatalog = () => {
   const readingBook = getReadingBook();
