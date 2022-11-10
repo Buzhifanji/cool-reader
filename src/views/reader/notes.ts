@@ -1,7 +1,7 @@
 import { TabPaneEnum } from "@/enums";
 
 export const useNotesSection = () => {
-  const notesActiveTab = ref<TabPaneEnum>(TabPaneEnum.catalog);
+  const notesActiveTab = ref<TabPaneEnum>(TabPaneEnum.notes);
   const showNotes = ref<boolean>(false);
   const notesWidth = 312;
   onMounted(() => (showNotes.value = true));
@@ -13,9 +13,9 @@ export const useNotesSection = () => {
 
   const tabPanes = [
     // { name: TabPaneEnum.catalog, tab: "目录" },
-    { name: TabPaneEnum.bookmark, tab: "书签" },
     { name: TabPaneEnum.notes, tab: "笔记" },
     { name: TabPaneEnum.highlight, tab: "高亮" },
+    { name: TabPaneEnum.bookmark, tab: "书签" },
   ];
   function isNotesTab(tab: TabPaneEnum): boolean {
     return tab === notesActiveTab.value;
