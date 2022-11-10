@@ -27,6 +27,8 @@ export const openReaderWindow = ({ bookName, id }: BookData) => {
     center: true,
     width: 1000,
     height: 700,
+    minHeight: 700,
+    minWidth: 1000,
   });
   readerWindow.once("tauri://created", function (value) {
     windowLabel.set(id, index.toString());
