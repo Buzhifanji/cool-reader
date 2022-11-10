@@ -1,5 +1,3 @@
-
-
 <script setup lang="ts">
 import { removeMessage } from "@/components/toolbar/idea";
 import { removePdfEvent } from "@/core/file";
@@ -10,15 +8,25 @@ import Notes from "@components/notes/notes.vue";
 import ToolBar from "@components/toolbar/toolbar.vue";
 import { closeTooBar, openTooBar } from "@core/notes/toobar";
 import { TabPaneEnum } from "@enums/index";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
+import { useCatalogSection } from "@views/reader/catalog";
 
 const route = useRoute();
 // 笔记栏目相关逻辑
-const { showNotes, controlNodesSection, notesActiveTab, tabPanes, isNotesTab } =
+const { showNotes, notesActiveTab, tabPanes, isNotesTab, notesWidth } =
   useNotesSection();
+// 目录
+const { showCatalog, catalogWidth } = useCatalogSection();
+
+//
+const contentStyle = computed(() => {
+  const left = (showCatalog.value ? catalogWidth : 0) + "px";
+  const right = (showNotes.value ? notesWidth : 0) + "px";
+  return { left, right };
+});
 //翻页功能
 const { readingBook } = useReaderBook(route);
 
@@ -26,31 +34,34 @@ const onContainer = () => {
   closeTooBar();
   detachRange();
   removeMessage();
-}
+};
 
 onMounted(() => {
   removePdfEvent();
-})
+});
 </script>
 
 <template>
   <n-layout>
-    <n-layout-header bordered>
-      <n-space justify="space-between">
-        <!-- <n-button @click="goHome">go home</n-button> -->
-        <span></span>
-        <n-button @click="controlNodesSection(true)">Option</n-button>
-      </n-space>
+    <n-layout-header>
+      <n-divider />
     </n-layout-header>
     <n-layout-content id="drawer-target">
-      <div id="viewerContainer" @click="onContainer">
+      <div id="viewerContainer" :style="contentStyle" @click="onContainer">
         <div id="viewer" class="pdfViewer" @click="openTooBar"></div>
         <ToolBar />
       </div>
-      <!-- note -->
-      <n-drawer v-model:show="showNotes" :width="342" placement="left" :show-mask="false" :trap-focus="false"
-        :block-scroll="false" to="#drawer-target">
-        <n-drawer-content>
+      <n-drawer
+        v-model:show="showCatalog"
+        :width="catalogWidth"
+        placement="left"
+        :show-mask="false"
+        :mask-closable="false"
+        :trap-focus="false"
+        :block-scroll="false"
+        to="#drawer-target"
+      >
+        <n-drawer-content :closable="false" body-content-style="padding: 5px">
           <n-grid x-gap="12" :cols="2">
             <n-gi>
               <n-card hoverable size="small">
@@ -69,10 +80,28 @@ onMounted(() => {
             </n-gi>
           </n-grid>
           <n-divider />
+          <!-- 目录 -->
+          <Catalog />
+        </n-drawer-content>
+      </n-drawer>
+      <!-- note -->
+      <n-drawer
+        v-model:show="showNotes"
+        :width="notesWidth"
+        placement="right"
+        :show-mask="false"
+        :mask-closable="false"
+        :trap-focus="false"
+        :block-scroll="false"
+        to="#drawer-target"
+      >
+        <n-drawer-content body-content-style="padding: 0px">
           <n-tabs type="segment" v-model:value="notesActiveTab">
-            <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
-              <!-- 目录 -->
-              <Catalog v-if="isNotesTab(TabPaneEnum.catalog)" />
+            <n-tab-pane
+              v-for="item in tabPanes"
+              :name="item.name"
+              :tab="item.tab"
+            >
               <!-- 高亮 -->
               <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
               <!-- 笔记 -->
@@ -91,7 +120,8 @@ onMounted(() => {
 }
 
 .n-layout-content {
-  height: calc(100% - 35px);
+  height: calc(100% - 25px);
+  margin-top: -24px;
 }
 
 .n-tabs {
@@ -109,9 +139,11 @@ onMounted(() => {
 }
 
 #viewerContainer {
-  margin-top: -32px;
   height: 100%;
   overflow-y: auto;
+}
+.pdfViewer .page {
+  width: 100% !important;
 }
 
 .anchor-wrapper {
