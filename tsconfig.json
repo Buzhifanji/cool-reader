@@ -42,7 +42,6 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "./test/**/*.ts",
-    "wdio.conf.ts",
     "src/components.d.ts",
     "src/auto-imports.d.ts"
   ],
