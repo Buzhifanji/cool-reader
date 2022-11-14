@@ -37,7 +37,7 @@ function getOrinalParent(node: HTMLElement): HTMLElement {
 
   let parent = node.parentNode as HTMLElement;
 
-  while (!isHeightWrap(parent)) {
+  while (isHeightWrap(parent)) {
     parent = parent.parentNode as HTMLElement;
   }
 
