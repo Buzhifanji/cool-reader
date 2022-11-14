@@ -28,12 +28,6 @@
       "@assets/*": ["./src/assets/*"],
       "@i18n/*": ["./src/i18n/*"]
     },
-    "types": [
-      "node",
-      "webdriverio/async",
-      "@wdio/mocha-framework",
-      "@types/mocha"
-    ]
   },
 
   "include": [
@@ -41,7 +35,6 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "./test/**/*.ts",
     "src/components.d.ts",
     "src/auto-imports.d.ts"
   ],

@@ -3,8 +3,14 @@
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": [
+      "node",
+      "webdriverio/async",
+      "@wdio/mocha-framework",
+      "@types/mocha"
+    ]
   },
-  "include": ["vite.config.ts","wdio.conf.ts",],
+  "include": ["vite.config.ts","wdio.conf.ts","./test/**/*.ts",],
   "exclude": ["node_modules"]
 }
