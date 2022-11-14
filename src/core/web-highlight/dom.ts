@@ -47,7 +47,7 @@ function getOrinalParent(node: HTMLElement): HTMLElement {
 export function getDomMeta(node: HTMLElement, offset: number, root: rootType): DomMeta {
   const orinalParent = getOrinalParent(node)
   const preOffset = getTextPreOffset(orinalParent, node);
-  const index = orinalParent === root ? ROOT_INDEX : queryDomIndex(orinalParent, node);
+  const index = orinalParent === root ? ROOT_INDEX : queryDomIndex(orinalParent, root);
 
   return { tagName: orinalParent.tagName, index, offset: preOffset + offset }
 }

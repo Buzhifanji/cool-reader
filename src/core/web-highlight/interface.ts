@@ -8,7 +8,7 @@ export type ClassName = string | string[];
 
 export interface WebHighlightOptions {
   context?: contextTpe// 上下文,默认是 window，但存在 iframe 的情况，此时需要重新设置 context
-  root: rootType; // 根节点，用于处理 动态dom 场景。
+  root?: rootType; // 根节点，用于处理 动态dom 场景。
   tagName?: string; // 渲染标签类型，默认 i 标签
   isMerge?: boolean; // 重复高亮是否合并，默认 false
   className?: ClassName; // 多个用空格隔空，例如： 'yellow blue'

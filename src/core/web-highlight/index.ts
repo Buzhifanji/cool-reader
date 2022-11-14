@@ -4,7 +4,7 @@
  */
 
 import { getDomMeta } from "./dom";
-import { contextTpe, DomSource, WebHighlightOptions } from "./interface";
+import { contextTpe, DomSource, rootType, WebHighlightOptions } from "./interface";
 import { Paint } from "./paint";
 import { getRange } from "./range";
 import { Store } from "./store";
@@ -14,8 +14,14 @@ export class WebHighlight extends Paint {
 
   private _store: Store = new Store();
 
-  constructor(options: WebHighlightOptions, private context: contextTpe) {
+  private _root: rootType = document.documentElement;
+
+  constructor(options: WebHighlightOptions, private context?: contextTpe) {
     super(options)
+
+    if (options.root) {
+      this._root = options.root;
+    }
   }
   /**
    * 更新配置参数，对于动态DOM，需要及时更新变化的配置参数，比如 root 根节点
@@ -27,15 +33,15 @@ export class WebHighlight extends Paint {
    * 监听  window.getSelection() 事件，获取 Range 对象
    */
   range() {
-    const { root } = this.options
+    const { _root } = this
 
     const range = getRange(this.context);
     if (!range) return null;
 
     const { startContainer, startOffset, endContainer, endOffset } = range;
 
-    const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)
-    const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, root)
+    const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, _root)
+    const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, _root)
 
     const createTime = new Date().valueOf();
 
