@@ -78,6 +78,8 @@ function getAllSelectDom(start: SelectTextNode, end: SelectTextNode, root: rootT
         node.splitText(endOffset)
         selectTextNodes.push({ node })
       }
+
+      break
     } else if (isBetween && isTextNode(currentNode)) { // 中间节点
       selectTextNodes.push({ node: currentNode as Text })
     }
@@ -110,7 +112,6 @@ function createEleByTagName(tagName: string, id: string, className: ClassName, e
   wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
 
   if (extraInfo) {
-    debugger
     wrap.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, extraInfo)
   }
 
@@ -193,6 +194,7 @@ function updateWrapAttr({ select, id, className }: WrapNode) {
 }
 
 function paintWrap(wrapNode: WrapNode) {
+
   const { parent, prev, next } = getUpperLevelDom(wrapNode.select.node)
 
   let result: HTMLElement;
@@ -220,13 +222,11 @@ export class Paint {
   }
 
   paintDom(domSource: DomSource) {
+    debugger
     const { start, end } = this._getDomNode(domSource);
     const selectNodes = getAllSelectDom(start, end, this.options.root!);
 
-    const defaultOption = getDefaultOptions();
-    let { className, tagName } = this.options
-    className = className || defaultOption.className;
-    tagName = tagName || defaultOption.tagName;
+    const { className, tagName } = this._getClasAndTagName();
 
     selectNodes.map(select => {
       const wrapNode: WrapNode = {
@@ -267,5 +267,14 @@ export class Paint {
     }
 
     return { start, end }
+  }
+
+  private _getClasAndTagName() {
+    const defaultOption = getDefaultOptions();
+    let { className, tagName } = this.options
+    className = className || defaultOption.className;
+    tagName = tagName || defaultOption.tagName;
+
+    return { className, tagName }
   }
 }
