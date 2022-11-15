@@ -1,9 +1,10 @@
-import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import AutoImport from "unplugin-auto-import/vite";
 import ViteComponents from "unplugin-vue-components/vite";
 import { NaiveUiResolver } from "unplugin-vue-components/resolvers";
+import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,7 +25,11 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()],
     }),
   ],
-
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+    include: ['./test/components/**/*.{test,spec}.{js,ts}']
+  },
   // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   // prevent vite from obscuring rust errors
   clearScreen: false,
