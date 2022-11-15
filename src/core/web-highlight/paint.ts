@@ -1,4 +1,4 @@
-import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, DATA_WEB_HIGHLIGHT_TYPE, getDefaultOptions, ID_DIVIDION } from "./constant";
+import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions, ID_DIVIDION } from "./constant";
 import { getDomByTagNameIndex } from "./dom";
 import { ClassName, DomSource, EleOrText, rootType, SelectNode, SelectTextNode, WebHighlightOptions, WrapNode } from "./interface";
 import { getTextNodeByOffset } from "./offset";
