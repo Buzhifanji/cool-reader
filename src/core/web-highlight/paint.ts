@@ -106,14 +106,31 @@ function getUpperLevelDom(node: Node) {
   return { parent, prev, next }
 }
 
+function createEleByTagName(tagName: string, id: string, type: string, className: ClassName) {
+  const wrap = document.createElement(tagName)
+  wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
+  wrap.setAttribute(DATA_WEB_HIGHLIGHT_TYPE, type)
+
+  addClassName(wrap, className)
+
+  return wrap
+}
+
+function getNodeAttr(node: HTMLElement) {
+  const id = node.getAttribute(DATA_WEB_HIGHLIGHT)
+  const classes = node.getAttribute(DATA_WEB_HIGHLIGHT)
+  const type = node.getAttribute(DATA_WEB_HIGHLIGHT_TYPE)
+
+  return { id, classes, type }
+}
+
+/**
+ * 创建一个新的
+ */
 function createWrap({ select, id, className, tagName }: WrapNode) {
   const { splitType, node } = select
 
-  const wrap = document.createElement(tagName)
-  wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
-  wrap.setAttribute(DATA_WEB_HIGHLIGHT_TYPE, splitType)
-
-  addClassName(wrap, className)
+  const wrap = createEleByTagName(tagName, id, splitType, className)
 
   wrap.appendChild(node.cloneNode(false))
   node.parentNode?.replaceChild(wrap, node)
@@ -122,16 +139,34 @@ function createWrap({ select, id, className, tagName }: WrapNode) {
 }
 
 function spliteWrap({ select, id, className, tagName }: WrapNode) {
-  const wrap = document.createElement(tagName)
+  const { node, splitType } = select;
   const fragment = document.createDocumentFragment();
 
-  const { parent, prev, next } = getUpperLevelDom(select.node)
+  const { parent, prev, next } = getUpperLevelDom(node)
 
-  const oldId = wrap.getAttribute(DATA_WEB_HIGHLIGHT)
+  const wrap = createEleByTagName(tagName, id, splitType, className)
 
-  if (prev) {
+  wrap.appendChild(node.cloneNode(false))
 
+  const cloneNode = (node: Node) => {
+    if (node) {
+      const span = parent.cloneNode(false)
+
+      span.textContent = node.textContent;
+      fragment.appendChild(span)
+    }
   }
+
+  // prev
+  cloneNode(prev);
+
+  fragment.appendChild(wrap)
+
+  // next 
+  cloneNode(next);
+
+  parent.parentNode?.replaceChild(fragment, parent)
+
   return wrap
 }
 
@@ -167,7 +202,11 @@ function paintWrap(wrapNode: WrapNode) {
 }
 
 export class Paint {
-  constructor(public options: WebHighlightOptions) { }
+  constructor(public options: WebHighlightOptions) {
+    if (!this.options.root) {
+      this.options.root = document;
+    }
+  }
 
   updateOption(options: WebHighlightOptions) {
     Object.assign(this.options, options)
@@ -175,7 +214,7 @@ export class Paint {
 
   paintDom(domSource: DomSource) {
     const { start, end } = this._getDomNode(domSource);
-    const selectNodes = getAllSelectDom(start, end, this.options.root);
+    const selectNodes = getAllSelectDom(start, end, this.options.root!);
 
     const defaultOption = getDefaultOptions();
     let { className, tagName } = this.options
@@ -203,8 +242,8 @@ export class Paint {
     const startOffset = startDomMeta.offset;
     const endOffset = endDomMeta.offset;
 
-    const startDom = getDomByTagNameIndex(startDomMeta, root);
-    const endDom = getDomByTagNameIndex(endDomMeta, root);
+    const startDom = getDomByTagNameIndex(startDomMeta, root!);
+    const endDom = getDomByTagNameIndex(endDomMeta, root!);
 
     const startTextNode = getTextNodeByOffset(startDom, startOffset)
     const endTextNode = getTextNodeByOffset(endDom, endOffset)
