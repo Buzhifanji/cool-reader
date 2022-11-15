@@ -12,5 +12,6 @@ GlobalWorkerOptions.workerSrc =
 
 import "./style/style.css";
 import "./style/viewer.css";
+import "./style/web-highlight.css"
 
 createApp(App).use(router).mount("#app");
