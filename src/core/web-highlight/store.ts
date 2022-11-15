@@ -19,31 +19,9 @@ export class Store {
     return this._data.get(id)
   }
 
-  // getAll() {
-  //   const result: DomSource[] = []
-
-  //   for (const source of this._data) {
-  //     result.push(source[1])
-  //   }
-
-  //   return result
-  // }
-
   remove(id: string) {
     this._data.delete(id)
   }
-
-  // removeAll() {
-  //   const ids: string[] = [];
-
-  //   for (const source of this._data) {
-  //     ids.push(source[0])
-  //   }
-
-  //   this._data.clear()
-
-  //   return ids;
-  // }
 
   private _saveOne(source: DomSource) {
     this._data.set(source.id, source)
