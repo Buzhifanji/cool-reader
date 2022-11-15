@@ -87,11 +87,6 @@ function getAllSelectDom(start: SelectTextNode, end: SelectTextNode, root: rootT
   return selectTextNodes
 }
 
-
-function paintSelectedNode(nodes: SelectNode[], id: string) {
-
-}
-
 function addClassName(el: HTMLElement, className: ClassName) {
   const classNames = Array.isArray(className) ? className : [className]
   classNames.forEach(item => {
@@ -179,6 +174,7 @@ function spliteWrap({ select, id, className, tagName }: WrapNode) {
 }
 
 function updateWrapAttr({ select, id, className }: WrapNode) {
+  debugger
   const parent = select.node.parentNode as HTMLElement;
   const wrap = parent;
 
