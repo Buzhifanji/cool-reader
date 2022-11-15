@@ -29,7 +29,7 @@ function paintSameTextNode(text: Text, startOffset: number, endOffset: number): 
 
   node.splitText(endOffset - startOffset)
 
-  return [{ node, splitType: 'both' }]
+  return [{ node }]
 }
 
 /**
@@ -69,17 +69,17 @@ function getAllSelectDom(start: SelectTextNode, end: SelectTextNode, root: rootT
 
         isBetween = true;
 
-        selectTextNodes.push({ node, splitType: 'head' })
+        selectTextNodes.push({ node })
       }
     } else if (currentNode === endNode) { // 结束节点
       if (isTextNode(currentNode)) {
         const node = currentNode as Text;
 
         node.splitText(endOffset)
-        selectTextNodes.push({ node, splitType: 'tail' })
+        selectTextNodes.push({ node })
       }
     } else if (isBetween && isTextNode(currentNode)) { // 中间节点
-      selectTextNodes.push({ node: currentNode as Text, splitType: 'none' })
+      selectTextNodes.push({ node: currentNode as Text })
     }
   }
   return selectTextNodes

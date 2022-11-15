@@ -55,11 +55,9 @@ export interface DomSource {
   notes?: Notes; // 笔记
 }
 
-type splitType = 'tail' | 'both' | 'none' | 'head'
 
 export interface SelectNode {
-  node: Node,
-  splitType: splitType
+  node: Node
 }
 
 export interface WrapNode {
