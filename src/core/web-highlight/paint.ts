@@ -1,4 +1,4 @@
-import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_TYPE, getDefaultOptions } from "./constant";
+import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, DATA_WEB_HIGHLIGHT_TYPE, getDefaultOptions, ID_DIVIDION } from "./constant";
 import { getDomByTagNameIndex } from "./dom";
 import { ClassName, DomSource, EleOrText, rootType, SelectNode, SelectTextNode, WebHighlightOptions, WrapNode } from "./interface";
 import { getTextNodeByOffset } from "./offset";
@@ -92,7 +92,6 @@ function paintSelectedNode(nodes: SelectNode[], id: string) {
 
 function addClassName(el: HTMLElement, className: ClassName) {
   const classNames = Array.isArray(className) ? className : [className]
-  // classNames = classNames.length === 0 ? [getDefaultOptions().className as string] : classNames;
   classNames.forEach(item => {
     el.classList.add(item)
   })
@@ -106,31 +105,34 @@ function getUpperLevelDom(node: Node) {
   return { parent, prev, next }
 }
 
-function createEleByTagName(tagName: string, id: string, type: string, className: ClassName) {
+function createEleByTagName(tagName: string, id: string, className: ClassName, extraInfo?: string | null) {
   const wrap = document.createElement(tagName)
   wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
-  wrap.setAttribute(DATA_WEB_HIGHLIGHT_TYPE, type)
+
+  if (extraInfo) {
+    debugger
+    wrap.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, extraInfo)
+  }
 
   addClassName(wrap, className)
 
   return wrap
 }
 
-function getNodeAttr(node: HTMLElement) {
+function getNodeExtraId(node: HTMLElement) {
   const id = node.getAttribute(DATA_WEB_HIGHLIGHT)
-  const classes = node.getAttribute(DATA_WEB_HIGHLIGHT)
-  const type = node.getAttribute(DATA_WEB_HIGHLIGHT_TYPE)
-
-  return { id, classes, type }
+  const extraId = node.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)
+  return extraId ? id + ID_DIVIDION + extraId : id;
 }
+
 
 /**
  * 创建一个新的
  */
 function createWrap({ select, id, className, tagName }: WrapNode) {
-  const { splitType, node } = select
+  const { node } = select
 
-  const wrap = createEleByTagName(tagName, id, splitType, className)
+  const wrap = createEleByTagName(tagName, id, className)
 
   wrap.appendChild(node.cloneNode(false))
   node.parentNode?.replaceChild(wrap, node)
@@ -138,13 +140,18 @@ function createWrap({ select, id, className, tagName }: WrapNode) {
   return wrap
 }
 
+/**
+ * 在已经是高亮的基础上进行切割
+ */
 function spliteWrap({ select, id, className, tagName }: WrapNode) {
-  const { node, splitType } = select;
+  const { node } = select;
   const fragment = document.createDocumentFragment();
 
   const { parent, prev, next } = getUpperLevelDom(node)
 
-  const wrap = createEleByTagName(tagName, id, splitType, className)
+  const extraInfo = getNodeExtraId(parent)
+
+  const wrap = createEleByTagName(tagName, id, className, extraInfo)
 
   wrap.appendChild(node.cloneNode(false))
 
