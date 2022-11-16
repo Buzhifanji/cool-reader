@@ -16,7 +16,7 @@ export const getDefaultOptions = (): WebHighlightOptions => {
     context: window,
     root: document,
     tagName: DEFAULT_WRAP_TAG,
-    isMerge: false,
+    // isMerge: false,
     className: HEIGHLIGHT_WRPPER_DEFAULT
   }
 }
