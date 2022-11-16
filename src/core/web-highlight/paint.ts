@@ -2,24 +2,25 @@ import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions, ID_DIV
 import { getDomByTagNameIndex } from "./dom";
 import { ClassName, DomSource, EleOrText, rootType, SelectNode, SelectTextNode, WebHighlightOptions, WrapNode } from "./interface";
 import { getTextNodeByOffset } from "./offset";
-import { isHeightWrap, isNodeEmpty, isTextNode } from "./util";
+import { isBr, isHeightWrap, isNodeEmpty, isTextNode } from "./util";
 
 function initNodeStack(start: SelectTextNode, end: SelectTextNode) {
   const startParent = start.parent;
   const endParent = end.parent;
 
   const result = [startParent];
-  if (startParent === endParent) {
-    return result
-  } else {
+
+  let current = startParent;
+  while (current !== endParent) {
     // 跨段落
-    let current = startParent;
-    while (current !== endParent) {
-      current = startParent.nextSibling as HTMLElement;
-      result.unshift(current)
+    current = current.nextSibling as HTMLElement;
+
+    if (isBr(current)) {
+      continue
     }
-    return result
+    result.unshift(current)
   }
+  return result
 }
 
 function paintSameTextNode(text: Text, startOffset: number, endOffset: number): SelectNode[] {
@@ -201,6 +202,7 @@ function paintWrap(wrapNode: WrapNode) {
   } else if (isHeightWrap(parent) && (!isNodeEmpty(prev) || !isNodeEmpty(next))) {
     result = spliteWrap(wrapNode)
   } else {
+    // 覆盖上一个 wrap
     result = updateWrapAttr(wrapNode)
   }
   return result

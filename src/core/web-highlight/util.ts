@@ -9,3 +9,5 @@ export const isElementNode = (node: Node): boolean =>
 export const isHeightWrap = (node: HTMLElement): boolean => node.hasAttribute(DATA_WEB_HIGHLIGHT)
 
 export const isNodeEmpty = (node: Node): boolean => !node || !node.textContent;
+
+export const isBr = (node: HTMLElement): boolean => node.tagName.toLowerCase() === "br";
