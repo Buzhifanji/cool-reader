@@ -13,7 +13,12 @@ export function getTextPreOffset(orinalParent: Node, textNode: Node): number {
   let offset: number = 0;
 
   while ((currentNode = nodeStack.pop())) {
-    currentNode.childNodes.forEach(node => nodeStack.push(node));
+
+    const children = currentNode.childNodes
+    for (let i = children.length - 1; i >= 0; i--) {
+      nodeStack.push(children[i])
+    }
+
     if (isTextNode(currentNode)) {
       if (currentNode === textNode) {
         break
@@ -37,7 +42,10 @@ export function getTextNodeByOffset(parent: HTMLElement, offset: number): DomNod
 
   while (currentNode = nodeStack.pop()) {
 
-    currentNode.childNodes.forEach(node => nodeStack.push(node));
+    const children = currentNode.childNodes
+    for (let i = children.length - 1; i >= 0; i--) {
+      nodeStack.push(children[i])
+    }
 
     if (isTextNode(currentNode)) {
       startOffset = offset - curOffset;
