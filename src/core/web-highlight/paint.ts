@@ -174,7 +174,6 @@ function spliteWrap({ select, id, className, tagName }: WrapNode) {
 }
 
 function updateWrapAttr({ select, id, className }: WrapNode) {
-  debugger
   const parent = select.node.parentNode as HTMLElement;
   const wrap = parent;
 
@@ -183,8 +182,9 @@ function updateWrapAttr({ select, id, className }: WrapNode) {
   // update className
   addClassName(wrap, className)
 
-  // const oldId = wrap.getAttribute(DATA_WEB_HIGHLIGHT)
+  const extraId = getNodeExtraId(wrap)
   wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
+  wrap.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, extraId)
 
   return wrap
 }
