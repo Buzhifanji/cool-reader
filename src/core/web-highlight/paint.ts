@@ -218,7 +218,6 @@ export class Paint {
   }
 
   paintDom(domSource: DomSource) {
-    debugger
     const { start, end } = this._getDomNode(domSource);
     const selectNodes = getAllSelectDom(start, end, this.options.root!);
 
