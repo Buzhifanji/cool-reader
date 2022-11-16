@@ -3,6 +3,7 @@
  * 高亮 划词 笔记
  */
 
+import { getDefaultOptions } from "./constant";
 import { getDomMeta } from "./dom";
 import { contextTpe, DomSource, rootType, WebHighlightOptions } from "./interface";
 import { Paint } from "./paint";
@@ -14,40 +15,30 @@ export class WebHighlight extends Paint {
 
   private _store: Store = new Store();
 
-  private _root: rootType = document.documentElement;
-
-  constructor(options: WebHighlightOptions, private context?: contextTpe) {
-    super(options)
-
-    if (options.root) {
-      this._root = options.root;
-    }
-  }
-  /**
-   * 更新配置参数，对于动态DOM，需要及时更新变化的配置参数，比如 root 根节点
-   */
-  setOption(options: WebHighlightOptions) {
-    super.updateOption(options);
+  constructor(_config: WebHighlightOptions, private context?: contextTpe) {
+    super(_config)
   }
   /**
    * 监听  window.getSelection() 事件，获取 Range 对象
    */
   range() {
-    const { _root } = this
+    const root = this.getRoot()
 
     const range = getRange(this.context);
     if (!range) return null;
 
     const { startContainer, startOffset, endContainer, endOffset } = range;
 
-    const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, _root)
-    const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, _root)
+    const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)
+    const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, root)
 
     const createTime = new Date().valueOf();
 
     const id = createUUID();
 
-    const source = { startDomMeta, endDomMeta, createTime, id }
+    const { className, tagName } = this._getClasAndTagName()
+
+    const source = { startDomMeta, endDomMeta, createTime, id, className, tagName }
 
     return this._store.save(source)
   }
@@ -67,10 +58,13 @@ export class WebHighlight extends Paint {
   /**
    * 绘制 划线 高亮
    */
-  paint(id: string) {
+  paint(id: string, className?: string) {
     const domSource = this._store.get(id);
     if (!domSource) return;
 
+    if (className) { // 自定义 className
+      domSource.className = className;
+    }
     this.paintDom(domSource)
   }
   getSource(id: string) {
@@ -93,10 +87,22 @@ export class WebHighlight extends Paint {
     this.removePaintedDom(domSource)
   }
 
+
   /**
    * 绘制多条数据
    */
   private _praint(ids: string[]) {
     ids.forEach(id => this.paint(id))
+  }
+
+
+  private _getClasAndTagName() {
+    const defaultOptions = getDefaultOptions();
+
+    let { className, tagName } = this.options
+    className = (className || defaultOptions.className) as string;
+    tagName = tagName || defaultOptions.tagName
+
+    return { className, tagName }
   }
 }

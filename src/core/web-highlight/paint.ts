@@ -1,6 +1,6 @@
-import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions, ID_DIVIDION } from "./constant";
+import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, ID_DIVIDION } from "./constant";
 import { getDomByTagNameIndex } from "./dom";
-import { ClassName, DomSource, EleOrText, rootType, SelectNode, SelectTextNode, WebHighlightOptions, WrapNode } from "./interface";
+import { DomSource, EleOrText, rootType, SelectNode, SelectTextNode, WebHighlightOptions, WrapNode } from "./interface";
 import { getTextNodeByOffset } from "./offset";
 import { isBr, isHeightWrap, isNodeEmpty, isTextNode } from "./util";
 
@@ -88,13 +88,6 @@ function getAllSelectDom(start: SelectTextNode, end: SelectTextNode, root: rootT
   return selectTextNodes
 }
 
-function addClassName(el: HTMLElement, className: ClassName) {
-  const classNames = Array.isArray(className) ? className : [className]
-  classNames.forEach(item => {
-    el.classList.add(item)
-  })
-  return el
-}
 
 function getUpperLevelDom(node: Node) {
   const parent = node.parentNode as HTMLElement;
@@ -103,7 +96,7 @@ function getUpperLevelDom(node: Node) {
   return { parent, prev, next }
 }
 
-function createEleByTagName(tagName: string, id: string, className: ClassName, extraInfo?: string | null) {
+function createEleByTagName(tagName: string, id: string, className: string, extraInfo?: string | null) {
   const wrap = document.createElement(tagName)
   wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
 
@@ -111,7 +104,7 @@ function createEleByTagName(tagName: string, id: string, className: ClassName, e
     wrap.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, extraInfo)
   }
 
-  addClassName(wrap, className)
+  wrap.classList.add(className)
 
   return wrap
 }
@@ -181,7 +174,7 @@ function updateWrapAttr({ select, id, className }: WrapNode) {
   // remove className
   wrap.className = ''
   // update className
-  addClassName(wrap, className)
+  wrap.classList.add(className)
 
   const extraId = getNodeExtraId(wrap)
   wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
@@ -210,39 +203,38 @@ function paintWrap(wrapNode: WrapNode) {
 
 export class Paint {
   constructor(public options: WebHighlightOptions) {
-    if (!this.options.root) {
-      this.options.root = document;
-    }
   }
-
-  updateOption(options: WebHighlightOptions) {
+  /**
+  * 更新配置参数，对于动态DOM，需要及时更新变化的配置参数，比如 root 根节点
+  */
+  setOption(options: WebHighlightOptions) {
     Object.assign(this.options, options)
   }
 
   paintDom(domSource: DomSource) {
     const { start, end } = this._getDomNode(domSource);
-    const selectNodes = getAllSelectDom(start, end, this.options.root!);
+    const root = this.getRoot();
+    const selectNodes = getAllSelectDom(start, end, root);
 
-    const { className, tagName } = this._getClasAndTagName();
+    const { id, className, tagName } = domSource
 
     selectNodes.map(select => {
-      const wrapNode: WrapNode = {
-        select,
-        id: domSource.id,
-        className: className as string,
-        tagName: tagName as string
-      }
+      const wrapNode: WrapNode = { select, id, className, tagName }
       paintWrap(wrapNode)
     })
   }
-
 
   removePaintedDom({ startDomMeta, endDomMeta, id, createTime, notes }: DomSource) {
 
   }
 
+  getRoot(): rootType {
+    const root = this.options.root
+    return root ? root : document.documentElement
+  }
+
   private _getDomNode({ startDomMeta, endDomMeta }: DomSource) {
-    const { root } = this.options;
+    const root = this.getRoot();
     const startOffset = startDomMeta.offset;
     const endOffset = endDomMeta.offset;
 
@@ -264,14 +256,5 @@ export class Paint {
     }
 
     return { start, end }
-  }
-
-  private _getClasAndTagName() {
-    const defaultOption = getDefaultOptions();
-    let { className, tagName } = this.options
-    className = className || defaultOption.className;
-    tagName = tagName || defaultOption.tagName;
-
-    return { className, tagName }
   }
 }

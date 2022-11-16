@@ -4,14 +4,13 @@ export type contextTpe = Document | Window;
 
 export type EleOrText = HTMLElement | Text;
 
-export type ClassName = string | string[];
 
 export interface WebHighlightOptions {
   context?: contextTpe// 上下文,默认是 window，但存在 iframe 的情况，此时需要重新设置 context
   root?: rootType; // 根节点，用于处理 动态dom 场景。
   tagName?: string; // 渲染标签类型，默认 i 标签
-  isMerge?: boolean; // 重复高亮是否合并，默认 false
-  className?: ClassName; // 多个用空格隔空，例如： 'yellow blue'
+  // isMerge?: boolean; // todo: 重复高亮是否合并，默认 false
+  className?: string; // 多个用空格隔空，例如： 'yellow blue'
 }
 
 export interface DomNode {
@@ -50,7 +49,9 @@ export interface DomMeta {
 export interface DomSource {
   startDomMeta: DomMeta; // 划线的起始段落
   endDomMeta: DomMeta; // 划线的结束段落
-  id: string;
+  className: string; // 节点 className
+  tagName: string; // 节点 包裹标签类型 默认 i
+  id: string; // 
   createTime: number; // 创建时间 (时间戳)
   notes?: Notes; // 笔记
 }
@@ -63,6 +64,6 @@ export interface SelectNode {
 export interface WrapNode {
   select: SelectNode;
   id: string;
-  className: ClassName;
+  className: string;
   tagName: string
 }
