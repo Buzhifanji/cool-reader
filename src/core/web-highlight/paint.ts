@@ -112,7 +112,7 @@ function createEleByTagName(tagName: string, id: string, className: string, extr
 function getNodeExtraId(node: HTMLElement) {
   const id = node.getAttribute(DATA_WEB_HIGHLIGHT)
   const extraId = node.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)
-  return extraId ? id + ID_DIVIDION + extraId : id;
+  return extraId ? extraId + ID_DIVIDION + id : id;
 }
 
 
