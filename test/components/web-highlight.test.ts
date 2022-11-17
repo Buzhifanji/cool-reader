@@ -12,7 +12,6 @@ beforeEach(async () => {
   const html = await readFileSync(resolve(__dirname, 'fixtures', 'web-highlight.html'), 'utf-8');
   cleanup = jsdomGlobal(html);
   document.body.innerHTML = html;
-  console.log(document.querySelectorAll)
   webHighlight = new WebHighlight({});
 })
 
@@ -110,12 +109,6 @@ describe('web-highlight', () => {
 
     const list = p.querySelectorAll(options.tagName)
     expect(list.length).toEqual(3)
-
-    // third 
-    // const content3 = createRange(prevWrap.childNodes[0], prevWrap.nextSibling, 5, 5);
-    // const id3 = webHighlight.range();
-    // expect(id3).not.toBeNull();
-
   })
 
   test('split left correctly when the new selection is inside an exist selection', () => {
@@ -224,6 +217,23 @@ describe('web-highlight', () => {
 
     expect(content3).toEqual(content2)
     expect(extraId3).toEqual(id1 + ID_DIVIDION + id2)
+  })
+  test('cut multiple lines', () => {
+    const ps = selectAll();
+    const start = ps[0].childNodes;
+    const end = ps[1].childNodes;
+    expect(start.length).toEqual(1)
+    expect(end.length).toEqual(3)
+
+    const content = createRange(start[0], end[2], 0, end[2].textContent.length)
+    const id = webHighlight.range()
+    webHighlight.paint(id);
+
+    const wrapper = selectAllById(id)
+
+    expect(wrapper.length).toEqual(4)
+    expect(ps[0].children[0]).toEqual(wrapper[0])
+    expect(ps[1].children[1].children[0]).toEqual(wrapper[2])
   })
 })
 
