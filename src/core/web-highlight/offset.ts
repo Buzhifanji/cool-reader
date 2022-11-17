@@ -33,7 +33,7 @@ export function getTextPreOffset(orinalParent: Node, textNode: Node): number {
 /**
  * 根据偏移量找到点击的文本节点
  */
-export function getTextNodeByOffset(parent: HTMLElement, offset: number): DomNode {
+export function getTextNodeByOffset(parent: HTMLElement, offset: number, isStart = true): DomNode {
   const nodeStack: Node[] = [parent]
 
   let currentNode: Node | undefined = undefined;
@@ -51,8 +51,10 @@ export function getTextNodeByOffset(parent: HTMLElement, offset: number): DomNod
       startOffset = offset - curOffset;
       curOffset += getTextLen(currentNode)
 
-      if (curOffset >= offset) {
-        break;
+      // fixed: 覆盖上一个 warp 节点的时候，会多出一个空的 wrap
+      const handler = isStart ? (curOffset > offset) : (curOffset >= offset)
+      if (handler) {
+        break
       }
     }
   }

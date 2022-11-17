@@ -168,8 +168,7 @@ function spliteWrap({ select, id, className, tagName }: WrapNode) {
 }
 
 function updateWrapAttr({ select, id, className }: WrapNode) {
-  const parent = select.node.parentNode as HTMLElement;
-  const wrap = parent;
+  const wrap = select.node.parentNode as HTMLElement;
 
   // remove className
   wrap.className = ''
@@ -184,7 +183,6 @@ function updateWrapAttr({ select, id, className }: WrapNode) {
 }
 
 function paintWrap(wrapNode: WrapNode) {
-
   const { parent, prev, next } = getUpperLevelDom(wrapNode.select.node)
 
   let result: HTMLElement;
@@ -198,6 +196,8 @@ function paintWrap(wrapNode: WrapNode) {
     // 覆盖上一个 wrap
     result = updateWrapAttr(wrapNode)
   }
+
+
   return result
 }
 
@@ -222,6 +222,8 @@ export class Paint {
       const wrapNode: WrapNode = { select, id, className, tagName }
       paintWrap(wrapNode)
     })
+
+    selectNodes.length = 0;
   }
 
   removePaintedDom({ startDomMeta, endDomMeta, id, createTime, notes }: DomSource) {
@@ -242,7 +244,7 @@ export class Paint {
     const endDom = getDomByTagNameIndex(endDomMeta, root!);
 
     const startTextNode = getTextNodeByOffset(startDom, startOffset)
-    const endTextNode = getTextNodeByOffset(endDom, endOffset)
+    const endTextNode = getTextNodeByOffset(endDom, endOffset, false)
 
     const start: SelectTextNode = {
       parent: startDom,
