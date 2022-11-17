@@ -2,7 +2,7 @@ import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, ID_DIVIDION } from "./con
 import { getDomByTagNameIndex } from "./dom";
 import { DomSource, EleOrText, rootType, SelectNode, SelectTextNode, WebHighlightOptions, WrapNode } from "./interface";
 import { getTextNodeByOffset } from "./offset";
-import { isBr, isHeightWrap, isNodeEmpty, isTextNode } from "./util";
+import { isBr, isElementNode, isHeightWrap, isNodeEmpty, isTextNode } from "./util";
 
 function initNodeStack(start: SelectTextNode, end: SelectTextNode) {
   const startParent = start.parent;
@@ -15,10 +15,12 @@ function initNodeStack(start: SelectTextNode, end: SelectTextNode) {
     // 跨段落
     current = current.nextSibling as HTMLElement;
 
-    if (isBr(current)) {
-      continue
+    if (isElementNode(current)) {
+      if (isBr(current)) {
+        continue
+      }
+      result.unshift(current)
     }
-    result.unshift(current)
   }
   return result
 }
