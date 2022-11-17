@@ -101,7 +101,6 @@ export function openTooBar(event: Event) {
       const source = hander(DATA_SOURCE_ID);
       source && showToolBar(source, true);
     } else if (source) {
-      debugger;
       // 有笔记 无高亮
       showToolBar(source, false);
     }

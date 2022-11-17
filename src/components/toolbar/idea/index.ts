@@ -45,7 +45,6 @@ export const useInputIdea = () => {
     if (value) {
       const source = toolBar.source;
       if (source) {
-        debugger;
         source.className = NOTES_LINE_CLASS_NAME;
 
         let param = { ...source, notes: value };
