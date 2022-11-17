@@ -27,7 +27,7 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    environment: 'happy-dom',
+    environment: 'jsdom',
     include: ['./test/components/**/*.{test,spec}.{js,ts}']
   },
   // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
