@@ -1,25 +1,29 @@
 import { WebHighlight } from "@/core/web-highlight";
-import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions } from "@/core/web-highlight/constant";
+import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions, ID_DIVIDION } from "@/core/web-highlight/constant";
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, test, beforeEach } from "vitest";
+import jsdomGlobal from 'jsdom-global';
 
 let webHighlight: WebHighlight;
+let cleanup;
 
 beforeEach(async () => {
   const html = await readFileSync(resolve(__dirname, 'fixtures', 'web-highlight.html'), 'utf-8');
+  cleanup = jsdomGlobal(html);
   document.body.innerHTML = html;
+  console.log(document.querySelectorAll)
   webHighlight = new WebHighlight({});
 })
 
 const options = getDefaultOptions()
 
 const selectAll = (tagName = 'p') => document.querySelectorAll<HTMLElement>(tagName);
-const select = (tagName: string, root: Document | HTMLElement = document) => root.querySelector<HTMLElement>(tagName);
+const select = (tagName: string) => document.querySelector<HTMLElement>(tagName);
 
 
-const getWrapById = (id: string) => `${options.tagName}[${DATA_WEB_HIGHLIGHT}=${id}]`
-const getWrapByExtraId = (id: string) => `${options.tagName}[${DATA_WEB_HIGHLIGHT_EXTRA}=${id}]`
+const getWrapById = (id: string) => `${options.tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
+const getWrapByExtraId = (id: string) => `${options.tagName}[${DATA_WEB_HIGHLIGHT_EXTRA}='${id}']`
 
 const selectAllById = (id: string, isExtra = false) => {
   const wrapSelector = isExtra ? getWrapByExtraId(id) : getWrapById(id)
@@ -56,7 +60,7 @@ describe('web-highlight', () => {
     const node = p.childNodes[0]
     const content = createRange(node, node, 0, 20);
 
-    const id = webHighlight.range() as string;
+    const id = webHighlight.range();
     expect(id).not.toBeNull();
 
     webHighlight.paint(id)
@@ -73,7 +77,7 @@ describe('web-highlight', () => {
     // first
     const node = p.childNodes[0]
     const content1 = createRange(node, node, 5, 15);
-    const id1 = webHighlight.range() as string;
+    const id1 = webHighlight.range();
     expect(id1).not.toBeNull();
 
     webHighlight.paint(id1)
@@ -88,7 +92,7 @@ describe('web-highlight', () => {
 
     // second
     const content2 = createRange(wrapper.childNodes[0], wrapper.nextSibling, 5, 5);
-    const id2 = webHighlight.range() as string;
+    const id2 = webHighlight.range();
     expect(id2).not.toBeNull();
 
     webHighlight.paint(id2)
@@ -106,6 +110,12 @@ describe('web-highlight', () => {
 
     const list = p.querySelectorAll(options.tagName)
     expect(list.length).toEqual(3)
+
+    // third 
+    // const content3 = createRange(prevWrap.childNodes[0], prevWrap.nextSibling, 5, 5);
+    // const id3 = webHighlight.range();
+    // expect(id3).not.toBeNull();
+
   })
 
   test('split left correctly when the new selection is inside an exist selection', () => {
@@ -114,7 +124,7 @@ describe('web-highlight', () => {
     // first
     const node = p.childNodes[0]
     const content1 = createRange(node, node, 5, 15);
-    const id1 = webHighlight.range() as string;
+    const id1 = webHighlight.range();
     expect(id1).not.toBeNull();
 
     webHighlight.paint(id1)
@@ -128,7 +138,7 @@ describe('web-highlight', () => {
 
     // second
     const content2 = createRange(wrapper.previousSibling, wrapper.childNodes[0], 2, 5);
-    const id2 = webHighlight.range() as string;
+    const id2 = webHighlight.range();
     expect(id2).not.toBeNull();
 
     webHighlight.paint(id2)
@@ -141,19 +151,13 @@ describe('web-highlight', () => {
     expect(webHighlight.getSource(extraId)).not.toBeUndefined()
 
     const prevWrap = selectAllById(extraId, true)[0]
-    console.log(content1)
     expect(prevWrap.textContent).toEqual(content1.substring(0, 5))
 
     const list = p.querySelectorAll(options.tagName)
     expect(list.length).toEqual(3)
   })
+})
 
-  test.todo('split center correctly when the new selection is inside an exist selection', () => {
-    const p = selectAll()[0]
-
-
-  })
-  test.todo('split center correctly when the new selection is inside an exist selection', () => {
-
-  })
+afterEach(() => {
+  cleanup()
 })
