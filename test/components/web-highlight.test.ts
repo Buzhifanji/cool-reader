@@ -156,6 +156,75 @@ describe('web-highlight', () => {
     const list = p.querySelectorAll(options.tagName)
     expect(list.length).toEqual(3)
   })
+
+  test('split center correctly when the new selection is inside an exist selection', () => {
+    const p = selectAll()[0]
+
+    const node = p.childNodes[0]
+    const content1 = createRange(node, node, 5, 15);
+    const id1 = webHighlight.range();
+    expect(id1).not.toBeNull();
+
+    webHighlight.paint(id1)
+    const wrapper = selectAllById(id1)[0]
+
+    expect(webHighlight.getSource(id1)).not.toBeUndefined()
+    expect(wrapper.textContent).toEqual(content1)
+
+    expect(p.childNodes[1]).toEqual(wrapper)
+    expect(p.childNodes.length).toEqual(3)
+
+    const node2 = wrapper.childNodes[0]
+    const content2 = createRange(node2, node2, 2, 7);
+    const id2 = webHighlight.range();
+    expect(id2).not.toBeNull();
+
+    webHighlight.paint(id2)
+    const wrapper2 = selectAllById(id2)
+    expect(wrapper2.length).toEqual(1)
+
+    // extra
+    const extraId = wrapper2[0].getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)
+    expect(extraId).not.toBeNull()
+    expect(webHighlight.getSource(extraId)).not.toBeUndefined()
+
+    const prevWrap = selectAllById(extraId)
+    expect(prevWrap.length).toEqual(2)
+    expect(prevWrap[0].textContent + prevWrap[1].textContent).toEqual(content1.replace(content2, ''))
+  })
+  test('split overflow correctly when the new selection is inside an exist selection', () => {
+    const p = selectAll()[0]
+    const startOffset = 0;
+    const endOffset = 17;
+
+    const node = p.childNodes[0]
+    const content1 = createRange(node, node, startOffset, endOffset);
+    const id1 = webHighlight.range();
+    webHighlight.paint(id1)
+    const wrapper1 = selectAllById(id1)[0]
+
+    const node2 = wrapper1.childNodes[0]
+    const content2 = createRange(node2, node2, startOffset, endOffset)
+    const id2 = webHighlight.range();
+    webHighlight.paint(id2)
+
+    const wrapper2 = selectAllById(id2)[0]
+
+    const extraId = wrapper2.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)
+    expect(content1).toEqual(content2)
+    expect(extraId).toEqual(id1)
+
+    const node3 = wrapper2.childNodes[0]
+    const content3 = createRange(node3, node3, startOffset, endOffset)
+    const id3 = webHighlight.range()
+    webHighlight.paint(id3)
+
+    const wrapper3 = selectAllById(id3)[0]
+    const extraId3 = wrapper3.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)
+
+    expect(content3).toEqual(content2)
+    expect(extraId3).toEqual(id1 + ID_DIVIDION + id2)
+  })
 })
 
 afterEach(() => {
