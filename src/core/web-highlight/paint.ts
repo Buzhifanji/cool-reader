@@ -197,6 +197,9 @@ function paintWrap(wrapNode: WrapNode) {
     result = updateWrapAttr(wrapNode)
   }
 
+  // 规划化 DOM，因为 Text.splitText() 的时，如果指定的偏移量刚好等于原文本节点所包含字符串的长度，则返回一个内容为空的文本节点。
+  // 调用 normalize 会删除这些空的文本节点
+  result.normalize();
 
   return result
 }
