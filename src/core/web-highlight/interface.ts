@@ -67,3 +67,5 @@ export interface WrapNode {
   className: string;
   tagName: string
 }
+
+export type Handler = (data: DOMRect) => void;
