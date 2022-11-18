@@ -13,6 +13,7 @@ import { useRoute } from "vue-router";
 import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
 import { useCatalogSection } from "@views/reader/catalog";
+import { WebHighlight } from "@/core/web-highlight";
 
 const route = useRoute();
 // 笔记栏目相关逻辑
@@ -30,10 +31,21 @@ const contentStyle = computed(() => {
 //翻页功能
 const { readingBook } = useReaderBook(route);
 
+// 划词 高亮
+const webHighlight = new WebHighlight({});
+
+webHighlight.on('click', (data) => {
+  console.table(data)
+})
+
 const onContainer = () => {
-  closeTooBar();
-  detachRange();
-  removeMessage();
+  const id = webHighlight.range();
+  webHighlight.paint(id)
+  console.log(id)
+
+  // closeTooBar();
+  // detachRange();
+  // removeMessage();
 };
 
 onMounted(() => {
@@ -48,23 +60,13 @@ onMounted(() => {
     </n-layout-header>
     <n-layout-content id="drawer-target">
       <div id="viewerContainer" :style="contentStyle" @click="onContainer">
-        <div id="viewer" class="pdfViewer" @click="openTooBar"></div>
+        <!-- <div id="viewer" class="pdfViewer" @click="openTooBar"></div> -->
+        <div id="viewer" class="pdfViewer"></div>
         <ToolBar />
       </div>
-      <n-drawer
-        v-model:show="showCatalog"
-        :width="catalogWidth"
-        placement="left"
-        :show-mask="false"
-        :mask-closable="false"
-        :trap-focus="false"
-        :block-scroll="false"
-        to="#drawer-target"
-      >
-        <n-drawer-content
-          :closable="false"
-          body-content-style="padding: 5px;overflow: hidden"
-        >
+      <n-drawer v-model:show="showCatalog" :width="catalogWidth" placement="left" :show-mask="false"
+        :mask-closable="false" :trap-focus="false" :block-scroll="false" to="#drawer-target">
+        <n-drawer-content :closable="false" body-content-style="padding: 5px;overflow: hidden">
           <n-grid x-gap="12" :cols="2">
             <n-gi>
               <n-card hoverable size="small">
@@ -88,23 +90,11 @@ onMounted(() => {
         </n-drawer-content>
       </n-drawer>
       <!-- note -->
-      <n-drawer
-        v-model:show="showNotes"
-        :width="notesWidth"
-        placement="right"
-        :show-mask="false"
-        :mask-closable="false"
-        :trap-focus="false"
-        :block-scroll="false"
-        to="#drawer-target"
-      >
+      <n-drawer v-model:show="showNotes" :width="notesWidth" placement="right" :show-mask="false" :mask-closable="false"
+        :trap-focus="false" :block-scroll="false" to="#drawer-target">
         <n-drawer-content body-content-style="padding: 0px">
           <n-tabs type="segment" v-model:value="notesActiveTab">
-            <n-tab-pane
-              v-for="item in tabPanes"
-              :name="item.name"
-              :tab="item.tab"
-            >
+            <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
               <!-- 高亮 -->
               <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
               <!-- 笔记 -->
@@ -145,6 +135,7 @@ onMounted(() => {
   height: 100%;
   overflow-y: auto;
 }
+
 .pdfViewer .page {
   width: 100% !important;
 }
