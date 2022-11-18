@@ -1,13 +1,13 @@
-import { pageNumber } from "@/core/notes/notes";
-import { deleteDomSource, domSourceFromStore } from "@/core/toolbar";
-import { DomSource } from "@/interfaces";
-import { getHighlights, removeHighlight } from "@/server/highlight";
+import { pageNumber } from "src/core/notes/notes";
+import { deleteDomSource, domSourceFromStore } from "src/core/toolbar";
+import { DomSource } from "src/interfaces";
+import { getHighlights, removeHighlight } from "src/server/highlight";
 import {
   getDomSource,
   getReadingBook,
   removeDomSource,
   saveDomSource,
-} from "@/store";
+} from "src/store";
 import { updateNodes } from "../notes/notes";
 import { resetToolBar } from "../toolbar/toolbar";
 

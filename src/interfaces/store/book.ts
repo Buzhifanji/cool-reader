@@ -1,4 +1,4 @@
-import { Bookextname } from "@/enums";
+import { Bookextname } from "src/enums";
 import { Rendition } from "epubjs";
 import { PDFViewer } from "pdfjs-dist/web/pdf_viewer";
 

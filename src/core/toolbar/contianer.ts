@@ -1,8 +1,8 @@
-import { VIEWER } from "@/constants";
-import { Bookextname } from "@/enums";
-import { getReadingBook } from "@/store";
-import { getEleById, getPDFPageSelector, selector } from "@/utils";
-import { getPdfCurrentPageNumber } from "@core/file";
+import { VIEWER } from "src/constants";
+import { Bookextname } from "src/enums";
+import { getReadingBook } from "src/store";
+import { getEleById, getPDFPageSelector, selector } from "src/utils";
+import { getPdfCurrentPageNumber } from "src/core/file";
 
 function handePdfContainer() {
   const pageNumber = getPdfCurrentPageNumber();

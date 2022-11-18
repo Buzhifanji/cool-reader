@@ -1,8 +1,8 @@
-import { Bookextname } from "@/enums";
-import { BookData, ExtnameFn } from "@/interfaces";
-import { notification } from "@/naive";
-import { addBook, hasBook } from "@/store";
-import { updateBook } from "@/views/books/book";
+import { Bookextname } from "src/enums";
+import { BookData, ExtnameFn } from "src/interfaces";
+import { notification } from "src/naive";
+import { addBook, hasBook } from "src/store";
+import { updateBook } from "src/views/books/book";
 import { getEpubCover } from "./epub";
 import { setBookId } from "./md5";
 import { getPDFCover } from "./pdf";

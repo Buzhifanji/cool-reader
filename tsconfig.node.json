@@ -11,18 +11,7 @@
       "@types/mocha"
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@enums/*": ["./src/enums/*"],
-      "@components/*": ["./src/components/*"],
-      "@views/*": ["./src/views/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@server/*": ["./src/server/*"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@constants/*": ["./src/constants/*"],
-      "@store/*": ["./src/store/*"],
-      "@core/*": ["./src/core/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@i18n/*": ["./src/i18n/*"]
+      "src/*": ["./src/*"],
     }
   },
   "include": ["vite.config.ts","wdio.conf.ts","./test/**/*.ts","src/**/*.ts",],

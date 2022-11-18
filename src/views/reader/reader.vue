@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { removeMessage } from "@/components/toolbar/idea";
-import { removePdfEvent } from "@/core/file";
-import { detachRange } from "@/core/toolbar/selection";
-import Catalog from "@components/catalog/catalog.vue";
-import Highlight from "@components/highlight/highlight.vue";
-import Notes from "@components/notes/notes.vue";
-import ToolBar from "@components/toolbar/toolbar.vue";
-import { closeTooBar, openTooBar } from "@core/notes/toobar";
-import { TabPaneEnum } from "@enums/index";
+import { removeMessage } from "src/components/toolbar/idea";
+import { removePdfEvent } from "src/core/file";
+import { detachRange } from "src/core/toolbar/selection";
+import Catalog from "src/components/catalog/catalog.vue";
+import Highlight from "src/components/highlight/highlight.vue";
+import Notes from "src/components/notes/notes.vue";
+import ToolBar from "src/components/toolbar/toolbar.vue";
+import { closeTooBar, openTooBar } from "src/core/notes/toobar";
+import { TabPaneEnum } from "src/enums/index";
 import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
-import { useCatalogSection } from "@views/reader/catalog";
-import { WebHighlight } from "@/core/web-highlight";
+import { useCatalogSection } from "src/views/reader/catalog";
+import { WebHighlight } from "src/core/web-highlight";
 
 const route = useRoute();
 // 笔记栏目相关逻辑
@@ -96,7 +96,7 @@ onMounted(() => {
           <n-tabs type="segment" v-model:value="notesActiveTab">
             <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
               <!-- 高亮 -->
-              <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
+              <Highlight v-if="isNotesTab(T abPaneEnum.highlight)" />
               <!-- 笔记 -->
               <Notes v-if="isNotesTab(TabPaneEnum.notes)" />
             </n-tab-pane>

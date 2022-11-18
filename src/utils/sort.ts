@@ -1,4 +1,4 @@
-import { DomSource } from "@/interfaces";
+import { DomSource } from "src/interfaces";
 
 export function sortNotes(arr: DomSource[]) {
   return [...arr].sort((a, b) => {

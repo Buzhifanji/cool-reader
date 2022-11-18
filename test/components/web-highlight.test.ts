@@ -1,5 +1,5 @@
-import { WebHighlight } from "@/core/web-highlight";
-import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions, ID_DIVIDION } from "@/core/web-highlight/constant";
+import { WebHighlight } from "src/core/web-highlight";
+import { DATA_WEB_HIGHLIGHT, DATA_WEB_HIGHLIGHT_EXTRA, getDefaultOptions, ID_DIVIDION } from "src/core/web-highlight/constant";
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { describe, test, beforeEach } from "vitest";

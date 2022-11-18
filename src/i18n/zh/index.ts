@@ -1,4 +1,4 @@
-import { LangField } from "@/interfaces";
+import { LangField } from "src/interfaces";
 
 export const zhCN: LangField = {
   menuBook: "全部图书",

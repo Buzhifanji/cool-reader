@@ -6,8 +6,8 @@ import {
   NOTES_ID,
   NOTES_LINE_CLASS_NAME,
   WARP_TAG_NAME,
-} from "@/constants";
-import { DomSource, PaintSource } from "@/interfaces";
+} from "src/constants";
+import { DomSource, PaintSource } from "src/interfaces";
 import {
   createEle,
   hasHighlight,
@@ -15,7 +15,7 @@ import {
   isElementNode,
   isNotes,
   mergeIntervals,
-} from "@/utils";
+} from "src/utils";
 import { getDomContent, getOldElement, HanderEleAttr, hasPaint } from "./dom";
 import { getTextOffset } from "./offset";
 
@@ -135,7 +135,7 @@ class PaintDom {
     private id: string,
     private content: string,
     private className: string
-  ) {}
+  ) { }
   action() {
     const oldIds = this.getDeleteIds();
     this.paint();

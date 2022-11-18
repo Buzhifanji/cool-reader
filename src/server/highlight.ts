@@ -1,5 +1,5 @@
-import { DomSource } from "@/interfaces";
-import { changeNotes, deleteNotes, _getNotes } from "@/utils";
+import { DomSource } from "src/interfaces";
+import { changeNotes, deleteNotes, _getNotes } from "src/utils";
 
 export function saveHighlight(param: DomSource) {
   return changeNotes(param, "add_highlight", "添加成功");

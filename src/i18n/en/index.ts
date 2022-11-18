@@ -1,4 +1,4 @@
-import { LangField } from "@/interfaces";
+import { LangField } from "src/interfaces";
 
 export const enUS: LangField = {
   menuBook: "books",

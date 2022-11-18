@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
@@ -15,18 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"],
-      "@enums/*": ["./src/enums/*"],
-      "@components/*": ["./src/components/*"],
-      "@views/*": ["./src/views/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@server/*": ["./src/server/*"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@constants/*": ["./src/constants/*"],
-      "@store/*": ["./src/store/*"],
-      "@core/*": ["./src/core/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@i18n/*": ["./src/i18n/*"]
+      "src/*": ["./src/*"]
     },
   },
 

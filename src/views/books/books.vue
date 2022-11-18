@@ -1,12 +1,12 @@
 
 
 <script setup lang="ts">
-import { useLoadFile } from "@/store";
-import DefaultBookCover from '@assets/book_cover.png';
-import { downloadFile } from "@core/file/file";
-import { openReaderWindow } from "@core/system/window";
+import { useLoadFile } from "src/store";
+import DefaultBookCover from 'src/assets/book_cover.png';
+import { downloadFile } from "src/core/file/file";
+import { openReaderWindow } from "src/core/system/window";
 import { useBooks, useContextMenu } from "./book";
-import { langField } from "@i18n/index";
+import { langField } from "src/i18n/index";
 
 const { percentage } = useLoadFile();
 
@@ -45,7 +45,7 @@ const {
 
   <n-result v-else status="418" :title="langField.noBookTitle" :description="langField.noBookDesc">
     <template #footer>
-      <n-button @click="downloadFile">{{langField.noBookUpload}}</n-button>
+      <n-button @click="downloadFile">{{ langField.noBookUpload }}</n-button>
     </template>
   </n-result>
 </template>

@@ -1,10 +1,10 @@
-import { NOTES_LINE_CLASS_NAME } from "@/constants";
-import { deleteDomSource, domSourceFromRange } from "@/core/toolbar";
-import { reductRange } from "@/core/toolbar/selection";
-import { DomSource } from "@/interfaces";
-import { message } from "@/naive";
-import { removeNotes, saveNotes, updateNotes } from "@/server/notes";
-import { removeDomSource } from "@/store";
+import { NOTES_LINE_CLASS_NAME } from "src/constants";
+import { deleteDomSource, domSourceFromRange } from "src/core/toolbar";
+import { reductRange } from "src/core/toolbar/selection";
+import { DomSource } from "src/interfaces";
+import { message } from "src/naive";
+import { removeNotes, saveNotes, updateNotes } from "src/server/notes";
+import { removeDomSource } from "src/store";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { notes, updateNodes } from "../../notes/notes";
 import { resetToolBar, toolBar } from "../toolbar";

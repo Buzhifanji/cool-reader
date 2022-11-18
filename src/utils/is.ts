@@ -1,4 +1,4 @@
-import { DATA_SOURCE_ID, NOTES_ID, NOTES_LINE_CLASS_NAME } from "@/constants";
+import { DATA_SOURCE_ID, NOTES_ID, NOTES_LINE_CLASS_NAME } from "src/constants";
 
 export const isArray = (value: any) => Array.isArray(value);
 export const arrayHasData = (value: any[]) => arrayHasData.length > 0;

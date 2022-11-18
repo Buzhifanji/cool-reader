@@ -1,6 +1,6 @@
-import { DomSource, highlightResponse } from "@/interfaces";
-import { message } from "@/naive";
-import { generateServiceParams } from "@/utils";
+import { DomSource, highlightResponse } from "src/interfaces";
+import { message } from "src/naive";
+import { generateServiceParams } from "src/utils";
 import { invoke } from "@tauri-apps/api";
 import { sortNotes } from "./sort";
 

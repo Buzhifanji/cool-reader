@@ -3,11 +3,11 @@ import {
   DEFAULT_DOM_CLASS_NAME,
   NOTES_ID,
   WARP_TAG_NAME,
-} from "@/constants";
-import { DomSource, PaintSource } from "@/interfaces";
-import { NotesModel } from "@/model";
-import { getReadingBook, removeDomSource, saveDomSource } from "@/store";
-import { isEndsWith, isNotes, selectorAll, stringTohash } from "@/utils";
+} from "src/constants";
+import { DomSource, PaintSource } from "src/interfaces";
+import { NotesModel } from "src/model";
+import { getReadingBook, removeDomSource, saveDomSource } from "src/store";
+import { isEndsWith, isNotes, selectorAll, stringTohash } from "src/utils";
 import { getDomContianer, getPageNumber } from ".";
 import { removePaint } from "./delete";
 import { getDomContent, getMeteDom, getOrinalParent, setMeteDom } from "./dom";

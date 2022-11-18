@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { naiveUiLanguage } from "@i18n/index";
+import { naiveUiLanguage } from "src/i18n/index";
 
 import { lightTheme } from "naive-ui";
 </script>

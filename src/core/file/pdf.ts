@@ -1,5 +1,5 @@
-import { VIEWERCONTAINER } from "@/constants";
-import { updateReadingBook } from "@/store";
+import { VIEWERCONTAINER } from "src/constants";
+import { updateReadingBook } from "src/store";
 import {
   arrayHasData,
   createEle,
@@ -8,7 +8,7 @@ import {
   isArray,
   isObj,
   isOwn,
-} from "@/utils";
+} from "src/utils";
 import { getDocument, PageViewport, PDFPageProxy } from "pdfjs-dist";
 import {
   EventBus,

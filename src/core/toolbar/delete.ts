@@ -1,4 +1,4 @@
-import { PaintSource } from "@/interfaces";
+import { PaintSource } from "src/interfaces";
 import { getDomContent } from "./dom";
 
 function removeWrap(parent: HTMLElement) {

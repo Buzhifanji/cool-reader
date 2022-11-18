@@ -1,13 +1,13 @@
-import { editIdea } from "@/components/toolbar/idea";
+import { editIdea } from "src/components/toolbar/idea";
 import {
   resetToolBar,
   toolBar,
   toolBarStyle,
-} from "@/components/toolbar/toolbar";
-import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
-import { DomSource } from "@/interfaces";
-import { getDomSource } from "@/store";
-import { getTextWidth, hasHighlight, hasNotes, isObjEqual } from "@/utils";
+} from "src/components/toolbar/toolbar";
+import { DATA_SOURCE_ID, NOTES_ID } from "src/constants";
+import { DomSource } from "src/interfaces";
+import { getDomSource } from "src/store";
+import { getTextWidth, hasHighlight, hasNotes, isObjEqual } from "src/utils";
 
 import {
   getDomContianer,

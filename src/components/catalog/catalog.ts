@@ -1,8 +1,8 @@
-import { Bookextname } from "@/enums";
-import { ExtnameFn } from "@/interfaces";
-import { getReadingBook } from "@/store";
-import { useEpubChangePage } from "@core/file/epub";
-import { usePdfChangePage } from "@core/file/pdf";
+import { Bookextname } from "src/enums";
+import { ExtnameFn } from "src/interfaces";
+import { getReadingBook } from "src/store";
+import { useEpubChangePage } from "src/core/file/epub";
+import { usePdfChangePage } from "src/core/file/pdf";
 
 export const useCatalog = () => {
   const readingBook = getReadingBook();
@@ -12,7 +12,7 @@ export const useCatalog = () => {
       public key: string,
       public label: string,
       public children: string
-    ) {}
+    ) { }
   }
 
   const menuKes = computed(() => {

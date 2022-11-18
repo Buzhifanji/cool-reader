@@ -2,11 +2,11 @@ import {
   DEFAULT_DOM_CLASS_NAME,
   HIGHLIGHT_STRAIGHT_CLASS_NAME,
   HIGHLIGHT_TIIDE_CLASS_NAME,
-} from "@/constants";
-import { ToolBar } from "@/interfaces";
-import { message } from "@/naive";
-import { saveHighlight, updateHighlight } from "@/server/highlight";
-import { domSourceFromRange, updateDomSource } from "@core/toolbar";
+} from "src/constants";
+import { ToolBar } from "src/interfaces";
+import { message } from "src/naive";
+import { saveHighlight, updateHighlight } from "src/server/highlight";
+import { domSourceFromRange, updateDomSource } from "src/core/toolbar";
 import {
   Copy,
   Delete,

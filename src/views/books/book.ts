@@ -1,7 +1,7 @@
-import { BookData } from "@/interfaces";
-import { notification } from "@/naive";
-import { getAllBooks, removeBook } from "@/store";
-import { isIndex, renderIcon } from "@/utils";
+import { BookData } from "src/interfaces";
+import { notification } from "src/naive";
+import { getAllBooks, removeBook } from "src/store";
+import { isIndex, renderIcon } from "src/utils";
 import { Delete, Edit, Export } from "@vicons/carbon";
 
 const books = ref<BookData[]>([]);

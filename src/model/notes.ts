@@ -1,4 +1,4 @@
-import { DomMeta, DomSource } from "@/interfaces";
+import { DomMeta, DomSource } from "src/interfaces";
 
 export class NotesModel implements DomSource {
   constructor(
@@ -10,5 +10,5 @@ export class NotesModel implements DomSource {
     public startMeta: DomMeta,
     public endMeta: DomMeta,
     public notes?: string // 笔记内容
-  ) {}
+  ) { }
 }

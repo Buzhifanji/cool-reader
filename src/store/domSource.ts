@@ -1,4 +1,4 @@
-import { DomSource } from "@/interfaces";
+import { DomSource } from "src/interfaces";
 
 const data: Map<string, DomSource> = new Map();
 

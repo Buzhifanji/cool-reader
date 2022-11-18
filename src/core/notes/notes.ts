@@ -1,12 +1,12 @@
-import { updateHighlights } from "@/components/highlight/highlight";
-import { updateNodes } from "@/components/notes/notes";
-import { resetToolBar } from "@/components/toolbar/toolbar";
-import { Bookextname, NotesType } from "@/enums";
-import { DomSource, ExtnameFn } from "@/interfaces";
-import { message } from "@/naive";
-import { removeHighlight } from "@/server/highlight";
-import { removeNotes } from "@/server/notes";
-import { getDomSource, getReadingBook, removeDomSource } from "@/store";
+import { updateHighlights } from "src/components/highlight/highlight";
+import { updateNodes } from "src/components/notes/notes";
+import { resetToolBar } from "src/components/toolbar/toolbar";
+import { Bookextname, NotesType } from "src/enums";
+import { DomSource, ExtnameFn } from "src/interfaces";
+import { message } from "src/naive";
+import { removeHighlight } from "src/server/highlight";
+import { removeNotes } from "src/server/notes";
+import { getDomSource, getReadingBook, removeDomSource } from "src/store";
 import { usePdfChangePage } from "../file";
 import { deleteDomSource } from "../toolbar";
 

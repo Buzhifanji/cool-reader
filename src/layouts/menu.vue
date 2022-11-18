@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { renderIcon } from '@/utils';
-import { RouterName } from '@enums/index';
-import { langField, language } from "@i18n/index";
+import { renderIcon } from 'src/utils';
+import { RouterName } from 'src/enums/index';
+import { langField, language } from "src/i18n/index";
 import { Book, Idea, TextHighlight } from "@vicons/carbon";
 import { h, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';

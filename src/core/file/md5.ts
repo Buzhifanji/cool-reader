@@ -1,5 +1,5 @@
-import { Bookextname } from "@/enums";
-import { BookData } from "@/interfaces";
+import { Bookextname } from "src/enums";
+import { BookData } from "src/interfaces";
 import { getDocument } from "pdfjs-dist";
 import SparkMD5 from "spark-md5";
 

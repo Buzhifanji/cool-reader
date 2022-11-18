@@ -1,4 +1,4 @@
-import { TabPaneEnum } from "@/enums";
+import { TabPaneEnum } from "src/enums";
 
 export const useNotesSection = () => {
   const notesActiveTab = ref<TabPaneEnum>(TabPaneEnum.notes);

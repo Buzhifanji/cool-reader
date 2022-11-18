@@ -1,8 +1,8 @@
-import { pageNumber } from "@/core/notes/notes";
-import { domSourceFromStore } from "@/core/toolbar";
-import { DomSource } from "@/interfaces";
-import { getNotes } from "@/server/notes";
-import { getReadingBook, saveDomSource } from "@/store";
+import { pageNumber } from "src/core/notes/notes";
+import { domSourceFromStore } from "src/core/toolbar";
+import { DomSource } from "src/interfaces";
+import { getNotes } from "src/server/notes";
+import { getReadingBook, saveDomSource } from "src/store";
 
 export const notes = ref<DomSource[]>([]);
 

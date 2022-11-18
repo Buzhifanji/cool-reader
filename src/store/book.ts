@@ -1,8 +1,8 @@
-import { BOOKLIST } from "@/constants";
-import { Bookextname } from "@/enums";
-import { BookContext, BookData, UpdateBook } from "@/interfaces";
-import { BookModel } from "@/model";
-import { isIndex } from "@/utils";
+import { BOOKLIST } from "src/constants";
+import { Bookextname } from "src/enums";
+import { BookContext, BookData, UpdateBook } from "src/interfaces";
+import { BookModel } from "src/model";
+import { isIndex } from "src/utils";
 import { forage } from "@tauri-apps/tauri-forage";
 
 // 当前打开书本的数据

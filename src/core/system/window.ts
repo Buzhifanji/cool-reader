@@ -1,4 +1,4 @@
-import { BookData } from "@/interfaces";
+import { BookData } from "src/interfaces";
 import { WebviewWindow } from "@tauri-apps/api/window";
 
 let index = 0;

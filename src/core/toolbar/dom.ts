@@ -1,12 +1,12 @@
-import { DATA_SOURCE_ID, NOTES_ID } from "@/constants";
-import { DomMeta, DomSource } from "@/interfaces";
+import { DATA_SOURCE_ID, NOTES_ID } from "src/constants";
+import { DomMeta, DomSource } from "src/interfaces";
 import {
   hasHighlight,
   hasNotes,
   isElementNode,
   isTextNode,
   selectorAll,
-} from "@/utils";
+} from "src/utils";
 import { getTextOffset } from "./offset";
 
 function queryChildDomIndex(
@@ -97,7 +97,7 @@ export function getMeteDom(
 }
 
 export class HanderEleAttr {
-  constructor(public el: HTMLElement) {}
+  constructor(public el: HTMLElement) { }
   has(className: string): boolean {
     return this.el.className.includes(className);
   }

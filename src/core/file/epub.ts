@@ -1,6 +1,6 @@
-import { VIEWER } from "@/constants";
-import { updateReadingBook } from "@/store";
-import { formateCatalog } from "@/utils";
+import { VIEWER } from "src/constants";
+import { updateReadingBook } from "src/store";
+import { formateCatalog } from "src/utils";
 import epubjs, { Rendition } from "epubjs";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文

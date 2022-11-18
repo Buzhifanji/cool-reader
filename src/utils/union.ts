@@ -1,4 +1,4 @@
-import { Intervals } from "@/interfaces";
+import { Intervals } from "src/interfaces";
 import SparkMD5 from "spark-md5";
 
 /**

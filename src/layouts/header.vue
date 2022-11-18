@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useLoadFile } from "@/store";
-import { downloadFile } from "@core/file";
-import { changeLanguage, Langs, language } from "@i18n/index";
+import { useLoadFile } from "src/store";
+import { downloadFile } from "src/core/file";
+import { changeLanguage, Langs, language } from "src/i18n/index";
 const { isLoadFile } = useLoadFile()
 
 function changeLang() {

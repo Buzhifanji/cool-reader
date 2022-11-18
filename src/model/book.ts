@@ -1,5 +1,5 @@
-import { Bookextname } from "@/enums";
-import { BookData } from "@/interfaces";
+import { Bookextname } from "src/enums";
+import { BookData } from "src/interfaces";
 
 export class BookModel implements BookData {
   constructor(
@@ -12,5 +12,5 @@ export class BookModel implements BookData {
     public id: string,
     public content: Uint8Array,
     public catalog: []
-  ) {}
+  ) { }
 }

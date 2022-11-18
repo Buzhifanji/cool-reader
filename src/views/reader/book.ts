@@ -1,10 +1,10 @@
-import { updateHighlights } from "@/components/highlight/highlight";
-import { updateNodes } from "@/components/notes/notes";
-import { Bookextname } from "@/enums";
-import { ExtnameFn } from "@/interfaces";
-import { getReadingBook, setReadingBook } from "@/store";
-import { renderEpub, useEpubChangePage } from "@core/file/epub";
-import { renderPdf, usePdfChangePage } from "@core/file/pdf";
+import { updateHighlights } from "src/components/highlight/highlight";
+import { updateNodes } from "src/components/notes/notes";
+import { Bookextname } from "src/enums";
+import { ExtnameFn } from "src/interfaces";
+import { getReadingBook, setReadingBook } from "src/store";
+import { renderEpub, useEpubChangePage } from "src/core/file/epub";
+import { renderPdf, usePdfChangePage } from "src/core/file/pdf";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
