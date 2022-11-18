@@ -3,25 +3,30 @@
  * 高亮 划词 笔记
  */
 
-import { getDefaultOptions } from "./constant";
+import { EventBus, EventType } from "./eventBus";
+import { DATA_WEB_HIGHLIGHT, getDefaultOptions } from "./constant";
 import { getDomMeta } from "./dom";
-import { contextTpe, DomSource, rootType, WebHighlightOptions } from "./interface";
+import { contextTpe, DomSource, Handler, WebHighlightOptions } from "./interface";
 import { Paint } from "./paint";
 import { getRange } from "./range";
 import { Store } from "./store";
+import { isHeightWrap } from "./util";
 import createUUID from "./uuid";
 
 export class WebHighlight extends Paint {
 
   private _store: Store = new Store();
 
+  private _bus: EventBus = new EventBus()
+
   constructor(_config: WebHighlightOptions, private context?: contextTpe) {
     super(_config)
+    this._initEvent();
   }
   /**
    * 监听  window.getSelection() 事件，获取 Range 对象
    */
-  range() {
+  range(): string {
     const root = this.getRoot()
 
     const range = getRange(this.context);
@@ -40,7 +45,7 @@ export class WebHighlight extends Paint {
 
     const source = { startDomMeta, endDomMeta, createTime, id, className, tagName }
 
-    return this._store.save(source)
+    return this._store.save(source) as string
   }
   /**
    * 已经有了DomSource数据，比如从数据库获取，这个时候还原绘制的DOm。
@@ -87,6 +92,46 @@ export class WebHighlight extends Paint {
     this.removePaintedDom(domSource)
   }
 
+  on(type: EventType, callback: Handler) {
+    return this._bus.on(type, callback);
+  }
+
+  private _initEvent() {
+    const root = this.getRoot()
+
+    // 处理上下文，如果有 iframe，则需要在初始化的时候传入，默认是 document
+    const handleContext = (): Document => {
+      let context = this.context;
+      if (context) {
+        if (context === window) {
+          context = window.document;
+        }
+      } else {
+        context = document;
+      }
+      return context as Document
+    }
+
+    root.addEventListener(EventType.click, (e) => {
+      const target = e.target as HTMLElement;
+
+      if (isHeightWrap(target)) {
+        const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
+        const context = handleContext();
+        const domSource = this._store.get(id)
+
+        if (domSource) {
+          const selector = `${domSource.tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
+          const firstElement = context.querySelectorAll<HTMLElement>(selector)[0]
+
+          const data = firstElement.getBoundingClientRect();
+          this._bus.emit(EventType.click, data)
+        } else {
+          console.warn('this is likely a buy: no find ' + id + ' in the store')
+        }
+      }
+    })
+  }
 
   /**
    * 绘制多条数据
