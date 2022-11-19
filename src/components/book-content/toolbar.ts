@@ -9,6 +9,7 @@ import {
 import { WebHighlight, EventType, DomSource } from "src/core/web-highlight";
 import { getEleById } from "src/utils";
 import { message } from "src/naive";
+import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
 
 interface ToolBar {
   id: string;
@@ -103,18 +104,17 @@ export const useToolBar = () => {
 
   // 高亮
   function addTextHighlight() {
-    webHighlight.paint(toolBar.id)
-    toolBar.show = false
+    saveNotes()
   }
 
   // 波浪线
   function addTilde() {
-    // action(HIGHLIGHT_TIIDE_CLASS_NAME);
+    saveNotes(HIGHLIGHT_TIIDE_CLASS_NAME);
   }
 
   // 直线
   function addStraightLine() {
-    // action(HIGHLIGHT_STRAIGHT_CLASS_NAME);
+    saveNotes(HIGHLIGHT_STRAIGHT_CLASS_NAME);
   }
   // 删除
   function remove() {
@@ -123,6 +123,20 @@ export const useToolBar = () => {
   // 写想法
   function ideaInput() {
 
+  }
+
+  function saveNotes(className?: string) {
+    const { source, edit, id } = toolBar
+    if (source) {
+      webHighlight.paint(id, className)
+      toolBar.show = false
+      if (edit) {
+        // 编辑
+      } else {
+        // 创建
+
+      }
+    }
   }
   return { bars, toolBar, barAction, toolBarStyle }
 }

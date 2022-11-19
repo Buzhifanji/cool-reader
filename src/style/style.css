@@ -114,33 +114,9 @@ button {
   margin: 5px auto 2px;
 }
 
-/*
-* 高亮
-*/
-.wrapper_source {
-  background-color: #24c8db;
-  cursor: pointer;
-}
-/*
-* 波浪线
-*/
-.c-tilde {
-  text-decoration: green wavy underline;
-  cursor: pointer;
-}
-
-.c-straight-line {
-  text-decoration: underline #FF3028;
-  cursor: pointer;
-}
-
-.c-notes-line {
-  text-decoration: underline #0c1fca;
-  cursor: pointer;
-}
 
 @media (max-width: 767px) {
-  .idea-container  {
+  .idea-container {
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
@@ -148,7 +124,7 @@ button {
 }
 
 @media (max-width: 1023px) {
-  .idea-container  {
+  .idea-container {
     width: 560px;
     padding-left: 36px;
     padding-right: 36px;
@@ -156,7 +132,7 @@ button {
 }
 
 @media (max-width: 1365px) {
-  .idea-container  {
+  .idea-container {
     width: 760px;
     padding-left: 72px;
     padding-right: 72px;
