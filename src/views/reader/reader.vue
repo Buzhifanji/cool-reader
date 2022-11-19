@@ -96,7 +96,7 @@ onMounted(() => {
           <n-tabs type="segment" v-model:value="notesActiveTab">
             <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
               <!-- 高亮 -->
-              <Highlight v-if="isNotesTab(T abPaneEnum.highlight)" />
+              <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
               <!-- 笔记 -->
               <Notes v-if="isNotesTab(TabPaneEnum.notes)" />
             </n-tab-pane>
