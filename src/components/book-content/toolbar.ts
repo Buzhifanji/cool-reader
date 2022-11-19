@@ -8,6 +8,7 @@ import {
 } from "@vicons/carbon";
 import { WebHighlight, EventType, DomSource } from "src/core/web-highlight";
 import { getEleById } from "src/utils";
+import { message } from "src/naive";
 
 interface ToolBar {
   id: string;
@@ -91,9 +92,10 @@ export const useToolBar = () => {
 
   function copyText() {
     if (navigator.clipboard && toolBar.source) {
-      // navigator.clipboard.writeText(toolBar.source.text).then(() => {
-      //   message.success("复制成功！");
-      // });
+      navigator.clipboard.writeText(toolBar.source.text).then(() => {
+        message.success("复制成功！");
+        toolBar.show = false;
+      });
     } else {
       // 兼容性
     }

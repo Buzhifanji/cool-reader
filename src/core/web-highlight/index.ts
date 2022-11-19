@@ -47,9 +47,12 @@ export class WebHighlight extends Paint {
 
     const { className, tagName } = this._getClasAndTagName()
 
-    const source = { startDomMeta, endDomMeta, createTime, id, className, tagName }
+    const text = range.toString();
+
+    const source = { startDomMeta, endDomMeta, createTime, id, className, tagName, text }
 
     const rect = range.getClientRects()[0] || range.getBoundingClientRect();
+
 
     this._bus.emit(EventType.range, rect)
     this._store.save(source)
