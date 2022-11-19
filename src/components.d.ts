@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BookContent: typeof import('./components/book-content/index.vue')['default']
     Catalog: typeof import('./components/catalog/catalog.vue')['default']
     Edit: typeof import('./components/toolbar/idea/edit.vue')['default']
     Highlight: typeof import('./components/highlight/highlight.vue')['default']

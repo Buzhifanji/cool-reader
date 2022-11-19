@@ -2,13 +2,7 @@
 import { removeMessage } from "src/components/toolbar/idea";
 import { removePdfEvent } from "src/core/file";
 import { detachRange } from "src/core/toolbar/selection";
-import Catalog from "src/components/catalog/catalog.vue";
-import Highlight from "src/components/highlight/highlight.vue";
-import Notes from "src/components/notes/notes.vue";
-import ToolBar from "src/components/toolbar/toolbar.vue";
-import { closeTooBar, openTooBar } from "src/core/notes/toobar";
 import { TabPaneEnum } from "src/enums/index";
-import { computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
@@ -31,6 +25,8 @@ const contentStyle = computed(() => {
 //翻页功能
 const { readingBook } = useReaderBook(route);
 
+const showToolbar = ref<boolean>(false);
+
 // 划词 高亮
 const webHighlight = new WebHighlight({});
 
@@ -42,7 +38,7 @@ const onContainer = () => {
   const id = webHighlight.range();
   webHighlight.paint(id)
   console.log(id)
-
+  showToolbar.value = true
   // closeTooBar();
   // detachRange();
   // removeMessage();
@@ -59,11 +55,12 @@ onMounted(() => {
       <n-divider />
     </n-layout-header>
     <n-layout-content id="drawer-target">
-      <div id="viewerContainer" :style="contentStyle" @click="onContainer">
-        <!-- <div id="viewer" class="pdfViewer" @click="openTooBar"></div> -->
+      <BookContent />
+      <!-- <div id="viewerContainer" :style="contentStyle" @click="onContainer">
+        <div id="viewer" class="pdfViewer" @click="openTooBar"></div>
         <div id="viewer" class="pdfViewer"></div>
-        <ToolBar />
-      </div>
+        <ToolBar v-model="showToolbar" />
+      </div> -->
       <n-drawer v-model:show="showCatalog" :width="catalogWidth" placement="left" :show-mask="false"
         :mask-closable="false" :trap-focus="false" :block-scroll="false" to="#drawer-target">
         <n-drawer-content :closable="false" body-content-style="padding: 5px;overflow: hidden">

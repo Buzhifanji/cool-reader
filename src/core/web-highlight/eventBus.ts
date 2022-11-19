@@ -2,6 +2,7 @@ import { Handler } from "./interface";
 
 export enum EventType {
   click = 'click',
+  range = 'range'
 }
 
 export class EventBus {

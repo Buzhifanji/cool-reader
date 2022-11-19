@@ -1,25 +1,30 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from "vue";
-import { removeMessage } from "./idea";
-import { useToolBar } from "./toolbar";
-const { bars, barAction, toolBarStyle, toolBar } = useToolBar();
+import { useToolBar, useHighlight } from './toolbar';
 
-
-onBeforeUnmount(removeMessage)
-
+const { bars, toolBar, barAction, toolBarStyle } = useToolBar()
+const { watchHighlight } = useHighlight()
 </script>
 
 <template>
-  <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef">
-    <n-space>
-      <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">
-        <n-icon :component="item.icon" size="16" />
-        <div quaternary>{{ item.label }}</div>
+  <div id="viewerContainer" @click="watchHighlight">
+    <div id="viewer" class="pdfViewer"></div>
+    <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
+      <n-space>
+        <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">
+          <n-icon :component="item.icon" size="16" />
+          <div quaternary>{{ item.label }}</div>
+        </n-space>
       </n-space>
-    </n-space>
+    </div>
   </div>
 </template>
+
 <style scoped>
+#viewerContainer {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .tool-bar-wrapper {
   box-sizing: border-box;
   position: absolute;

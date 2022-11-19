@@ -13,6 +13,8 @@ import { Store } from "./store";
 import { isHeightWrap } from "./util";
 import createUUID from "./uuid";
 
+export { EventType, type DomSource };
+
 export class WebHighlight extends Paint {
 
   private _store: Store = new Store();
@@ -26,13 +28,15 @@ export class WebHighlight extends Paint {
   /**
    * 监听  window.getSelection() 事件，获取 Range 对象
    */
-  range(): string {
+  range(): DomSource {
     const root = this.getRoot()
 
     const range = getRange(this.context);
     if (!range) return null;
 
     const { startContainer, startOffset, endContainer, endOffset } = range;
+    console.log(range.getClientRects()[0].top, range.getBoundingClientRect().top)
+
 
     const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)
     const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, root)
@@ -45,7 +49,12 @@ export class WebHighlight extends Paint {
 
     const source = { startDomMeta, endDomMeta, createTime, id, className, tagName }
 
-    return this._store.save(source) as string
+    const rect = range.getClientRects()[0] || range.getBoundingClientRect();
+
+    this._bus.emit(EventType.range, rect)
+    this._store.save(source)
+
+    return source
   }
   /**
    * 已经有了DomSource数据，比如从数据库获取，这个时候还原绘制的DOm。
@@ -99,35 +108,14 @@ export class WebHighlight extends Paint {
   private _initEvent() {
     const root = this.getRoot()
 
-    // 处理上下文，如果有 iframe，则需要在初始化的时候传入，默认是 document
-    const handleContext = (): Document => {
-      let context = this.context;
-      if (context) {
-        if (context === window) {
-          context = window.document;
-        }
-      } else {
-        context = document;
-      }
-      return context as Document
-    }
-
     root.addEventListener(EventType.click, (e) => {
       const target = e.target as HTMLElement;
 
       if (isHeightWrap(target)) {
         const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
-        const context = handleContext();
-        const domSource = this._store.get(id)
-
-        if (domSource) {
-          const selector = `${domSource.tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
-          const firstElement = context.querySelectorAll<HTMLElement>(selector)[0]
-
-          const data = firstElement.getBoundingClientRect();
+        const data = this._getBoundingClientRect(id);
+        if (data) {
           this._bus.emit(EventType.click, data)
-        } else {
-          console.warn('this is likely a buy: no find ' + id + ' in the store')
         }
       }
     })
@@ -149,5 +137,34 @@ export class WebHighlight extends Paint {
     tagName = tagName || defaultOptions.tagName
 
     return { className, tagName }
+  }
+
+  /**
+   * 处理上下文，如果有 iframe，则需要在初始化的时候传入，默认是 document
+   */
+  private _handleContext(): Document {
+    let context = this.context;
+    if (context) {
+      if (context === window) {
+        context = window.document;
+      }
+    } else {
+      context = document;
+    }
+    return context as Document
+  }
+
+  private _getBoundingClientRect(id: string) {
+    const domSource = this._store.get(id)
+
+    if (domSource) {
+      const context = this._handleContext();
+      const selector = `${domSource.tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
+      const firstElement = context.querySelectorAll<HTMLElement>(selector)[0]
+
+      return firstElement.getBoundingClientRect();
+    } else {
+      return null
+    }
   }
 }

@@ -54,31 +54,11 @@ export function resetToolBar() {
 
 export const useToolBar = () => {
   const list = [
-    {
-      label: "复制",
-      key: barEnum.Copy,
-      icon: Copy,
-    },
-    {
-      label: "高亮",
-      key: barEnum.TextHighlight,
-      icon: TextHighlight,
-    },
-    {
-      label: "波浪线",
-      key: barEnum.tilde,
-      icon: TextUnderline,
-    },
-    {
-      label: "直线",
-      key: barEnum.straightLine,
-      icon: TextUnderline,
-    },
-    {
-      label: "笔记",
-      key: barEnum.idea,
-      icon: Idea,
-    },
+    { label: "复制", key: barEnum.Copy, icon: Copy },
+    { label: "高亮", key: barEnum.TextHighlight, icon: TextHighlight },
+    { label: "波浪线", key: barEnum.tilde, icon: TextUnderline },
+    { label: "直线", key: barEnum.straightLine, icon: TextUnderline },
+    { label: "笔记", key: barEnum.idea, icon: Idea },
   ];
   const bars = computed(() => {
     if (toolBar.edit) {

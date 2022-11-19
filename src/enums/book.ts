@@ -10,3 +10,13 @@ export enum NotesType {
   notes,
   highlight,
 }
+
+// 阅读工具栏选项
+export enum barEnum {
+  Copy,
+  TextHighlight,
+  tilde,
+  straightLine,
+  edit,
+  idea,
+}
