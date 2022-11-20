@@ -15,6 +15,10 @@ function initNodeStack(start: SelectTextNode, end: SelectTextNode) {
     // 跨段落
     current = current.nextSibling as HTMLElement;
 
+    if (!current) {
+      break
+    }
+
     if (isElementNode(current)) {
       if (isBr(current)) {
         continue
@@ -217,6 +221,7 @@ export class Paint {
   }
 
   paintDom(domSource: DomSource) {
+    debugger
     const { start, end } = this._getDomNode(domSource);
     const root = this.getRoot();
     const selectNodes = getAllSelectDom(start, end, root);
