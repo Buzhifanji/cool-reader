@@ -12,7 +12,7 @@ import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
 import { saveNotes } from "src/server/notes";
 import { getPageNumber, getReadingBook, paintHighlightFromRange } from "src/store";
-import { getHighlights } from "../highlight/highlight";
+import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
 
@@ -38,6 +38,7 @@ export const useHighlight = () => {
     toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
     toolBarStyle.left = (left + scrollLeft) + 'px'
   }
+
   webHighlight.on(EventType.click, (value, source) => {
     toolBar.show = true;
     toolBar.source = source;
@@ -100,13 +101,13 @@ export const useToolBar = () => {
         ideaInput()
         break
     }
+    toolBar.show = false
   }
 
   function copyText() {
     if (navigator.clipboard && toolBar.source) {
       navigator.clipboard.writeText(toolBar.source.text).then(() => {
         message.success("复制成功！");
-        toolBar.show = false;
       });
     } else {
       // 兼容性
@@ -129,7 +130,13 @@ export const useToolBar = () => {
   }
   // 删除
   function remove() {
-    // useRemoveHighlight(toolBar.source!.id);
+    if (toolBar.source) {
+      if (toolBar.source.notes) {
+
+      } else {
+        removeHighlight(toolBar.source)
+      }
+    }
   }
   // 写想法
   function ideaInput() {
@@ -139,8 +146,8 @@ export const useToolBar = () => {
   function notesAction(className?: string) {
     const { source, edit, id } = toolBar
     if (source) {
-      toolBar.show = false
       if (edit) {
+        debugger
         // 编辑
       } else {
         // 创建
