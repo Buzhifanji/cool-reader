@@ -14,7 +14,7 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { updateHighlights, useRemoveHighlight } from "../highlight/highlight";
+// import { updateHighlights, useRemoveHighlight } from "../highlight/highlight";
 import { openIdea } from "./idea";
 
 function toolBarStyleModel() {
@@ -79,7 +79,7 @@ export const useToolBar = () => {
         if (oldClassName !== className) {
           updateHighlight(source).then(() => {
             updateDomSource(source, oldClassName);
-            updateHighlights();
+            // updateHighlights();
           });
         }
       } else {
@@ -87,7 +87,7 @@ export const useToolBar = () => {
         resetToolBar();
         const { result, deleteIds } = domSourceFromRange(source);
         if (result) {
-          saveHighlight(source).then(() => updateHighlights());
+          // saveHighlight(source).then(() => updateHighlights());
           deleteIds.forEach((id) => {
             useRemoveHighlight(id, false);
           });

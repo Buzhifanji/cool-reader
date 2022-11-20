@@ -1,13 +1,10 @@
 import { Bookextname } from "src/enums";
-import { ExtnameFn } from "src/interfaces";
 import { getReadingBook } from "src/store";
 import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
 import { DomSource } from "src/core/web-highlight";
 
 const readingBook = getReadingBook();
-const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
-const { epubJumpFromCatalog } = useEpubChangePage();
 
 export const useCatalog = () => {
   class Keys {
@@ -38,6 +35,7 @@ export const useBookJump = () => {
   const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
 
+  // 点击目录跳转
   function catalogJump(item: any) {
     switch (readingBook.extname) {
       case Bookextname.pdf:
@@ -51,6 +49,7 @@ export const useBookJump = () => {
     }
   }
 
+  // 根据 页面数 跳转
   function pageNumberJump({ pageNumber }: DomSource) {
     switch (readingBook.extname) {
       case Bookextname.pdf:

@@ -1,4 +1,4 @@
-import { updateHighlights } from "src/components/highlight/highlight";
+// import { updateHighlights } from "src/components/highlight/highlight";
 import { updateNodes } from "src/components/notes/notes";
 import { resetToolBar } from "src/components/toolbar/toolbar";
 import { Bookextname, NotesType } from "src/enums";
@@ -45,7 +45,7 @@ function useRemoveNotes(id: string, type: NotesType) {
   // 清除数据库
   const fn = type === NotesType.notes ? removeNotes : removeHighlight;
   fn(readingBook.id, id, true).then(() => {
-    updateHighlights();
+    // updateHighlights();
     updateNodes();
   });
   resetToolBar();
