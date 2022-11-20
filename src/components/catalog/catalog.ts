@@ -3,6 +3,7 @@ import { ExtnameFn } from "src/interfaces";
 import { getReadingBook } from "src/store";
 import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
+import { DomSource } from "src/core/web-highlight";
 
 const readingBook = getReadingBook();
 const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
@@ -50,10 +51,10 @@ export const useBookJump = () => {
     }
   }
 
-  function pageNumberJump(number: number) {
+  function pageNumberJump({ pageNumber }: DomSource) {
     switch (readingBook.extname) {
       case Bookextname.pdf:
-        pdfJumpToPage(number)
+        pdfJumpToPage(pageNumber)
         break
       case Bookextname.epub:
       default:
