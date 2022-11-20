@@ -83,9 +83,11 @@ export class WebHighlight extends Paint {
     }
     this.paintDom(domSource)
   }
+
   getSource(id: string) {
     return this._store.get(id);
   }
+
   /**
    * 移除 _store 里存储的数据，（此时并不会删除绘制的划线 高亮）
    */

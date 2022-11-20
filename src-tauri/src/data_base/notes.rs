@@ -131,8 +131,8 @@ impl NotestData {
     }
     pub fn update_notes(&mut self, data: Notes) -> Result<bool, String> {
         match self.conn.execute(
-            "UPDATE Notes as h set notes = ?1 where h.book_id = ?2 and h.id = ?3",
-            [data.notes, data.book_id, data.id],
+            "UPDATE Notes as h set notes = ?1 , class_name = ?2 where h.book_id = ?3 and h.id = ?4",
+            [data.notes, data.class_name, data.book_id, data.id],
         ) {
             Ok(_) => Ok(true.into()),
             Err(err) => {

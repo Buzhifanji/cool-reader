@@ -51,6 +51,11 @@ export function paintHighlightFromRange({ id, className, pageNumber }: DomSource
   webHighlight.paint(id, className)
 }
 
+export function updateHighlight(domSource: DomSource, isBook = true) {
+  updateOptionRoot(domSource.pageNumber, isBook)
+  webHighlight.updateClass(domSource)
+}
+
 export function paintHighlight(domSource: DomSource[] | DomSource) {
   if (webHighlight) {
     webHighlight.source(domSource)

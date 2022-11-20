@@ -235,7 +235,7 @@ export class Paint {
     selectNodes.length = 0;
   }
 
-  removePaintedDom({ startDomMeta, endDomMeta, id, createTime, notes, tagName }: DomSource) {
+  removePaintedDom({ id, tagName }: DomSource) {
     const root = this.getRoot();
     const selctor = `${tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
     const doms = root.querySelectorAll<HTMLElement>(selctor);
@@ -267,6 +267,14 @@ export class Paint {
         node.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, ids.join(ID_DIVIDION))
       }
     })
+  }
+
+  updateClass({ id, tagName, className }: DomSource) {
+    const root = this.getRoot();
+    const selctor = `${tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
+    const doms = root.querySelectorAll<HTMLElement>(selctor);
+
+    doms.forEach(dom => dom.className = className)
   }
 
   getRoot(): rootType {

@@ -10,8 +10,8 @@ import { EventType, DomSource } from "src/core/web-highlight";
 import { getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
-import { saveNotes } from "src/server/notes";
-import { getPageNumber, getReadingBook, paintHighlightFromRange } from "src/store";
+import { saveNotes, updateNotes } from "src/server/notes";
+import { getPageNumber, getReadingBook, paintHighlightFromRange, updateHighlight } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
@@ -145,11 +145,20 @@ export const useToolBar = () => {
     if (source) {
       if (edit) {
         // 编辑
-
+        if (className !== source.className) {
+          if (className) {
+            source.className = className
+          }
+          updateHighlight(source)
+          updateNotes(source)
+        }
       } else {
         // 创建
         const readingBook = getReadingBook();
 
+        if (className) {
+          source.className = className
+        }
         source.bookId = readingBook.id;
         source.pageNumber = getPageNumber().value
 
