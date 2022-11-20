@@ -11,7 +11,7 @@ import { getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
 import { saveNotes } from "src/server/notes";
-import { getPageNumber, getReadingBook } from "src/store";
+import { getPageNumber, getReadingBook, paintHighlightFromRange } from "src/store";
 import { getHighlights } from "../highlight/highlight";
 import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
@@ -133,21 +133,22 @@ export const useToolBar = () => {
   function notesAction(className?: string) {
     const { source, edit, id } = toolBar
     if (source) {
-      const webHighlight = getWebHighlight();
-      webHighlight.paint(id, className)
       toolBar.show = false
       if (edit) {
         // 编辑
       } else {
         // 创建
         const readingBook = getReadingBook();
+
         source.bookId = readingBook.id;
         source.pageNumber = getPageNumber().value
+
+        paintHighlightFromRange(source)
+
         saveNotes(source).then(() => {
           getHighlights()
           getIdeas()
         })
-        console.log(source)
       }
     }
   }

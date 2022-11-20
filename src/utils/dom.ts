@@ -1,4 +1,5 @@
 import { NIcon } from "naive-ui";
+import { Component } from "vue";
 
 export function createEle(tagName: string) {
   return document.createElement(tagName);
