@@ -11,10 +11,13 @@ export const highlights = ref<DomSource[]>([]);
 
 const pageNumber = getPageNumber();
 
-watchEffect(() => {
-  const list = highlights.value.filter(value => value.pageNumber === pageNumber.value);
-  paintHighlight(list)
-});
+watch(pageNumber, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    const list = highlights.value.filter(value => value.pageNumber === pageNumber.value);
+    paintHighlight(list)
+  }
+})
+
 
 export function getHighlights() {
   const readingBook = getReadingBook();
