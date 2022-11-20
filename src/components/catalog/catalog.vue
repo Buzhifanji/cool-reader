@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { MenuOption } from "naive-ui";
-import { generateGotoPage, useCatalog } from "./catalog";
+import { useCatalog, useBookJump } from "./catalog";
 
 const { readingBook, menuKes } = useCatalog();
-
+const { catalogJump } = useBookJump();
 function updateCatalog(key: string, item: MenuOption) {
-  generateGotoPage(item);
+  catalogJump(item);
 }
 </script>
 

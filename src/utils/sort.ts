@@ -1,4 +1,4 @@
-import { DomSource } from "src/interfaces";
+import { DomSource } from "src/core/web-highlight";
 
 export function sortNotes(arr: DomSource[]) {
   return [...arr].sort((a, b) => {
@@ -7,9 +7,9 @@ export function sortNotes(arr: DomSource[]) {
     } else if (a.pageNumber < b.pageNumber) {
       return -1;
     } else {
-      if (a.startMeta.parentIndex > b.startMeta.parentIndex) {
+      if (a.startDomMeta.index > b.startDomMeta.index) {
         return 1;
-      } else if (a.startMeta.parentIndex < b.startMeta.parentIndex) {
+      } else if (a.startDomMeta.index < b.startDomMeta.index) {
         return -1;
       } else {
         return 0;

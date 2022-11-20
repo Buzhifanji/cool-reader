@@ -52,9 +52,11 @@ export interface DomSource {
   className: string; // 节点 className
   tagName: string; // 节点 包裹标签类型 默认 i
   id: string; // 
+  bookId: string; //
   text: string; // 选中的文本内容
   createTime: number; // 创建时间 (时间戳)
-  notes?: Notes; // 笔记
+  pageNumber: number; //
+  notes: Notes | ''; // 笔记
 }
 
 

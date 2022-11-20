@@ -19,3 +19,8 @@ export interface highlightResponse extends bookInfo {
   class_name: string;
   notes?: string;
 }
+
+export interface IdeaRes {
+  book_id: string;
+  class_name: string
+}

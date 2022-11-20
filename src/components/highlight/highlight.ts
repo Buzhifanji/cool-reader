@@ -1,33 +1,41 @@
-import { pageNumber } from "src/core/notes/notes";
 import { deleteDomSource, domSourceFromStore } from "src/core/toolbar";
-import { DomSource } from "src/interfaces";
-import { getHighlights, removeHighlight } from "src/server/highlight";
+import { DomSource } from "src/core/web-highlight";
+import { removeHighlight } from "src/server/highlight";
+import { getHeighlightsById } from "src/server/notes";
 import {
   getDomSource,
   getReadingBook,
   removeDomSource,
   saveDomSource,
+  paintHighlight,
+  getPageNumber,
 } from "src/store";
 import { updateNodes } from "../notes/notes";
 import { resetToolBar } from "../toolbar/toolbar";
 
 export const highlights = ref<DomSource[]>([]);
 
-const readingBook = getReadingBook();
+const pageNumber = getPageNumber();
 
 watchEffect(() => {
-  const list = highlights.value.filter(
-    (value) => value.pageNumber === pageNumber.value
-  );
-  domSourceFromStore(list);
+  const list = highlights.value.filter(value => value.pageNumber === pageNumber.value);
+  paintHighlight(list)
 });
+
+export function getHighlights() {
+  const readingBook = getReadingBook();
+  getHeighlightsById(readingBook.id).then(value => {
+    highlights.value = value;
+  })
+}
 
 // 更新
 export function updateHighlights() {
-  return getHighlights(readingBook.id).then((value) => {
-    highlights.value = value;
-    saveDomSource(value);
-  });
+  // const readingBook = getReadingBook();
+  // return getHighlights(readingBook.id).then((value) => {
+  //   highlights.value = value;
+  //   saveDomSource(value);
+  // });
 }
 
 export function useRemoveHighlight(id: string, isTip = true) {

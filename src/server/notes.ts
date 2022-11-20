@@ -1,19 +1,66 @@
-import { DomSource } from "src/interfaces";
-import { changeNotes, deleteNotes, _getNotes } from "src/utils";
+import { invoke } from "@tauri-apps/api";
+import { DomSource } from "src/core/web-highlight";
+import { NotesRes } from "src/interfaces";
+import { message } from "src/naive";
+import { generateServiceParams } from "src/utils";
+import { sortNotes } from "src/utils/sort";
 
 export function saveNotes(param: DomSource) {
-  return changeNotes(param, "add_notes", "添加成功");
+  const data = generateServiceParams<DomSource, NotesRes>(param);
+  return invoke("add_notes", { data })
+    .then(() => {
+      message.success("添加成功");
+    })
+    .catch((err) => {
+      message.error(err);
+    });
 }
 
-export function updateNotes(param: DomSource, msg = "添加成功") {
-  return changeNotes(param, "update_notes", msg);
+export function updateNotes(param: DomSource) {
+  const data = generateServiceParams<DomSource, NotesRes>(param);
+  return invoke("update_notes", { data })
+    .then(() => {
+      message.success("修改成功");
+    })
+    .catch((err) => {
+      message.error(err);
+    });
 }
 
-export function getNotes(bookId: string): Promise<DomSource[]> {
-  return _getNotes(bookId, "get_notes");
+export function getIdeasById(bookId: string) {
+  return getAllNotes(bookId).then(ideas => {
+    return ideas.filter(idea => idea.notes)
+  })
 }
 
-export function removeNotes(book_id: string, id: string, isTip = true) {
-  const data = { book_id, id };
-  return deleteNotes(data, "delete_notes", isTip);
+export function getHeighlightsById(bookId: string) {
+  return getAllNotes(bookId).then(ideas => {
+    return ideas.filter(idea => !idea.notes)
+  })
+}
+
+export function getAllNotes(bookId: string): Promise<DomSource[]> {
+  return new Promise((resolve) => {
+    invoke("get_notes", { bookId })
+      .then((value) => {
+        const result = (value as NotesRes[]).map((item) =>
+          generateServiceParams<NotesRes, DomSource>(item, false)
+        );
+        resolve(sortNotes(result));
+      })
+      .catch((err) => {
+        message.error(err);
+        resolve([]);
+      });
+  });
+}
+
+export function removeNotes(book_id: string, id: string,) {
+  return invoke("delete_notes", { book_id, id })
+    .then(() => {
+      message.success("删除成功");
+    })
+    .catch((err) => {
+      message.error(err);
+    });
 }

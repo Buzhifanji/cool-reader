@@ -8,10 +8,14 @@ import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
 import { useCatalogSection } from "src/views/reader/catalog";
 import { WebHighlight } from "src/core/web-highlight";
+import { initWebHighlight } from "src/store";
+
+// 初始化 高亮笔记功能
+initWebHighlight({})
 
 const route = useRoute();
 // 笔记栏目相关逻辑
-const { showNotes, notesActiveTab, tabPanes, isNotesTab, notesWidth } =
+const { showNotes, notesActiveTab, components, tabPanes, notesWidth } =
   useNotesSection();
 // 目录
 const { showCatalog, catalogWidth } = useCatalogSection();
@@ -25,20 +29,7 @@ const contentStyle = computed(() => {
 //翻页功能
 const { readingBook } = useReaderBook(route);
 
-const showToolbar = ref<boolean>(false);
-
-// 划词 高亮
-const webHighlight = new WebHighlight({});
-
-webHighlight.on('click', (data) => {
-  console.table(data)
-})
-
 const onContainer = () => {
-  const id = webHighlight.range();
-  webHighlight.paint(id)
-  console.log(id)
-  showToolbar.value = true
   // closeTooBar();
   // detachRange();
   // removeMessage();
@@ -92,10 +83,7 @@ onMounted(() => {
         <n-drawer-content body-content-style="padding: 0px">
           <n-tabs type="segment" v-model:value="notesActiveTab">
             <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
-              <!-- 高亮 -->
-              <Highlight v-if="isNotesTab(TabPaneEnum.highlight)" />
-              <!-- 笔记 -->
-              <Notes v-if="isNotesTab(TabPaneEnum.notes)" />
+              <component :is="components[notesActiveTab]"></component>
             </n-tab-pane>
           </n-tabs>
         </n-drawer-content>

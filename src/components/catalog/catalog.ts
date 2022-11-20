@@ -4,9 +4,11 @@ import { getReadingBook } from "src/store";
 import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
 
-export const useCatalog = () => {
-  const readingBook = getReadingBook();
+const readingBook = getReadingBook();
+const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
+const { epubJumpFromCatalog } = useEpubChangePage();
 
+export const useCatalog = () => {
   class Keys {
     constructor(
       public key: string,
@@ -30,13 +32,33 @@ export const useCatalog = () => {
   return { readingBook, menuKes };
 };
 
-export function generateGotoPage(item: any) {
-  const { pdfJumpFromCatalog } = usePdfChangePage();
+
+export const useBookJump = () => {
+  const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
-  const readingBook = getReadingBook();
-  const pageStatus: ExtnameFn = {
-    [Bookextname.pdf]: () => pdfJumpFromCatalog(item.dest),
-    [Bookextname.epub]: () => epubJumpFromCatalog(item.href),
-  };
-  pageStatus[readingBook.extname]?.();
+
+  function catalogJump(item: any) {
+    switch (readingBook.extname) {
+      case Bookextname.pdf:
+        pdfJumpFromCatalog(item.dest)
+        break;
+      case Bookextname.epub:
+        epubJumpFromCatalog(item.href)
+        break;
+      default:
+        console.warn("TODO: Unknown readingBook.extname");
+    }
+  }
+
+  function pageNumberJump(number: number) {
+    switch (readingBook.extname) {
+      case Bookextname.pdf:
+        pdfJumpToPage(number)
+        break
+      case Bookextname.epub:
+      default:
+        console.warn("TODO: Unknown readingBook.extname");
+    }
+  }
+  return { catalogJump, pageNumberJump }
 }

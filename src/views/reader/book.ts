@@ -1,11 +1,11 @@
-import { updateHighlights } from "src/components/highlight/highlight";
-import { updateNodes } from "src/components/notes/notes";
+import { getHighlights } from "src/components/highlight/highlight";
 import { Bookextname } from "src/enums";
 import { ExtnameFn } from "src/interfaces";
 import { getReadingBook, setReadingBook } from "src/store";
 import { renderEpub, useEpubChangePage } from "src/core/file/epub";
 import { renderPdf, usePdfChangePage } from "src/core/file/pdf";
 import { RouteLocationNormalizedLoaded } from "vue-router";
+import { getIdeas } from "src/components/idea/idea";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   const readingBook = getReadingBook();
@@ -19,9 +19,9 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
       if (book.content) {
         await renderBookStatus[book.extname]?.(book.content);
         // 获取笔记内容
-        updateNodes();
+        getIdeas();
         // 获取高亮内容
-        updateHighlights();
+        getHighlights();
       }
     } catch (error) {
       console.error(error);

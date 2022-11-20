@@ -6,10 +6,15 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { WebHighlight, EventType, DomSource } from "src/core/web-highlight";
+import { EventType, DomSource } from "src/core/web-highlight";
 import { getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
+import { saveNotes } from "src/server/notes";
+import { getPageNumber, getReadingBook } from "src/store";
+import { getHighlights } from "../highlight/highlight";
+import { getIdeas } from "../idea/idea";
+import { getWebHighlight } from "src/store";
 
 interface ToolBar {
   id: string;
@@ -23,16 +28,16 @@ const toolBarModel = () => ({ id: "", show: false, source: null, edit: false });
 const toolBarStyle = shallowReactive({ top: '0px', left: '0px' });
 const toolBar = shallowReactive<ToolBar>(toolBarModel())
 
-const webHighlight = new WebHighlight({});
 
 // 划词 高亮
 export const useHighlight = () => {
+  const webHighlight = getWebHighlight();
+
   const setToolBarStle = ({ top, left, width, height }: DOMRect) => {
     const { scrollTop, scrollLeft } = getEleById('viewerContainer');
     toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
     toolBarStyle.left = (left + scrollLeft) + 'px'
   }
-
   webHighlight.on(EventType.click, setToolBarStle)
 
   webHighlight.on(EventType.range, setToolBarStle)
@@ -104,17 +109,17 @@ export const useToolBar = () => {
 
   // 高亮
   function addTextHighlight() {
-    saveNotes()
+    notesAction()
   }
 
   // 波浪线
   function addTilde() {
-    saveNotes(HIGHLIGHT_TIIDE_CLASS_NAME);
+    notesAction(HIGHLIGHT_TIIDE_CLASS_NAME);
   }
 
   // 直线
   function addStraightLine() {
-    saveNotes(HIGHLIGHT_STRAIGHT_CLASS_NAME);
+    notesAction(HIGHLIGHT_STRAIGHT_CLASS_NAME);
   }
   // 删除
   function remove() {
@@ -125,16 +130,24 @@ export const useToolBar = () => {
 
   }
 
-  function saveNotes(className?: string) {
+  function notesAction(className?: string) {
     const { source, edit, id } = toolBar
     if (source) {
+      const webHighlight = getWebHighlight();
       webHighlight.paint(id, className)
       toolBar.show = false
       if (edit) {
         // 编辑
       } else {
         // 创建
-
+        const readingBook = getReadingBook();
+        source.bookId = readingBook.id;
+        source.pageNumber = getPageNumber().value
+        saveNotes(source).then(() => {
+          getHighlights()
+          getIdeas()
+        })
+        console.log(source)
       }
     }
   }

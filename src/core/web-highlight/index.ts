@@ -13,7 +13,7 @@ import { Store } from "./store";
 import { isHeightWrap } from "./util";
 import createUUID from "./uuid";
 
-export { EventType, type DomSource };
+export { EventType, type DomSource, type WebHighlightOptions };
 
 export class WebHighlight extends Paint {
 
@@ -49,7 +49,7 @@ export class WebHighlight extends Paint {
 
     const text = range.toString();
 
-    const source = { startDomMeta, endDomMeta, createTime, id, className, tagName, text }
+    const source: DomSource = { startDomMeta, endDomMeta, createTime, id, className, tagName, text, pageNumber: 0, bookId: '', notes: '' }
 
     const rect = range.getClientRects()[0] || range.getBoundingClientRect();
 

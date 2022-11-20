@@ -1,18 +1,27 @@
 use rusqlite::{named_params, Connection, Result};
 use serde::{Deserialize, Serialize};
 
-use super::common::{DeleteIds, DomMeta};
+use super::common::DeleteIds;
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct DomMeta {
+    pub tag_name: String,
+    pub index: usize,
+    pub offset: usize,
+}
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Notes {
     pub book_id: String,
     pub id: String,
     pub text: String,
-    pub start_meta: DomMeta,
-    pub end_meta: DomMeta,
+    pub start_dom_meta: DomMeta,
+    pub end_dom_meta: DomMeta,
     pub class_name: String,
     pub page_number: usize,
     pub notes: String,
+    pub create_time: usize,
+    pub tag_name: String,
 }
 
 pub struct NotestData {
@@ -29,14 +38,16 @@ impl NotestData {
           id                    TEXT     PRIMARY KEY,
           text                  text     NOT NULL,
           class_name            text     NOT NULL,
-          start_parent_index    integer  NOT NULL,
-          start_parent_tag_name text     NOT NULL,
-          start_text_offset     integer  NOT NULL,
-          end_parent_index      integer  NOT NULL,
-          end_parent_tag_name   text     NOT NULL,
-          end_text_offset       integer  NOT NULL,
+          start_index           integer  NOT NULL,
+          start_tag_name        text     NOT NULL,
+          start_offset          integer  NOT NULL,
+          end_index             integer  NOT NULL,
+          end_tag_name          text     NOT NULL,
+          end_offset            integer  NOT NULL,
           page_number           integer  NOT NULL,
-          notes                 text     NOT NULL
+          notes                 text     NOT NULL,
+          create_time           integer  NOT NULL,
+          tag_name              text     NOT NULL
       )",
             [],
         )?;
@@ -56,18 +67,20 @@ impl NotestData {
                 id: row.get(1)?,
                 text: row.get(2)?,
                 class_name: row.get(3)?,
-                start_meta: DomMeta {
-                    parent_index: row.get(4)?,
-                    parent_tag_name: row.get(5)?,
-                    text_offset: row.get(6)?,
+                start_dom_meta: DomMeta {
+                    index: row.get(4)?,
+                    tag_name: row.get(5)?,
+                    offset: row.get(6)?,
                 },
-                end_meta: DomMeta {
-                    parent_index: row.get(7)?,
-                    parent_tag_name: row.get(8)?,
-                    text_offset: row.get(9)?,
+                end_dom_meta: DomMeta {
+                    index: row.get(7)?,
+                    tag_name: row.get(8)?,
+                    offset: row.get(9)?,
                 },
                 page_number: row.get(10)?,
                 notes: row.get(11)?,
+                create_time: row.get(12)?,
+                tag_name: row.get(13)?,
             };
             list.push(result)
         }
@@ -78,21 +91,23 @@ impl NotestData {
     pub fn insert_notes(&mut self, data: Notes) -> Result<bool, String> {
         match self.conn.execute(
           "INSERT INTO Notes 
-          (book_id, id,text,class_name,start_parent_index,start_parent_tag_name, start_text_offset, end_parent_index, end_parent_tag_name, end_text_offset, page_number, notes) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          (book_id, id,text,class_name,start_index,start_tag_name, start_offset, end_index, end_tag_name, end_offset, page_number, notes,create_time,tag_name) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           [
               data.book_id,
               data.id,
               data.text,
               data.class_name,
-              data.start_meta.parent_index.to_string(),
-              data.start_meta.parent_tag_name,
-              data.start_meta.text_offset.to_string(),
-              data.end_meta.parent_index.to_string(),
-              data.end_meta.parent_tag_name,
-              data.end_meta.text_offset.to_string(),
+              data.start_dom_meta.index.to_string(),
+              data.start_dom_meta.tag_name,
+              data.start_dom_meta.offset.to_string(),
+              data.end_dom_meta.index.to_string(),
+              data.end_dom_meta.tag_name,
+              data.end_dom_meta.offset.to_string(),
               data.page_number.to_string(),
               data.notes,
+              data.create_time.to_string(),
+              data.tag_name,
           ],
       ){
         Ok(_) => Ok(true.into()),

@@ -231,8 +231,38 @@ export class Paint {
     selectNodes.length = 0;
   }
 
-  removePaintedDom({ startDomMeta, endDomMeta, id, createTime, notes }: DomSource) {
+  removePaintedDom({ startDomMeta, endDomMeta, id, createTime, notes, tagName }: DomSource) {
+    const root = this.getRoot();
+    const selctor = `${tagName}[${DATA_WEB_HIGHLIGHT}='${id}']`
+    const doms = root.querySelectorAll<HTMLElement>(selctor);
 
+    const toRemove: HTMLElement[] = []
+    const toUpdate: HTMLElement[] = []
+
+    doms.forEach(dom => {
+      const extraId = dom.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)
+      extraId ? toUpdate.push(dom) : toRemove.push(dom)
+    })
+
+    toRemove.forEach(node => {
+      const parent = node.parentNode;
+      const fragment = document.createDocumentFragment();
+
+      node.childNodes.forEach(child => fragment.appendChild(child.cloneNode(false)))
+
+      parent.replaceChild(fragment, node)
+    })
+
+    toUpdate.forEach(node => {
+      const ids = node.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA).split(ID_DIVIDION)
+      const newId = ids.pop()
+
+      node.setAttribute(DATA_WEB_HIGHLIGHT, newId)
+
+      if (ids.length) {
+        node.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, ids.join(ID_DIVIDION))
+      }
+    })
   }
 
   getRoot(): rootType {
