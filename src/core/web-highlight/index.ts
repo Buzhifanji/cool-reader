@@ -35,7 +35,6 @@ export class WebHighlight extends Paint {
     if (!range) return null;
 
     const { startContainer, startOffset, endContainer, endOffset } = range;
-    console.log(range.getClientRects()[0].top, range.getBoundingClientRect().top)
 
 
     const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)

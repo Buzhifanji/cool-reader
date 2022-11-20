@@ -18,7 +18,6 @@ watchEffect(() => {
 export function getIdeas() {
   const readingBook = getReadingBook();
   getIdeasById(readingBook.id).then(value => {
-    console.log(value)
     notes.value = value;
   })
 }
