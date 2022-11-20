@@ -17,14 +17,13 @@ import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
 
 interface ToolBar {
-  id: string;
   show: boolean;
   edit: boolean;
   source: null | DomSource;
 }
 
 
-const toolBarModel = () => ({ id: "", show: false, source: null, edit: false });
+const toolBarModel = () => ({ show: false, source: null, edit: false });
 const toolBarStyle = shallowReactive({ top: '0px', left: '0px' });
 const toolBar = shallowReactive<ToolBar>(toolBarModel())
 
@@ -43,7 +42,6 @@ export const useHighlight = () => {
     toolBar.show = true;
     toolBar.source = source;
     toolBar.edit = true;
-    toolBar.id = source.id;
     setToolBarStle(value)
   })
 
@@ -53,7 +51,6 @@ export const useHighlight = () => {
     const source = webHighlight.range();
     if (source) {
       toolBar.show = true;
-      toolBar.id = source.id;
       toolBar.source = source
     }
   }
@@ -144,11 +141,11 @@ export const useToolBar = () => {
   }
 
   function notesAction(className?: string) {
-    const { source, edit, id } = toolBar
+    const { source, edit } = toolBar
     if (source) {
       if (edit) {
-        debugger
         // 编辑
+
       } else {
         // 创建
         const readingBook = getReadingBook();
