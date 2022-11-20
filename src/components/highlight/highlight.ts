@@ -2,7 +2,7 @@ import { DomSource } from "src/core/web-highlight";
 import { getHeighlightsById, removeNotes } from "src/server/notes";
 import {
   getReadingBook,
-  paintHighlight,
+  paintWebHighlightFromSource,
   getPageNumber,
   removeWebHighlight,
 } from "src/store";
@@ -14,7 +14,7 @@ const pageNumber = getPageNumber();
 watch(pageNumber, (newValue, oldValue) => {
   if (newValue !== oldValue) {
     const list = highlights.value.filter(value => value.pageNumber === pageNumber.value);
-    paintHighlight(list)
+    paintWebHighlightFromSource(list)
   }
 })
 

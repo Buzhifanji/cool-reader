@@ -38,7 +38,7 @@ function updateOptionRoot(pageNumber, isBook: boolean) {
     webHighlight.setOption({ root })
   }
 }
-export function paintHighlightFromSource(domSource: DomSource[] | DomSource, isBook = true) {
+export function paintWebHighlightFromSource(domSource: DomSource[] | DomSource, isBook = true) {
   if (webHighlight) {
     const pageNumber = Array.isArray(domSource) ? domSource[0].pageNumber : domSource.pageNumber;
     updateOptionRoot(pageNumber, isBook)
@@ -46,18 +46,12 @@ export function paintHighlightFromSource(domSource: DomSource[] | DomSource, isB
   }
 }
 
-export function paintHighlightFromRange({ id, className, pageNumber }: DomSource, isBook = true) {
+export function paintWebHighlightFromRange({ id, className, pageNumber }: DomSource, isBook = true) {
   updateOptionRoot(pageNumber, isBook)
   webHighlight.paint(id, className)
 }
 
-export function updateHighlight(domSource: DomSource, isBook = true) {
+export function updateWebHighlight(domSource: DomSource, isBook = true) {
   updateOptionRoot(domSource.pageNumber, isBook)
   webHighlight.updateClass(domSource)
-}
-
-export function paintHighlight(domSource: DomSource[] | DomSource) {
-  if (webHighlight) {
-    webHighlight.source(domSource)
-  }
 }

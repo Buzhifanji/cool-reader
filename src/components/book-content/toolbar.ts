@@ -11,7 +11,7 @@ import { getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
-import { getPageNumber, getReadingBook, paintHighlightFromRange, updateHighlight } from "src/store";
+import { getPageNumber, getReadingBook, paintWebHighlightFromRange, updateWebHighlight } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
@@ -149,7 +149,7 @@ export const useToolBar = () => {
           if (className) {
             source.className = className
           }
-          updateHighlight(source)
+          updateWebHighlight(source)
           updateNotes(source)
         }
       } else {
@@ -162,7 +162,7 @@ export const useToolBar = () => {
         source.bookId = readingBook.id;
         source.pageNumber = getPageNumber().value
 
-        paintHighlightFromRange(source)
+        paintWebHighlightFromRange(source)
 
         saveNotes(source).then(() => {
           getHighlights()
