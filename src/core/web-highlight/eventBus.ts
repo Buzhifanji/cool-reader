@@ -2,7 +2,6 @@ import { DomSource, Handler } from "./interface";
 
 export enum EventType {
   click = 'click',
-  range = 'range'
 }
 
 export class EventBus {
@@ -36,7 +35,7 @@ export class EventBus {
 
     return this;
   }
-  emit(type: EventType, data: DOMRect, source?: DomSource) {
+  emit(type: EventType, data: DOMRect, source: DomSource) {
     if (this._map.has(type)) {
       this._map.get(type).forEach(Handler => Handler(data, source))
     }

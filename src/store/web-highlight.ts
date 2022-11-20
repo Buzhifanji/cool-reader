@@ -42,8 +42,13 @@ export function paintWebHighlightFromSource(domSource: DomSource[] | DomSource, 
   if (webHighlight) {
     const pageNumber = Array.isArray(domSource) ? domSource[0].pageNumber : domSource.pageNumber;
     updateOptionRoot(pageNumber, isBook)
-    webHighlight.source(domSource)
+    webHighlight.fromSource(domSource)
   }
+}
+
+export function prevWebHighlight(pageNumber, isBook = true) {
+  updateOptionRoot(pageNumber, isBook)
+  return webHighlight.fromRange()
 }
 
 export function paintWebHighlightFromRange({ id, className, pageNumber }: DomSource, isBook = true) {

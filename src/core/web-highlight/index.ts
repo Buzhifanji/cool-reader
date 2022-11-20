@@ -21,6 +21,8 @@ export class WebHighlight extends Paint {
 
   private _bus: EventBus = new EventBus()
 
+  private _range: Range | null = null;
+
   constructor(_config: WebHighlightOptions, private context?: contextTpe) {
     super(_config)
     this._initEvent();
@@ -28,14 +30,16 @@ export class WebHighlight extends Paint {
   /**
    * 监听  window.getSelection() 事件，获取 Range 对象
    */
-  range(): DomSource {
+  range() {
+    this._range = getRange(this.context);
+    return this._range
+  }
+
+  fromRange() {
+    const range = this._range
     const root = this.getRoot()
 
-    const range = getRange(this.context);
-    if (!range) return null;
-
     const { startContainer, startOffset, endContainer, endOffset } = range;
-
 
     const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)
     const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, root)
@@ -52,16 +56,15 @@ export class WebHighlight extends Paint {
 
     const rect = range.getClientRects()[0] || range.getBoundingClientRect();
 
-
-    this._bus.emit(EventType.range, rect)
     this._store.save(source)
 
-    return source
+    return { source, rect }
+
   }
   /**
    * 已经有了DomSource数据，比如从数据库获取，这个时候还原绘制的DOm。
    */
-  source(source: DomSource | DomSource[]) {
+  fromSource(source: DomSource | DomSource[]) {
     const ids = this._store.save(source)
 
     if (Array.isArray(ids)) {

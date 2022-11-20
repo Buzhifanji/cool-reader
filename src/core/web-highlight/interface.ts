@@ -71,4 +71,4 @@ export interface WrapNode {
   tagName: string
 }
 
-export type Handler = (data: DOMRect, source?: DomSource) => void;
+export type Handler = (data: DOMRect, source: DomSource) => void;

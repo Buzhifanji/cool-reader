@@ -11,7 +11,7 @@ export const notes = ref<DomSource[]>([]);
 watchEffect(() => {
   const list = notes.value.filter(value => value.pageNumber === pageNumber.value)
   if (list.length) {
-    paintWebHighlightFromSource(list)
+    // paintWebHighlightFromSource(list)
   }
 });
 
