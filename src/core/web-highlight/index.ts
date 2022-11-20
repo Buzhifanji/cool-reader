@@ -115,9 +115,10 @@ export class WebHighlight extends Paint {
 
       if (isHeightWrap(target)) {
         const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
+        const source = this._store.get(id);
         const data = this._getBoundingClientRect(id);
         if (data) {
-          this._bus.emit(EventType.click, data)
+          this._bus.emit(EventType.click, data, source)
         }
       }
     })

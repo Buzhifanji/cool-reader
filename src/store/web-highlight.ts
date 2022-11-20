@@ -31,7 +31,7 @@ export function removeWebHighlight(id: string) {
   return webHighlight.removeDom(id)
 }
 
-// 如果是 书包， 则需要更新 root 
+// 如果是 书本， 则需要更新 root 
 function updateOptionRoot(pageNumber, isBook: boolean) {
   if (isBook) {
     const root = getBookRoot(pageNumber)

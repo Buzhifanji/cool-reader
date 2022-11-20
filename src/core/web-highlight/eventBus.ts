@@ -1,4 +1,4 @@
-import { Handler } from "./interface";
+import { DomSource, Handler } from "./interface";
 
 export enum EventType {
   click = 'click',
@@ -36,9 +36,9 @@ export class EventBus {
 
     return this;
   }
-  emit(type: EventType, data: DOMRect) {
+  emit(type: EventType, data: DOMRect, source?: DomSource) {
     if (this._map.has(type)) {
-      this._map.get(type).forEach(Handler => Handler(data))
+      this._map.get(type).forEach(Handler => Handler(data, source))
     }
 
     return this;

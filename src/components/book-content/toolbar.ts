@@ -38,7 +38,13 @@ export const useHighlight = () => {
     toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
     toolBarStyle.left = (left + scrollLeft) + 'px'
   }
-  webHighlight.on(EventType.click, setToolBarStle)
+  webHighlight.on(EventType.click, (value, source) => {
+    toolBar.show = true;
+    toolBar.source = source;
+    toolBar.edit = true;
+    toolBar.id = source.id;
+    setToolBarStle(value)
+  })
 
   webHighlight.on(EventType.range, setToolBarStle)
 
