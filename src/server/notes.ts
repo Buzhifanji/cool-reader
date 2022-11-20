@@ -56,7 +56,7 @@ export function getAllNotes(bookId: string): Promise<DomSource[]> {
 }
 
 export function removeNotes(book_id: string, id: string,) {
-  return invoke("delete_notes", { book_id, id })
+  return invoke("delete_notes", { data: { book_id, id } })
     .then(() => {
       message.success("删除成功");
     })

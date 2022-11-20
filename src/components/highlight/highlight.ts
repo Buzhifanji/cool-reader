@@ -1,7 +1,7 @@
 import { deleteDomSource, domSourceFromStore } from "src/core/toolbar";
 import { DomSource } from "src/core/web-highlight";
 import { removeHighlight } from "src/server/highlight";
-import { getHeighlightsById } from "src/server/notes";
+import { getHeighlightsById, removeNotes } from "src/server/notes";
 import {
   getDomSource,
   getReadingBook,
@@ -9,6 +9,7 @@ import {
   saveDomSource,
   paintHighlight,
   getPageNumber,
+  removeWebHighlight,
 } from "src/store";
 import { updateNodes } from "../notes/notes";
 import { resetToolBar } from "../toolbar/toolbar";
@@ -28,6 +29,14 @@ export function getHighlights() {
     highlights.value = value;
   })
 }
+
+export function removeHighlight({ id, bookId }: DomSource) {
+  removeNotes(bookId, id).then(() => {
+    removeWebHighlight(id)
+    getHighlights()
+  })
+}
+
 
 // 更新
 export function updateHighlights() {
