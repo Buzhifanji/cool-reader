@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useToolBar, useHighlight } from './toolbar';
 
-const { bars, toolBar, barAction, toolBarStyle } = useToolBar()
+const { bars, toolBar, barAction, toolBarStyle, closeTooBar } = useToolBar()
 const { watchHighlight } = useHighlight()
 </script>
 
 <template>
   <div id="viewerContainer" @click="watchHighlight">
-    <div id="viewer" class="pdfViewer"></div>
+    <div id="viewer" class="pdfViewer" @click="closeTooBar"></div>
     <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
       <n-space>
         <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">

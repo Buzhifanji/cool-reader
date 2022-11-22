@@ -211,5 +211,13 @@ export const useToolBar = () => {
       }
     }
   }
-  return { bars, toolBar, barAction, toolBarStyle }
+
+  function closeTooBar() {
+    if (toolBar.edit) {
+      Object.assign(toolBar, toolBarModel());
+      console.log(toolBar)
+    }
+  }
+
+  return { bars, toolBar, barAction, toolBarStyle, closeTooBar }
 }
