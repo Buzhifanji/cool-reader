@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api";
-import { DomSource } from "src/core/web-highlight";
+import { DomSource, Notes } from "src/core/web-highlight";
 import { NotesRes } from "src/interfaces";
 import { message } from "src/naive";
 import { generateServiceParams } from "src/utils";
@@ -27,16 +27,20 @@ export function updateNotes(param: DomSource) {
     });
 }
 
-export function getIdeasById(bookId: string) {
+type Filter = (notes: Notes) => boolean
+
+function filterNotes(bookId: string, callback: Filter) {
   return getAllNotes(bookId).then(ideas => {
-    return ideas.filter(idea => idea.notes)
+    return ideas.filter(idea => callback(idea.notes as Notes))
   })
 }
 
+export function getIdeasById(bookId: string) {
+  return filterNotes(bookId, notes => notes.content.length > 0)
+}
+
 export function getHeighlightsById(bookId: string) {
-  return getAllNotes(bookId).then(ideas => {
-    return ideas.filter(idea => !idea.notes)
-  })
+  return filterNotes(bookId, notes => notes.content.length === 0)
 }
 
 export function getAllNotes(bookId: string): Promise<DomSource[]> {
