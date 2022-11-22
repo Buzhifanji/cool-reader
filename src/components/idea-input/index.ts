@@ -11,7 +11,7 @@ let messageReactive: MessageReactive | null = null;
 let source: DomSource | null = null;
 let isEdit: boolean = false
 
-const ideas = ref<string[]>([]);
+const text = ref<string>("");
 
 export function removeMessage() {
   if (messageReactive) {
@@ -33,6 +33,8 @@ export function openIdea(_source: DomSource, _isEdit: boolean) {
 
   removeMessage();
 
+  text.value = source.notes.content;
+
   messageReactive = message.create("", {
     render: () => h(Input),
     closable: true,
@@ -42,7 +44,6 @@ export function openIdea(_source: DomSource, _isEdit: boolean) {
 }
 
 export const useInputIdea = () => {
-  const text = ref<string>("");
   async function submit() {
     const content = unref(text);
     if (content) {
@@ -58,6 +59,7 @@ export const useInputIdea = () => {
           await saveNotes(source)
         }
         getIdeas()
+        removeMessage()
       }
     } else {
       message.error("您还未填写笔记！");
