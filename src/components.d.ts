@@ -13,7 +13,7 @@ declare module '@vue/runtime-core' {
     Highlight: typeof import('./components/highlight/highlight.vue')['default']
     Idea: typeof import('./components/idea/idea.vue')['default']
     IdeaInput: typeof import('./components/idea-input/index.vue')['default']
-    Input: typeof import('./components/idea/input.vue')['default']
+    Input: typeof import('./components/toolbar/idea/input.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']

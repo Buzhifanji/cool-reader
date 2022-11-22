@@ -65,9 +65,3 @@ export const useInputIdea = () => {
   }
   return { text, submit };
 };
-
-export const generatoNotes = (source: DomSource) => {
-  if (source.notes) {
-
-  }
-}
