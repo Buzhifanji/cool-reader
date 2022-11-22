@@ -15,7 +15,7 @@ import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighl
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
-import { openIdea } from "../idea-input";
+import { openIdea, removeMessage } from "../idea-input";
 
 interface ToolBar {
   show: boolean;
@@ -90,6 +90,9 @@ export const useHighlight = () => {
 
       setToolBarStle(rect)
     }
+
+    // 关闭 输入消息 组件
+    removeMessage()
   }
 
   return { watchHighlight }
