@@ -9,7 +9,7 @@ import {
 import { EventType, DomSource, createUUID } from "src/core/web-highlight";
 import { createTime, getEleById } from "src/utils";
 import { message } from "src/naive";
-import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
+import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
 import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighlight, updateOptionRoot, updateWebHighlight } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
@@ -153,7 +153,7 @@ export const useToolBar = () => {
 
   // 高亮
   function addTextHighlight() {
-    notesAction()
+    notesAction(WEB_HEGHLIGHT_WRAPPER_DEFALUT)
   }
 
   // 波浪线
