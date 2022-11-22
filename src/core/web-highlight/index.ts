@@ -6,14 +6,15 @@
 import { EventBus, EventType } from "./eventBus";
 import { DATA_WEB_HIGHLIGHT, getDefaultOptions } from "./constant";
 import { getDomMeta } from "./dom";
-import { contextTpe, DomSource, Handler, WebHighlightOptions } from "./interface";
+import { contextTpe, DomSource, Handler, WebHighlightOptions, Notes } from "./interface";
 import { Paint } from "./paint";
 import { getRange } from "./range";
 import { Store } from "./store";
 import { isHeightWrap } from "./util";
-import createUUID from "./uuid";
+import { createUUID } from "./uuid";
+import { createTime } from "src/utils";
 
-export { EventType, type DomSource, type WebHighlightOptions };
+export { EventType, createUUID, type DomSource, type WebHighlightOptions, type Notes };
 
 export class WebHighlight extends Paint {
 
@@ -44,7 +45,6 @@ export class WebHighlight extends Paint {
     const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)
     const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, root)
 
-    const createTime = new Date().valueOf();
 
     const id = createUUID();
 
@@ -52,7 +52,7 @@ export class WebHighlight extends Paint {
 
     const text = range.toString();
 
-    const source: DomSource = { startDomMeta, endDomMeta, createTime, id, className, tagName, text, pageNumber: 0, bookId: '', notes: '' }
+    const source: DomSource = { startDomMeta, endDomMeta, createTime: createTime(), id, className, tagName, text, pageNumber: 0, bookId: '', notes: '' }
 
     const rect = range.getClientRects()[0] || range.getBoundingClientRect();
 

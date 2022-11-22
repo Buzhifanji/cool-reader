@@ -1,0 +1,1 @@
+export const createTime = () => new Date().valueOf();

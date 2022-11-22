@@ -11,6 +11,14 @@ pub struct DomMeta {
 }
 
 #[derive(Serialize, Deserialize, Clone)]
+pub struct NotesContent {
+    pub content: String,
+    pub id: String,
+    pub create_time: usize,
+    pub tag: String,
+}
+
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Notes {
     pub book_id: String,
     pub id: String,
@@ -19,9 +27,9 @@ pub struct Notes {
     pub end_dom_meta: DomMeta,
     pub class_name: String,
     pub page_number: usize,
-    pub notes: String,
     pub create_time: usize,
     pub tag_name: String,
+    pub notes: NotesContent,
 }
 
 pub struct NotestData {
@@ -45,9 +53,12 @@ impl NotestData {
           end_tag_name          text     NOT NULL,
           end_offset            integer  NOT NULL,
           page_number           integer  NOT NULL,
-          notes                 text     NOT NULL,
           create_time           integer  NOT NULL,
-          tag_name              text     NOT NULL
+          tag_name              text     NOT NULL,
+          notes_content         text     NOT NULL,
+          notes_id              text     NOT NULL,
+          notes_create_time     integer  NOT NULL,
+          notes_tag             integer  NOT NULL
       )",
             [],
         )?;
@@ -78,9 +89,14 @@ impl NotestData {
                     offset: row.get(9)?,
                 },
                 page_number: row.get(10)?,
-                notes: row.get(11)?,
-                create_time: row.get(12)?,
-                tag_name: row.get(13)?,
+                create_time: row.get(11)?,
+                tag_name: row.get(12)?,
+                notes: NotesContent {
+                    content: row.get(13)?,
+                    id: row.get(14)?,
+                    create_time: row.get(15)?,
+                    tag: row.get(16)?,
+                },
             };
             list.push(result)
         }
@@ -91,8 +107,8 @@ impl NotestData {
     pub fn insert_notes(&mut self, data: Notes) -> Result<bool, String> {
         match self.conn.execute(
           "INSERT INTO Notes 
-          (book_id, id,text,class_name,start_index,start_tag_name, start_offset, end_index, end_tag_name, end_offset, page_number, notes,create_time,tag_name) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          (book_id, id,text,class_name,start_index,start_tag_name, start_offset, end_index, end_tag_name, end_offset, page_number,create_time,tag_name,notes_content,notes_id,notes_create_time,notes_tag) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           [
               data.book_id,
               data.id,
@@ -105,9 +121,12 @@ impl NotestData {
               data.end_dom_meta.tag_name,
               data.end_dom_meta.offset.to_string(),
               data.page_number.to_string(),
-              data.notes,
               data.create_time.to_string(),
               data.tag_name,
+              data.notes.content,
+              data.notes.id,
+              data.notes.create_time.to_string(),
+              data.notes.tag
           ],
       ){
         Ok(_) => Ok(true.into()),
@@ -124,15 +143,23 @@ impl NotestData {
         ) {
             Ok(_) => Ok(true.into()),
             Err(err) => {
-                println!("INSERT INTO Notes: {}", err);
+                println!("DELETE Notes: {}", err);
                 Err(err.to_string().into())
             }
         }
     }
     pub fn update_notes(&mut self, data: Notes) -> Result<bool, String> {
         match self.conn.execute(
-            "UPDATE Notes as h set notes = ?1 , class_name = ?2 where h.book_id = ?3 and h.id = ?4",
-            [data.notes, data.class_name, data.book_id, data.id],
+            "UPDATE Notes as h set notes_content = ?1, notes_id = ?2, notes_create_time = ?3, notes_tag = ?4, class_name = ?5 where h.book_id = ?6 and h.id = ?7",
+            [
+                data.notes.content,
+                data.notes.id,
+                data.notes.create_time.to_string(),
+                data.notes.tag,
+                data.class_name,
+                data.book_id,
+                data.id,
+            ],
         ) {
             Ok(_) => Ok(true.into()),
             Err(err) => {

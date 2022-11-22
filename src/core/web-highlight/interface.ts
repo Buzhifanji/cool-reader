@@ -31,7 +31,8 @@ export interface Tooltip {
 
 export interface Notes {
   content: string; // 笔记内容
-  createTime: string; // 创建时间
+  createTime: number; // 创建时间
+  tag: string;
   id: string;
 }
 

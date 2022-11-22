@@ -46,7 +46,6 @@ export const useInputIdea = () => {
   async function submit() {
     const content = unref(text);
     if (content) {
-      debugger
       if (source) {
         source.notes = { id: createUUID(), tag: '', createTime: createTime(), content }
 

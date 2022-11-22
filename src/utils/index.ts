@@ -5,3 +5,4 @@ export * from "./is";
 export * from "./server";
 export * from "./text";
 export * from "./union";
+export * from "./time"

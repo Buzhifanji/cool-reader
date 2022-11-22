@@ -6,8 +6,8 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { EventType, DomSource } from "src/core/web-highlight";
-import { getEleById } from "src/utils";
+import { EventType, DomSource, createUUID } from "src/core/web-highlight";
+import { createTime, getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
@@ -15,6 +15,7 @@ import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighl
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getIdeas } from "../idea/idea";
 import { getWebHighlight } from "src/store";
+import { openIdea } from "../idea-input";
 
 interface ToolBar {
   show: boolean;
@@ -173,7 +174,7 @@ export const useToolBar = () => {
   }
   // 写想法
   function ideaInput() {
-
+    openIdea(toolBar.source, toolBar.edit)
   }
 
   function notesAction(className?: string) {
@@ -185,7 +186,9 @@ export const useToolBar = () => {
           if (className) {
             source.className = className
           }
+          // 更新ui
           updateWebHighlight(source)
+          // 存入数据库
           updateNotes(source)
         }
       } else {
@@ -195,11 +198,15 @@ export const useToolBar = () => {
         }
         source.bookId = readingBook.id;
 
+        // 初始化 想法
+        if (!source.notes) {
+          source.notes = { content: '', createTime: createTime(), tag: '', id: createUUID() }
+        }
+
         paintWebHighlightFromRange(source)
 
         saveNotes(source).then(() => {
           getHighlights()
-          getIdeas()
         })
       }
     }
