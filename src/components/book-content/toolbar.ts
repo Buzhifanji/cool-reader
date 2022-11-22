@@ -200,10 +200,7 @@ export const useToolBar = () => {
         }
         source.bookId = readingBook.id;
 
-        // 初始化 想法
-        if (!source.notes) {
-          source.notes = { content: '', createTime: createTime(), tag: '', id: createUUID() }
-        }
+        source.notes.createTime = createTime()
 
         paintWebHighlightFromRange(source)
 

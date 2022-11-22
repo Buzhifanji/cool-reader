@@ -45,14 +45,24 @@ export class WebHighlight extends Paint {
     const startDomMeta = getDomMeta(startContainer as HTMLElement, startOffset, root)
     const endDomMeta = getDomMeta(endContainer as HTMLElement, endOffset, root)
 
-
-    const id = createUUID();
-
     const { className, tagName } = this._getClasAndTagName()
 
     const text = range.toString();
 
-    const source: DomSource = { startDomMeta, endDomMeta, createTime: createTime(), id, className, tagName, text, pageNumber: 0, bookId: '', notes: '' }
+    const notes = { content: '', createTime: createTime(), id: createUUID(), tag: '' }
+
+    const source: DomSource = {
+      startDomMeta,
+      endDomMeta,
+      createTime: createTime(),
+      id: createUUID(),
+      className,
+      tagName,
+      text,
+      pageNumber: 0,
+      bookId: '',
+      notes
+    }
 
     const rect = range.getClientRects()[0] || range.getBoundingClientRect();
 

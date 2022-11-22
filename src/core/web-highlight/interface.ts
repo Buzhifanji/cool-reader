@@ -57,7 +57,7 @@ export interface DomSource {
   text: string; // 选中的文本内容
   createTime: number; // 创建时间 (时间戳)
   pageNumber: number; //
-  notes: Notes | ''; // 笔记
+  notes: Notes; // 笔记
 }
 
 

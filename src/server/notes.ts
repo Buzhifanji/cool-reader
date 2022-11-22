@@ -31,7 +31,7 @@ type Filter = (notes: Notes) => boolean
 
 function filterNotes(bookId: string, callback: Filter) {
   return getAllNotes(bookId).then(ideas => {
-    return ideas.filter(idea => callback(idea.notes as Notes))
+    return ideas.filter(idea => callback(idea.notes))
   })
 }
 
