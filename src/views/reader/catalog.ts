@@ -1,6 +1,6 @@
 export const useCatalogSection = () => {
   const showCatalog = ref<boolean>(false);
-  const catalogWidth = 312;
+  const catalogWidth = 294;
   onMounted(() => (showCatalog.value = true));
 
   onKeyStroke(["m", "M"], (e) => {
