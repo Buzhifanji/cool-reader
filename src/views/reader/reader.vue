@@ -17,7 +17,6 @@ const { showNotes, notesActiveTab, components, tabPanes, notesWidth } =
 // 目录
 const { showCatalog, catalogWidth } = useCatalogSection();
 
-
 const { readingBook } = useReaderBook(route);
 
 onMounted(() => {
@@ -34,7 +33,8 @@ onMounted(() => {
       <!-- 书本内容 -->
       <BookContent />
       <n-drawer v-model:show="showCatalog" :width="catalogWidth" placement="left" :show-mask="false"
-        :mask-closable="false" :trap-focus="false" :block-scroll="false" to="#drawer-target">
+        :mask-closable="false" :trap-focus="false" :block-scroll="false" :display-directive="'show'"
+        to="#drawer-target">
         <n-drawer-content :closable="false" body-content-style="padding: 5px;overflow: hidden">
           <n-grid x-gap="12" :cols="2">
             <n-gi>
@@ -60,7 +60,7 @@ onMounted(() => {
       </n-drawer>
       <!-- note -->
       <n-drawer v-model:show="showNotes" :width="notesWidth" placement="right" :show-mask="false" :mask-closable="false"
-        :trap-focus="false" :block-scroll="false" to="#drawer-target">
+        :trap-focus="false" :block-scroll="false" :display-directive="'show'" to="#drawer-target">
         <n-drawer-content body-content-style="padding: 0px">
           <n-tabs type="segment" v-model:value="notesActiveTab">
             <n-tab-pane v-for="item in tabPanes" :name="item.name" :tab="item.tab">
