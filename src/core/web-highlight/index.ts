@@ -121,7 +121,7 @@ export class WebHighlight extends Paint {
   removeDom(id: string) {
     const domSource = this._store.get(id);
     if (!domSource) return;
-    this.removeSource(id)
+
     this.removePaintedDom(domSource)
   }
 

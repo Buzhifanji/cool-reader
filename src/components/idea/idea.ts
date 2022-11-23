@@ -16,6 +16,9 @@ watch(pageNumber, (newValue, oldValue) => {
   }
 })
 
+export function hasIdea(id: string) {
+  return notes.value.some(value => value.id === id);
+}
 
 export function getIdeas() {
   const readingBook = getReadingBook();

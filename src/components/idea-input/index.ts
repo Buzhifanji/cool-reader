@@ -2,9 +2,9 @@ import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { createUUID, DomSource } from "src/core/web-highlight";
 import { message } from "src/naive";
 import { saveNotes, updateNotes } from "src/server/notes";
-import { getReadingBook, removeWebHighlight } from "src/store";
+import { getReadingBook, removeWebHighlightCache, removeWebHighlightDom } from "src/store";
 import { createTime } from "src/utils";
-import { getIdeas } from "../idea/idea";
+import { getIdeas, hasIdea } from "../idea/idea";
 import Input from './index.vue'
 
 let messageReactive: MessageReactive | null = null;
@@ -20,8 +20,14 @@ export function removeMessage() {
     messageReactive = null;
   }
 
-  if (!isSave) {
-    removeWebHighlight(source.id)
+  if (!isSave && source) {
+    const id = source.id
+    // 删除dom
+    removeWebHighlightDom(id)
+    // 删除没有保存到数据库的缓存数据
+    if (!hasIdea(id)) {
+      removeWebHighlightCache(id)
+    }
   }
 }
 

@@ -215,7 +215,6 @@ export const useToolBar = () => {
   function closeTooBar() {
     if (toolBar.edit) {
       Object.assign(toolBar, toolBarModel());
-      console.log(toolBar)
     }
   }
 

@@ -18,7 +18,6 @@ function getBookRoot(pageNumber: number) {
   }
 }
 
-
 export function initWebHighlight(option: WebHighlightOptions) {
   webHighlight = new WebHighlight(option);
 }
@@ -27,8 +26,20 @@ export function getWebHighlight(): WebHighlight {
   return webHighlight;
 }
 
+// dom 和 store 缓存的数据 一并删除
 export function removeWebHighlight(id: string) {
+  removeWebHighlightDom(id)
+  removeWebHighlightCache(id)
+}
+
+// 只删除dom
+export function removeWebHighlightDom(id: string) {
   return webHighlight.removeDom(id)
+}
+
+// 只删除 store 缓存的数据
+export function removeWebHighlightCache(id: string) {
+  return webHighlight.removeSource(id)
 }
 
 // 如果是 书本， 则需要更新 root 
