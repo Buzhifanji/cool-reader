@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { removeMessage } from "src/components/toolbar/idea";
 import { removePdfEvent } from "src/core/file";
-import { detachRange } from "src/core/toolbar/selection";
-import { TabPaneEnum } from "src/enums/index";
 import { useRoute } from "vue-router";
 import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
 import { useCatalogSection } from "src/views/reader/catalog";
-import { WebHighlight } from "src/core/web-highlight";
 import { initWebHighlight } from "src/store";
 
 // 初始化 高亮笔记功能
@@ -20,20 +16,8 @@ const { showNotes, notesActiveTab, components, tabPanes, notesWidth } =
 // 目录
 const { showCatalog, catalogWidth } = useCatalogSection();
 
-//
-const contentStyle = computed(() => {
-  const left = (showCatalog.value ? catalogWidth : 0) + "px";
-  const right = (showNotes.value ? notesWidth : 0) + "px";
-  return { left, right };
-});
-//翻页功能
-const { readingBook } = useReaderBook(route);
 
-const onContainer = () => {
-  // closeTooBar();
-  // detachRange();
-  // removeMessage();
-};
+const { readingBook } = useReaderBook(route);
 
 onMounted(() => {
   removePdfEvent();
@@ -46,12 +30,8 @@ onMounted(() => {
       <n-divider />
     </n-layout-header>
     <n-layout-content id="drawer-target">
+      <!-- 书本内容 -->
       <BookContent />
-      <!-- <div id="viewerContainer" :style="contentStyle" @click="onContainer">
-        <div id="viewer" class="pdfViewer" @click="openTooBar"></div>
-        <div id="viewer" class="pdfViewer"></div>
-        <ToolBar v-model="showToolbar" />
-      </div> -->
       <n-drawer v-model:show="showCatalog" :width="catalogWidth" placement="left" :show-mask="false"
         :mask-closable="false" :trap-focus="false" :block-scroll="false" to="#drawer-target">
         <n-drawer-content :closable="false" body-content-style="padding: 5px;overflow: hidden">
