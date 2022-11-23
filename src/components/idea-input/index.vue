@@ -3,6 +3,7 @@ import { useInputIdea, removeMessage } from ".";
 const { text, submit } = useInputIdea()
 
 onBeforeUnmount(removeMessage)
+
 </script>
 <template>
   <div class="idea-container">

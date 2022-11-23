@@ -176,6 +176,7 @@ export const useToolBar = () => {
   }
   // 写想法
   function ideaInput() {
+    paintWebHighlightFromRange(toolBar.source)
     openIdea(toolBar.source, toolBar.edit)
   }
 
