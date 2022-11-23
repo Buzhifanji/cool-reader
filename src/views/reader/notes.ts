@@ -27,7 +27,7 @@ export const useNotesSection = () => {
     // { name: TabPaneEnum.catalog, tab: "目录" },
     { name: TabPaneEnum.idea, tab: "笔记" },
     { name: TabPaneEnum.highlight, tab: "高亮" },
-    { name: TabPaneEnum.bookmark, tab: "书签" },
+    // { name: TabPaneEnum.bookmark, tab: "书签" },
   ];
 
   return {
