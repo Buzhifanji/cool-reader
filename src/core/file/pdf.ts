@@ -16,6 +16,7 @@ import {
   PDFLinkService,
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
+import { jumpToRecordPosition } from "../scroll";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
@@ -66,6 +67,8 @@ export async function renderPdf(content: Uint8Array) {
   updateReadingBook({ catalog });
 
   pdfViewer.eventBus.on("textlayerrendered", pageNumberChange);
+  // 跳转到上次阅读的位置
+  pdfViewer.eventBus.on("pagesloaded", jumpToRecordPosition);
 
   return pdfViewer;
 }

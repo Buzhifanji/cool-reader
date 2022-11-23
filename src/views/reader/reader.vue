@@ -6,6 +6,7 @@ import { useNotesSection } from "./notes";
 import { useCatalogSection } from "src/views/reader/catalog";
 import { initWebHighlight } from "src/store";
 
+
 // 初始化 高亮笔记功能
 initWebHighlight({})
 

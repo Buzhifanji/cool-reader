@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { useToolBar, useHighlight } from './toolbar';
+import { window } from "@tauri-apps/api"
+import { TauriEvent } from "@tauri-apps/api/event";
+import { useSroll } from 'src/core/scroll';
+
+const { container } = useSroll()
 
 const { bars, toolBar, barAction, toolBarStyle, closeTooBar } = useToolBar()
 const { watchHighlight } = useHighlight()
 </script>
 
 <template>
-  <div id="viewerContainer" @click="watchHighlight">
+  <div id="viewerContainer" ref="container" @click="watchHighlight">
     <div id="viewer" class="pdfViewer" @click="closeTooBar"></div>
     <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
       <n-space>
