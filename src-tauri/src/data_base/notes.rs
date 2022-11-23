@@ -1,7 +1,11 @@
 use rusqlite::{named_params, Connection, Result};
 use serde::{Deserialize, Serialize};
 
-use super::common::DeleteIds;
+#[derive(Serialize, Deserialize, Clone)]
+pub struct DeleteIds {
+    pub book_id: String,
+    pub id: String,
+}
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct DomMeta {
