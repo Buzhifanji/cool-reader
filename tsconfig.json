@@ -18,7 +18,7 @@
       "src/*": ["./src/*"]
     },
   },
-
+  "files": [],
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
@@ -27,5 +27,6 @@
     "src/components.d.ts",
     "src/auto-imports.d.ts"
   ],
+  "exclude": ["node_modules", "src-tauri", "bin"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
