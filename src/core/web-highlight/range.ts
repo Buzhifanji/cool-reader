@@ -2,14 +2,27 @@
 
 import { contextTpe } from "./interface";
 
-export function getRange(root: contextTpe = window): Range | null {
-  const selection = root.getSelection();
-  if (selection && !selection.isCollapsed) {
-    return selection.getRangeAt(0);
-  }
-  return null;
-}
+export class RangeContext {
+  public _range: Range | null = null
+  constructor(private context: contextTpe = window) { }
 
-export function removeAllRanges(root: contextTpe = window) {
-  root.getSelection()?.removeAllRanges();
+  getRange(): Range | null {
+    const selection = this.getSelection();
+    if (!selection.isCollapsed) {
+      this._range = selection.getRangeAt(0)
+      return this._range;
+    }
+    return null;
+  }
+
+  removeAllRanges() {
+    const selection = this.getSelection();
+    if (selection.rangeCount > 0) {
+      selection.removeAllRanges();
+    }
+  }
+
+  private getSelection() {
+    return this.context.getSelection()
+  }
 }

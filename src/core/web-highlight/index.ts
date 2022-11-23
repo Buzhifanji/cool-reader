@@ -8,7 +8,7 @@ import { DATA_WEB_HIGHLIGHT, getDefaultOptions } from "./constant";
 import { getDomMeta } from "./dom";
 import { contextTpe, DomSource, Handler, WebHighlightOptions, Notes } from "./interface";
 import { Paint } from "./paint";
-import { getRange } from "./range";
+import { RangeContext } from "./range";
 import { Store } from "./store";
 import { isHeightWrap } from "./util";
 import { createUUID } from "./uuid";
@@ -22,22 +22,29 @@ export class WebHighlight extends Paint {
 
   private _bus: EventBus = new EventBus()
 
-  private _range: Range | null = null;
+  private _range: RangeContext;
 
-  constructor(_config: WebHighlightOptions, private context?: contextTpe) {
+  constructor(_config: WebHighlightOptions, private context: contextTpe = window) {
     super(_config)
+
+    this._range = new RangeContext(context)
+
     this._initEvent();
   }
   /**
    * 监听  window.getSelection() 事件，获取 Range 对象
    */
   range() {
-    this._range = getRange(this.context);
-    return this._range
+    return this._range.getRange();
   }
 
   fromRange() {
-    const range = this._range
+    const range = this._range._range;
+
+    if (!range) {
+      throw new Error('no range available')
+    }
+
     const root = this.getRoot()
 
     const { startContainer, startOffset, endContainer, endOffset } = range;
@@ -114,7 +121,7 @@ export class WebHighlight extends Paint {
   removeDom(id: string) {
     const domSource = this._store.get(id);
     if (!domSource) return;
-
+    this.removeSource(id)
     this.removePaintedDom(domSource)
   }
 
@@ -162,12 +169,8 @@ export class WebHighlight extends Paint {
    */
   private _handleContext(): Document {
     let context = this.context;
-    if (context) {
-      if (context === window) {
-        context = window.document;
-      }
-    } else {
-      context = document;
+    if (context === window) {
+      context = window.document;
     }
     return context as Document
   }
