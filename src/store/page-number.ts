@@ -1,11 +1,13 @@
 import { Ref } from "vue";
 
-const pageNumber = ref<number>(1);
+type PageNumber = string | number;
 
-export function updatePageNumber(number: number) {
+const pageNumber = ref<PageNumber>(1);
+
+export function updatePageNumber(number: PageNumber) {
   pageNumber.value = number;
 }
 
-export function getPageNumber(): Ref<number> {
+export function getPageNumber(): Ref<PageNumber> {
   return pageNumber;
 }
