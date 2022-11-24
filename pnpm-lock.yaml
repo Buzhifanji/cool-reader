@@ -21,6 +21,7 @@ specifiers:
   '@wdio/types': ^7.25.4
   chai: ^4.3.7
   concurrently: ^7.5.0
+  dpdm: ^3.10.0
   epubjs: ^0.3.93
   jsdom: ^20.0.2
   jsdom-global: ^3.0.2
@@ -66,6 +67,7 @@ devDependencies:
   '@wdio/types': 7.25.4_typescript@4.8.4
   chai: 4.3.7
   concurrently: 7.5.0
+  dpdm: 3.10.0
   epubjs: 0.3.93
   jsdom: 20.0.2
   jsdom-global: 3.0.2_jsdom@20.0.2
@@ -1964,6 +1966,22 @@ packages:
 
   /dommatrix/1.0.3:
     resolution: {integrity: sha512-l32Xp/TLgWb8ReqbVJAFIvXmY7go4nTxxlWiAFyhoQw9RKEOHBZNnyGvJWqDVSPmq3Y9HlM4npqF/T6VMOXhww==}
+    dev: true
+
+  /dpdm/3.10.0:
+    resolution: {integrity: sha512-b/nWOl4Bf9Qmq4Mh38wxBpMyFb8YkuKQaaPFdaTFkCmfTQNFJl8jPlnm1xtBPtPzID92UUO6TVbCD4pBD/Msww==}
+    hasBin: true
+    dependencies:
+      '@types/fs-extra': 9.0.13
+      '@types/glob': 7.2.0
+      '@types/yargs': 17.0.13
+      chalk: 4.1.2
+      fs-extra: 10.1.0
+      glob: 8.0.3
+      ora: 5.4.1
+      tslib: 2.4.1
+      typescript: 4.8.4
+      yargs: 17.6.2
     dev: true
 
   /duplexer3/0.1.5:
@@ -4319,7 +4337,7 @@ packages:
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
-      safe-buffer: 5.1.2
+      safe-buffer: 5.2.1
     dev: true
 
   /range-parser/1.2.1:
@@ -5023,7 +5041,7 @@ packages:
   /tunnel-agent/0.6.0:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
     dependencies:
-      safe-buffer: 5.1.2
+      safe-buffer: 5.2.1
     dev: true
 
   /tunnel/0.0.6:

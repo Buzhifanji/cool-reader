@@ -41,6 +41,7 @@
     "@wdio/types": "^7.25.4",
     "chai": "^4.3.7",
     "concurrently": "^7.5.0",
+    "dpdm": "^3.10.0",
     "epubjs": "^0.3.93",
     "jsdom": "^20.0.2",
     "jsdom-global": "^3.0.2",
