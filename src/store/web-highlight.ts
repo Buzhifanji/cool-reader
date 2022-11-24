@@ -1,6 +1,6 @@
 import { DomSource, WebHighlight, WebHighlightOptions } from "src/core/web-highlight";
 import { Bookextname } from "src/enums";
-import { getPDFPageSelector, selector } from "src/utils";
+import { getEpubDoc, getPDFPageSelector, selector } from "src/utils";
 import { getReadingBook } from "./book";
 
 let webHighlight: WebHighlight | null = null;
@@ -12,7 +12,7 @@ function getBookRoot(pageNumber: number) {
       const selctor = getPDFPageSelector(pageNumber);
       return selector(selctor);
     case Bookextname.epub:
-
+      return getEpubDoc()
     default:
       return document;
   }
@@ -46,9 +46,14 @@ export function removeWebHighlightCache(id: string) {
 function updateOptionRoot(pageNumber, isBook: boolean) {
   if (isBook) {
     const root = getBookRoot(pageNumber)
-    webHighlight.setOption({ root })
+    updateWebHighlightOption({ root })
   }
 }
+
+export function updateWebHighlightOption(options: WebHighlightOptions) {
+  webHighlight.setOption(options)
+}
+
 export function paintWebHighlightFromSource(domSource: DomSource[] | DomSource, isBook = true) {
   if (webHighlight) {
     const pageNumber = Array.isArray(domSource) ? domSource[0].pageNumber : domSource.pageNumber;
@@ -57,9 +62,9 @@ export function paintWebHighlightFromSource(domSource: DomSource[] | DomSource, 
   }
 }
 
-export function prevWebHighlight(pageNumber, isBook = true) {
+export function prevWebHighlight(pageNumber, isBook = true, range?: Range) {
   updateOptionRoot(pageNumber, isBook)
-  return webHighlight.fromRange()
+  return webHighlight.fromRange(range)
 }
 
 export function paintWebHighlightFromRange({ id, className, pageNumber }: DomSource, isBook = true) {

@@ -38,8 +38,8 @@ export class WebHighlight extends Paint {
     return this._range.getRange();
   }
 
-  fromRange() {
-    const range = this._range._range;
+  fromRange(_range?: Range) {
+    const range = _range || this._range._range;
 
     if (!range) {
       throw new Error('no range available')

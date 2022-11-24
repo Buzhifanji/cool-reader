@@ -6,7 +6,7 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { EventType, DomSource, createUUID } from "src/core/web-highlight";
+import { EventType, DomSource } from "src/core/web-highlight";
 import { createTime, getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
@@ -28,9 +28,8 @@ const toolBarModel = () => ({ show: false, source: null, edit: false });
 const toolBarStyle = shallowReactive({ top: '0px', left: '0px' });
 const toolBar = shallowReactive<ToolBar>(toolBarModel())
 
-let range: Range | null = null; // 用于定位 range 的容器节点
 
-function handlePdfPageNumber() {
+function handlePdfPageNumber(range: Range) {
   let result = 0;
   if (range) {
     let node = range.startContainer.parentElement;
@@ -49,24 +48,25 @@ function handlePdfPageNumber() {
   }
   return result
 }
-function hanldePageNumber() {
+function hanldePageNumber(range: Range) {
   switch (readingBook.extname) {
     case Bookextname.pdf:
-      return handlePdfPageNumber()
+      return handlePdfPageNumber(range)
+    case Bookextname.epub:
+      return ''
     default:
       return 0
   }
 }
+const setToolBarStle = ({ top, left, height }: { top: number, left: number, height: number }) => {
+  const { scrollTop, scrollLeft } = getEleById('viewerContainer');
+  toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
+  toolBarStyle.left = (left + scrollLeft) + 'px'
+}
 
-// 划词 高亮
-export const useHighlight = () => {
+// 添加高亮区域点击事件
+const addWebHighlightEvent = () => {
   const webHighlight = getWebHighlight();
-
-  const setToolBarStle = ({ top, left, height }: DOMRect) => {
-    const { scrollTop, scrollLeft } = getEleById('viewerContainer');
-    toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
-    toolBarStyle.left = (left + scrollLeft) + 'px'
-  }
 
   webHighlight.on(EventType.click, (value, source) => {
     toolBar.show = true;
@@ -75,19 +75,47 @@ export const useHighlight = () => {
     setToolBarStle(value)
   })
 
+  return webHighlight
+}
+
+const openToolBar = (range: Range, _rect?: DOMRect) => {
+  // 由于 pdf 格式的书本，渲染是 占位 + 按需渲染，所以dom是动态的，这就导致如果 定位容器节点为 body，则就会产生bug，
+  // 目前处理方案：容器节点为当前页面节点。查找当前页，是一个向上寻找dom的过程。
+  const pageNumber = hanldePageNumber(range);
+  const { source, rect } = prevWebHighlight(pageNumber, true, range)
+
+  const result = {
+    top: rect.top,
+    left: rect.left,
+    height: rect.height,
+  }
+
+  if (_rect) {
+    result.top += (_rect.top - 10)
+    result.left += _rect.left
+  }
+
+  source.pageNumber = pageNumber;
+  toolBar.show = true;
+  toolBar.source = source
+
+
+  setToolBarStle(result)
+}
+
+export const epubWebHighlight = (range: Range, rect: DOMRect) => {
+  addWebHighlightEvent();
+  openToolBar(range, rect)
+}
+
+// 划词 高亮
+export const useHighlight = () => {
+  const webHighlight = addWebHighlightEvent();
+
   function watchHighlight() {
-    range = webHighlight.range();
+    const range = webHighlight.range();
     if (range) {
-      // 由于 pdf 格式的书本，渲染是 占位 + 按需渲染，所以dom是动态的，这就导致如果 定位容器节点为 body，则就会产生bug，
-      // 目前处理方案：容器节点为当前页面节点。查找当前页，是一个向上寻找dom的过程。
-      const pageNumber = hanldePageNumber();
-      const { source, rect } = prevWebHighlight(pageNumber)
-
-      source.pageNumber = pageNumber;
-      toolBar.show = true;
-      toolBar.source = source
-
-      setToolBarStle(rect)
+      openToolBar(range)
     }
 
     // 关闭 输入消息 组件
