@@ -1,6 +1,6 @@
 import { VIEWER } from "src/constants";
 import { getWebHighlight, updatePageNumber, updateReadingBook, } from "src/store";
-import { concatRectDom, formateCatalog, getEpubIframe } from "src/utils";
+import { concatRectDom, createEle, formateCatalog, getEpubIframe, urlToBase64 } from "src/utils";
 import epubjs, { Rendition, Location } from "epubjs";
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
 import { Bookmark } from "@vicons/carbon";
@@ -9,13 +9,18 @@ import { DATA_WEB_HIGHLIGHT } from "../web-highlight/constant";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 
+
 export function getEpubCover(content: Uint8Array): Promise<string> {
   return new Promise((resolve, reject) => {
     const book = epubjs(content.buffer);
     book
       .coverUrl()
       .then((value) => {
-        value ? resolve(value) : resolve("");
+        if (value) {
+          resolve(urlToBase64(value))
+        } else {
+          resolve('')
+        }
       })
       .catch((err) => {
         resolve("");
