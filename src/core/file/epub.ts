@@ -28,7 +28,6 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     book.ready.then(() => {
       // 目录
       const catalog = book.navigation.toc;
-      console.log(catalog)
       formateCatalog(catalog, "subitems");
       updateReadingBook({ catalog: catalog });
     });
@@ -50,6 +49,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       .catch((err) => reject(err));
 
     rendition.on('selected', (cfiRange, contents) => {
+      debugger
       const range = rendition.getRange(cfiRange)
       const iframe = getEpubIframe()
       if (iframe) {

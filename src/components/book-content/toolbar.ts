@@ -46,7 +46,7 @@ function handlePdfPageNumber(range: Range) {
       node = node.parentElement;
     }
   }
-  return result
+  return result.toString()
 }
 function hanldePageNumber(range: Range) {
   switch (readingBook.extname) {
@@ -55,7 +55,7 @@ function hanldePageNumber(range: Range) {
     case Bookextname.epub:
       return ''
     default:
-      return 0
+      return '0'
   }
 }
 const setToolBarStle = ({ top, left, height }: { top: number, left: number, height: number }) => {
@@ -79,11 +79,12 @@ const addWebHighlightEvent = () => {
 }
 
 const openToolBar = (range: Range, _rect?: DOMRect) => {
-  // 由于 pdf 格式的书本，渲染是 占位 + 按需渲染，所以dom是动态的，这就导致如果 定位容器节点为 body，则就会产生bug，
+  // 由于 pdf 格式的书本，渲染是 占位 + 按需渲染，所以dom是动态的，这就导致,如果 定位容器节点为 body，则就会产生bug，
   // 目前处理方案：容器节点为当前页面节点。查找当前页，是一个向上寻找dom的过程。
   const pageNumber = hanldePageNumber(range);
   const { source, rect } = prevWebHighlight(pageNumber, true, range)
 
+  // epub.js 渲染采用iframe（不是iframe，存在bug，所以没有采用），此处是拼接iframe的getboundingclientrect
   const result = {
     top: rect.top,
     left: rect.left,
@@ -104,8 +105,12 @@ const openToolBar = (range: Range, _rect?: DOMRect) => {
 }
 
 export const epubWebHighlight = (range: Range, rect: DOMRect) => {
+  debugger
   addWebHighlightEvent();
   openToolBar(range, rect)
+
+  // 关闭 输入消息 组件
+  removeMessage()
 }
 
 // 划词 高亮
@@ -241,6 +246,7 @@ export const useToolBar = () => {
   }
 
   function closeTooBar() {
+    debugger
     if (toolBar.edit) {
       Object.assign(toolBar, toolBarModel());
     }
