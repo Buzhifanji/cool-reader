@@ -14,6 +14,6 @@
       "src/*": ["./src/*"],
     }
   },
-  "include": ["vite.config.ts","wdio.conf.ts","./test/**/*.ts","src/**/*.ts",],
+  "include": ["vite.config.ts","wdio.conf.ts","./test/**/*.ts"],
   "exclude": ["node_modules"]
 }
