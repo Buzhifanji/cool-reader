@@ -15,7 +15,6 @@ import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighl
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getWebHighlight } from "src/store";
 import { openIdea, removeMessage } from "../idea-input";
-import { useDialog } from "naive-ui";
 import { removeIdea } from "../idea/idea";
 
 interface ToolBar {
@@ -40,7 +39,10 @@ function handlePdfPageNumber(range: Range) {
     while (node) {
       count++
       if (node.className === 'page') {
-        result = +node.getAttribute('data-page-number')
+        const n = node.getAttribute('data-page-number');
+        if (n) {
+          result = +n
+        }
       }
       if (count === 90) {
         break
@@ -61,7 +63,7 @@ function hanldePageNumber(range: Range) {
   }
 }
 const setToolBarStle = ({ top, left, height }: { top: number, left: number, height: number }) => {
-  const { scrollTop, scrollLeft } = getEleById('viewerContainer');
+  const { scrollTop, scrollLeft } = getEleById('viewerContainer')!;
   toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
   toolBarStyle.left = (left + scrollLeft) + 'px'
 }
@@ -222,8 +224,11 @@ export const useToolBar = () => {
   }
   // 写想法
   function ideaInput() {
-    paintWebHighlightFromRange(toolBar.source)
-    openIdea(toolBar.source, toolBar.edit)
+    const { source, edit } = toolBar
+    if (source) {
+      paintWebHighlightFromRange(source)
+      openIdea(source, edit)
+    }
   }
 
   function notesAction(className?: string) {
