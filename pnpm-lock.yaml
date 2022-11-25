@@ -23,6 +23,7 @@ specifiers:
   concurrently: ^7.5.0
   dpdm: ^3.10.0
   epubjs: ^0.3.93
+  husky: ^8.0.2
   jsdom: ^20.0.2
   jsdom-global: ^3.0.2
   msedgedriver: ^91.0.0
@@ -69,6 +70,7 @@ devDependencies:
   concurrently: 7.5.0
   dpdm: 3.10.0
   epubjs: 0.3.93
+  husky: 8.0.2
   jsdom: 20.0.2
   jsdom-global: 3.0.2_jsdom@20.0.2
   msedgedriver: 91.0.0
@@ -3030,6 +3032,12 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
+
+  /husky/8.0.2:
+    resolution: {integrity: sha512-Tkv80jtvbnkK3mYWxPZePGFpQ/tT3HNSs/sasF9P2YfkMezDl3ON37YN6jUUI4eTg5LcyVynlb6r4eyvOmspvg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
