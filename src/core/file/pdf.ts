@@ -34,7 +34,7 @@ function getViewport(page: PDFPageProxy) {
 }
 
 function createCanvas({ width, height, viewBox }: PageViewport) {
-  const canvas = createEle("canvas") as HTMLCanvasElement;
+  const canvas = createEle("canvas");
   const canvasContext = canvas.getContext("2d")!;
   canvas.height = height || viewBox[3];
   canvas.width = width || viewBox[2];

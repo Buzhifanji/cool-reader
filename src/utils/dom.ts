@@ -1,8 +1,8 @@
 import { NIcon } from "naive-ui";
 import { Component } from "vue";
 
-export function createEle(tagName: string) {
-  return document.createElement(tagName);
+export function createEle<K extends keyof HTMLElementTagNameMap>(tagName: K): HTMLElementTagNameMap[K] {
+  return document.createElement<K>(tagName);
 }
 
 export function getEleById(id: string) {
@@ -24,3 +24,11 @@ export const renderIcon = (icon: Component) => () =>
 
 export const getPDFPageSelector = (pageNumber: number) =>
   `div.page[data-page-number="${pageNumber}"] .textLayer`;
+
+export const crateLink = (url: string) => {
+  const link = createEle('link')
+  link.rel = 'stylesheet';
+  link.type = 'text/css'
+  link.href = url
+  return link
+}

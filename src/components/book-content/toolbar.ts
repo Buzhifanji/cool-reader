@@ -105,12 +105,17 @@ const openToolBar = (range: Range, _rect?: DOMRect) => {
 }
 
 export const epubWebHighlight = (range: Range, rect: DOMRect) => {
-  debugger
   addWebHighlightEvent();
   openToolBar(range, rect)
 
   // 关闭 输入消息 组件
   removeMessage()
+}
+
+export function initTooBar() {
+  Object.assign(toolBar, toolBarModel());
+  toolBarStyle.top = '0px'
+  toolBarStyle.left = '0px'
 }
 
 // 划词 高亮
@@ -235,7 +240,6 @@ export const useToolBar = () => {
         source.bookId = readingBook.id;
 
         source.notes.createTime = createTime()
-
         paintWebHighlightFromRange(source)
 
         saveNotes(source).then(() => {
@@ -246,9 +250,8 @@ export const useToolBar = () => {
   }
 
   function closeTooBar() {
-    debugger
     if (toolBar.edit) {
-      Object.assign(toolBar, toolBarModel());
+      initTooBar()
     }
   }
 

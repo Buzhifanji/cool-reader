@@ -14,7 +14,8 @@ import { isHeightWrap } from "./util";
 import { createUUID } from "./uuid";
 import { createTime } from "src/utils";
 
-export { EventType, createUUID, type DomSource, type WebHighlightOptions, type Notes };
+export { EventType, createUUID, isHeightWrap, };
+export { type DomSource, type WebHighlightOptions, type Notes }
 
 export class WebHighlight extends Paint {
 
@@ -129,6 +130,10 @@ export class WebHighlight extends Paint {
     return this._bus.on(type, callback);
   }
 
+  emit(type: EventType, data: DOMRect, source: DomSource) {
+    this._bus.emit(type, data, source)
+  }
+
   private _initEvent() {
     const root = this.getRoot()
 
@@ -140,7 +145,7 @@ export class WebHighlight extends Paint {
         const source = this._store.get(id);
         const data = this._getBoundingClientRect(id);
         if (data) {
-          this._bus.emit(EventType.click, data, source)
+          this.emit(EventType.click, data, source)
         }
       }
     })

@@ -1,10 +1,12 @@
 import { VIEWER } from "src/constants";
-import { updateReadingBook, } from "src/store";
-import { formateCatalog, getEpubIframe } from "src/utils";
+import { getWebHighlight, updateReadingBook, } from "src/store";
+import { crateLink, formateCatalog, getEpubDoc, getEpubIframe } from "src/utils";
 import epubjs, { Rendition } from "epubjs";
 import InlineView from 'epubjs/lib/managers/views/inline';
-import { epubWebHighlight } from "src/components/book-content/toolbar";
+import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
 import { Bookmark } from "@vicons/carbon";
+import { EventType, isHeightWrap } from "../web-highlight";
+import { DATA_WEB_HIGHLIGHT } from "../web-highlight/constant";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 
@@ -32,6 +34,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       updateReadingBook({ catalog: catalog });
     });
 
+
     rendition = book.renderTo(VIEWER, {
       flow: "scrolled",
       width: "793px",
@@ -49,7 +52,6 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       .catch((err) => reject(err));
 
     rendition.on('selected', (cfiRange, contents) => {
-      debugger
       const range = rendition.getRange(cfiRange)
       const iframe = getEpubIframe()
       if (iframe) {
@@ -58,8 +60,25 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       }
     })
 
-    rendition.on('click', () => {
+    // 样式表
+    rendition.themes.register("dark", "src/style/web-highlight.css");
+    rendition.themes.select("dark");
 
+    rendition.on('click', (e) => {
+      const target = e.target as HTMLElement;
+      const iframe = getEpubIframe()
+      const selection = iframe.contentDocument.getSelection()
+      if (selection.isCollapsed) {
+        if (isHeightWrap(target)) {
+          const webHighlight = getWebHighlight();
+          const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
+          const source = webHighlight.getSource(id);
+          const rect = iframe.getBoundingClientRect();
+          webHighlight.emit(EventType.click, rect, source)
+        } else {
+          closeTooBar()
+        }
+      }
     })
     updateReadingBook({ context: rendition });
   });
