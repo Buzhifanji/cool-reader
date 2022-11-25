@@ -8,13 +8,15 @@ import {
 } from "@vicons/carbon";
 import { EventType, DomSource } from "src/core/web-highlight";
 import { concatRectDom, createTime, getEleById } from "src/utils";
-import { message } from "src/naive";
+import { dialog, message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
 import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighlight, updateWebHighlight } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getWebHighlight } from "src/store";
 import { openIdea, removeMessage } from "../idea-input";
+import { useDialog } from "naive-ui";
+import { removeIdea } from "../idea/idea";
 
 interface ToolBar {
   show: boolean;
@@ -200,11 +202,21 @@ export const useToolBar = () => {
   }
   // 删除
   function remove() {
-    if (toolBar.source) {
-      if (toolBar.source.notes) {
-
+    const { source } = toolBar
+    if (source) {
+      const content = source.notes.content
+      if (content) {
+        dialog.warning({
+          title: "警告",
+          content: `删除笔记：${content}`,
+          positiveText: '确定',
+          negativeText: '取消',
+          onPositiveClick: () => {
+            removeIdea(source)
+          }
+        })
       } else {
-        removeHighlight(toolBar.source)
+        removeHighlight(source)
       }
     }
   }
