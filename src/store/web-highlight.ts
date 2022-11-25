@@ -37,7 +37,7 @@ export function removeWebHighlight(id: string) {
 
 // 只删除dom
 export function removeWebHighlightDom(id: string) {
-  return webHighlight!.removeDom(id)
+  return webHighlight.removeDom(id)
 }
 
 // 只删除 store 缓存的数据
