@@ -1,6 +1,6 @@
 import { VIEWER } from "src/constants";
 import { getWebHighlight, updateReadingBook, } from "src/store";
-import { crateLink, formateCatalog, getEpubDoc, getEpubIframe } from "src/utils";
+import { formateCatalog, getEpubIframe, getRectDomData } from "src/utils";
 import epubjs, { Rendition } from "epubjs";
 import InlineView from 'epubjs/lib/managers/views/inline';
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
@@ -71,9 +71,17 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       if (selection.isCollapsed) {
         if (isHeightWrap(target)) {
           const webHighlight = getWebHighlight();
+
           const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
           const source = webHighlight.getSource(id);
-          const rect = iframe.getBoundingClientRect();
+
+          const _rect = target.getBoundingClientRect();
+          const iframRect = iframe.getBoundingClientRect();
+
+          const rect = getRectDomData(_rect)
+          rect.top += iframRect.top;
+          rect.left += (iframRect.left - 10);
+
           webHighlight.emit(EventType.click, rect, source)
         } else {
           closeTooBar()
@@ -86,6 +94,8 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
 
 export const useEpubChangePage = () => {
   function epubJumpFromCatalog(href: string) {
+    console.log(href)
+    console.log(rendition.location)
     rendition?.display(href);
   }
   function epubPageUp() {

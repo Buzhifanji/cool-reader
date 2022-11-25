@@ -25,10 +25,12 @@ export const renderIcon = (icon: Component) => () =>
 export const getPDFPageSelector = (pageNumber: number) =>
   `div.page[data-page-number="${pageNumber}"] .textLayer`;
 
-export const crateLink = (url: string) => {
-  const link = createEle('link')
-  link.rel = 'stylesheet';
-  link.type = 'text/css'
-  link.href = url
-  return link
+/**
+ * 由于DOMRect是只读，当需要对DOMRect进行修改的时候，需要把数据修改为可以读写
+ * @param rect 
+ * @returns 
+ */
+export const getRectDomData = (rect: DOMRect) => {
+  const { width, height, x, y, bottom, left, top, right, toJSON } = rect
+  return { width, height, x, y, bottom, left, top, right, toJSON }
 }
