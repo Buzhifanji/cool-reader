@@ -4,6 +4,7 @@ import { message } from "src/naive";
 import { saveNotes, updateNotes } from "src/server/notes";
 import { getReadingBook, removeWebHighlightCache, removeWebHighlightDom } from "src/store";
 import { createTime } from "src/utils";
+import { hasHighlight } from "../highlight/highlight";
 import { getIdeas, hasIdea } from "../idea/idea";
 import Input from './index.vue'
 
@@ -25,7 +26,7 @@ export function removeMessage() {
     // 删除dom
     removeWebHighlightDom(id)
     // 删除没有保存到数据库的缓存数据
-    if (!hasIdea(id)) {
+    if (!(hasIdea(id) || hasHighlight(id))) {
       removeWebHighlightCache(id)
     }
   }

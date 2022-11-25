@@ -104,9 +104,14 @@ export const epubWebHighlight = (range: Range, rect: DOMRect) => {
 }
 
 export function initTooBar() {
-  Object.assign(toolBar, toolBarModel());
+  toolBar.show = false;
+  toolBar.source = null;
+  toolBar.edit = false;
+
   toolBarStyle.top = '0px'
   toolBarStyle.left = '0px'
+
+  removeMessage()
 }
 
 // 划词 高亮

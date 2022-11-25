@@ -29,6 +29,10 @@ export function getHighlights() {
   })
 }
 
+export function hasHighlight(id: string) {
+  return highlights.value.some(value => value.id === id);
+}
+
 export function removeHighlight({ id, bookId }: DomSource) {
   removeNotes(bookId, id).then(() => {
     removeWebHighlight(id)
