@@ -34,3 +34,14 @@ export const getRectDomData = (rect: DOMRect) => {
   const { width, height, x, y, bottom, left, top, right, toJSON } = rect
   return { width, height, x, y, bottom, left, top, right, toJSON }
 }
+
+export const concatRectDom = (react1: DOMRect, react2?: DOMRect) => {
+  const rect = getRectDomData(react1)
+
+  if (react2) {
+    rect.top += react2.top
+    rect.left += (react2.left - 10)
+  }
+
+  return rect
+}

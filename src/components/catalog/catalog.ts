@@ -56,6 +56,8 @@ export const useBookJump = () => {
         pdfJumpToPage(pageNumber as number)
         break
       case Bookextname.epub:
+        epubJumpFromCatalog(pageNumber as string,)
+        break
       default:
         console.warn("TODO: Unknown readingBook.extname");
     }

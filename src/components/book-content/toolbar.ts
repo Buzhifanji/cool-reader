@@ -7,11 +7,11 @@ import {
   TextUnderline,
 } from "@vicons/carbon";
 import { EventType, DomSource } from "src/core/web-highlight";
-import { createTime, getEleById } from "src/utils";
+import { concatRectDom, createTime, getEleById } from "src/utils";
 import { message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
-import { getReadingBook, paintWebHighlightFromRange, prevWebHighlight, updateWebHighlight } from "src/store";
+import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighlight, updateWebHighlight } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getWebHighlight } from "src/store";
 import { openIdea, removeMessage } from "../idea-input";
@@ -53,7 +53,7 @@ function hanldePageNumber(range: Range) {
     case Bookextname.pdf:
       return handlePdfPageNumber(range)
     case Bookextname.epub:
-      return ''
+      return getPageNumber().value
     default:
       return '0'
   }
@@ -85,23 +85,14 @@ const openToolBar = (range: Range, _rect?: DOMRect) => {
   const { source, rect } = prevWebHighlight(pageNumber, true, range)
 
   // epub.js 渲染采用iframe（不是iframe，存在bug，所以没有采用），此处是拼接iframe的getboundingclientrect
-  const result = {
-    top: rect.top,
-    left: rect.left,
-    height: rect.height,
-  }
-
-  if (_rect) {
-    result.top += (_rect.top - 10)
-    result.left += _rect.left
-  }
+  const res = concatRectDom(rect, _rect)
 
   source.pageNumber = pageNumber;
   toolBar.show = true;
   toolBar.source = source
 
 
-  setToolBarStle(result)
+  setToolBarStle(res)
 }
 
 export const epubWebHighlight = (range: Range, rect: DOMRect) => {
