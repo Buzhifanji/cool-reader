@@ -181,7 +181,7 @@ function updateWrapAttr({ select, id, className }: WrapNode) {
   // update className
   wrap.classList.add(className)
 
-  const extraId = getNodeExtraId(wrap)
+  const extraId = getNodeExtraId(wrap)!
   wrap.setAttribute(DATA_WEB_HIGHLIGHT, id)
   wrap.setAttribute(DATA_WEB_HIGHLIGHT_EXTRA, extraId)
 
@@ -249,7 +249,7 @@ export class Paint {
     })
 
     toRemove.forEach(node => {
-      const parent = node.parentNode;
+      const parent = node.parentNode!;
       const fragment = document.createDocumentFragment();
 
       node.childNodes.forEach(child => fragment.appendChild(child.cloneNode(false)))
@@ -258,8 +258,8 @@ export class Paint {
     })
 
     toUpdate.forEach(node => {
-      const ids = node.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA).split(ID_DIVIDION)
-      const newId = ids.pop()
+      const ids = node.getAttribute(DATA_WEB_HIGHLIGHT_EXTRA)!.split(ID_DIVIDION)
+      const newId = ids.pop()!
 
       node.setAttribute(DATA_WEB_HIGHLIGHT, newId)
 

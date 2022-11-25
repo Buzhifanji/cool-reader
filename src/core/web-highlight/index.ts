@@ -141,10 +141,10 @@ export class WebHighlight extends Paint {
       const target = e.target as HTMLElement;
 
       if (isHeightWrap(target)) {
-        const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
+        const id = target.getAttribute(DATA_WEB_HIGHLIGHT)!
         const source = this._store.get(id);
         const data = this._getBoundingClientRect(id);
-        if (data) {
+        if (data && source) {
           this.emit(EventType.click, data, source)
         }
       }
@@ -164,7 +164,7 @@ export class WebHighlight extends Paint {
 
     let { className, tagName } = this.options
     className = (className || defaultOptions.className) as string;
-    tagName = tagName || defaultOptions.tagName
+    tagName = (tagName || defaultOptions.tagName)!
 
     return { className, tagName }
   }

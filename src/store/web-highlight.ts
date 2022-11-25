@@ -48,7 +48,7 @@ export function removeWebHighlightCache(id: string) {
 // 如果是 书本， 则需要更新 root 
 function updateOptionRoot(pageNumber: NumberOrString, isBook: boolean) {
   if (isBook) {
-    const root = getBookRoot(pageNumber)
+    const root = getBookRoot(pageNumber)!
     updateWebHighlightOption({ root })
   }
 }

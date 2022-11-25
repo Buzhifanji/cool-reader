@@ -1,7 +1,7 @@
 import { VIEWER } from "src/constants";
 import { getWebHighlight, updatePageNumber, updateReadingBook, } from "src/store";
 import { concatRectDom, formateCatalog, getEpubIframe } from "src/utils";
-import epubjs, { Rendition } from "epubjs";
+import epubjs, { Rendition, Location } from "epubjs";
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
 import { Bookmark } from "@vicons/carbon";
 import { EventType, isHeightWrap } from "../web-highlight";
@@ -50,8 +50,8 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       .catch((err) => reject(err));
 
     // 选中文本
-    rendition.on('selected', (cfiRange, contents) => {
-      const range = rendition.getRange(cfiRange)
+    rendition.on('selected', (cfiRange: string) => {
+      const range = rendition!.getRange(cfiRange)
       const iframe = getEpubIframe()
       if (iframe) {
         const rect = iframe.getBoundingClientRect();
@@ -64,24 +64,26 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     rendition.themes.select("dark");
 
     // 点击
-    rendition.on('click', (e) => {
+    rendition.on('click', (e: Event) => {
       const target = e.target as HTMLElement;
-      const iframe = getEpubIframe()
-      const selection = iframe.contentDocument.getSelection()
-      if (selection.isCollapsed) {
+      const iframe = getEpubIframe()!
+      const selection = iframe.contentDocument!.getSelection()
+      if (selection && selection.isCollapsed) {
         if (isHeightWrap(target)) {
           // 打开工具栏
           const webHighlight = getWebHighlight();
 
-          const id = target.getAttribute(DATA_WEB_HIGHLIGHT)
+          const id = target.getAttribute(DATA_WEB_HIGHLIGHT)!
           const source = webHighlight.getSource(id);
 
-          const _rect = target.getBoundingClientRect();
-          const iframRect = iframe.getBoundingClientRect();
+          if (source) {
+            const _rect = target.getBoundingClientRect();
+            const iframRect = iframe.getBoundingClientRect();
 
-          const rect = concatRectDom(_rect, iframRect)
+            const rect = concatRectDom(_rect, iframRect)
 
-          webHighlight.emit(EventType.click, rect, source)
+            webHighlight.emit(EventType.click, rect, source)
+          }
         } else {
           // 关闭工具栏
           closeTooBar()
@@ -89,7 +91,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       }
     })
 
-    rendition.on('relocated', location => {
+    rendition.on('relocated', (location: Location) => {
       updatePageNumber(location.start.href)
     })
     updateReadingBook({ context: rendition });

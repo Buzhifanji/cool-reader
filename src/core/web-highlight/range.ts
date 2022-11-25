@@ -8,7 +8,7 @@ export class RangeContext {
 
   getRange(): Range | null {
     const selection = this.getSelection();
-    if (!selection.isCollapsed) {
+    if (selection && !selection.isCollapsed) {
       this._range = selection.getRangeAt(0)
       return this._range;
     }
@@ -17,7 +17,7 @@ export class RangeContext {
 
   removeAllRanges() {
     const selection = this.getSelection();
-    if (selection.rangeCount > 0) {
+    if (selection && selection.rangeCount > 0) {
       selection.removeAllRanges();
     }
   }

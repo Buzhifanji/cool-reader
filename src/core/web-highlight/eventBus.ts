@@ -12,7 +12,7 @@ export class EventBus {
     } else {
       const list = this._map.get(type)
 
-      if (!list.includes(callback)) {
+      if (list && !list.includes(callback)) {
         list.push(callback)
       }
     }
@@ -22,7 +22,7 @@ export class EventBus {
   off(type: EventType, callback?: Handler) {
     if (callback) {
       if (this._map.has(type)) {
-        const list = this._map.get(type)
+        const list = this._map.get(type)!
         const idnex = list.findIndex(item => item === callback)
 
         if (idnex !== -1) {
@@ -37,7 +37,7 @@ export class EventBus {
   }
   emit(type: EventType, data: DOMRect, source: DomSource) {
     if (this._map.has(type)) {
-      this._map.get(type).forEach(Handler => Handler(data, source))
+      this._map.get(type)!.forEach(Handler => Handler(data, source))
     }
 
     return this;
