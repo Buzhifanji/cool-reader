@@ -1,6 +1,7 @@
 import { TabPaneEnum } from "src/enums";
 import Idea from 'src/components/idea/idea.vue'
 import Highlight from 'src/components/highlight/highlight.vue'
+import { langField } from "src/i18n";
 // import Bookmark from 'src/components/bookmark/bookmark.vue'
 
 export const useNotesSection = () => {
@@ -23,10 +24,11 @@ export const useNotesSection = () => {
     showNotes.value = !showNotes.value;
   });
 
+  const { notes, highlight } = langField.value;
   const tabPanes = [
     // { name: TabPaneEnum.catalog, tab: "目录" },
-    { name: TabPaneEnum.idea, tab: "笔记" },
-    { name: TabPaneEnum.highlight, tab: "高亮" },
+    { name: TabPaneEnum.idea, tab: notes },
+    { name: TabPaneEnum.highlight, tab: highlight },
     // { name: TabPaneEnum.bookmark, tab: "书签" },
   ];
 

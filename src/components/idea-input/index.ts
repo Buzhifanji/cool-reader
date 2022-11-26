@@ -1,5 +1,6 @@
 import { createDiscreteApi, MessageReactive } from "naive-ui";
 import { createUUID, DomSource } from "src/core/web-highlight";
+import { langField } from "src/i18n";
 import { message } from "src/naive";
 import { saveNotes, updateNotes } from "src/server/notes";
 import { getReadingBook, removeWebHighlightCache, removeWebHighlightDom } from "src/store";
@@ -77,7 +78,7 @@ export const useInputIdea = () => {
         removeMessage()
       }
     } else {
-      message.error("您还未填写笔记！");
+      message.error(langField.value.notesTipWrite);
     }
   }
   return { text, submit };

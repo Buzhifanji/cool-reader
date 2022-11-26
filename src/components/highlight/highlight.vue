@@ -2,6 +2,7 @@
 import { Delete, FaceWink } from "@vicons/carbon";
 import { highlights, removeHighlight } from "./highlight";
 import { useBookJump } from '../catalog/catalog'
+import { langField } from "src/i18n";
 
 const { pageNumberJump } = useBookJump();
 </script>
@@ -17,7 +18,7 @@ const { pageNumberJump } = useBookJump();
       </n-ellipsis>
     </n-list-item>
   </n-list>
-  <n-empty description="空空如也" v-else>
+  <n-empty :description="langField.nothing" v-else>
     <template #icon>
       <n-icon>
         <FaceWink />

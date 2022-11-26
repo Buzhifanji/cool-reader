@@ -5,7 +5,8 @@ import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
 import { useCatalogSection } from "src/views/reader/catalog";
 import { initWebHighlight } from "src/store";
-
+import { useHelp } from "./help";
+import { langField } from "src/i18n";
 
 // 初始化 高亮笔记功能
 initWebHighlight({})
@@ -16,6 +17,9 @@ const { showNotes, notesActiveTab, components, tabPanes, notesWidth } =
   useNotesSection();
 // 目录
 const { showCatalog, catalogWidth } = useCatalogSection();
+
+// 帮助
+const { showHelp, helpList } = useHelp()
 
 const { readingBook } = useReaderBook(route);
 
@@ -69,6 +73,15 @@ onMounted(() => {
           </n-tabs>
         </n-drawer-content>
       </n-drawer>
+      <!-- 帮助 -->
+      <n-modal v-model:show="showHelp" :title="langField.help" style="width: 50%;" preset="card" size="huge"
+        :bordered="false">
+        <n-descriptions v-for="item in helpList" label-placement="left" :title="item.title" size="large" :column="2">
+          <n-descriptions-item v-for="cur in item.list" :label="cur.name">
+            {{ cur.value }}
+          </n-descriptions-item>
+        </n-descriptions>
+      </n-modal>
     </n-layout-content>
   </n-layout>
 </template>

@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api";
 import { DomSource, Notes } from "src/core/web-highlight";
+import { langField } from "src/i18n";
 import { NotesRes } from "src/interfaces";
 import { message } from "src/naive";
 import { generateServiceParams } from "src/utils";
@@ -9,7 +10,7 @@ export function saveNotes(param: DomSource) {
   const data = generateServiceParams<DomSource, NotesRes>(param);
   return invoke("add_notes", { data })
     .then(() => {
-      message.success("添加成功");
+      message.success(langField.value.addSuccess);
     })
     .catch((err) => {
       message.error(err);
@@ -20,7 +21,7 @@ export function updateNotes(param: DomSource) {
   const data = generateServiceParams<DomSource, NotesRes>(param);
   return invoke("update_notes", { data })
     .then(() => {
-      message.success("修改成功");
+      message.success(langField.value.updateSuccess);
     })
     .catch((err) => {
       message.error(err);
@@ -62,7 +63,7 @@ export function getAllNotes(bookId: string): Promise<DomSource[]> {
 export function removeNotes(book_id: string, id: string,) {
   return invoke("delete_notes", { data: { book_id, id } })
     .then(() => {
-      message.success("删除成功");
+      message.success(langField.value.deleteSuccess);
     })
     .catch((err) => {
       message.error(err);
