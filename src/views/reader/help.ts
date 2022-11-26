@@ -3,7 +3,7 @@ import { langField } from "src/i18n";
 export const useHelp = () => {
   const showHelp = ref<boolean>(false)
 
-  onKeyStroke(["h", "H"], (e) => {
+  const stop = onKeyStroke(["h", "H"], (e) => {
     e.preventDefault();
     showHelp.value = !showHelp.value;
   });
@@ -17,6 +17,10 @@ export const useHelp = () => {
       ]
     }
   ])
+
+  onUnmounted(() => {
+    stop()
+  })
 
   return { showHelp, helpList, }
 }

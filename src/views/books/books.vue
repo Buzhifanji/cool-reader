@@ -20,6 +20,16 @@ const {
   onClickOutside,
   menus,
 } = useContextMenu();
+
+const stop = onKeyStroke(["i", "I"], (e) => {
+  e.preventDefault();
+  downloadFile()
+});
+
+onUnmounted(() => {
+  stop()
+})
+
 </script>
 
 <template>
@@ -42,7 +52,6 @@ const {
         :on-clickoutside="onClickOutside" @select="handleSelect" />
     </div>
   </template>
-
   <n-result v-else status="418" :title="langField.noBookTitle" :description="langField.noBookDesc">
     <template #footer>
       <n-button @click="downloadFile">{{ langField.noBookUpload }}</n-button>

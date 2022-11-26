@@ -3,10 +3,14 @@ export const useCatalogSection = () => {
   const catalogWidth = 294;
   onMounted(() => (showCatalog.value = true));
 
-  onKeyStroke(["m", "M"], (e) => {
+  const stop = onKeyStroke(["m", "M"], (e) => {
     e.preventDefault();
     showCatalog.value = !showCatalog.value;
   });
+
+  onUnmounted(() => {
+    stop();
+  })
 
   return { showCatalog, catalogWidth };
 };
