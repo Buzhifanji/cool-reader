@@ -8,7 +8,7 @@ import { READER_LANG } from "src/constants";
 export const langField = ref<LangField>(zhCNLocal);
 export const language = ref<Langs>(Langs.zhCN);
 
-export function changeLanguage(lang: Langs) {
+function changeLanguage(lang: Langs) {
   localStorage.setItem(READER_LANG, lang);
   language.value = lang;
 }
@@ -75,6 +75,7 @@ watch(language, (newValue, oldValue) => {
         console.warn("TODO: Unknown language: " + language.value);
         break;
     }
+    changeLanguage(newValue)
   }
 });
 

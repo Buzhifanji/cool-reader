@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import Header from "./header.vue";
 import Menu from "./menu.vue";
 
 </script>
 
 <template>
   <n-layout>
-    <n-layout-header bordered>
-      <Header />
-    </n-layout-header>
-    <n-layout has-sider>
+    <n-divider />
+    <n-layout has-sider bordered>
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"
         :native-scrollbar="false" style="max-height: 320px">
         <Menu />
@@ -22,6 +19,11 @@ import Menu from "./menu.vue";
 </template>
 
 <style scoped>
+.n-divider {
+  margin-top: 12px;
+  margin-bottom: 0px;
+}
+
 .n-layout-content {
   padding: 20px;
 }
