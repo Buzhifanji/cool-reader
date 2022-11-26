@@ -5,7 +5,6 @@ import Menu from "./menu.vue";
 
 <template>
   <n-layout>
-    <n-divider />
     <n-layout has-sider bordered>
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"
         :native-scrollbar="false" style="max-height: 320px">

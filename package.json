@@ -14,7 +14,8 @@
     "test": "wdio run wdio.conf.ts",
     "ts-check": "vue-tsc --noEmit",
     "check": "cd src-tauri && cargo check",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.1.0",

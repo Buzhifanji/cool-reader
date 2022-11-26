@@ -23,7 +23,7 @@ specifiers:
   concurrently: ^7.5.0
   dpdm: ^3.10.0
   epubjs: ^0.3.93
-  husky: ^8.0.2
+  husky: ^8.0.0
   jsdom: ^20.0.2
   jsdom-global: ^3.0.2
   msedgedriver: ^91.0.0
