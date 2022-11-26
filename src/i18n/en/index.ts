@@ -30,5 +30,8 @@ export const enUS: LangField = {
 
   addSuccess: "successfully Added",
   deleteSuccess: "successfully deleted",
-  updateSuccess: "Successfully modified"
+  updateSuccess: "Successfully modified",
+
+  setting: "setting",
+  settingLange: "Language",
 };

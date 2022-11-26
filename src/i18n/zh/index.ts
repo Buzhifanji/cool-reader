@@ -30,5 +30,8 @@ export const zhCN: LangField = {
 
   addSuccess: "添加成功",
   deleteSuccess: "删除成功",
-  updateSuccess: "修改成功"
+  updateSuccess: "修改成功",
+
+  setting: "设置",
+  settingLange: "语言",
 };

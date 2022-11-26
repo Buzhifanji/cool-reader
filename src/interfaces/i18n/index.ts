@@ -36,4 +36,8 @@ export interface LangField {
   addSuccess: string;
   deleteSuccess: string;
   updateSuccess: string;
+
+  // 设置
+  setting: string;
+  settingLange: string;
 }
