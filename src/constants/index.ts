@@ -14,3 +14,5 @@ export const HIGHLIGHT_TIIDE_CLASS_NAME = "c-tilde";
 export const HIGHLIGHT_STRAIGHT_CLASS_NAME = "c-straight-line";
 
 export const RECORD_LAST_POSITION = "cool-reader.scrolL"
+
+export const READER_LANG = "reader_lang"

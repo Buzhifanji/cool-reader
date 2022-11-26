@@ -2,18 +2,17 @@ import { LangField } from "src/interfaces";
 import { dateEnUS, dateZhCN, enUS, NDateLocale, NLocale, zhCN } from "naive-ui";
 import { enUS as enUSLocal } from "./en";
 import { zhCN as zhCNLocal } from "./zh";
+import { Langs } from "src/enums";
+import { READER_LANG } from "src/constants";
 
 export const langField = ref<LangField>(zhCNLocal);
-
-export enum Langs {
-  zhCN = "zh-CN", // 简体中文
-  enUS = "en-US", // 英语
-}
-
 export const language = ref<Langs>(Langs.zhCN);
+
 export function changeLanguage(lang: Langs) {
+  localStorage.setItem(READER_LANG, lang);
   language.value = lang;
 }
+
 
 // 浏览器语言
 function navigatorLanguage() {
@@ -29,7 +28,16 @@ function navigatorLanguage() {
       break;
   }
 }
-navigatorLanguage();
+
+function initLang() {
+  const cache = localStorage.getItem(READER_LANG)
+  if (cache) {
+    language.value = cache as Langs;
+  } else {
+    navigatorLanguage();
+  }
+}
+
 
 export function loadLang(key: keyof LangField) {
   switch (language.value) {
@@ -69,3 +77,5 @@ watch(language, (newValue, oldValue) => {
     }
   }
 });
+
+initLang()
