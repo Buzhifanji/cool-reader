@@ -10,7 +10,7 @@ import Menu from "./menu.vue";
         :native-scrollbar="false" style="max-height: 320px">
         <Menu />
       </n-layout-sider>
-      <n-layout-content>
+      <n-layout-content style="padding: 0px">
         <router-view></router-view>
       </n-layout-content>
     </n-layout>

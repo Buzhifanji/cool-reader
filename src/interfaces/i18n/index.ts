@@ -23,6 +23,9 @@ export interface LangField {
 
   // 高亮
   highlight: string;
+  highlightSearchPlaceholder: string;
+  highlightRecordPrev: string;
+  highlightRecordNext: string;
 
   // 帮助相关
   help: string;

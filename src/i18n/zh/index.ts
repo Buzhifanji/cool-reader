@@ -20,6 +20,9 @@ export const zhCN: LangField = {
   notesPlaceholder: "输入你的想法",
 
   highlight: '高亮',
+  highlightSearchPlaceholder: '搜索我的高亮',
+  highlightRecordPrev: '您一共记录了',
+  highlightRecordNext: '条高亮笔记',
 
   help: '帮助',
   shortcutKey: '快捷键',

@@ -20,6 +20,9 @@ export const enUS: LangField = {
   notesPlaceholder: "enter your thoughts",
 
   highlight: 'highlight',
+  highlightSearchPlaceholder: 'search my highlight',
+  highlightRecordPrev: 'You have recorded a total of',
+  highlightRecordNext: 'highlighted notes',
 
   help: 'help',
   shortcutKey: 'shortcut key',
