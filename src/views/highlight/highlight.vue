@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import { Search, ShowDataCards, List } from "@vicons/carbon";
 import { langField } from 'src/i18n';
+import { NotesSource } from "src/interfaces/components/notes";
 import { getAllNotes } from "src/server/notes";
-getAllNotes()
+import { hanldeList } from "src/utils";
+
+const total = ref<number>(0)
+const list = ref<NotesSource[]>([])
+
+getAllNotes().then(value => {
+  total.value = value.length
+  list.value = hanldeList(value)
+})
+
 </script>
 
 <template>
@@ -10,7 +20,7 @@ getAllNotes()
     <n-layout-header style="height: 60px; padding: 4px">
       <n-space justify="space-between">
         <n-statistic :label="langField.highlightRecordPrev" tabular-nums>
-          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="12039" />
+          <n-number-animation ref="numberAnimationInstRef" :from="0" :to="total" />
           <template #suffix>
             {{ langField.highlightRecordNext }}
           </template>
@@ -43,30 +53,12 @@ getAllNotes()
     </n-layout-header>
     <n-layout position="absolute" style="top: 60px; bottom: 0px" has-sider>
       <n-layout content-style="padding: 24px;" :native-scrollbar="false">
-        <n-p>
-          <n-time :time="0" type="date" />
-        </n-p>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-p>
-          <n-time :time="1" type="date" />
-        </n-p>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-p>
-          <n-time :time="1" type="date" />
-        </n-p>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-p>
-          <n-time :time="1" type="date" />
-        </n-p>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
-        <n-card>没有标题</n-card>
+        <template v-for="item in list" :key="item.time">
+          <n-p>
+            <n-time :time="item.time" format="yyyy-MM-dd" />
+          </n-p>
+          <n-card v-for="sub in item.content">{{ sub.text }}</n-card>
+        </template>
       </n-layout>
     </n-layout>
   </n-layout>

@@ -44,12 +44,15 @@ export function getHeighlightsById(bookId: string) {
   return filterNotes(bookId, notes => notes.content.length === 0)
 }
 
-export function getAllNotes() {
-  return invoke("get_all_notes", {}).then(value => {
-    console.log(value)
-  }).catch((err) => {
-    message.error(err);
-  });
+export function getAllNotes(): Promise<DomSource[]> {
+  return new Promise((resolve) => {
+    invoke("get_all_notes", {}).then(value => {
+      resolve(value as DomSource[])
+    }).catch((err) => {
+      resolve([])
+      message.error(err);
+    });
+  })
 }
 
 export function getNotesByBookId(bookId: string): Promise<DomSource[]> {
