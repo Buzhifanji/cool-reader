@@ -53,7 +53,7 @@ export const useBookJump = () => {
   function pageNumberJump({ pageNumber }: DomSource) {
     switch (readingBook.extname) {
       case Bookextname.pdf:
-        pdfJumpToPage(pageNumber as number)
+        pdfJumpToPage(+pageNumber)
         break
       case Bookextname.epub:
         epubJumpFromCatalog(pageNumber as string,)

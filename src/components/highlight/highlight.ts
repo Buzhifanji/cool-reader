@@ -13,7 +13,7 @@ const pageNumber = getPageNumber();
 
 watch(pageNumber, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    const list = highlights.value.filter(value => value.pageNumber === pageNumber.value);
+    const list = highlights.value.filter(value => (value.pageNumber.toString()) === (pageNumber.value.toString()));
 
     if (list.length > 0) {
       paintWebHighlightFromSource(list)
