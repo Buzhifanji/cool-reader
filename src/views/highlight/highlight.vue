@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Search, ShowDataCards, List } from "@vicons/carbon";
 import { langField } from 'src/i18n';
-
+import { getAllNotes } from "src/server/notes";
+getAllNotes()
 </script>
 
 <template>

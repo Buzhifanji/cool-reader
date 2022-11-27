@@ -108,6 +108,42 @@ impl NotestData {
         Ok(list)
     }
 
+    pub fn query_all_notes(&self) -> Result<Vec<Notes>> {
+        let mut stmt = self.conn.prepare("select * from Notes").unwrap();
+        let mut rows = stmt.query(named_params! {})?;
+        let mut list: Vec<Notes> = Vec::new();
+        while let Some(row) = rows.next()? {
+            let result = Notes {
+                book_id: row.get(0)?,
+                id: row.get(1)?,
+                text: row.get(2)?,
+                class_name: row.get(3)?,
+                start_dom_meta: DomMeta {
+                    index: row.get(4)?,
+                    tag_name: row.get(5)?,
+                    offset: row.get(6)?,
+                },
+                end_dom_meta: DomMeta {
+                    index: row.get(7)?,
+                    tag_name: row.get(8)?,
+                    offset: row.get(9)?,
+                },
+                page_number: row.get(10)?,
+                create_time: row.get(11)?,
+                tag_name: row.get(12)?,
+                notes: NotesContent {
+                    content: row.get(13)?,
+                    id: row.get(14)?,
+                    create_time: row.get(15)?,
+                    tag: row.get(16)?,
+                },
+            };
+            list.push(result)
+        }
+
+        Ok(list)
+    }
+
     pub fn insert_notes(&mut self, data: Notes) -> Result<bool, String> {
         match self.conn.execute(
           "INSERT INTO Notes 

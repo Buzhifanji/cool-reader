@@ -10,6 +10,14 @@ pub fn get_notes(book_id: &str) -> Vec<Notes> {
 }
 
 #[tauri::command]
+pub fn get_all_notes() -> Vec<Notes> {
+    let handler = NotestData::new().unwrap();
+    let result = handler.query_all_notes().unwrap();
+    handler.conn.close().unwrap();
+    result
+}
+
+#[tauri::command]
 pub fn add_notes(data: Notes) -> Result<bool, String> {
     let mut handler = NotestData::new().unwrap();
     let result = handler.insert_notes(data);
