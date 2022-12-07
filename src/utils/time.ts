@@ -1,5 +1,5 @@
 import { DomSource } from "src/core/web-highlight";
-import { NotesSource } from "src/interfaces/components/notes";
+import { NotesSource } from "src/interfaces";
 
 export const createTime = () => new Date().valueOf();
 
