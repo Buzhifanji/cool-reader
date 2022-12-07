@@ -47,7 +47,10 @@ export function getHeighlightsById(bookId: string) {
 export function getAllNotes(): Promise<DomSource[]> {
   return new Promise((resolve) => {
     invoke("get_all_notes", {}).then(value => {
-      resolve(value as DomSource[])
+      const result = (value as NotesRes[]).map((item) =>
+        generateServiceParams<NotesRes, DomSource>(item, false)
+      );
+      resolve(result)
     }).catch((err) => {
       resolve([])
       message.error(err);

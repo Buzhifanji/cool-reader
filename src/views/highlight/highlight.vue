@@ -1,49 +1,24 @@
 <script setup lang="ts">
 import { Search, ShowDataCards, Delete, List } from "@vicons/carbon";
 import { langField } from 'src/i18n';
-import { NotesSource } from "src/interfaces";
-import { getAllNotes } from "src/server/notes";
 import { hanldeNotesByTime } from "src/utils";
-import { initRenderData, visiableData } from "render-big-data";
-
+import { initRenderData } from "render-big-data";
+import { initAllNotes, getAllHighlights } from "src/store";
+import { useVirtualList } from "src/core/scroll/virtual-list"
 
 const total = ref<number>(0)
-
 // 目前不知道 如何在HTML配置 // @ts-ignore，所以使用了 any类型
 const list = ref<any[]>([])
 
-// const { visibleList, initHeight, updateHeight, watchScroll, scroll } = useVirtualList<NotesSource>(list)
-
-// const contentStyle = computed(() => {
-//   return {
-//     padding: '24px',
-//     height: `${scroll.scrollBarHeight}px`
-//   }
-// })
-
-// const transform = computed(() => {
-//   return { transform: `translate3d(0, ${scroll.scrollTop}px), 0` }
-// })
-
-getAllNotes().then(value => {
-  total.value = value.length
-  const arr = hanldeNotesByTime(value)
-  initRenderData(arr, {
-    renderNum: 20
-  })
-  // initHeight()
+initAllNotes().then(() => {
+  const hightlights = getAllHighlights();
+  total.value = hightlights.length;
+  // 按照时间分类
+  const arr = hanldeNotesByTime(hightlights)
+  initRenderData(arr)
 })
 
-const unsubscribe = visiableData.subscribe((value: any) => (list.value = value));
-
-function update() {
-
-}
-
-function onScroll(e: Event) {
-  console.log('-------------')
-  const target = e.target as HTMLElement;
-}
+useVirtualList(list)
 
 
 </script>
@@ -85,7 +60,7 @@ function onScroll(e: Event) {
 
     </n-layout-header>
     <n-layout position="absolute" style="top: 60px; bottom: 0px" has-sider>
-      <n-layout :native-scrollbar="false" contentStyle="height: 100%" @onScroll="onScroll">
+      <n-layout :native-scrollbar="false" contentStyle="height: 100%">
         <virtual-list>
           <virtual-list-item v-for="(item, index) in list" :index="index" :key="item.time">
             <n-h1 v-if="item.time">{{ item.time }} </n-h1>

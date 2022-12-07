@@ -1,4 +1,5 @@
 import { DATA_SOURCE_ID, NOTES_ID, NOTES_LINE_CLASS_NAME } from "src/constants";
+import { DomSource } from "src/core/web-highlight";
 
 export const isArray = (value: any) => Array.isArray(value);
 export const arrayHasData = (value: any[]) => arrayHasData.length > 0;
@@ -42,3 +43,5 @@ export const hasHighlight = (node: HTMLElement): boolean =>
 
 export const isEndsWith = (str: string, value: string): boolean =>
   str.endsWith(value);
+
+export const isHightlight = (value: DomSource) => value.notes.content.length === 0;
