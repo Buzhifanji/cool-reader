@@ -97,13 +97,13 @@ onMounted(() => {
 }
 
 .n-tabs {
-  height: calc(100% - 229px);
+  height: 100;
   overflow: hidden;
 }
 
 .n-tab-pane {
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .n-card {
