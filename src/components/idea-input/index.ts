@@ -1,4 +1,6 @@
+import { emit } from "@tauri-apps/api/event";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
+import { NOTES_CHANGE } from "src/constants";
 import { createUUID, DomSource } from "src/core/web-highlight";
 import { langField } from "src/i18n";
 import { message } from "src/naive";
@@ -74,6 +76,7 @@ export const useInputIdea = () => {
 
           await saveNotes(source)
         }
+        emit(NOTES_CHANGE, source)
         getIdeas()
         removeMessage()
       }

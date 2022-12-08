@@ -9,13 +9,14 @@ import {
 import { EventType, DomSource } from "src/core/web-highlight";
 import { concatRectDom, createTime, getEleById } from "src/utils";
 import { dialog, message } from "src/naive";
-import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
+import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, NOTES_CHANGE, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
 import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighlight, updateWebHighlight } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
 import { getWebHighlight } from "src/store";
 import { openIdea, removeMessage } from "../idea-input";
 import { removeIdea } from "../idea/idea";
+import { emit } from '@tauri-apps/api/event'
 
 interface ToolBar {
   show: boolean;
@@ -243,7 +244,9 @@ export const useToolBar = () => {
           // 更新ui
           updateWebHighlight(source)
           // 存入数据库
-          updateNotes(source)
+          updateNotes(source).then(() => {
+            emit(NOTES_CHANGE, source)
+          })
         }
       } else {
         // 创建
@@ -256,6 +259,7 @@ export const useToolBar = () => {
         paintWebHighlightFromRange(source)
 
         saveNotes(source).then(() => {
+          emit(NOTES_CHANGE, source)
           getHighlights()
         })
       }

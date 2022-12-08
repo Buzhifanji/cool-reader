@@ -4,9 +4,10 @@
 import { useLoadFile } from "src/store";
 import DefaultBookCover from 'src/assets/book_cover.png';
 import { downloadFile } from "src/core/file/file";
-import { openReaderWindow } from "src/core/system/window";
 import { useBooks, useContextMenu } from "./book";
 import { langField } from "src/i18n/index";
+import { BookData } from "src/interfaces";
+import { createWin, setReaderWinUlr } from "src/core/windows";
 
 const { percentage } = useLoadFile();
 
@@ -26,6 +27,11 @@ const stop = onKeyStroke(["i", "I"], (e) => {
   downloadFile()
 });
 
+const open = ({ id, bookName }: BookData) => {
+  const url = setReaderWinUlr(id)
+  createWin(id, { url, title: bookName })
+}
+
 onUnmounted(() => {
   stop()
 })
@@ -37,7 +43,7 @@ onUnmounted(() => {
   <template v-if="books.length">
     <div class="card-wrapper">
       <n-card :bordered="false" v-for="item in books" :key="item.id" @contextmenu="handleContextMenu($event, item.id)"
-        @click="openReaderWindow(item)">
+        @click="open(item)">
         <template #cover>
           <div class="book-cover">
             <n-image :src="item.cover" :fallback-src="DefaultBookCover" preview-disabled />
