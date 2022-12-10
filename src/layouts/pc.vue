@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import Menu from "./menu.vue";
-
+import Header from './header.vue'
 </script>
 
 <template>
   <n-layout>
+    <n-layout-header style="height: 64px; padding: 24px" bordered>
+      <Header />
+    </n-layout-header>
     <n-layout has-sider bordered>
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"
         :native-scrollbar="false" style="max-height: 320px">
         <Menu />
       </n-layout-sider>
-      <n-layout-content style="padding: 0px">
+      <n-layout-content>
         <router-view></router-view>
       </n-layout-content>
     </n-layout>
@@ -25,5 +28,10 @@ import Menu from "./menu.vue";
 
 .n-layout-content {
   padding: 20px;
+}
+
+svg {
+  /* font-family: tahoma, "microsoft yahei", "\5FAE\8F6F\96C5\9ED1"; */
+  /* color: #666; */
 }
 </style>

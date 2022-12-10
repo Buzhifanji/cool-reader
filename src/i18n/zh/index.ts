@@ -35,6 +35,16 @@ export const zhCN: LangField = {
   deleteSuccess: "删除成功",
   updateSuccess: "修改成功",
 
+  confirmExistTitle: '警告',
+  confirmExistContent: "确认退出应用程序吗？",
+
+  windowMinize: '最小化',
+  windowMaximize: '最大化',
+  windowFork: '关闭',
+  windowRestore: '向下还原',
+  windowHide: "最小化托盘",
+  windowExit: "退出程序",
+
   setting: "设置",
   settingLange: "语言",
 };

@@ -35,6 +35,16 @@ export const enUS: LangField = {
   deleteSuccess: "successfully deleted",
   updateSuccess: "Successfully modified",
 
+  confirmExistTitle: "warning",
+  confirmExistContent: "Are you sure to exit the application?",
+
+  windowMinize: 'minize',
+  windowMaximize: 'maximize',
+  windowFork: 'fork',
+  windowRestore: 'restore',
+  windowHide: 'hide',
+  windowExit: 'exit',
+
   setting: "setting",
   settingLange: "Language",
 };

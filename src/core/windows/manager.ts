@@ -36,6 +36,7 @@ export async function createWin(label: string, options: WindowOptions) {
 
   const win = new WebviewWindow(label, args)
 
+
   // 创建成功
   win.once("tauri://created", function (value) {
   });

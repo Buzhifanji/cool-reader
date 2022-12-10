@@ -40,6 +40,17 @@ export interface LangField {
   deleteSuccess: string;
   updateSuccess: string;
 
+  confirmExistTitle: string;
+  confirmExistContent: string;
+
+  // 窗口
+  windowMinize: string;
+  windowMaximize: string;
+  windowFork: string;
+  windowRestore: string;
+  windowHide: string;
+  windowExit: string;
+
   // 设置
   setting: string;
   settingLange: string;

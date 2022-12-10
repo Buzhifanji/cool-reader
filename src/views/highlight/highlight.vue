@@ -111,7 +111,12 @@ useVirtualList(list)
 }
 
 .n-h1 {
-  padding-top: 20px;
+  /* padding-top: 20px; */
+  padding: 20px 24px 0 24px;
+}
+
+.text {
+  padding: 0 24px;
 }
 
 .n-divider {
