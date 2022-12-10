@@ -25,7 +25,7 @@ rusqlite = { version = "0.28.0", features = ["bundled"] }
 
 serde = { version = "1.0.146", features = ["derive"] }
 tauri-driver = "0.1.2"
-tauri = { version = "1.1.0", features = ["api-all"] }
+tauri = { version = "1.1.0", features = ["api-all", "system-tray"] }
 
 [features]
 # by default Tauri runs in production mode

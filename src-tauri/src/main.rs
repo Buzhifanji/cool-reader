@@ -42,6 +42,7 @@ fn main() {
 
             Ok(())
         })
+        .system_tray(tauri::SystemTray::default()) // 将 `tauri.conf.json` 上配置的图标添加到系统托盘
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
