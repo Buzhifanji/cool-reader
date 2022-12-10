@@ -4,6 +4,7 @@ import { enUS as enUSLocal } from "./en";
 import { zhCN as zhCNLocal } from "./zh";
 import { Langs } from "src/enums";
 import { READER_LANG } from "src/constants";
+import { invoke } from "@tauri-apps/api/tauri";
 
 export const langField = ref<LangField>(zhCNLocal);
 export const language = ref<Langs>(Langs.zhCN);
@@ -11,8 +12,13 @@ export const language = ref<Langs>(Langs.zhCN);
 function changeLanguage(lang: Langs) {
   localStorage.setItem(READER_LANG, lang);
   language.value = lang;
+  invokeLanguage()
 }
 
+// 通知 服务 当前语言
+function invokeLanguage() {
+  invoke("set_lang", { message: language.value });
+}
 
 // 浏览器语言
 function navigatorLanguage() {
@@ -36,6 +42,7 @@ function initLang() {
   } else {
     navigatorLanguage();
   }
+  invokeLanguage()
 }
 
 

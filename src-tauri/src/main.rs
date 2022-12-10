@@ -5,8 +5,10 @@
 use tokio::sync::mpsc;
 use tokio::sync::Mutex;
 use tracing_subscriber;
-mod command;
 mod data_base;
+mod file;
+mod language;
+mod tray;
 
 fn main() {
     tracing_subscriber::fmt::init();
@@ -14,17 +16,20 @@ fn main() {
     let (async_proc_input_tx, async_proc_input_rx) = mpsc::channel(1);
     let (async_proc_output_tx, mut async_proc_output_rx) = mpsc::channel(1);
 
+    let context = tauri::generate_context!();
+
     tauri::Builder::default()
-        .manage(command::AsyncProcInputTx {
+        .manage(file::AsyncProcInputTx {
             inner: Mutex::new(async_proc_input_tx),
         })
         .invoke_handler(tauri::generate_handler![
-            command::download_local_file,      // 读取文件
+            file::download_local_file,         // 读取文件
             data_base::command::get_notes,     // 获取书某本书全部笔记内容
             data_base::command::get_all_notes, // 获取全部笔记内容
             data_base::command::add_notes,     // 新增一条笔记
             data_base::command::delete_notes,  // 更新一条笔记
             data_base::command::update_notes,  // 删除一条笔记
+            language::set_lang,
         ])
         .setup(|app| {
             tauri::async_runtime::spawn(async move {
@@ -35,15 +40,18 @@ fn main() {
             tauri::async_runtime::spawn(async move {
                 loop {
                     if let Some(output) = async_proc_output_rx.recv().await {
-                        command::send_file(output, &app_handle);
+                        file::send_file(output, &app_handle);
                     }
                 }
             });
 
             Ok(())
         })
+        .menu(tauri::Menu::os_default(&context.package_info().name))
+        .on_system_tray_event(tray::handler) //  注册系统托盘事件处理程序
         .system_tray(tauri::SystemTray::default()) // 将 `tauri.conf.json` 上配置的图标添加到系统托盘
-        .run(tauri::generate_context!())
+        .system_tray(tray::menu())
+        .run(context)
         .expect("error while running tauri application");
 }
 
