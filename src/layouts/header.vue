@@ -39,7 +39,7 @@ const winClose = async () => {
 </script>
 
 <template>
-  <n-space justify="space-between">
+  <n-space justify="space-between" data-tauri-drag-region>
     <n-gradient-text :size="24" type="success">
       Cool Reader
     </n-gradient-text>
