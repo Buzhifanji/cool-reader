@@ -24,9 +24,9 @@ useVirtualList(list)
 </script>
 
 <template>
-  <n-layout style="height: 100vh; padding: 0 24px;">
+  <n-layout style="height: 100%; ">
     <n-layout-header style="height: 60px; padding: 4px" bordered>
-      <n-space justify="space-between">
+      <n-space align="center" justify="space-between">
         <n-statistic :label="langField.highlightRecordPrev" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="total" />
           <template #suffix>

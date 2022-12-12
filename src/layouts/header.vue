@@ -39,7 +39,7 @@ const winClose = async () => {
 </script>
 
 <template>
-  <n-space justify="space-between" data-tauri-drag-region>
+  <n-space align="center" justify="space-between" data-tauri-drag-region>
     <n-gradient-text :size="24" type="success">
       Cool Reader
     </n-gradient-text>
@@ -47,7 +47,7 @@ const winClose = async () => {
       <!-- 最小化 -->
       <n-tooltip placement="bottom" trigger="hover">
         <template #trigger>
-          <n-icon size="20" @click="winMin">
+          <n-icon size="14" @click="winMin">
             <svg t="1670638672769" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
               p-id="6396" width="200" height="200">
               <path
@@ -61,7 +61,7 @@ const winClose = async () => {
       <!-- 向下还原 -->
       <n-tooltip placement="bottom" trigger="hover" v-if="isMaximized">
         <template #trigger>
-          <n-icon size="20" @click="winToggle">
+          <n-icon size="14" @click="winToggle">
             <svg t="1670637936471" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
               p-id="6181" width="200" height="200">
               <path
@@ -78,7 +78,7 @@ const winClose = async () => {
       <!-- 最大化 -->
       <n-tooltip placement="bottom" trigger="hover" v-else>
         <template #trigger>
-          <n-icon size="20" @click="winToggle">
+          <n-icon size="14" @click="winToggle">
             <svg t="1670637752669" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
               p-id="5755" width="200" height="200">
               <path
@@ -92,7 +92,7 @@ const winClose = async () => {
       <!-- 关闭 -->
       <n-tooltip placement="bottom" trigger="hover">
         <template #trigger>
-          <n-icon size="20" @click="winClose">
+          <n-icon size="14" @click="winClose">
             <svg t="1670638757980" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
               p-id="6812" width="200" height="200">
               <path

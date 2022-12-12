@@ -5,10 +5,10 @@ import Header from './header.vue'
 
 <template>
   <n-layout>
-    <n-layout-header style="padding: 12px" bordered>
+    <n-layout-header style="padding: 6px 12px" bordered>
       <Header />
     </n-layout-header>
-    <n-layout has-sider bordered>
+    <n-layout has-sider bordered position="absolute" style="top: 41px;">
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"
         :native-scrollbar="false" style="max-height: 320px">
         <Menu />
@@ -27,11 +27,6 @@ import Header from './header.vue'
 }
 
 .n-layout-content {
-  padding: 20px;
-}
-
-svg {
-  /* font-family: tahoma, "microsoft yahei", "\5FAE\8F6F\96C5\9ED1"; */
-  /* color: #666; */
+  padding-left: 20px;
 }
 </style>
