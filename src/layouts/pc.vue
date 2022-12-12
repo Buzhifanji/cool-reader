@@ -5,7 +5,7 @@ import Header from './header.vue'
 
 <template>
   <n-layout>
-    <n-layout-header style="height: 64px; padding: 24px" bordered>
+    <n-layout-header style="padding: 12px" bordered>
       <Header />
     </n-layout-header>
     <n-layout has-sider bordered>
