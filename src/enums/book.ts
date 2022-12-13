@@ -20,3 +20,14 @@ export enum barEnum {
   edit,
   idea,
 }
+
+// 书籍类型
+export enum BookType {
+  Unread, // 闲置
+  Reading, // 正在读
+  NotFinishedReading, // 尚未读完
+  FinishedReaded, //  已读完
+  AbandonReanding, // 弃读
+  WantToRead, // 想读
+  allBooks, // 我的书架（全部书籍)
+}
