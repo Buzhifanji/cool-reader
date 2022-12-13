@@ -6,7 +6,7 @@ import { Delete, Edit, Export } from "@vicons/carbon";
 
 const books = ref<BookData[]>([]);
 
-function deleteBookList(bookId: string) {
+export function deleteBook(bookId: string) {
   const index = books.value.findIndex((book) => book.id === bookId);
   if (isIndex(index)) {
     const name = books.value[index].bookName;
@@ -60,7 +60,7 @@ export const useContextMenu = () => {
     showDropdownRef.value = false;
     switch (key) {
       case menusKey.delete:
-        deleteBookList(selectedBookId!);
+        deleteBook(selectedBookId!);
         removeBook(selectedBookId!);
         break;
     }
