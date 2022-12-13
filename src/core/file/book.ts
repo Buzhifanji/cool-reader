@@ -5,6 +5,7 @@ import { addBook, hasBook } from "src/store";
 import { updateBook } from "src/views/books/book";
 import { getEpubCover } from "./epub";
 import { setBookId } from "./md5";
+import { getMobiCover } from "./mobi";
 import { getPDFCover } from "./pdf";
 
 export async function cacheBook(book: BookData) {
@@ -41,6 +42,7 @@ function generateBookCover({ content, extname }: BookData): Promise<string> {
   const BooCoverkStatus: ExtnameFn = {
     [Bookextname.pdf]: getPDFCover,
     [Bookextname.epub]: getEpubCover,
+    [Bookextname.mobi]: getMobiCover,
   };
   return BooCoverkStatus[extname]?.(content);
 }

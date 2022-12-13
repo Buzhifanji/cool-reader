@@ -3,6 +3,7 @@ import { getReadingBook } from "src/store";
 import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
 import { DomSource } from "src/core/web-highlight";
+import { useMobiChangePage } from "src/core/file/mobi";
 
 const readingBook = getReadingBook();
 
@@ -21,6 +22,8 @@ export const useCatalog = () => {
         return new Keys("title", "title", "items");
       case Bookextname.epub:
         return new Keys("id", "label", "subitems");
+      case Bookextname.mobi:
+        return new Keys("id", "label", "subitems");
       default:
         console.warn("TODO: Unknown readingBook.extname");
         return new Keys("key", "label", "children");
@@ -34,7 +37,7 @@ export const useCatalog = () => {
 export const useBookJump = () => {
   const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
-
+  const { mobiJumpFromCatalog } = useMobiChangePage();
   // 点击目录跳转
   function catalogJump(item: any) {
     switch (readingBook.extname) {
@@ -43,6 +46,9 @@ export const useBookJump = () => {
         break;
       case Bookextname.epub:
         epubJumpFromCatalog(item.href)
+        break;
+      case Bookextname.mobi:
+        mobiJumpFromCatalog(item.label)
         break;
       default:
         console.warn("TODO: Unknown readingBook.extname");

@@ -9,6 +9,7 @@ export function getReaderToolRoot() {
   const rootStatus: ExtnameFn = {
     [Bookextname.pdf]: () => getEleById(VIEWER)!,
     [Bookextname.epub]: getIframe,
+    [Bookextname.mobi]: getIframe,
   };
   return rootStatus[readingBook.extname]?.();
 }

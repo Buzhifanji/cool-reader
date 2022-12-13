@@ -12,7 +12,7 @@ const { watchHighlight } = useHighlight()
 
 <template>
   <div id="viewerContainer" ref="container" @click="watchHighlight">
-    <div id="viewer" class="pdfViewer" @click="closeTooBar"></div>
+    <div id="page-area" class="pdfViewer" @click="closeTooBar"></div>
     <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
       <n-space>
         <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">

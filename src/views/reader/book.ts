@@ -6,6 +6,7 @@ import { renderEpub, useEpubChangePage } from "src/core/file/epub";
 import { renderPdf, usePdfChangePage } from "src/core/file/pdf";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { getIdeas } from "src/components/idea/idea";
+import { renderMobi, useMobiChangePage } from "src/core/file/mobi";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   const readingBook = getReadingBook();
@@ -15,8 +16,10 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
       const renderBookStatus: ExtnameFn = {
         [Bookextname.pdf]: renderPdf,
         [Bookextname.epub]: renderEpub,
+        [Bookextname.mobi]: renderMobi,
       };
       if (book.content) {
+        useTitle(book.bookName + '- Cool do Reader')
         await renderBookStatus[book.extname]?.(book.content);
         // 获取笔记内容
         getIdeas();
@@ -36,11 +39,13 @@ export const usePageTurn = () => {
   const readingBook = getReadingBook();
   const { pdfPageUp, pdfPageDown } = usePdfChangePage();
   const { epubPageUp, epubPageDown } = useEpubChangePage();
+  const { mobiPageUp, mobiPageDown } = useMobiChangePage();
 
   function pageUp() {
     const pageUpStates: ExtnameFn = {
       [Bookextname.pdf]: pdfPageUp,
       [Bookextname.epub]: epubPageUp,
+      [Bookextname.mobi]: mobiPageUp,
     };
     pageUpStates[readingBook.extname]?.();
   }
@@ -49,6 +54,7 @@ export const usePageTurn = () => {
     const pageDownStates: ExtnameFn = {
       [Bookextname.pdf]: pdfPageDown,
       [Bookextname.epub]: epubPageDown,
+      [Bookextname.mobi]: mobiPageDown,
     };
     pageDownStates[readingBook.extname]?.();
   }

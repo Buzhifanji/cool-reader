@@ -5,7 +5,7 @@ export const NOTES_ID = "notes-id";
 export const WARP_TAG_NAME = "i";
 export const DEFAULT_DOM_CLASS_NAME = "wrapper_source";
 
-export const VIEWER = "viewer";
+export const VIEWER = "page-area";
 export const VIEWERCONTAINER = "viewerContainer";
 
 export const WEB_HEGHLIGHT_WRAPPER_DEFALUT = "highlight-wrapper_default"
