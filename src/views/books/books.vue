@@ -102,11 +102,14 @@ onUnmounted(() => {
       </div>
     </div>
   </template>
-  <n-result v-else status="418" :title="langField.noBookTitle" :description="langField.noBookDesc">
-    <template #footer>
-      <n-button @click="downloadFile">{{ langField.noBookUpload }}</n-button>
-    </template>
-  </n-result>
+  <n-space justify="center" style="height: 100%" align="center" st v-else>
+    <n-result status="418" :title="langField.noBookTitle" :description="langField.noBookDesc">
+      <template #footer>
+        <n-button @click="downloadFile">{{ langField.noBookUpload }}</n-button>
+      </template>
+    </n-result>
+  </n-space>
+
 </template>
 
 <style scoped>
