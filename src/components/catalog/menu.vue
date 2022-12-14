@@ -26,14 +26,18 @@ function flatten(arr: any[], isChild = false) {
   for (let i = 0; i < arr.length; i++) {
     const { keyFiled, label, children } = props;
     const item = arr[i];
+
     result.push({
       key: item[keyFiled],
       label: item[label],
       className: `chapter-item-level${level}`
     })
-    if (Array.isArray(item[children])) {
+
+    const _children = item[children]
+
+    if (Array.isArray(_children) && _children.length > 0) {
       level += 1;
-      result.push(...flatten(item[children], true))
+      result.push(...flatten(_children, true))
     }
   }
   if (isChild) {

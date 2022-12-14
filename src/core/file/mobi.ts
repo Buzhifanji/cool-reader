@@ -2,7 +2,7 @@ import { VIEWER, VIEWERCONTAINER } from "src/constants";
 import { MobiChapter } from "src/interfaces";
 import { updateReadingBook } from "src/store";
 import { setKookitConfig } from "src/store/kookit";
-import { formateCatalog, getEleById } from "src/utils";
+import { getEleById } from "src/utils";
 import { addIframeDeaultCss, getCustomCss, setViewerStlye } from "../style";
 
 declare var window: any;
@@ -16,14 +16,9 @@ export async function renderMobi(content: Uint8Array) {
   const container = getEleById(VIEWER)!
   await rendition.renderTo(container)
 
-  console.log(rendition)
-
-  console.log(rendition.getMetadata())
-
   // 目录
   const chapters = await rendition.getChapter();
   const catalog = mobiCatalog(chapters)
-  formateCatalog(catalog, "subitems");
   updateReadingBook({ catalog });
 
   // 样式

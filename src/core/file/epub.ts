@@ -1,9 +1,8 @@
 import { VIEWER } from "src/constants";
 import { getWebHighlight, updatePageNumber, updateReadingBook, } from "src/store";
-import { concatRectDom, createEle, formateCatalog, getIframe, urlToBase64 } from "src/utils";
+import { concatRectDom, getIframe, urlToBase64 } from "src/utils";
 import epubjs, { Rendition, Location } from "epubjs";
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
-import { Bookmark } from "@vicons/carbon";
 import { EventType, isHeightWrap } from "../web-highlight";
 import { DATA_WEB_HIGHLIGHT } from "../web-highlight/constant";
 
@@ -34,7 +33,6 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     book.ready.then(() => {
       // 目录
       const catalog = book.navigation.toc;
-      formateCatalog(catalog, "subitems");
       updateReadingBook({ catalog: catalog });
     });
 

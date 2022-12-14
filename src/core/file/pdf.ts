@@ -3,7 +3,6 @@ import { updatePageNumber, updateReadingBook } from "src/store";
 import {
   arrayHasData,
   createEle,
-  formateCatalog,
   getEleById,
   isArray,
   isObj,
@@ -137,7 +136,5 @@ function formatePdfCatalog(list: any[]) {
     return [];
   }
 
-  // 处理没有 子数据的时候 不显示图标的情况
-  formateCatalog(list, "items");
   return list;
 }
