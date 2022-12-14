@@ -73,13 +73,15 @@ function onClick(value: string) {
   padding: 0;
   flex: auto;
   overflow: auto;
+  margin-top: -24px;
+  height: calc(100% - 200px);
 }
 
 .chapter-item {
   height: 52px;
   line-height: 52px;
-  padding-left: 36px;
-  padding-right: 36px;
+  padding-left: 22px;
+  padding-right: 22px;
   list-style: none;
   cursor: pointer;
 }
