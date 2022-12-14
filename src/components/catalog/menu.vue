@@ -59,7 +59,7 @@ function onClick(value: string) {
 
 <template>
   <ul class="catalog-list">
-    <li v-for="item in list" :key="item.key" class="chapter-item" @click="onClick(item.key)">
+    <li v-for="item, index in list" class="chapter-item" @click="onClick(item.key)">
       <div :class="['chapter-item-link', item.className, slectedKey === item.key ? 'chapter-item-link_seleted' : '']">
         <span class="chapter-item-text">
           {{ item.label }}
