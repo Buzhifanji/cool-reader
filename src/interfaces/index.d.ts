@@ -4,3 +4,4 @@ export * from "./store/index";
 export * from "./utils/type";
 export * from "./components/notes"
 export * from "./core/file"
+export * from "./core/style"

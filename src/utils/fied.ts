@@ -11,6 +11,11 @@ export const underlineToCamelCase = (name: string) => {
   });
 };
 
+
+// 驼峰转下横线
+export const camelCaseToHorizontalLine = (name: string) =>
+  name.replace(/\B([A-Z])/g, "-$1").toLowerCase();
+
 /**
  * 格式化 js 与 rsut 交互的数据
  * @param param 需要格式化的数据

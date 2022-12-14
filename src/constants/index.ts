@@ -20,3 +20,5 @@ export const READER_LANG = "reader_lang"
 export const NOTES_CHANGE = "notes-change"
 
 export const MIAN_WIN = "main"
+
+export const IFRAME_DEAULT_STYLE = "iframe-default-style"
