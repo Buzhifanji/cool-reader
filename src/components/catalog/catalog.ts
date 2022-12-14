@@ -4,6 +4,7 @@ import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
 import { DomSource } from "src/core/web-highlight";
 import { useMobiChangePage } from "src/core/file/mobi";
+import { azw3JumpFromCatalog } from "src/core/file/azw3";
 
 const readingBook = getReadingBook();
 
@@ -50,6 +51,9 @@ export const useBookJump = () => {
         break;
       case Bookextname.mobi:
         mobiJumpFromCatalog(key)
+        break;
+      case Bookextname.azw3:
+        azw3JumpFromCatalog(key)
         break;
       default:
         console.warn("TODO: Unknown readingBook.extname");

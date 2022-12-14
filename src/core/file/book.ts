@@ -3,6 +3,7 @@ import { BookData, ExtnameFn } from "src/interfaces";
 import { notification } from "src/naive";
 import { addBook, hasBook } from "src/store";
 import { updateBook } from "src/views/books/book";
+import { getAzw3Cover } from "./azw3";
 import { getEpubCover } from "./epub";
 import { setBookId } from "./md5";
 import { getMobiCover } from "./mobi";
@@ -43,6 +44,7 @@ function generateBookCover({ content, extname }: BookData): Promise<string> {
     [Bookextname.pdf]: getPDFCover,
     [Bookextname.epub]: getEpubCover,
     [Bookextname.mobi]: getMobiCover,
+    [Bookextname.azw3]: getAzw3Cover,
   };
   return BooCoverkStatus[extname]?.(content);
 }

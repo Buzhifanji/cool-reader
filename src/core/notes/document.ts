@@ -10,6 +10,7 @@ export function getReaderToolRoot() {
     [Bookextname.pdf]: () => getEleById(VIEWER)!,
     [Bookextname.epub]: getIframe,
     [Bookextname.mobi]: getIframe,
+    [Bookextname.azw3]: getIframe,
   };
   return rootStatus[readingBook.extname]?.();
 }
