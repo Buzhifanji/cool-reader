@@ -25,6 +25,8 @@ export const useCatalog = () => {
         return new Keys("href", "label", "subitems");
       case Bookextname.mobi:
         return new Keys("label", "label", "subitems");
+      case Bookextname.azw3:
+        return new Keys("label", "label", "subitems");
       default:
         console.warn("TODO: Unknown readingBook.extname");
         return new Keys("key", "label", "children");
