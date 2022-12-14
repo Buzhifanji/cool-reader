@@ -23,7 +23,7 @@ export const useCatalog = () => {
       case Bookextname.epub:
         return new Keys("id", "label", "subitems");
       case Bookextname.mobi:
-        return new Keys("id", "label", "subitems");
+        return new Keys("label", "label", "subitems");
       default:
         console.warn("TODO: Unknown readingBook.extname");
         return new Keys("key", "label", "children");
@@ -38,6 +38,23 @@ export const useBookJump = () => {
   const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
   const { mobiJumpFromCatalog } = useMobiChangePage();
+
+  function catalogExpanedJump(key: string) {
+    switch (readingBook.extname) {
+      case Bookextname.pdf:
+        pdfJumpFromCatalog(key)
+        break;
+      case Bookextname.epub:
+        epubJumpFromCatalog(key)
+        break;
+      case Bookextname.mobi:
+        mobiJumpFromCatalog(key)
+        break;
+      default:
+        console.warn("TODO: Unknown readingBook.extname");
+    }
+  }
+
   // 点击目录跳转
   function catalogJump(item: any) {
     switch (readingBook.extname) {
@@ -68,5 +85,5 @@ export const useBookJump = () => {
         console.warn("TODO: Unknown readingBook.extname");
     }
   }
-  return { catalogJump, pageNumberJump }
+  return { catalogJump, pageNumberJump, catalogExpanedJump }
 }
