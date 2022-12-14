@@ -34,5 +34,5 @@ export function addIframeDeaultCss() {
 
 export function setViewerStlye() {
   const contianer = getEleById(VIEWER)!;
-  contianer.setAttribute('style', `max-width:800px; margin: 0 auto`)
+  contianer.setAttribute('style', `max-width:800px; margin: 0 auto;`);
 }

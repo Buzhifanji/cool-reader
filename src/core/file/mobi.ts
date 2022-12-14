@@ -1,6 +1,7 @@
-import { VIEWER } from "src/constants";
+import { VIEWER, VIEWERCONTAINER } from "src/constants";
 import { MobiChapter } from "src/interfaces";
 import { updateReadingBook } from "src/store";
+import { setKookitConfig } from "src/store/kookit";
 import { formateCatalog, getEleById } from "src/utils";
 import { addIframeDeaultCss, getCustomCss, setViewerStlye } from "../style";
 
@@ -10,12 +11,14 @@ let rendition: any = null;
 
 export async function renderMobi(content: Uint8Array) {
   const { MobiRender } = window.Kookit;
-  rendition = new MobiRender(content.buffer, 'scroll', true);
+  rendition = new MobiRender(content.buffer, 'scroll', false);
 
   const container = getEleById(VIEWER)!
   await rendition.renderTo(container)
 
   console.log(rendition)
+
+  console.log(rendition.getMetadata())
 
   // 目录
   const chapters = await rendition.getChapter();
@@ -24,14 +27,13 @@ export async function renderMobi(content: Uint8Array) {
   updateReadingBook({ catalog });
 
   // 样式
+  const { height, width } = rendition.getPageSize();
   setViewerStlye()
 
   addIframeDeaultCss()
 
   const customCss = getCustomCss()
   rendition.setStyle(customCss)
-
-  const { height, width } = rendition.getPageSize();
 
   rendition.on('rendered', async () => {
     const position = await rendition.getPosition()
@@ -68,15 +70,23 @@ export function getMobiCover() {
   console.log('todo: getEpubCover')
 }
 
+function scrollToTop() {
+  const contianer = getEleById(VIEWERCONTAINER)!;
+  contianer.scrollTo(0, 0)
+}
+
 export function useMobiChangePage() {
   function mobiJumpFromCatalog(href: string) {
     rendition?.goToChapter(href);
+    scrollToTop()
   }
   function mobiPageUp() {
     rendition?.prev();
+    scrollToTop()
   }
   function mobiPageDown() {
     rendition?.next();
+    scrollToTop()
   }
 
   return { mobiJumpFromCatalog, mobiPageUp, mobiPageDown }
