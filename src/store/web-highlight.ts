@@ -1,7 +1,7 @@
 import { DomSource, WebHighlight, WebHighlightOptions } from "src/core/web-highlight";
 import { Bookextname } from "src/enums";
 import { NumberOrString } from "src/interfaces";
-import { getEpubDoc, getPDFPageSelector, selector } from "src/utils";
+import { getIframeDoc, getPDFPageSelector, selector } from "src/utils";
 import { getReadingBook } from "./book";
 
 let webHighlight: WebHighlight | null = null;
@@ -13,7 +13,7 @@ function getBookRoot(pageNumber: NumberOrString) {
       const selctor = getPDFPageSelector(pageNumber as number);
       return selector(selctor);
     case Bookextname.epub:
-      return getEpubDoc()
+      return getIframeDoc()
     default:
       return document;
   }

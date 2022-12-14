@@ -1,6 +1,6 @@
 import { VIEWER } from "src/constants";
 import { getWebHighlight, updatePageNumber, updateReadingBook, } from "src/store";
-import { concatRectDom, createEle, formateCatalog, getEpubIframe, urlToBase64 } from "src/utils";
+import { concatRectDom, createEle, formateCatalog, getIframe, urlToBase64 } from "src/utils";
 import epubjs, { Rendition, Location } from "epubjs";
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
 import { Bookmark } from "@vicons/carbon";
@@ -57,7 +57,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     // 选中文本
     rendition.on('selected', (cfiRange: string) => {
       const range = rendition!.getRange(cfiRange)
-      const iframe = getEpubIframe()
+      const iframe = getIframe()
       if (iframe) {
         const rect = iframe.getBoundingClientRect();
         epubWebHighlight(range, rect)
@@ -71,7 +71,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     // 点击
     rendition.on('click', (e: Event) => {
       const target = e.target as HTMLElement;
-      const iframe = getEpubIframe()!
+      const iframe = getIframe()!
       const selection = iframe.contentDocument!.getSelection()
       if (selection && selection.isCollapsed) {
         if (isHeightWrap(target)) {
