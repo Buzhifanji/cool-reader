@@ -11,12 +11,16 @@ export function getAzw3Cover() {
   console.log('todo: getEpubCover')
 }
 
-export function azw3JumpFromCatalog(href: string) {
-  rendition.jump(href);
-}
-export function azw3PageUp() {
-  rendition.prev();
-}
-export function azw3PageDown() {
-  rendition.next();
+export function useAzw3ChangePage() {
+  function azw3JumpFromCatalog(href: string) {
+    rendition.jump(href);
+  }
+  function azw3PageUp() {
+    rendition.prev();
+  }
+  function azw3PageDown() {
+    rendition.next();
+  }
+
+  return { azw3JumpFromCatalog, azw3PageUp, azw3PageDown }
 }

@@ -4,7 +4,7 @@ import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
 import { DomSource } from "src/core/web-highlight";
 import { useMobiChangePage } from "src/core/file/mobi";
-import { azw3JumpFromCatalog } from "src/core/file/azw3";
+import { useAzw3ChangePage } from "src/core/file/azw3";
 
 const readingBook = getReadingBook();
 
@@ -41,6 +41,7 @@ export const useBookJump = () => {
   const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
   const { mobiJumpFromCatalog } = useMobiChangePage();
+  const { azw3JumpFromCatalog } = useAzw3ChangePage();
 
   // 点击目录跳转
   function catalogJump(key: string) {

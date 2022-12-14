@@ -7,7 +7,7 @@ import { renderPdf, usePdfChangePage } from "src/core/file/pdf";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { getIdeas } from "src/components/idea/idea";
 import { renderMobi, useMobiChangePage } from "src/core/file/mobi";
-import { azw3PageDown, azw3PageUp, renderAzw3 } from "src/core/file/azw3";
+import { useAzw3ChangePage, renderAzw3 } from "src/core/file/azw3";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   const readingBook = getReadingBook();
@@ -42,6 +42,7 @@ export const usePageTurn = () => {
   const { pdfPageUp, pdfPageDown } = usePdfChangePage();
   const { epubPageUp, epubPageDown } = useEpubChangePage();
   const { mobiPageUp, mobiPageDown } = useMobiChangePage();
+  const { azw3PageUp, azw3PageDown } = useAzw3ChangePage()
 
   function pageUp() {
     const pageUpStates: ExtnameFn = {
