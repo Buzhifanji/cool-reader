@@ -2,7 +2,7 @@ import { VIEWER } from "src/constants";
 import { MobiChapter } from "src/interfaces";
 import { updateReadingBook } from "src/store";
 import { formateCatalog, getEleById } from "src/utils";
-import { addIframeDeaultCss, getCustomCss, setViewerStle } from "../style";
+import { addIframeDeaultCss, getCustomCss, setViewerStlye } from "../style";
 
 declare var window: any;
 
@@ -24,7 +24,7 @@ export async function renderMobi(content: Uint8Array) {
   updateReadingBook({ catalog });
 
   // 样式
-  setViewerStle()
+  setViewerStlye()
 
   addIframeDeaultCss()
 

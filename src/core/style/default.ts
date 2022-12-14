@@ -32,7 +32,7 @@ export function addIframeDeaultCss() {
   doc.head.appendChild(style);
 }
 
-export function setViewerStle() {
+export function setViewerStlye() {
   const contianer = getEleById(VIEWER)!;
   contianer.setAttribute('style', `max-width:800px; margin: 0 auto`)
 }
