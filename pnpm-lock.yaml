@@ -20,6 +20,7 @@ specifiers:
   '@wdio/spec-reporter': ^7.25.4
   '@wdio/types': ^7.25.4
   chai: ^4.3.7
+  chardet: ^1.5.0
   concurrently: ^7.5.0
   dpdm: ^3.10.0
   epubjs: ^0.3.93
@@ -41,7 +42,6 @@ specifiers:
   vue: ^3.2.41
   vue-router: ^4.1.6
   vue-tsc: ^0.39.5
-  vue-virtual-scroller: 2.0.0-beta.3
   wdio-edgedriver-service: ^2.0.0
   webdriverio: ^7.25.4
 
@@ -69,6 +69,7 @@ devDependencies:
   '@wdio/spec-reporter': 7.25.4_qncleoylmbpuvfew5ldjf6jkmi
   '@wdio/types': 7.25.4_typescript@4.8.4
   chai: 4.3.7
+  chardet: 1.5.0
   concurrently: 7.5.0
   dpdm: 3.10.0
   epubjs: 0.3.93
@@ -88,7 +89,6 @@ devDependencies:
   vite: 3.2.3_@types+node@18.11.9
   vitest: 0.25.2_jsdom@20.0.2
   vue-tsc: 0.39.5_typescript@4.8.4
-  vue-virtual-scroller: 2.0.0-beta.3_vue@3.2.41
   wdio-edgedriver-service: 2.0.0_xb2htaj2sopzwz437mdc2mru6q
   webdriverio: 7.25.4_typescript@4.8.4
 
@@ -1453,6 +1453,10 @@ packages:
 
   /chardet/0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
+
+  /chardet/1.5.0:
+    resolution: {integrity: sha512-Nj3VehbbFs/1ZnJJJaL3ztEf3Nu5Fs6YV/NBs6lyz/iDDHUU+X9QNk5QgPy1/5Rjtb/cGVf+NyazP7kVEJqKRg==}
+    dev: true
 
   /check-error/1.0.2:
     resolution: {integrity: sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==}
@@ -3768,10 +3772,6 @@ packages:
   /minimist/1.2.7:
     resolution: {integrity: sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==}
 
-  /mitt/2.1.0:
-    resolution: {integrity: sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==}
-    dev: true
-
   /mkdirp-classic/0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
 
@@ -5421,22 +5421,6 @@ packages:
       vue: 3.2.41
     dev: true
 
-  /vue-observe-visibility/2.0.0-alpha.1_vue@3.2.41:
-    resolution: {integrity: sha512-flFbp/gs9pZniXR6fans8smv1kDScJ8RS7rEpMjhVabiKeq7Qz3D9+eGsypncjfIyyU84saU88XZ0zjbD6Gq/g==}
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
-      vue: 3.2.41
-    dev: true
-
-  /vue-resize/2.0.0-alpha.1_vue@3.2.41:
-    resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
-    peerDependencies:
-      vue: ^3.0.0
-    dependencies:
-      vue: 3.2.41
-    dev: true
-
   /vue-router/4.1.6_vue@3.2.41:
     resolution: {integrity: sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==}
     peerDependencies:
@@ -5455,17 +5439,6 @@ packages:
       '@volar/vue-language-core': 0.39.5
       '@volar/vue-typescript': 0.39.5
       typescript: 4.8.4
-    dev: true
-
-  /vue-virtual-scroller/2.0.0-beta.3_vue@3.2.41:
-    resolution: {integrity: sha512-k0hTAkZRmm3TXpfhW5Ig1fd8VV7+CmgnkebbQ4Uw6wnuQF52YJoaMQTFD3IV/Qi2WNadDB4ETrLUbVdnWboSjg==}
-    peerDependencies:
-      vue: ^3.2.0
-    dependencies:
-      mitt: 2.1.0
-      vue: 3.2.41
-      vue-observe-visibility: 2.0.0-alpha.1_vue@3.2.41
-      vue-resize: 2.0.0-alpha.1_vue@3.2.41
     dev: true
 
   /vue/3.2.41:

@@ -5,6 +5,7 @@ import { usePdfChangePage } from "src/core/file/pdf";
 import { DomSource } from "src/core/web-highlight";
 import { useMobiChangePage } from "src/core/file/mobi";
 import { useAzw3ChangePage } from "src/core/file/azw3";
+import { useTextChangePage } from "src/core/file/txt";
 
 const readingBook = getReadingBook();
 
@@ -27,6 +28,8 @@ export const useCatalog = () => {
         return new Keys("label", "label", "subitems");
       case Bookextname.azw3:
         return new Keys("label", "label", "subitems");
+      case Bookextname.txt:
+        return new Keys("label", "label", "subitems");
       default:
         console.warn("TODO: Unknown readingBook.extname");
         return new Keys("key", "label", "children");
@@ -42,6 +45,7 @@ export const useBookJump = () => {
   const { epubJumpFromCatalog } = useEpubChangePage();
   const { mobiJumpFromCatalog } = useMobiChangePage();
   const { azw3JumpFromCatalog } = useAzw3ChangePage();
+  const { textJumpFromCatalog } = useTextChangePage();
 
   // 点击目录跳转
   function catalogJump(key: string) {
@@ -57,6 +61,9 @@ export const useBookJump = () => {
         break;
       case Bookextname.azw3:
         azw3JumpFromCatalog(key)
+        break;
+      case Bookextname.txt:
+        textJumpFromCatalog(key)
         break;
       default:
         console.warn("TODO: Unknown readingBook.extname");

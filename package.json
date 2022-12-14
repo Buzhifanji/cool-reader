@@ -41,6 +41,7 @@
     "@wdio/spec-reporter": "^7.25.4",
     "@wdio/types": "^7.25.4",
     "chai": "^4.3.7",
+    "chardet": "^1.5.0",
     "concurrently": "^7.5.0",
     "dpdm": "^3.10.0",
     "epubjs": "^0.3.93",

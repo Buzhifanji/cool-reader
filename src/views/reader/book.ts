@@ -8,6 +8,7 @@ import { RouteLocationNormalizedLoaded } from "vue-router";
 import { getIdeas } from "src/components/idea/idea";
 import { renderMobi, useMobiChangePage } from "src/core/file/mobi";
 import { useAzw3ChangePage, renderAzw3 } from "src/core/file/azw3";
+import { renderText, useTextChangePage } from "src/core/file/txt";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   const readingBook = getReadingBook();
@@ -19,6 +20,7 @@ export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
         [Bookextname.epub]: renderEpub,
         [Bookextname.mobi]: renderMobi,
         [Bookextname.azw3]: renderAzw3,
+        [Bookextname.txt]: renderText,
       };
       if (book.content) {
         useTitle(book.bookName + '- Cool do Reader')
@@ -43,6 +45,7 @@ export const usePageTurn = () => {
   const { epubPageUp, epubPageDown } = useEpubChangePage();
   const { mobiPageUp, mobiPageDown } = useMobiChangePage();
   const { azw3PageUp, azw3PageDown } = useAzw3ChangePage()
+  const { textPageUp, textPageDown } = useTextChangePage()
 
   function pageUp() {
     const pageUpStates: ExtnameFn = {
@@ -50,6 +53,7 @@ export const usePageTurn = () => {
       [Bookextname.epub]: epubPageUp,
       [Bookextname.mobi]: mobiPageUp,
       [Bookextname.azw3]: azw3PageUp,
+      [Bookextname.txt]: textPageUp,
     };
     pageUpStates[readingBook.extname]?.();
   }
@@ -60,6 +64,7 @@ export const usePageTurn = () => {
       [Bookextname.epub]: epubPageDown,
       [Bookextname.mobi]: mobiPageDown,
       [Bookextname.azw3]: azw3PageDown,
+      [Bookextname.txt]: textPageDown,
     };
     pageDownStates[readingBook.extname]?.();
   }

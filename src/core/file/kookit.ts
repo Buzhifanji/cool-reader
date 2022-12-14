@@ -40,11 +40,12 @@ function scrollToTop() {
 
 export class KookitRender {
   rendition: any = null;
-  constructor({ content, renderName, renderMode, isSliding }: KookitRenderParams) {
+  constructor({ content, renderName, renderMode, isSliding, charset }: KookitRenderParams) {
     const mode = renderMode ? renderMode : 'scroll';
     const isSl = isSliding ? isSliding : false;
     const render = window.Kookit[renderName];
-    this.rendition = new render(content.buffer, mode, isSl);
+    const params = charset ? [content.buffer, mode, charset, isSl] : [content.buffer, mode, isSl]
+    this.rendition = new render(...params);
   }
   async action() {
     const rendition = this.rendition;

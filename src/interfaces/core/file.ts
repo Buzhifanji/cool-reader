@@ -2,7 +2,8 @@ export interface KookitRenderParams {
   content: Uint8Array;
   renderName: string;
   renderMode?: string;
-  isSliding?: boolean
+  isSliding?: boolean;
+  charset?: string;
 }
 
 export interface KookitChapter {

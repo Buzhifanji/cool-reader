@@ -11,6 +11,7 @@ export function getReaderToolRoot() {
     [Bookextname.epub]: getIframe,
     [Bookextname.mobi]: getIframe,
     [Bookextname.azw3]: getIframe,
+    [Bookextname.txt]: getIframe,
   };
   return rootStatus[readingBook.extname]?.();
 }
