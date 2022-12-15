@@ -1,11 +1,12 @@
-import { VIEWER } from "src/constants";
+import { VIEWER, VIEWERCONTAINER } from "src/constants";
 import { getWebHighlight, updatePageNumber, updateReadingBook, } from "src/store";
-import { concatRectDom, getIframe, urlToBase64 } from "src/utils";
-import epubjs, { Rendition, Location } from "epubjs";
+import { concatRectDom, getEleById, getIframe, getIframeDoc, selector, urlToBase64 } from "src/utils";
+import epubjs, { Rendition, Location, Contents } from "epubjs";
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
 import { EventType, isHeightWrap } from "../web-highlight";
 import { DATA_WEB_HIGHLIGHT } from "../web-highlight/constant";
 import { lighlightBus } from "../bus";
+import { event } from "@tauri-apps/api";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 
@@ -56,8 +57,11 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     // 选中文本
     rendition.on('selected', (cfiRange: string) => {
       const range = rendition!.getRange(cfiRange)
-      lighlightBus.emit(range)
-      // const iframe = getIframe()
+      const container = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
+      const scrollTop = container.scrollTop;
+
+      lighlightBus.emit({ range, scrollTop })
+
       // if (iframe) {
       //   const rect = iframe.getBoundingClientRect();
 

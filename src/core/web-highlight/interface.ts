@@ -56,7 +56,11 @@ export interface DomSource {
   bookId: string; //
   text: string; // 选中的文本内容
   createTime: number; // 创建时间 (时间戳)
-  pageNumber: number | string; //
+
+  pageNumber: number | string;
+  chapter: string; // 对应的章节
+  scrollTop: number; // 选中文字 滚动条 对应的高度（用于还原时定位到具体位置)
+
   notes: Notes; // 笔记
 }
 

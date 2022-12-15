@@ -6,9 +6,9 @@ import { concatRectDom, getIframe } from "src/utils";
 import { openToolBar } from "./toolbar";
 
 const webHighlight = new WebHighlight({});
+const readingBook = getReadingBook();
 
 function handleBookHighlight() {
-  const readingBook = getReadingBook();
   switch (readingBook.extname) {
     case Bookextname.pdf:
     case Bookextname.epub:
@@ -18,11 +18,15 @@ function handleBookHighlight() {
 
 // 订阅 range
 // 处理 document 为 iframe 
-lighlightBus.on((range) => {
+lighlightBus.on(({ range, scrollTop }) => {
   const iframe = getIframe()
   if (iframe) {
     const iframeRect = iframe.getBoundingClientRect();
     const { source, rect } = webHighlight.fromRange(range)
+
+    source.scrollTop = scrollTop;
+    source.chapter = readingBook.chapter;
+
     const res = concatRectDom(rect, iframeRect)
     openToolBar(source, res)
   }

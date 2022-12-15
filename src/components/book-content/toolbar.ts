@@ -65,7 +65,7 @@ function hanldePageNumber(range: Range) {
 }
 const setToolBarStle = ({ top, left, height }: { top: number, left: number, height: number }) => {
   const { scrollTop, scrollLeft } = getEleById('viewerContainer')!;
-  toolBarStyle.top = (top + scrollTop - height - 66) + 'px';
+  toolBarStyle.top = (top + scrollTop - height - 96) + 'px';
   toolBarStyle.left = (left + scrollLeft) + 'px'
 }
 
@@ -263,12 +263,13 @@ export const useToolBar = () => {
         source.bookId = readingBook.id;
 
         source.notes.createTime = createTime()
-        paintWebHighlightFromRange(source)
+        console.log(source)
+        // paintWebHighlightFromRange(source)
 
-        saveNotes(source).then(() => {
-          emit(NOTES_CHANGE, source)
-          getHighlights()
-        })
+        // saveNotes(source).then(() => {
+        //   emit(NOTES_CHANGE, source)
+        //   getHighlights()
+        // })
       }
     }
   }
