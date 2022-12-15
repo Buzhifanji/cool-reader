@@ -26,3 +26,5 @@ export const IFRAME_DEAULT_STYLE = "iframe-default-style"
 export const KOOKIT_CONFIG = 'kookitConfig'
 
 export const THEME = 'cool-reader-theme'
+
+export const HGIHLIGHT_BUS = 'lighlight-bus'

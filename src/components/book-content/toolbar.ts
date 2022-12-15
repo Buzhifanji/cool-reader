@@ -83,7 +83,14 @@ const addWebHighlightEvent = () => {
   return webHighlight
 }
 
-const openToolBar = (range: Range, _rect?: DOMRect) => {
+export function openToolBar(source: DomSource, rect: DOMRect) {
+  toolBar.show = true;
+  toolBar.source = source
+  toolBar.edit = false;
+  setToolBarStle(rect)
+}
+
+const _openToolBar = (range: Range, _rect?: DOMRect) => {
   // 由于 pdf 格式的书本，渲染是 占位 + 按需渲染，所以dom是动态的，这就导致,如果 定位容器节点为 body，则就会产生bug，
   // 目前处理方案：容器节点为当前页面节点。查找当前页，是一个向上寻找dom的过程。
   const pageNumber = hanldePageNumber(range);
@@ -102,7 +109,7 @@ const openToolBar = (range: Range, _rect?: DOMRect) => {
 
 export const epubWebHighlight = (range: Range, rect: DOMRect) => {
   addWebHighlightEvent();
-  openToolBar(range, rect)
+  _openToolBar(range, rect)
 
   // 关闭 输入消息 组件
   removeMessage()
@@ -126,7 +133,7 @@ export const useHighlight = () => {
   function watchHighlight() {
     const range = webHighlight.range();
     if (range) {
-      openToolBar(range)
+      _openToolBar(range)
     }
 
     // 关闭 输入消息 组件

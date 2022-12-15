@@ -3,11 +3,12 @@ import { useToolBar, useHighlight } from './toolbar';
 import { window } from "@tauri-apps/api"
 import { TauriEvent } from "@tauri-apps/api/event";
 import { useSroll } from 'src/core/scroll';
+import { watchHighlight } from './web-highlight'
 
 const { container } = useSroll()
 
 const { bars, toolBar, barAction, toolBarStyle, closeTooBar } = useToolBar()
-const { watchHighlight } = useHighlight()
+// const { watchHighlight } = useHighlight()
 </script>
 
 <template>

@@ -19,8 +19,6 @@ function getBookRoot(pageNumber: NumberOrString) {
   }
 }
 
-
-
 export function initWebHighlight(option: WebHighlightOptions) {
   webHighlight = new WebHighlight(option);
 }

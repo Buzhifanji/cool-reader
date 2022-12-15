@@ -5,6 +5,7 @@ import epubjs, { Rendition, Location } from "epubjs";
 import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
 import { EventType, isHeightWrap } from "../web-highlight";
 import { DATA_WEB_HIGHLIGHT } from "../web-highlight/constant";
+import { lighlightBus } from "../bus";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 
@@ -55,11 +56,13 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     // 选中文本
     rendition.on('selected', (cfiRange: string) => {
       const range = rendition!.getRange(cfiRange)
-      const iframe = getIframe()
-      if (iframe) {
-        const rect = iframe.getBoundingClientRect();
-        epubWebHighlight(range, rect)
-      }
+      lighlightBus.emit(range)
+      // const iframe = getIframe()
+      // if (iframe) {
+      //   const rect = iframe.getBoundingClientRect();
+
+      //   epubWebHighlight(range, rect)
+      // }
     })
 
     // 样式表
