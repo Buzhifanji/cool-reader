@@ -8,6 +8,7 @@ import { initWebHighlight } from "src/store";
 import { useHelp } from "./help";
 import { langField } from "src/i18n";
 import { handleCover } from "src/utils";
+import Header from 'src/layouts/header.vue'
 
 // 初始化 高亮笔记功能
 initWebHighlight({})
@@ -32,10 +33,11 @@ onMounted(() => {
 
 <template>
   <n-layout>
-    <n-layout-header>
-      <n-divider />
+    <n-layout-header style="padding: 6px 12px" bordered>
+      <!-- <n-divider /> -->
+      <Header :title="readingBook.bookName" />
     </n-layout-header>
-    <n-layout-content id="drawer-target">
+    <n-layout-content has-sider bordered position="absolute" style="top: 68px;" id="drawer-target">
       <!-- 书本内容 -->
       <BookContent />
       <n-drawer v-model:show="showCatalog" :width="catalogWidth" placement="left" :show-mask="false"

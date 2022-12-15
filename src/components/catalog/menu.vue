@@ -78,7 +78,7 @@ function onClick(value: string) {
   flex: auto;
   overflow: auto;
   margin-top: -24px;
-  height: calc(100% - 200px);
+  height: calc(100% - 220px);
 }
 
 .chapter-item {

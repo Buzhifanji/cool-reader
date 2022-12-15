@@ -5,6 +5,10 @@ import { MIAN_WIN } from "src/constants";
 import { dialog } from "src/naive";
 import { exit } from '@tauri-apps/api/process'
 
+const props = withDefaults(defineProps<{ title: string }>(), {
+  title: 'Cool Reader'
+})
+
 const isMaximized = ref<boolean>(false)
 
 appWindow.isMaximized().then(value => isMaximized.value = value);
@@ -41,7 +45,7 @@ const winClose = async () => {
 <template>
   <n-space align="center" justify="space-between" data-tauri-drag-region>
     <n-gradient-text :size="24" type="success">
-      Cool Reader
+      {{ props.title }}
     </n-gradient-text>
     <n-space :size="[24, 8]">
       <!-- 最小化 -->
