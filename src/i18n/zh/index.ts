@@ -47,4 +47,8 @@ export const zhCN: LangField = {
 
   setting: "设置",
   settingLange: "语言",
+
+  theme: "主题",
+  themeDark: '深色',
+  themeLight: "浅色",
 };

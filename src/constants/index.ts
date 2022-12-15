@@ -24,3 +24,5 @@ export const MIAN_WIN = "main"
 export const IFRAME_DEAULT_STYLE = "iframe-default-style"
 
 export const KOOKIT_CONFIG = 'kookitConfig'
+
+export const THEME = 'cool-reader-theme'

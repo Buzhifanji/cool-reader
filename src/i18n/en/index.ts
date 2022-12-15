@@ -47,4 +47,8 @@ export const enUS: LangField = {
 
   setting: "setting",
   settingLange: "Language",
+
+  theme: "theme",
+  themeDark: 'dark',
+  themeLight: "light",
 };

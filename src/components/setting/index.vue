@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Langs } from 'src/enums';
 import { language, langField } from 'src/i18n';
+import { activeTheme } from 'src/theme'
 
 const props = withDefaults(defineProps<{ show: boolean }>(), {
   show: false,
@@ -29,6 +30,17 @@ function updateModel(value: boolean) {
     <n-space class="space" justify="space-between">
       <n-h4>{{ langField.settingLange }}</n-h4>
       <n-select style="width: 160px" v-model:value="language" :options="langOptions" />
+    </n-space>
+    <n-space class="space" justify="space-between">
+      <n-h4>{{ langField.theme }}</n-h4>
+      <n-switch v-model:value="activeTheme">
+        <template #checked>
+          {{ langField.themeDark }}
+        </template>
+        <template #unchecked>
+          {{ langField.themeLight }}
+        </template>
+      </n-switch>
     </n-space>
   </n-modal>
 </template>

@@ -54,4 +54,9 @@ export interface LangField {
   // 设置
   setting: string;
   settingLange: string;
+
+  // 主题
+  theme: string;
+  themeDark: string;
+  themeLight: string;
 }
