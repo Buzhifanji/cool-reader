@@ -1,4 +1,5 @@
 import { createEle } from "./dom"
+import DefaultBookCover from 'src/assets/book_cover.png';
 
 function imageToBase64(img: HTMLImageElement) {
   const canvas = createEle('canvas')
@@ -22,3 +23,5 @@ export function urlToBase64(url: string): Promise<string> {
     }
   })
 }
+
+export const handleCover = (url: string) => url ? url : DefaultBookCover;

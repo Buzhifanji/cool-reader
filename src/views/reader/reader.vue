@@ -7,6 +7,7 @@ import { useCatalogSection } from "src/views/reader/catalog";
 import { initWebHighlight } from "src/store";
 import { useHelp } from "./help";
 import { langField } from "src/i18n";
+import { handleCover } from "src/utils";
 
 // 初始化 高亮笔记功能
 initWebHighlight({})
@@ -22,6 +23,7 @@ const { showCatalog, catalogWidth } = useCatalogSection();
 const { showHelp, helpList } = useHelp()
 
 const { readingBook } = useReaderBook(route);
+
 
 onMounted(() => {
   removePdfEvent();
@@ -44,7 +46,7 @@ onMounted(() => {
             <n-gi>
               <n-card hoverable size="small">
                 <template #cover>
-                  <n-image :src="readingBook.cover" preview-disabled />
+                  <n-image :src="handleCover(readingBook.cover)" preview-disabled />
                 </template>
               </n-card>
             </n-gi>

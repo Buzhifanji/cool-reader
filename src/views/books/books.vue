@@ -2,13 +2,12 @@
 
 <script setup lang="ts">
 import { useLoadFile } from "src/store";
-import DefaultBookCover from 'src/assets/book_cover.png';
 import { downloadFile } from "src/core/file/file";
 import { useBooks, useContextMenu, deleteBook } from "./book";
 import { langField } from "src/i18n/index";
 import { BookData } from "src/interfaces";
 import { createWin, setReaderWinUlr } from "src/core/windows";
-
+import { handleCover } from "src/utils";
 const { percentage } = useLoadFile();
 
 const { books } = useBooks();
@@ -60,7 +59,7 @@ onUnmounted(() => {
     <!-- 列表模式 -->
     <div class="list-wrapper" v-for="item in books" :key="item.id">
       <div class="list-content-left" @click="open(item)">
-        <img class="list-img" :src="item.cover" alt="">
+        <img class="list-img" :src="handleCover(item.cover)" alt="">
       </div>
       <div class="list-content-center" @click="open(item)">
         <div>{{ item.bookName }}</div>
