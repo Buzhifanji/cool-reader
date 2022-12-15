@@ -1,22 +1,21 @@
 <script setup lang="ts">
+
 const props = withDefaults(
   defineProps<{
     options: any[],
-    keyFiled: string,
     label: string,
     children: string,
-    value: string,
+    value: any,
   }>(),
   {
     options: () => [],
-    keyFiled: 'key',
     label: 'label',
     children: 'children',
     value: '',
   }
 )
 
-const emit = defineEmits(['update:value'])
+const emit = defineEmits(['update:value', 'change'])
 const slectedKey = useVModel(props, 'value', emit)
 
 let level = 1;
@@ -24,11 +23,12 @@ let level = 1;
 function flatten(arr: any[], isChild = false) {
   const result: any[] = [];
   for (let i = 0; i < arr.length; i++) {
-    const { keyFiled, label, children } = props;
+    const { label, children } = props;
     const item = arr[i];
 
     result.push({
-      key: item[keyFiled],
+      ...item,
+      key: item[label], // 此处可能 存在bug，书籍目录的名称可能重复
       label: item[label],
       className: `chapter-item-level${level}`
     })
@@ -50,16 +50,16 @@ const list = computed(() => {
   return flatten(props.options);
 })
 
-function onClick(value: string) {
-  slectedKey.value = value
-  emit('update:value', value)
+function onClick(value: any) {
+  slectedKey.value = value.key
+  emit('change', value)
 }
 
 </script>
 
 <template>
   <ul class="catalog-list">
-    <li v-for="item, index in list" class="chapter-item" @click="onClick(item.key)">
+    <li v-for="item in list" class="chapter-item" :key="item.key" @click="onClick(item)">
       <div :class="['chapter-item-link', item.className, slectedKey === item.key ? 'chapter-item-link_seleted' : '']">
         <span class="chapter-item-text">
           {{ item.label }}

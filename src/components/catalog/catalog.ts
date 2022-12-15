@@ -39,7 +39,6 @@ export const useCatalog = () => {
   return { readingBook, menuKes };
 };
 
-
 export const useBookJump = () => {
   const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
@@ -48,27 +47,28 @@ export const useBookJump = () => {
   const { textJumpFromCatalog } = useTextChangePage();
 
   // 点击目录跳转
-  function catalogJump(key: string) {
+  function catalogJump(item: any) {
     switch (readingBook.extname) {
       case Bookextname.pdf:
-        pdfJumpFromCatalog(key)
+        pdfJumpFromCatalog(item.dest)
         break;
       case Bookextname.epub:
-        epubJumpFromCatalog(key)
+        epubJumpFromCatalog(item.href)
         break;
       case Bookextname.mobi:
-        mobiJumpFromCatalog(key)
+        mobiJumpFromCatalog(item.label)
         break;
       case Bookextname.azw3:
-        azw3JumpFromCatalog(key)
+        azw3JumpFromCatalog(item.label)
         break;
       case Bookextname.txt:
-        textJumpFromCatalog(key)
+        textJumpFromCatalog(item.label)
         break;
       default:
         console.warn("TODO: Unknown readingBook.extname");
     }
   }
+
 
   // 根据 页面数 跳转
   function pageNumberJump({ pageNumber }: DomSource) {

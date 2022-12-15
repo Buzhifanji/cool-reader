@@ -10,8 +10,8 @@ const selectedKey = ref('')
 </script>
 
 <template>
-  <Menu v-model:value="selectedKey" @update:value="catalogJump" :options="readingBook.catalog" :key-filed="menuKes.key"
-    :label="menuKes.label" :children="menuKes.children" />
+  <Menu v-model:value="selectedKey" @change="catalogJump" :options="readingBook.catalog" :label="menuKes.label"
+    :children="menuKes.children" />
 </template>
 
 <style scoped>
