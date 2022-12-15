@@ -13,6 +13,7 @@ export interface BookData {
   cover: string; // 封面
   id: string; // md5
   content: Uint8Array; // 书本内容
+  chapter: string; // 正在阅读的章节
   catalog: any[]; // 目录
 }
 

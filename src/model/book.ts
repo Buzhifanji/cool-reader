@@ -10,6 +10,7 @@ export class BookModel implements BookData {
     public category: string,
     public cover: string,
     public id: string,
+    public chapter: string,
     public content: Uint8Array,
     public catalog: []
   ) { }

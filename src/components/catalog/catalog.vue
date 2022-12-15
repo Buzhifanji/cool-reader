@@ -5,12 +5,10 @@ import Menu from './menu.vue'
 const { readingBook, menuKes } = useCatalog();
 const { catalogJump } = useBookJump();
 
-const selectedKey = ref('')
-
 </script>
 
 <template>
-  <Menu v-model:value="selectedKey" @change="catalogJump" :options="readingBook.catalog" :label="menuKes.label"
+  <Menu v-model:value="readingBook.chapter" @change="catalogJump" :options="readingBook.catalog" :label="menuKes.label"
     :children="menuKes.children" />
 </template>
 

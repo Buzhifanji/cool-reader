@@ -7,7 +7,7 @@ import { forage } from "@tauri-apps/tauri-forage";
 
 // 当前打开书本的数据
 const readingBook = reactive<BookData>(
-  new BookModel("", Bookextname.pdf, 0, "", "", "", "", new Uint8Array(), [])
+  new BookModel("", Bookextname.pdf, 0, "", "", "", "", "", new Uint8Array(), [])
 );
 
 let context: BookContext = null;

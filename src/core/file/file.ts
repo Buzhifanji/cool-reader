@@ -74,6 +74,7 @@ export async function downloadFile() {
           category: "",
           id: "",
           cover: "",
+          chapter: "",
           catalog: [],
         };
         calculatePercentage(0, size);
