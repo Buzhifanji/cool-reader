@@ -2,10 +2,10 @@ import { Bookextname } from "src/enums";
 import { getReadingBook } from "src/store";
 import { useEpubChangePage } from "src/core/file/epub";
 import { usePdfChangePage } from "src/core/file/pdf";
-import { DomSource } from "src/core/web-highlight";
 import { useMobiChangePage } from "src/core/file/mobi";
 import { useAzw3ChangePage } from "src/core/file/azw3";
 import { useTextChangePage } from "src/core/file/txt";
+import { getCurrentBookCatalog } from "src/utils/book";
 
 const readingBook = getReadingBook();
 
@@ -40,7 +40,7 @@ export const useCatalog = () => {
 };
 
 export const useBookJump = () => {
-  const { pdfJumpFromCatalog, pdfJumpToPage } = usePdfChangePage();
+  const { pdfJumpFromCatalog } = usePdfChangePage();
   const { epubJumpFromCatalog } = useEpubChangePage();
   const { mobiJumpFromCatalog } = useMobiChangePage();
   const { azw3JumpFromCatalog } = useAzw3ChangePage();
@@ -50,38 +50,25 @@ export const useBookJump = () => {
   function catalogJump(item: any) {
     switch (readingBook.extname) {
       case Bookextname.pdf:
-        pdfJumpFromCatalog(item.dest)
-        break;
+        return pdfJumpFromCatalog(item.dest)
       case Bookextname.epub:
-        epubJumpFromCatalog(item.href)
-        break;
+        return epubJumpFromCatalog(item.href)
       case Bookextname.mobi:
-        mobiJumpFromCatalog(item.label)
-        break;
+        return mobiJumpFromCatalog(item.label)
       case Bookextname.azw3:
-        azw3JumpFromCatalog(item.label)
-        break;
+        return azw3JumpFromCatalog(item.label)
       case Bookextname.txt:
-        textJumpFromCatalog(item.label)
-        break;
+        return textJumpFromCatalog(item.label)
       default:
         console.warn("TODO: Unknown readingBook.extname");
     }
   }
 
-
-  // 根据 页面数 跳转
-  function pageNumberJump({ pageNumber }: DomSource) {
-    switch (readingBook.extname) {
-      case Bookextname.pdf:
-        pdfJumpToPage(+pageNumber)
-        break
-      case Bookextname.epub:
-        epubJumpFromCatalog(pageNumber as string,)
-        break
-      default:
-        console.warn("TODO: Unknown readingBook.extname");
-    }
+  async function jumpByChapter(chapter: string) {
+    const chapterData = getCurrentBookCatalog(chapter);
+    await catalogJump(chapterData)
+    readingBook.chapter = chapter;
   }
-  return { catalogJump, pageNumberJump }
+
+  return { catalogJump, jumpByChapter }
 }

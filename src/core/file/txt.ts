@@ -15,13 +15,13 @@ export function getTextCover() {
 
 export function useTextChangePage() {
   function textJumpFromCatalog(href: string) {
-    rendition.jump(href);
+    return rendition.jump(href);
   }
   function textPageUp() {
-    rendition.prev();
+    return rendition.prev();
   }
   function textPageDown() {
-    rendition.next();
+    return rendition.next();
   }
 
   return { textJumpFromCatalog, textPageUp, textPageDown }

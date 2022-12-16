@@ -30,7 +30,8 @@ pub struct Notes {
     pub start_dom_meta: DomMeta,
     pub end_dom_meta: DomMeta,
     pub class_name: String,
-    pub page_number: String,
+    pub chapter: String,
+    pub scroll_top: usize,
     pub create_time: usize,
     pub tag_name: String,
     pub notes: NotesContent,
@@ -56,7 +57,8 @@ impl NotestData {
           end_index             integer  NOT NULL,
           end_tag_name          text     NOT NULL,
           end_offset            integer  NOT NULL,
-          page_number           text     NOT NULL,
+          chapter               text     NOT NULL,
+          scroll_top            integer  NOT NULL,
           create_time           integer  NOT NULL,
           tag_name              text     NOT NULL,
           notes_content         text     NOT NULL,
@@ -92,14 +94,15 @@ impl NotestData {
                     tag_name: row.get(8)?,
                     offset: row.get(9)?,
                 },
-                page_number: row.get(10)?,
-                create_time: row.get(11)?,
-                tag_name: row.get(12)?,
+                chapter: row.get(10)?,
+                scroll_top: row.get(11)?,
+                create_time: row.get(12)?,
+                tag_name: row.get(13)?,
                 notes: NotesContent {
-                    content: row.get(13)?,
-                    id: row.get(14)?,
-                    create_time: row.get(15)?,
-                    tag: row.get(16)?,
+                    content: row.get(14)?,
+                    id: row.get(15)?,
+                    create_time: row.get(16)?,
+                    tag: row.get(17)?,
                 },
             };
             list.push(result)
@@ -128,14 +131,15 @@ impl NotestData {
                     tag_name: row.get(8)?,
                     offset: row.get(9)?,
                 },
-                page_number: row.get(10)?,
-                create_time: row.get(11)?,
-                tag_name: row.get(12)?,
+                chapter: row.get(10)?,
+                scroll_top: row.get(11)?,
+                create_time: row.get(12)?,
+                tag_name: row.get(13)?,
                 notes: NotesContent {
-                    content: row.get(13)?,
-                    id: row.get(14)?,
-                    create_time: row.get(15)?,
-                    tag: row.get(16)?,
+                    content: row.get(14)?,
+                    id: row.get(15)?,
+                    create_time: row.get(16)?,
+                    tag: row.get(17)?,
                 },
             };
             list.push(result)
@@ -147,8 +151,8 @@ impl NotestData {
     pub fn insert_notes(&mut self, data: Notes) -> Result<bool, String> {
         match self.conn.execute(
           "INSERT INTO Notes 
-          (book_id, id,text,class_name,start_index,start_tag_name, start_offset, end_index, end_tag_name, end_offset, page_number,create_time,tag_name,notes_content,notes_id,notes_create_time,notes_tag) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          (book_id, id,text,class_name,start_index,start_tag_name, start_offset, end_index, end_tag_name, end_offset, chapter,scroll_top,create_time,tag_name,notes_content,notes_id,notes_create_time,notes_tag) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?)",
           [
               data.book_id,
               data.id,
@@ -160,7 +164,8 @@ impl NotestData {
               data.end_dom_meta.index.to_string(),
               data.end_dom_meta.tag_name,
               data.end_dom_meta.offset.to_string(),
-              data.page_number,
+              data.chapter,
+              data.scroll_top.to_string(),
               data.create_time.to_string(),
               data.tag_name,
               data.notes.content,

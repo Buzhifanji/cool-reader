@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { useToolBar, useHighlight } from './toolbar';
+import { useToolBar } from './toolbar';
 import { window } from "@tauri-apps/api"
 import { TauriEvent } from "@tauri-apps/api/event";
 import { useSroll } from 'src/core/scroll';
-import { watchHighlight } from './web-highlight'
+import { useToolbarStore } from 'src/store/toolbar';
+import { watchHighlight } from 'src/views/reader/web-highlight'
 
 const { container } = useSroll()
-
-const { bars, toolBar, barAction, toolBarStyle, closeTooBar } = useToolBar()
-// const { watchHighlight } = useHighlight()
+const toolBar = useToolbarStore()
+const { bars, barAction } = useToolBar()
 </script>
 
 <template>
   <div id="viewerContainer" ref="container" @click="watchHighlight">
-    <div id="page-area" class="pdfViewer" @click="closeTooBar"></div>
-    <div class="tool-bar-wrapper" :style="toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
+    <div id="page-area" class="pdfViewer" @click="toolBar.closeTooBar"></div>
+    <div class="tool-bar-wrapper" :style="toolBar.toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
       <n-space>
         <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">
           <n-icon :component="item.icon" size="16" />

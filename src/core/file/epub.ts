@@ -1,12 +1,8 @@
 import { VIEWER, VIEWERCONTAINER } from "src/constants";
-import { getWebHighlight, updatePageNumber, updateReadingBook, } from "src/store";
-import { concatRectDom, getEleById, getIframe, getIframeDoc, selector, urlToBase64 } from "src/utils";
+import { updatePageNumber, updateReadingBook, } from "src/store";
+import { getEleById, urlToBase64 } from "src/utils";
 import epubjs, { Rendition, Location, Contents } from "epubjs";
-import { initTooBar as closeTooBar, epubWebHighlight } from "src/components/book-content/toolbar";
-import { EventType, isHeightWrap } from "../web-highlight";
-import { DATA_WEB_HIGHLIGHT } from "../web-highlight/constant";
-import { lighlightBus } from "../bus";
-import { event } from "@tauri-apps/api";
+import { lighlighClickBus, lighlightBus } from "../bus";
 
 let rendition: Rendition | null = null; // epub.js 渲染后的上下文
 
@@ -61,12 +57,6 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
       const scrollTop = container.scrollTop;
 
       lighlightBus.emit({ range, scrollTop })
-
-      // if (iframe) {
-      //   const rect = iframe.getBoundingClientRect();
-
-      //   epubWebHighlight(range, rect)
-      // }
     })
 
     // 样式表
@@ -76,29 +66,7 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
     // 点击
     rendition.on('click', (e: Event) => {
       const target = e.target as HTMLElement;
-      const iframe = getIframe()!
-      const selection = iframe.contentDocument!.getSelection()
-      if (selection && selection.isCollapsed) {
-        if (isHeightWrap(target)) {
-          // 打开工具栏
-          const webHighlight = getWebHighlight();
-
-          const id = target.getAttribute(DATA_WEB_HIGHLIGHT)!
-          const source = webHighlight.getSource(id);
-
-          if (source) {
-            const _rect = target.getBoundingClientRect();
-            const iframRect = iframe.getBoundingClientRect();
-
-            const rect = concatRectDom(_rect, iframRect)
-
-            webHighlight.emit(EventType.click, rect, source)
-          }
-        } else {
-          // 关闭工具栏
-          closeTooBar()
-        }
-      }
+      lighlighClickBus.emit(target)
     })
 
     rendition.on('relocated', (location: Location) => {
@@ -110,13 +78,13 @@ export function renderEpub(content: Uint8Array): Promise<Rendition> {
 
 export const useEpubChangePage = () => {
   function epubJumpFromCatalog(href: string) {
-    rendition?.display(href);
+    return rendition?.display(href);
   }
   function epubPageUp() {
-    rendition?.prev();
+    return rendition?.prev();
   }
   function epubPageDown() {
-    rendition?.next();
+    return rendition?.next();
   }
 
   return { epubJumpFromCatalog, epubPageUp, epubPageDown };

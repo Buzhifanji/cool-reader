@@ -4,14 +4,12 @@ import { useRoute } from "vue-router";
 import { useReaderBook } from "./book";
 import { useNotesSection } from "./notes";
 import { useCatalogSection } from "src/views/reader/catalog";
-import { initWebHighlight } from "src/store";
 import { useHelp } from "./help";
 import { langField } from "src/i18n";
 import { handleCover } from "src/utils";
 import Header from 'src/layouts/header.vue'
+import './web-highlight'
 
-// 初始化 高亮笔记功能
-initWebHighlight({})
 
 const route = useRoute();
 // 笔记栏目相关逻辑

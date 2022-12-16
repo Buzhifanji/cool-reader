@@ -1,14 +1,16 @@
 import { DomSource } from "src/core/web-highlight";
 import { getIdeasById, removeNotes } from "src/server/notes";
-import { getPageNumber, getReadingBook, paintWebHighlightFromSource, removeWebHighlight } from "src/store";
+import { getReadingBook } from "src/store";
+import { paintWebHighlightFromSource } from "src/views/reader/web-highlight"
 
 export const notes = ref<DomSource[]>([]);
 
-const pageNumber = getPageNumber();
 
-watch(pageNumber, (newValue, oldValue) => {
+const readingBook = getReadingBook();
+
+watch(() => readingBook.chapter, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    const list = notes.value.filter(value => value.pageNumber === pageNumber.value);
+    const list = notes.value.filter(value => value.chapter === readingBook.chapter);
 
     if (list.length > 0) {
       paintWebHighlightFromSource(list)
@@ -29,7 +31,7 @@ export function getIdeas() {
 
 export function removeIdea({ id, bookId }: DomSource) {
   removeNotes(bookId, id).then(() => {
-    removeWebHighlight(id)
+    console.log('todo: removeWebHighlight(id)')
     getIdeas()
   })
 }

@@ -4,12 +4,13 @@ import { highlights, removeHighlight } from "./highlight";
 import { useBookJump } from '../catalog/catalog'
 import { langField } from "src/i18n";
 
-const { pageNumberJump } = useBookJump();
+const { jumpByChapter } = useBookJump();
+
 </script>
 
 <template>
   <n-list hoverable clickable v-if="highlights.length">
-    <n-list-item v-for="item in highlights" :key="item.id" @click="pageNumberJump(item)">
+    <n-list-item v-for="item in highlights" :key="item.id" @click="jumpByChapter(item.chapter)">
       <template #suffix>
         <n-icon size="16" :component="Delete" @click.stop="removeHighlight(item)" />
       </template>

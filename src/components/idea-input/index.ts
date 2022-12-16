@@ -5,7 +5,7 @@ import { createUUID, DomSource } from "src/core/web-highlight";
 import { langField } from "src/i18n";
 import { message } from "src/naive";
 import { saveNotes, updateNotes } from "src/server/notes";
-import { getReadingBook, removeWebHighlightCache, removeWebHighlightDom } from "src/store";
+import { getReadingBook } from "src/store";
 import { createTime } from "src/utils";
 import { hasHighlight } from "../highlight/highlight";
 import { getIdeas, hasIdea } from "../idea/idea";
@@ -27,10 +27,10 @@ export function removeMessage() {
   if (!isSave && source) {
     const id = source.id
     // 删除dom
-    removeWebHighlightDom(id)
+    console.log('todo:removeWebHighlightDom(id)')
     // 删除没有保存到数据库的缓存数据
     if (!(hasIdea(id) || hasHighlight(id))) {
-      removeWebHighlightCache(id)
+      console.log('todo:removeWebHighlightCache(id)')
     }
   }
 }

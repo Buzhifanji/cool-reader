@@ -30,6 +30,7 @@ specifiers:
   msedgedriver: ^91.0.0
   naive-ui: ^2.33.5
   pdfjs-dist: ^2.16.105
+  pinia: ^2.0.28
   prettier: ^2.7.1
   render-big-data: ^0.3.1
   spark-md5: ^3.0.2
@@ -79,6 +80,7 @@ devDependencies:
   msedgedriver: 91.0.0
   naive-ui: 2.33.5_vue@3.2.41
   pdfjs-dist: 2.16.105
+  pinia: 2.0.28_l7r24p6nevbtlimqmqcwa3ouhu
   prettier: 2.7.1
   render-big-data: 0.3.1
   spark-md5: 3.0.2
@@ -770,7 +772,6 @@ packages:
 
   /@vue/devtools-api/6.4.5:
     resolution: {integrity: sha512-JD5fcdIuFxU4fQyXUu3w2KpAJHzTVdN+p4iOX2lMWSHMOoQdMAcpFLZzm9Z/2nmsoZ1a96QEhZ26e50xLBsgOQ==}
-    dev: false
 
   /@vue/devtools/6.4.5:
     resolution: {integrity: sha512-ae+JvQ2dR1n/53suLrAA7B9FxHpCLLzNQBSIKtWTZ0FJ38LiJOjp/vwR+Z8Q6SIGTayeFgxVSEbk+VC+AHV0vA==}
@@ -4189,6 +4190,24 @@ packages:
   /pify/4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    dev: true
+
+  /pinia/2.0.28_l7r24p6nevbtlimqmqcwa3ouhu:
+    resolution: {integrity: sha512-YClq9DkqCblq9rlyUual7ezMu/iICWdBtfJrDt4oWU9Zxpijyz7xB2xTwx57DaBQ96UGvvTMORzALr+iO5PVMw==}
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
+    dependencies:
+      '@vue/devtools-api': 6.4.5
+      typescript: 4.8.4
+      vue: 3.2.41
+      vue-demi: 0.13.11_vue@3.2.41
     dev: true
 
   /pinkie-promise/2.0.1:

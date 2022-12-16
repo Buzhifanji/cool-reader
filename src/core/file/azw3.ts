@@ -13,13 +13,13 @@ export function getAzw3Cover() {
 
 export function useAzw3ChangePage() {
   function azw3JumpFromCatalog(href: string) {
-    rendition.jump(href);
+    return rendition.jump(href);
   }
   function azw3PageUp() {
-    rendition.prev();
+    return rendition.prev();
   }
   function azw3PageDown() {
-    rendition.next();
+    return rendition.next();
   }
 
   return { azw3JumpFromCatalog, azw3PageUp, azw3PageDown }

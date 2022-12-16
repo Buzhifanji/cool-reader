@@ -93,26 +93,31 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
+export async function getPdfPageNumber(desc: any) {
+  if (isArray(desc) && arrayHasData(desc)) {
+    const refProxy = toRaw(desc[0]);
+    const pageNumber = await pdfViewer?.pdfDocument!.getPageIndex(refProxy)!;
+    return pageNumber
+  } else {
+    return 0
+  }
+}
+
 export const usePdfChangePage = () => {
   async function pdfJumpFromCatalog(desc: any) {
-    if (isArray(desc) && arrayHasData(desc)) {
-      const refProxy = toRaw(desc[0]);
-      if (isObj(refProxy) && isOwn(refProxy, "num") && isOwn(refProxy, "gen")) {
-        const pageNumber = await pdfViewer?.pdfDocument!.getPageIndex(refProxy);
-        pdfJumpToPage(pageNumber!);
-      }
-    }
+    const pageNumber = await getPdfPageNumber(desc)
+    return pdfJumpToPage(pageNumber);
   }
   function pdfJumpToPage(pageNumber: number) {
-    pdfViewer?.scrollPageIntoView({ pageNumber });
+    return pdfViewer?.scrollPageIntoView({ pageNumber });
   }
 
   function pdfPageUp() {
-    pdfViewer?.previousPage();
+    return pdfViewer?.previousPage();
   }
 
   function pdfPageDown() {
-    pdfViewer?.nextPage();
+    return pdfViewer?.nextPage();
   }
 
   return { pdfJumpFromCatalog, pdfPageUp, pdfJumpToPage, pdfPageDown };

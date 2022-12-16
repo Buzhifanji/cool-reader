@@ -14,13 +14,13 @@ export function getMobiCover() {
 
 export function useMobiChangePage() {
   function mobiJumpFromCatalog(href: string) {
-    rendition.jump(href);
+    return rendition.jump(href);
   }
   function mobiPageUp() {
-    rendition.prev();
+    return rendition.prev();
   }
   function mobiPageDown() {
-    rendition.next();
+    return rendition.next();
   }
 
   return { mobiJumpFromCatalog, mobiPageUp, mobiPageDown }

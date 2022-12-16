@@ -28,3 +28,5 @@ export const KOOKIT_CONFIG = 'kookitConfig'
 export const THEME = 'cool-reader-theme'
 
 export const HGIHLIGHT_BUS = 'lighlight-bus'
+
+export const HGIHLIGHT_CLICK_BUS = 'lighlight-click-bus'

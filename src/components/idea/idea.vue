@@ -4,13 +4,13 @@ import { notes, removeIdea } from "./idea";
 import { useBookJump } from '../catalog/catalog'
 import { langField } from "src/i18n";
 
-const { pageNumberJump } = useBookJump();
+const { jumpByChapter } = useBookJump();
 
 </script>
 
 <template>
   <n-list hoverable clickable v-if="notes.length">
-    <n-list-item v-for="item in notes" :key="item.id" @click="pageNumberJump(item)">
+    <n-list-item v-for="item in notes" :key="item.id" @click="jumpByChapter(item.chapter)">
       <template #suffix>
         <n-icon size="16" :component="Delete" @click.stop="removeIdea(item)" />
       </template>

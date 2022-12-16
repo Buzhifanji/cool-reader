@@ -6,144 +6,22 @@ import {
   TextHighlight,
   TextUnderline,
 } from "@vicons/carbon";
-import { EventType, DomSource } from "src/core/web-highlight";
-import { concatRectDom, createTime, getEleById } from "src/utils";
+import { createTime } from "src/utils";
 import { dialog, message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, NOTES_CHANGE, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
 import { saveNotes, updateNotes } from "src/server/notes";
-import { getPageNumber, getReadingBook, paintWebHighlightFromRange, prevWebHighlight, updateWebHighlight } from "src/store";
+import { getReadingBook } from "src/store";
 import { getHighlights, removeHighlight } from "../highlight/highlight";
-import { getWebHighlight } from "src/store";
-import { openIdea, removeMessage } from "../idea-input";
+import { openIdea } from "../idea-input";
 import { removeIdea } from "../idea/idea";
 import { emit } from '@tauri-apps/api/event'
-
-interface ToolBar {
-  show: boolean;
-  edit: boolean;
-  source: null | DomSource;
-}
+import { useToolbarStore } from "src/store/toolbar";
+import { paintWebHighlightFromSource, updateWebHighlight } from "src/views/reader/web-highlight";
 
 const readingBook = getReadingBook();
 
-const toolBarModel = () => ({ show: false, source: null, edit: false });
-const toolBarStyle = shallowReactive({ top: '0px', left: '0px' });
-const toolBar = shallowReactive<ToolBar>(toolBarModel())
-
-
-function handlePdfPageNumber(range: Range) {
-  let result = 0;
-  if (range) {
-    let node = range.startContainer.parentElement;
-    let count = 0;
-
-    while (node) {
-      count++
-      if (node.className === 'page') {
-        const n = node.getAttribute('data-page-number');
-        if (n) {
-          result = +n
-        }
-      }
-      if (count === 90) {
-        break
-      }
-      node = node.parentElement;
-    }
-  }
-  return result.toString()
-}
-function hanldePageNumber(range: Range) {
-  switch (readingBook.extname) {
-    case Bookextname.pdf:
-      return handlePdfPageNumber(range)
-    case Bookextname.epub:
-      return getPageNumber().value
-    default:
-      return '0'
-  }
-}
-const setToolBarStle = ({ top, left, height }: { top: number, left: number, height: number }) => {
-  const { scrollTop, scrollLeft } = getEleById('viewerContainer')!;
-  toolBarStyle.top = (top + scrollTop - height - 96) + 'px';
-  toolBarStyle.left = (left + scrollLeft) + 'px'
-}
-
-// 添加高亮区域点击事件
-const addWebHighlightEvent = () => {
-  const webHighlight = getWebHighlight();
-
-  webHighlight.on(EventType.click, (value, source) => {
-    toolBar.show = true;
-    toolBar.source = source as DomSource;
-    toolBar.edit = true;
-    setToolBarStle(value)
-  })
-
-  return webHighlight
-}
-
-export function openToolBar(source: DomSource, rect: DOMRect) {
-  toolBar.show = true;
-  toolBar.source = source
-  toolBar.edit = false;
-  setToolBarStle(rect)
-}
-
-const _openToolBar = (range: Range, _rect?: DOMRect) => {
-  // 由于 pdf 格式的书本，渲染是 占位 + 按需渲染，所以dom是动态的，这就导致,如果 定位容器节点为 body，则就会产生bug，
-  // 目前处理方案：容器节点为当前页面节点。查找当前页，是一个向上寻找dom的过程。
-  const pageNumber = hanldePageNumber(range);
-  const { source, rect } = prevWebHighlight(pageNumber, true, range)
-
-  // epub.js 渲染采用iframe（不是iframe，存在bug，所以没有采用），此处是拼接iframe的getboundingclientrect
-  const res = concatRectDom(rect, _rect)
-
-  source.pageNumber = pageNumber;
-  toolBar.show = true;
-  toolBar.source = source
-
-
-  setToolBarStle(res)
-}
-
-export const epubWebHighlight = (range: Range, rect: DOMRect) => {
-  addWebHighlightEvent();
-  _openToolBar(range, rect)
-
-  // 关闭 输入消息 组件
-  removeMessage()
-}
-
-export function initTooBar() {
-  toolBar.show = false;
-  toolBar.source = null;
-  toolBar.edit = false;
-
-  toolBarStyle.top = '0px'
-  toolBarStyle.left = '0px'
-
-  removeMessage()
-}
-
-// 划词 高亮
-export const useHighlight = () => {
-  const webHighlight = addWebHighlightEvent();
-
-  function watchHighlight() {
-    const range = webHighlight.range();
-    if (range) {
-      _openToolBar(range)
-    }
-
-    // 关闭 输入消息 组件
-    removeMessage()
-  }
-
-  return { watchHighlight }
-}
-
 export const useToolBar = () => {
+  const toolBar = useToolbarStore()
   const list = [
     { label: "复制", key: barEnum.Copy, icon: Copy },
     { label: "高亮", key: barEnum.TextHighlight, icon: TextHighlight },
@@ -234,20 +112,19 @@ export const useToolBar = () => {
   function ideaInput() {
     const { source, edit } = toolBar
     if (source) {
-      paintWebHighlightFromRange(source)
+      paintWebHighlightFromSource(source)
       openIdea(source, edit)
     }
   }
 
-  function notesAction(className?: string) {
+  function notesAction(className: string) {
     const { source, edit } = toolBar
     if (source) {
       if (edit) {
         // 编辑
         if (className !== source.className) {
-          if (className) {
-            source.className = className
-          }
+          source.className = className
+          console.log(source)
           // 更新ui
           updateWebHighlight(source)
           // 存入数据库
@@ -257,28 +134,22 @@ export const useToolBar = () => {
         }
       } else {
         // 创建
-        if (className) {
-          source.className = className
-        }
+        source.className = className
         source.bookId = readingBook.id;
 
         source.notes.createTime = createTime()
-        console.log(source)
-        // paintWebHighlightFromRange(source)
 
-        // saveNotes(source).then(() => {
-        //   emit(NOTES_CHANGE, source)
-        //   getHighlights()
-        // })
+        delete source.pageNumber
+        console.log(source)
+        paintWebHighlightFromSource(source)
+
+        saveNotes(source).then(() => {
+          emit(NOTES_CHANGE, source)
+          getHighlights()
+        })
       }
     }
   }
 
-  function closeTooBar() {
-    if (toolBar.edit) {
-      initTooBar()
-    }
-  }
-
-  return { bars, toolBar, barAction, toolBarStyle, closeTooBar }
+  return { bars, barAction }
 }
