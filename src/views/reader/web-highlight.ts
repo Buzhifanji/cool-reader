@@ -97,9 +97,10 @@ lighlighClickBus.on((target) => {
 export function watchHighlight() {
   const range = webHighlight.range();
   if (range) {
+    const { scrollTop, scrollLeft } = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
     const { source, rect: { top, left } } = webHighlight.fromRange(range)
     const useToolBar = useToolbarStore()
-    useToolBar.openToolBar(source, `${top}px`, `${left}px`)
+    useToolBar.openToolBar(source, `${top + scrollTop - 115}px`, `${left + scrollLeft}px`)
   }
 }
 
