@@ -25,8 +25,6 @@ const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
 let pdfViewer: PDFViewer | null = null;
 
-
-
 function getViewport(page: PDFPageProxy) {
   return page.getViewport({
     scale, // 展示比例
@@ -73,6 +71,10 @@ export async function renderPdf(content: Uint8Array) {
   pdfViewer.eventBus.on("textlayerrendered", pageNumberChange);
   // 跳转到上次阅读的位置
   pdfViewer.eventBus.on("pagesloaded", jumpToRecordPosition);
+
+  pdfViewer.eventBus.on('click', (value: any) => {
+    console.log('ddd: ', value)
+  })
 
   return pdfViewer;
 }
@@ -140,7 +142,7 @@ async function goToDestinationHelper(dest: any, explicitDest: any) {
 
 export const usePdfChangePage = () => {
   async function pdfJumpFromCatalog(dest: any) {
-    return goToDestination(dest)
+    return await goToDestination(dest)
   }
   function pdfJumpToPage(pageNumber: number) {
     return pdfViewer?.scrollPageIntoView({ pageNumber });
@@ -179,12 +181,81 @@ function formatePdfCatalog(list: any[]) {
 }
 
 
-export async function getPdfCurrentPageRef() {
+async function getPdfCurrentPageRef() {
   const pageNum = getPdfCurrentCurrentPageNumber();
   const res = await pdfViewer!.pdfDocument!.getPage(pageNum)
   return res.ref
 }
 
+function getPdfBoundingRect(x: number, y: number) {
+  const pageNum = getPdfCurrentCurrentPageNumber();
+  const pageView = pdfViewer!._pages![pageNum - 1];
+  return pageView.viewport.convertToViewportPoint(x, y)
+}
+
 export function getPdfCurrentCurrentPageNumber() {
   return pdfViewer!._currentPageNumber;
+}
+
+function findCurrentTatalog({ num, gen }: RefProxy, catalog: any[]) {
+  const stack: any[] = [];
+  const add = (list: any[]) => {
+    for (let i = list.length - 1; i >= 0; i--) {
+      stack.push(list[i])
+    }
+  }
+  add(catalog)
+
+  let result = [];
+  let current;
+  while (current = stack.pop()) {
+    const target = current.dest[0];
+    if (target.num === num && target.gen === gen) {
+      result.push(current)
+    }
+    add(current.items)
+  }
+
+  return result
+}
+
+function getElementOffset(range: Range) {
+  const target = range.startContainer.parentElement!;
+  return target.offsetTop
+}
+function getTitleByRefRroxy(refProxyes: any[], offsetTop: number) {
+  const len = refProxyes.length;
+  let title = ''
+  if (len === 1) {
+    title = refProxyes[0].title
+  } else if (len > 1) {
+    title = findeTitleByRefProxyes(refProxyes, offsetTop)
+  }
+  return title
+}
+function findeTitleByRefProxyes(refProxyes: any, offsetTop: number) {
+  let result = '';
+  for (let i = 0; i < refProxyes.length; i++) {
+    const dest = refProxyes[i].dest
+    const x = dest[2]
+    const y = dest[3]
+    const [, top] = getPdfBoundingRect(x, y);
+    // 此处是关键：可能存在bug，这里 依据
+    // node_modules/.pnpm/pdfjs-dist@2.16.105/node_modules/pdfjs-dist/lib/web/base_viewer.js
+    // 的 scrollPageIntoView 方法，逆向推算出来的
+    if (offsetTop >= top) {
+      result = refProxyes[i].title;
+      break
+    }
+  }
+  return result
+}
+// 这里巨坑,根据点击的位置，查找菜单对应的目录 的标题（标题为id，确定每一个菜单）
+export async function getPdfTitle(range: Range, catalog: any[]) {
+  const refProxy = await getPdfCurrentPageRef();
+  if (!refProxy) return;
+
+  const refProxyes = findCurrentTatalog(refProxy, catalog)
+  const offsetTop = getElementOffset(range);
+  return getTitleByRefRroxy(refProxyes, offsetTop)
 }

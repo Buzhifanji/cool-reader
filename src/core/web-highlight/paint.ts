@@ -48,6 +48,11 @@ function getAllSelectDom(start: SelectTextNode, end: SelectTextNode, root: rootT
   const { node: startNode, offset: startOffset } = start;
   const { node: endNode, offset: endOffset } = end;
 
+  if ((!startNode) || (!endNode)) {
+    console.error(`getAllSelectDom: startNode is: ${startNode}, endNode is: ${endNode}`)
+    return []
+  }
+
   if (startNode === endNode && isTextNode(startNode)) {
     return paintSameTextNode(startNode as Text, startOffset, endOffset)
   }
