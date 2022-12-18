@@ -1,12 +1,11 @@
 import { VIEWERCONTAINER } from "src/constants";
 import { updatePageNumber, updateReadingBook } from "src/store";
 import {
-  arrayHasData,
   createEle,
   getEleById,
   isArray,
   isObj,
-  isOwn,
+  isStr,
 } from "src/utils";
 import { getDocument, PageViewport, PDFPageProxy } from "pdfjs-dist";
 import {
@@ -16,6 +15,7 @@ import {
   PDFViewer,
 } from "pdfjs-dist/web/pdf_viewer";
 import { jumpToRecordPosition } from "../scroll";
+import { RefProxy } from "pdfjs-dist/types/src/display/api";
 
 const scale = 1.75 * window.devicePixelRatio; // 展示比例
 
@@ -24,6 +24,8 @@ const scale = 1.75 * window.devicePixelRatio; // 展示比例
  */
 
 let pdfViewer: PDFViewer | null = null;
+
+
 
 function getViewport(page: PDFPageProxy) {
   return page.getViewport({
@@ -53,6 +55,9 @@ export async function renderPdf(content: Uint8Array) {
     linkService: pdfLinkService,
     l10n: new GenericL10n("zh"),
   });
+
+  pdfLinkService.setViewer(pdfViewer);
+
   pdfViewer._setScale(scale);
   const loadingTask = getDocument(content);
   const pdfDocument = await loadingTask.promise;
@@ -93,20 +98,49 @@ export function getPDFCover(fileContent: Uint8Array): Promise<string> {
   });
 }
 
-export async function getPdfPageNumber(desc: any) {
-  if (isArray(desc) && arrayHasData(desc)) {
-    const refProxy = toRaw(desc[0]);
-    const pageNumber = await pdfViewer?.pdfDocument!.getPageIndex(refProxy)!;
-    return pageNumber
+export async function getPdfPageNumber(destRef: unknown) {
+  if (isObj(destRef)) {
+    const pageNumber = await pdfViewer?.pdfDocument!.getPageIndex(destRef as RefProxy)!;
+    return pageNumber + 1;
+  } else if (Number.isInteger(destRef)) {
+    return (destRef as number) + 1;
   } else {
-    return 0
+    console.log(` "${destRef}" is not ` + `a valid destination reference`)
+    return -1
   }
 }
 
+async function goToDestination(dest: any) {
+  let explicitDest = dest;
+  if (isStr(dest)) {
+    explicitDest = await pdfViewer!.pdfDocument!.getDestination(dest)
+  }
+
+  if (!isArray(explicitDest)) {
+    console.error(`PDFLinkService.goToDestination: "${explicitDest}" is not ` + `a valid destination array, for dest="${dest}".`)
+    return
+  }
+
+  return goToDestinationHelper(dest, explicitDest)
+
+}
+
+async function goToDestinationHelper(dest: any, explicitDest: any) {
+  const destRef = explicitDest[0];
+  const pageNumber = await getPdfPageNumber(destRef)
+  const pagCount = pdfViewer!.pagesCount
+  console.log(pagCount)
+  if (pageNumber < 1 || pageNumber > pagCount) {
+    console.error(`PDFLinkService.#goToDestinationHelper: "${pageNumber}" is not ` + `a valid page number, for dest="${dest}".`);
+    return
+  }
+
+  return pdfViewer!.scrollPageIntoView({ pageNumber, destArray: explicitDest, ignoreDestinationZoom: true });
+}
+
 export const usePdfChangePage = () => {
-  async function pdfJumpFromCatalog(desc: any) {
-    const pageNumber = await getPdfPageNumber(desc)
-    return pdfJumpToPage(pageNumber);
+  async function pdfJumpFromCatalog(dest: any) {
+    return goToDestination(dest)
   }
   function pdfJumpToPage(pageNumber: number) {
     return pdfViewer?.scrollPageIntoView({ pageNumber });
@@ -142,4 +176,15 @@ function formatePdfCatalog(list: any[]) {
   }
 
   return list;
+}
+
+
+export async function getPdfCurrentPageRef() {
+  const pageNum = getPdfCurrentCurrentPageNumber();
+  const res = await pdfViewer!.pdfDocument!.getPage(pageNum)
+  return res.ref
+}
+
+export function getPdfCurrentCurrentPageNumber() {
+  return pdfViewer!._currentPageNumber;
 }
