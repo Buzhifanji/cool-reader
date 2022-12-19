@@ -1,5 +1,5 @@
 import { VIEWERCONTAINER } from "src/constants";
-import { updatePageNumber, updateReadingBook } from "src/store";
+import { updateReadingBook } from "src/store";
 import {
   createEle,
   getEleById,
@@ -68,13 +68,8 @@ export async function renderPdf(content: Uint8Array) {
 
   updateReadingBook({ catalog });
 
-  pdfViewer.eventBus.on("textlayerrendered", pageNumberChange);
   // 跳转到上次阅读的位置
   pdfViewer.eventBus.on("pagesloaded", jumpToRecordPosition);
-
-  pdfViewer.eventBus.on('click', (value: any) => {
-    console.log('ddd: ', value)
-  })
 
   return pdfViewer;
 }
@@ -123,21 +118,27 @@ async function goToDestination(dest: any) {
     return
   }
 
-  return goToDestinationHelper(dest, explicitDest)
+  return await goToDestinationHelper(dest, explicitDest)
 
 }
 
-async function goToDestinationHelper(dest: any, explicitDest: any) {
-  const destRef = explicitDest[0];
-  const pageNumber = await getPdfPageNumber(destRef)
-  const pagCount = pdfViewer!.pagesCount
-  console.log(pagCount)
-  if (pageNumber < 1 || pageNumber > pagCount) {
-    console.error(`PDFLinkService.#goToDestinationHelper: "${pageNumber}" is not ` + `a valid page number, for dest="${dest}".`);
-    return
-  }
-
-  return pdfViewer!.scrollPageIntoView({ pageNumber, destArray: explicitDest, ignoreDestinationZoom: true });
+function goToDestinationHelper(dest: any, explicitDest: any) {
+  return new Promise(async (resolve, reject) => {
+    const destRef = explicitDest[0];
+    const pageNumber = await getPdfPageNumber(destRef)
+    const pagCount = pdfViewer!.pagesCount
+    if (pageNumber < 1 || pageNumber > pagCount) {
+      console.error(`PDFLinkService.#goToDestinationHelper: "${pageNumber}" is not ` + `a valid page number, for dest="${dest}".`);
+      return
+    }
+    // 监听页面 加载完成
+    pdfViewer!.eventBus.on("textlayerrendered", (value: any) => {
+      if (value.pageNumber === pageNumber) {
+        resolve('loaded')
+      }
+    });
+    pdfViewer!.scrollPageIntoView({ pageNumber, destArray: explicitDest, ignoreDestinationZoom: true });
+  })
 }
 
 export const usePdfChangePage = () => {
@@ -158,10 +159,6 @@ export const usePdfChangePage = () => {
 
   return { pdfJumpFromCatalog, pdfPageUp, pdfJumpToPage, pdfPageDown };
 };
-
-function pageNumberChange() {
-  updatePageNumber(pdfViewer!.currentPageNumber);
-}
 
 export function getPdfCurrentPageNumber() {
   return pdfViewer?._currentPageNumber;
@@ -194,8 +191,9 @@ function getPdfBoundingRect(x: number, y: number) {
 }
 
 export function getPdfCurrentCurrentPageNumber() {
-  return pdfViewer!._currentPageNumber;
+  return pdfViewer!.currentPageNumber;
 }
+
 
 function findCurrentTatalog({ num, gen }: RefProxy, catalog: any[]) {
   const stack: any[] = [];

@@ -47,18 +47,18 @@ export const useBookJump = () => {
   const { textJumpFromCatalog } = useTextChangePage();
 
   // 点击目录跳转
-  function catalogJump(item: any) {
+  async function catalogJump(item: any) {
     switch (readingBook.extname) {
       case Bookextname.pdf:
-        return pdfJumpFromCatalog(item.dest)
+        return await pdfJumpFromCatalog(item.dest)
       case Bookextname.epub:
-        return epubJumpFromCatalog(item.href)
+        return await epubJumpFromCatalog(item.href)
       case Bookextname.mobi:
-        return mobiJumpFromCatalog(item.label)
+        return await mobiJumpFromCatalog(item.label)
       case Bookextname.azw3:
-        return azw3JumpFromCatalog(item.label)
+        return await azw3JumpFromCatalog(item.label)
       case Bookextname.txt:
-        return textJumpFromCatalog(item.label)
+        return await textJumpFromCatalog(item.label)
       default:
         console.warn("TODO: Unknown readingBook.extname");
     }
@@ -66,6 +66,7 @@ export const useBookJump = () => {
 
   async function jumpByChapter(chapter: string) {
     const chapterData = getCurrentBookCatalog(chapter);
+
     await catalogJump(chapterData)
     readingBook.chapter = chapter;
   }

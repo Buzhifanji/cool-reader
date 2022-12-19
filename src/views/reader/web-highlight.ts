@@ -13,9 +13,7 @@ const webHighlight = new WebHighlight({});
 const readingBook = getReadingBook();
 
 async function getPdfRoot() {
-  // const chapter = getCurrentBookCatalog();
   const pageNumber = getPdfCurrentCurrentPageNumber()
-  console.log('pageNumber', pageNumber)
   const selctor = getPDFPageSelector(pageNumber);
   return selector(selctor);
 }
@@ -120,7 +118,6 @@ export async function watchHighlight() {
 
 async function updateRoot() {
   const root = await getBookRoot();
-  console.log(root)
   if (root) {
     webHighlight.setOption({ root })
   }
