@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { openIdea, removeMessage } from 'src/components/idea-input';
 import { DomSource } from 'src/core/web-highlight';
 
 export const useToolbarStore = defineStore('toolbar', () => {
@@ -18,6 +19,11 @@ export const useToolbarStore = defineStore('toolbar', () => {
 
     toolBarStyle.top = top;
     toolBarStyle.left = left;
+
+    if (domSource.notes.content) {
+      openIdea(domSource, isEdit)
+    }
+
   }
 
   function openToolBar(domSource: DomSource, top: string, left: string) {
@@ -32,6 +38,7 @@ export const useToolbarStore = defineStore('toolbar', () => {
       toolBarStyle.left = '0px';
     }
     show.value = false;
+    removeMessage() // 删除 输入想法组件 
   }
 
   function editTooBar(domSource: DomSource, top: string, left: string) {
