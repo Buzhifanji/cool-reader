@@ -3,9 +3,11 @@ import { updateReadingBook } from "src/store";
 import {
   createEle,
   getEleById,
+  getPDFPageSelector,
   isArray,
   isObj,
   isStr,
+  selector,
 } from "src/utils";
 import { getDocument, PageViewport, PDFPageProxy } from "pdfjs-dist";
 import {
@@ -131,13 +133,22 @@ function goToDestinationHelper(dest: any, explicitDest: any) {
       console.error(`PDFLinkService.#goToDestinationHelper: "${pageNumber}" is not ` + `a valid page number, for dest="${dest}".`);
       return
     }
-    // 监听页面 加载完成
+
+    pdfViewer!.scrollPageIntoView({ pageNumber, destArray: explicitDest, ignoreDestinationZoom: true });
+
+    // 尝试获取dom节点，如何能够获取到，说明已经渲染完成了。
+    const selctor = getPDFPageSelector(pageNumber);
+    const dom = selector(selctor);
+    if (dom) {
+      resolve('loaded')
+    }
+
+    // 没有渲染过，则监听页面 加载完成
     pdfViewer!.eventBus.on("textlayerrendered", (value: any) => {
       if (value.pageNumber === pageNumber) {
         resolve('loaded')
       }
     });
-    pdfViewer!.scrollPageIntoView({ pageNumber, destArray: explicitDest, ignoreDestinationZoom: true });
   })
 }
 
