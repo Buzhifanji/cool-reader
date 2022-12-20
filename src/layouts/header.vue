@@ -4,6 +4,7 @@ import { appWindow } from '@tauri-apps/api/window'
 import { MIAN_WIN } from "src/constants";
 import { dialog } from "src/naive";
 import { exit } from '@tauri-apps/api/process'
+import { WinEvent } from "src/enums";
 
 const props = withDefaults(defineProps<{ title: string }>(), {
   title: 'Cool Reader'
@@ -37,7 +38,8 @@ const winClose = async () => {
       }
     })
   } else {
-    await appWindow.close()
+    appWindow.emit(WinEvent.Close)
+    // await appWindow.close()
   }
 };
 </script>

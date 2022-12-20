@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { useToolBar } from './toolbar';
-import { window } from "@tauri-apps/api"
-import { TauriEvent } from "@tauri-apps/api/event";
 import { useSroll } from 'src/core/scroll';
 import { useToolbarStore } from 'src/store/toolbar';
 import { watchHighlight } from 'src/views/reader/web-highlight'
