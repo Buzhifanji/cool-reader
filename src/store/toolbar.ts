@@ -11,13 +11,17 @@ export const useToolbarStore = defineStore('toolbar', () => {
     left: '0px',
   })
 
-  function openToolBar(domSource: DomSource, top: string, left: string) {
+  const action = (domSource: DomSource, top: string, left: string, isEdit: boolean) => {
     show.value = true;
     source.value = domSource;
-    edit.value = false;
+    edit.value = isEdit;
 
     toolBarStyle.top = top;
     toolBarStyle.left = left;
+  }
+
+  function openToolBar(domSource: DomSource, top: string, left: string) {
+    action(domSource, top, left, false)
   }
 
   function closeTooBar() {
@@ -30,5 +34,9 @@ export const useToolbarStore = defineStore('toolbar', () => {
     show.value = false;
   }
 
-  return { show, source, edit, toolBarStyle, openToolBar, closeTooBar };
+  function editTooBar(domSource: DomSource, top: string, left: string) {
+    action(domSource, top, left, true)
+  }
+
+  return { show, source, edit, toolBarStyle, openToolBar, closeTooBar, editTooBar };
 })

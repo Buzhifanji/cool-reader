@@ -7,6 +7,7 @@ import { message } from "src/naive";
 import { saveNotes, updateNotes } from "src/server/notes";
 import { getReadingBook } from "src/store";
 import { createTime } from "src/utils";
+import { removeWebHighlightDom, removeWebHighlightDomSouce } from "src/views/reader/web-highlight";
 import { hasHighlight } from "../highlight/highlight";
 import { getIdeas, hasIdea } from "../idea/idea";
 import Input from './index.vue'
@@ -27,10 +28,10 @@ export function removeMessage() {
   if (!isSave && source) {
     const id = source.id
     // 删除dom
-    console.log('todo:removeWebHighlightDom(id)')
+    removeWebHighlightDom(id)
     // 删除没有保存到数据库的缓存数据
     if (!(hasIdea(id) || hasHighlight(id))) {
-      console.log('todo:removeWebHighlightCache(id)')
+      removeWebHighlightDomSouce(id)
     }
   }
 }

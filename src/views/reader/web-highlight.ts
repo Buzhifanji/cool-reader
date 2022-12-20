@@ -1,4 +1,3 @@
-import { RefProxy } from "pdfjs-dist/types/src/display/api";
 import { VIEWERCONTAINER } from "src/constants";
 import { lighlighClickBus, lighlightBus } from "src/core/bus";
 import { getPdfCurrentCurrentPageNumber, getPdfTitle } from "src/core/file";
@@ -29,14 +28,6 @@ async function getBookRoot() {
   }
 }
 
-function handleBookHighlight() {
-  switch (readingBook.extname) {
-    case Bookextname.pdf:
-    case Bookextname.epub:
-    default:
-  }
-}
-
 function setToolBarStle({ top, left, height }: DOMRect) {
   const { scrollTop, scrollLeft } = getEleById(VIEWERCONTAINER)!;
   const _top = (top + scrollTop - height - 96) + 'px';
@@ -63,16 +54,16 @@ lighlightBus.on(({ range, scrollTop }) => {
 
   const { top, left } = getToolBarStyle_iframe(rect)
   useToolbarStore().openToolBar(source, top, left)
-  // 由于 不同格式的电子书，渲染方案是不一样的，所以需要额外处理
-  // handleBookHighlight()
 })
 
 // 添加高亮区域点击事件
-webHighlight.on(EventType.click, (value, source) => {
-
+webHighlight.on(EventType.click, (rect, source) => {
+  const [top, left] = handlePdfRect(rect)
+  useToolbarStore().editTooBar(source, top, left)
+  console.log({ top, left, source })
 })
 
-
+// 由于 iframe 会隔离 事件，所以需要通过 观察者 重新监听事件
 lighlighClickBus.on((target) => {
   const iframe = getIframe()!
   const selection = iframe.contentDocument!.getSelection()
@@ -87,12 +78,15 @@ lighlighClickBus.on((target) => {
       const { top, left } = getToolBarStyle_iframe(rect)
       useToolBar.openToolBar(source, top, left)
     }
-
   } else {
     useToolBar.closeTooBar()
   }
 })
 
+function handlePdfRect({ top, left }: DOMRect): [string, string] {
+  const { scrollTop, scrollLeft } = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
+  return [`${top + scrollTop - 115}px`, `${left + scrollLeft}px`]
+}
 
 
 // 此方法用于 document为window，如果是iframe，则无效，需要手动监听 iframe 的range事件，然后通过 lighlightBus 发布 选中的range
@@ -105,14 +99,15 @@ export async function watchHighlight() {
     if (!title) return
 
     await updateRoot();
-    const { source, rect: { top, left } } = webHighlight.fromRange(range)
 
-    const { scrollTop, scrollLeft } = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
-    source.scrollTop = scrollTop;
+    const { source, rect } = webHighlight.fromRange(range)
+    const [top, left] = handlePdfRect(rect)
+
+    source.scrollTop = 0; // 此处带处理（document为iframe的情况)
     source.chapter = title;
 
     const useToolBar = useToolbarStore()
-    useToolBar.openToolBar(source, `${top + scrollTop - 115}px`, `${left + scrollLeft}px`)
+    useToolBar.openToolBar(source, top, left)
   }
 }
 
@@ -131,4 +126,18 @@ export async function paintWebHighlightFromSource(domSource: DomSource[] | DomSo
 export async function updateWebHighlight(domSource: DomSource) {
   await updateRoot()
   webHighlight.updateClass(domSource)
+}
+
+export async function removeWebHighlight(id: string) {
+  await removeWebHighlightDom(id)
+  removeWebHighlightDomSouce(id)
+}
+
+export async function removeWebHighlightDom(id: string) {
+  await updateRoot()
+  webHighlight.removeDom(id)
+}
+
+export async function removeWebHighlightDomSouce(id: string) {
+  webHighlight.removeSource(id)
 }

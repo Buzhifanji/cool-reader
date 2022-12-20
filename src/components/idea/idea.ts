@@ -1,10 +1,9 @@
 import { DomSource } from "src/core/web-highlight";
 import { getIdeasById, removeNotes } from "src/server/notes";
 import { getReadingBook } from "src/store";
-import { paintWebHighlightFromSource } from "src/views/reader/web-highlight"
+import { paintWebHighlightFromSource, removeWebHighlight } from "src/views/reader/web-highlight"
 
 export const notes = ref<DomSource[]>([]);
-
 
 const readingBook = getReadingBook();
 
@@ -31,7 +30,7 @@ export function getIdeas() {
 
 export function removeIdea({ id, bookId }: DomSource) {
   removeNotes(bookId, id).then(() => {
-    console.log('todo: removeWebHighlight(id)')
+    removeWebHighlight(id)
     getIdeas()
   })
 }
