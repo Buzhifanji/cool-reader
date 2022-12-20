@@ -65,10 +65,11 @@ export const useBookJump = () => {
   }
 
   async function jumpByChapter(chapter: string) {
-    const chapterData = getCurrentBookCatalog(chapter);
-
-    await catalogJump(chapterData)
-    readingBook.chapter = chapter;
+    if (chapter !== readingBook.chapter) {
+      const chapterData = getCurrentBookCatalog(chapter);
+      await catalogJump(chapterData)
+      readingBook.chapter = chapter;
+    }
   }
 
   return { catalogJump, jumpByChapter }
