@@ -2,6 +2,9 @@
 import { useCatalog, useBookJump } from "./catalog";
 import Menu from './menu.vue'
 
+
+
+
 const { readingBook, menuKes } = useCatalog();
 const { catalogJump } = useBookJump();
 

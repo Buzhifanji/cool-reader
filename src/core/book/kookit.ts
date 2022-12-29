@@ -1,10 +1,23 @@
 import { VIEWER, VIEWERCONTAINER } from "src/constants";
-import { KookitChapter, KookitRenderParams } from "src/interfaces";
-import { updateReadingBook } from "src/store";
 import { getEleById } from "src/utils";
 import { addIframeDeaultCss, getCustomCss, setViewerStlye } from "../style";
 
 declare var window: any;
+
+interface KookitRenderParams {
+  content: Uint8Array;
+  renderName: string;
+  renderMode?: string;
+  isSliding?: boolean;
+  charset?: string;
+}
+
+interface KookitChapter {
+  label: string;
+  id: string;
+  href: string;
+  subitems: KookitChapter[],
+}
 
 // 整合目录
 function formateCatalog(catalogs: KookitChapter[]) {
@@ -56,8 +69,7 @@ export class KookitRender {
     // 目录
     const chapters = await rendition.getChapter();
     const catalog = formateCatalog(chapters)
-
-    updateReadingBook({ catalog });
+    // updateReadingBook({ catalog });
 
     // 给渲染容器设置样式
     setViewerStlye()
@@ -70,9 +82,12 @@ export class KookitRender {
     rendition.on('rendered', async () => {
       const position = await rendition.getPosition()
     })
+
+    return catalog
   }
   jump(href: string) {
     scrollToTop()
+
     return this.rendition.goToChapter(href);
   }
   prev() {

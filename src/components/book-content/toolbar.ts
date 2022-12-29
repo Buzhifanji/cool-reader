@@ -1,4 +1,4 @@
-import { barEnum, Bookextname } from "src/enums";
+import { barEnum } from "src/enums";
 import {
   Copy,
   Delete,

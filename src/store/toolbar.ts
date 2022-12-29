@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { openIdea, removeMessage } from 'src/components/idea-input';
 import { DomSource } from 'src/core/web-highlight';
+import { openIdea, removeMessage } from 'src/views/pc/reader/idea/input';
 
 export const useToolbarStore = defineStore('toolbar', () => {
   const show = ref<boolean>(false);

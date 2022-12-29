@@ -9,27 +9,35 @@ import { getIdeas } from "src/components/idea/idea";
 import { renderMobi, useMobiChangePage } from "src/core/file/mobi";
 import { useAzw3ChangePage, renderAzw3 } from "src/core/file/azw3";
 import { renderText, useTextChangePage } from "src/core/file/txt";
+import { bookRender } from "src/core/book";
 
 export const useReaderBook = (route: RouteLocationNormalizedLoaded) => {
   const readingBook = getReadingBook();
   async function init() {
     try {
-      const book = await setReadingBook(route.query.id as string, null);
-      const renderBookStatus: ExtnameFn = {
-        [Bookextname.pdf]: renderPdf,
-        [Bookextname.epub]: renderEpub,
-        [Bookextname.mobi]: renderMobi,
-        [Bookextname.azw3]: renderAzw3,
-        [Bookextname.txt]: renderText,
-      };
-      if (book.content) {
-        useTitle(book.bookName + '- Cool do Reader')
-        await renderBookStatus[book.extname]?.(book.content);
-        // 获取笔记内容
-        getIdeas();
-        // 获取高亮内容
-        getHighlights();
-      }
+      const id = route.query.id as string;
+      await bookRender(id)
+      // 获取笔记内容
+      getIdeas();
+      // 获取高亮内容
+      getHighlights();
+      // const book = await setReadingBook(route.query.id as string, null);
+      // const renderBookStatus: ExtnameFn = {
+      //   [Bookextname.pdf]: renderPdf,
+      //   [Bookextname.epub]: renderEpub,
+      //   [Bookextname.mobi]: renderMobi,
+      //   [Bookextname.azw3]: renderAzw3,
+      //   [Bookextname.txt]: renderText,
+      // };
+      // if (book.content) {
+      //   // useTitle(book.bookName + '- Cool do Reader')
+
+      //   await renderBookStatus[book.extname]?.(book.content);
+      //   // 获取笔记内容
+      //   getIdeas();
+      //   // 获取高亮内容
+      //   getHighlights();
+      // }
     } catch (error) {
       console.error(error);
     }
