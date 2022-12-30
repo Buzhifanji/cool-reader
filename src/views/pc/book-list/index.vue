@@ -2,12 +2,12 @@
 
 <script setup lang="ts">
 import { useLoadFile } from "src/store";
-import { downloadFile } from "src/core/file/file";
 import { useBooks, useContextMenu, deleteBook } from "./book";
 import { langField } from "src/i18n/index";
 import { BookData } from "src/interfaces";
 import { createWin, setReaderWinUlr } from "src/core/windows";
 import { handleCover } from "src/utils";
+import { downloadFile } from "src/core/book";
 const { percentage } = useLoadFile();
 
 const { books } = useBooks();
