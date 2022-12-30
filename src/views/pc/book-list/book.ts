@@ -5,28 +5,6 @@ import { Delete, Edit, Export } from "@vicons/carbon";
 import { getAllBooks, removeBook } from "src/core/book/forage";
 
 const books = ref<BookData[]>([]);
-function deleteBookList(bookId: string) {
-  const index = books.value.findIndex((book) => book.id === bookId);
-  if (isIndex(index)) {
-    const name = books.value[index].bookName;
-    books.value.splice(index, 1);
-    notification.success({
-      content: "删除成功！",
-      meta: name,
-      duration: 2000,
-      keepAliveOnHover: true,
-    });
-  }
-}
-
-export function deleteBook(bookId: string) {
-  deleteBookList(bookId);
-  removeBook(bookId);
-}
-
-export function updateBook(book: BookData) {
-  books.value.unshift(book);
-}
 
 // 右键
 export const useContextMenu = () => {
@@ -64,7 +42,6 @@ export const useContextMenu = () => {
     showDropdownRef.value = false;
     switch (key) {
       case menusKey.delete:
-        deleteBook(selectedBookId!)
         break;
     }
   }
@@ -91,18 +68,4 @@ export const useContextMenu = () => {
     onClickOutside,
     menus,
   };
-};
-
-let isLoadStoraged = false; // 防止切换路由重复加载缓存数据
-
-export const useBooks = () => {
-  async function initBook() {
-    if (!isLoadStoraged) {
-      const list = await getAllBooks();
-      books.value = list ? [...list] : [];
-      isLoadStoraged = true;
-    }
-  }
-  initBook();
-  return { books };
 };

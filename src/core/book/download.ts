@@ -16,6 +16,8 @@ import { getMobiCover } from "./mobi";
 import { getPDFCover } from "./pdf";
 import { useBookListStore, useDownloadFieStore } from "./store";
 import { getTextCover } from "./txt";
+import { notification } from "src/naive";
+import { langField } from "src/i18n";
 
 async function getFilePath() {
   const defaultPath = await appDir();
@@ -63,7 +65,14 @@ async function cacheBook(book: BookListItem) {
 
     const store = useBookListStore();
 
-    store.add(book)
+    await store.add(book)
+
+    notification.success({
+      content: langField.value.addSuccess,
+      meta: book.bookName,
+      duration: 2000,
+      keepAliveOnHover: true,
+    });
 
     return true
   }
@@ -82,7 +91,11 @@ export function downloadFile(): Promise<{ isExit: boolean, book: BookListItem }>
       const calculatePercentage = () => {
         let progress = 0;
         if (size && cahceLen) {
-          progress = Math.ceil((cahceLen / size) * 100);
+          if (size === cahceLen) {
+            progress = 0;
+          } else {
+            progress = Math.ceil((cahceLen / size) * 100);
+          }
         }
         store.setDownloadProgress(progress)
       }
@@ -131,8 +144,8 @@ export function downloadFile(): Promise<{ isExit: boolean, book: BookListItem }>
           resolve({ isExit, book })
         }
       });
+    } else {
+      reject(`cann't find path: ${path}`)
     }
-
-    reject(`cann't find path: ${path}`)
   })
 }

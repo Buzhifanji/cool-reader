@@ -1,16 +1,19 @@
 
 
 <script setup lang="ts">
-import { useBooks, useContextMenu, deleteBook } from "./book";
+import { useContextMenu } from "./book";
 import { langField } from "src/i18n/index";
 import { BookData } from "src/interfaces";
 import { createWin, setReaderWinUlr } from "src/core/windows";
 import { handleCover } from "src/utils";
-import { downloadFile, useDownloadFieStore } from "src/core/book";
+import { downloadFile, useBookListStore, useDownloadFieStore } from "src/core/book";
+import { notification } from "src/naive";
 
 const downloadFileStore = useDownloadFieStore();
+const bookListStore = useBookListStore();
 
-const { books } = useBooks();
+bookListStore.init();
+
 const {
   showDropdownRef,
   xRef,
@@ -31,6 +34,19 @@ const open = ({ id, bookName }: BookData) => {
   createWin(id, { url, title: bookName })
 }
 
+const deleteBook = (id: string) => {
+  bookListStore.remove(id).then(({ result, name }) => {
+    if (result) {
+      notification.success({
+        content: langField.value.deleteSuccess,
+        meta: name,
+        duration: 2000,
+        keepAliveOnHover: true,
+      });
+    }
+  })
+}
+
 onUnmounted(() => {
   stop()
 })
@@ -40,7 +56,7 @@ onUnmounted(() => {
 <template>
   <n-progress v-if="downloadFileStore.downloadProgress" type="line" :percentage="downloadFileStore.downloadProgress"
     :indicator-placement="'inside'" processing />
-  <template v-if="books.length">
+  <template v-if="bookListStore.bookList.length">
     <!-- <div class="card-wrapper">
       <n-card :bordered="false" v-for="item in books" :key="item.id" @contextmenu="handleContextMenu($event, item.id)"
         @click="open(item)">
@@ -58,7 +74,7 @@ onUnmounted(() => {
         :on-clickoutside="onClickOutside" @select="handleSelect" />
     </div> -->
     <!-- 列表模式 -->
-    <div class="list-wrapper" v-for="item in books" :key="item.id">
+    <div class="list-wrapper" v-for="item in bookListStore.bookList" :key="item.id">
       <div class="list-content-left" @click="open(item)">
         <img class="list-img" :src="handleCover(item.cover)" alt="">
       </div>

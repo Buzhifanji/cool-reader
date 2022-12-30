@@ -34,17 +34,17 @@ export const useBookListStore = defineStore('bookListStore', () => {
     bookList.value = books
   }
 
-  function add(book: BookListItem) {
+  async function add(book: BookListItem) {
     bookList.value.unshift(book)
-    addBook(book) // 存储到 indexDB
+    return await addBook(book) // 存储到 indexDB
   }
 
-  function remove(bookId: string) {
+  async function remove(bookId: string) {
     const index = bookList.value.findIndex((book) => book.id === bookId);
     if (isIndex(index)) {
       const name = bookList.value[index].bookName;
       bookList.value.splice(index, 1);
-      removeBook(bookId) // 移除 indexDB 的数据
+      await removeBook(bookId) // 移除 indexDB 的数据
       return { result: true, name }
     } else {
       return { result: false, name: '' }
