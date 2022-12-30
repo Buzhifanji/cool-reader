@@ -1,5 +1,6 @@
 import { VIEWER, VIEWERCONTAINER } from "src/constants";
-import { getEleById } from "src/utils";
+import { getEleById, getIframeDoc } from "src/utils";
+import { lighlighClickBus, lighlightBus } from "../bus";
 import { addIframeDeaultCss, getCustomCss, setViewerStlye } from "../style";
 
 declare var window: any;
@@ -51,6 +52,24 @@ function scrollToTop() {
 }
 
 
+function addEvent() {
+  const doc = getIframeDoc();
+  if (!doc) return;
+
+  doc.body.addEventListener('click', (e: Event) => {
+    const selection = doc.getSelection();
+    if (selection && !selection.isCollapsed) {
+      const range = selection.getRangeAt(0);
+      const container = getEleById(VIEWERCONTAINER)! as HTMLDivElement;
+      const scrollTop = container.scrollTop;
+      lighlightBus.emit({ range, scrollTop })
+    } else {
+      const target = e.target as HTMLElement;
+      lighlighClickBus.emit(target)
+    }
+  })
+}
+
 export class KookitRender {
   context: any = null;
   constructor({ content, renderName, renderMode, isSliding, charset }: KookitRenderParams) {
@@ -81,6 +100,8 @@ export class KookitRender {
     this.context.on('rendered', async () => {
       const position = await context.getPosition()
     })
+
+    addEvent();
 
     return catalog
   }

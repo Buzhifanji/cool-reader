@@ -20,6 +20,9 @@ async function getBookRoot() {
     case Bookextname.pdf:
       return await getPdfRoot();
     case Bookextname.epub:
+    case Bookextname.mobi:
+    case Bookextname.azw3:
+    case Bookextname.txt:
       return getIframeDoc()
     default:
       return document;
