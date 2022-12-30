@@ -2,7 +2,7 @@
 import { useRoute } from "vue-router";
 import { langField } from "src/i18n";
 import { handleCover } from "src/utils";
-import Header from 'src/layouts/header.vue'
+import Header from '../layouts/header.vue'
 import Catalog from './catalog/index.vue'
 import BookContent from './content/index.vue'
 import './web-highlight'

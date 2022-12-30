@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Bookextname, useReadBookStore } from "src/core/book";
+import { useReadBookStore } from "src/core/book";
+import { Bookextname } from "src/enums";
 import Menu from './menu.vue'
 import { useHandleCatalogJump } from '../reader'
 

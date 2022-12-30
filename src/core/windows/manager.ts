@@ -1,7 +1,7 @@
 import { WebviewWindow, WindowOptions } from "@tauri-apps/api/window";
 import { NOTES_CHANGE } from "src/constants";
 import { message } from "src/naive";
-import { updateAllNotes } from "src/store";
+import { useAllNotesStore } from "src/store";
 
 export const windowConfig: WindowOptions = {
   title: '',              // 窗口标题
@@ -47,5 +47,8 @@ export async function createWin(label: string, options: WindowOptions) {
   });
 
   // 窗口通信: 监听笔记变化
-  win.listen(NOTES_CHANGE, updateAllNotes)
+  win.listen(NOTES_CHANGE, () => {
+    const notesStore = useAllNotesStore();
+    notesStore.updateAllNotes();
+  })
 }

@@ -7,7 +7,7 @@ import { ExtnameFn } from "src/interfaces";
 import { mergerUint8Array } from "src/utils";
 import { todo } from "src/utils/todo";
 import { getAzw3Cover } from "./azw3";
-import { Bookextname } from "./enums";
+import { Bookextname } from "src/enums";
 import { getEpubCover } from "./epub";
 import { hasBook } from "./forage";
 import { BookListItem } from "./interface";

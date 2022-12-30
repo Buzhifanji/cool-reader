@@ -1,14 +1,14 @@
 
 
 <script setup lang="ts">
-import { useLoadFile } from "src/store";
 import { useBooks, useContextMenu, deleteBook } from "./book";
 import { langField } from "src/i18n/index";
 import { BookData } from "src/interfaces";
 import { createWin, setReaderWinUlr } from "src/core/windows";
 import { handleCover } from "src/utils";
-import { downloadFile } from "src/core/book";
-const { percentage } = useLoadFile();
+import { downloadFile, useDownloadFieStore } from "src/core/book";
+
+const downloadFileStore = useDownloadFieStore();
 
 const { books } = useBooks();
 const {
@@ -38,7 +38,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <n-progress v-if="percentage" type="line" :percentage="percentage" :indicator-placement="'inside'" processing />
+  <n-progress v-if="downloadFileStore.downloadProgress" type="line" :percentage="downloadFileStore.downloadProgress"
+    :indicator-placement="'inside'" processing />
   <template v-if="books.length">
     <!-- <div class="card-wrapper">
       <n-card :bordered="false" v-for="item in books" :key="item.id" @contextmenu="handleContextMenu($event, item.id)"

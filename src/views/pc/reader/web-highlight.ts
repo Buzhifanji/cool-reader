@@ -1,9 +1,10 @@
 import { VIEWERCONTAINER } from "src/constants";
-import { pdf, useReadBookStore, Bookextname } from "src/core/book";
+import { pdf, useReadBookStore } from "src/core/book";
+import { Bookextname } from "src/enums";
 import { lighlighClickBus, lighlightBus } from "src/core/bus";
 import { DomSource, EventType, isHeightWrap, WebHighlight } from "src/core/web-highlight";
 import { DATA_WEB_HIGHLIGHT } from "src/core/web-highlight/constant";
-import { useToolbarStore } from "src/store/toolbar";
+import { useToolbarStore } from "src/store";
 import { concatRectDom, getEleById, getIframe, getIframeDoc, getPDFPageSelector, selector } from "src/utils";
 
 const webHighlight = new WebHighlight({});

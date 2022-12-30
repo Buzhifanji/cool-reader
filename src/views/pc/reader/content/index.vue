@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSroll } from 'src/core/scroll';
-import { useToolbarStore } from 'src/store/toolbar';
+import { useToolbarStore } from 'src/store';
 import { barEnum } from 'src/enums';
 import { dialog, message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, NOTES_CHANGE, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";

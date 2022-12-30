@@ -3,20 +3,23 @@ import { Search, ShowDataCards, Delete, List } from "@vicons/carbon";
 import { langField } from 'src/i18n';
 import { hanldeNotesByTime } from "src/utils";
 import { initRenderData } from "render-big-data";
-import { initAllNotes, getAllHighlights } from "src/store";
+import { useAllNotesStore } from "src/store";
 import { useVirtualList } from "src/core/scroll/virtual-list"
 
 const total = ref<number>(0)
 // 目前不知道 如何在HTML配置 // @ts-ignore，所以使用了 any类型
 const list = ref<any[]>([])
 
-initAllNotes().then(() => {
-  const hightlights = getAllHighlights();
+const notesStore = useAllNotesStore();
+
+notesStore.updateAllNotes().then(() => {
+  const hightlights = notesStore.allHighlights
   total.value = hightlights.length;
   // 按照时间分类
   const arr = hanldeNotesByTime(hightlights)
   initRenderData(arr)
 })
+
 
 useVirtualList(list)
 

@@ -3,8 +3,9 @@ import Idea from './idea/index.vue'
 import Highlight from './highlight/index.vue'
 import { langField } from "src/i18n";
 import { RouteLocationNormalizedLoaded } from "vue-router";
-import { Bookextname, bookRender, catalogJump, useReadBookStore } from "src/core/book";
+import { bookRender, catalogJump, useReadBookStore } from "src/core/book";
 import { useBookNotesStore } from "src/store";
+import { Bookextname } from "src/enums";
 
 export const useHandleCatalog = () => {
   const showCatalog = ref<boolean>(false);

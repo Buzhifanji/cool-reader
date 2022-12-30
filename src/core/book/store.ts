@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { isIndex } from 'src/utils';
-import { Bookextname } from './enums';
+import { Bookextname } from "src/enums";
 import { addBook, getAllBooks, getBookById, removeBook } from './forage';
 import { BookListItem } from './interface';
 

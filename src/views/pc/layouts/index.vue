@@ -6,7 +6,7 @@ import Header from './header.vue'
 <template>
   <n-layout>
     <n-layout-header style="padding: 6px 12px" bordered>
-      <Header />
+      <Header :title="'Cool Reader'" />
     </n-layout-header>
     <n-layout has-sider bordered position="absolute" style="top: 41px;">
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"

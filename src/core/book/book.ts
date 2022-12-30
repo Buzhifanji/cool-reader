@@ -1,4 +1,4 @@
-import { Bookextname } from "./enums";
+import { Bookextname } from "src/enums";
 import { useReadBookStore } from "./store";
 import { todo } from "src/utils/todo";
 import { pdf } from "./pdf";
