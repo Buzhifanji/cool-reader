@@ -5,7 +5,7 @@ import { todo } from "src/utils/todo";
 
 
 class Txt extends BookBase {
-  rendition: any = null
+  rendition: KookitRender | null = null
 
   async render(content: Uint8Array): Promise<any[]> {
     const charset = chardet.detect(content) || 'utf8'// 获取文本编码

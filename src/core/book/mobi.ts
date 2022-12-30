@@ -3,7 +3,7 @@ import { BookBase } from "./base";
 import { KookitRender } from "./Kookit";
 
 class Mobi extends BookBase {
-  rendition: any = null
+  rendition: KookitRender | null = null
 
   async render(content: Uint8Array): Promise<any[]> {
     this.rendition = new KookitRender({ content, renderName: 'MobiRender' })

@@ -87,6 +87,10 @@ export const useHandleHelp = () => {
 
 export const useHandleReading = async (route: RouteLocationNormalizedLoaded) => {
   const id = route.query.id as string;
+
+  // 此处很重要（解析 azw3、mobi、txt等格式的时候，用的上)
+  useTitle('Cool do Reader')
+
   await bookRender(id)
   const notesStore = useBookNotesStore();
 

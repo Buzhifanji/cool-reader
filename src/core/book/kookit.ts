@@ -52,24 +52,23 @@ function scrollToTop() {
 
 
 export class KookitRender {
-  rendition: any = null;
+  context: any = null;
   constructor({ content, renderName, renderMode, isSliding, charset }: KookitRenderParams) {
     const mode = renderMode ? renderMode : 'scroll';
     const isSl = isSliding ? isSliding : false;
     const render = window.Kookit[renderName];
     const params = charset ? [content.buffer, mode, charset, isSl] : [content.buffer, mode, isSl]
-    this.rendition = new render(...params);
+    this.context = new render(...params);
   }
   async action() {
-    const rendition = this.rendition;
+    const context = this.context;
 
     const container = getEleById(VIEWER)!
-    await rendition.renderTo(container)
+    await this.context.renderTo(container)
 
     // 目录
-    const chapters = await rendition.getChapter();
+    const chapters = await this.context.getChapter();
     const catalog = formateCatalog(chapters)
-    // updateReadingBook({ catalog });
 
     // 给渲染容器设置样式
     setViewerStlye()
@@ -77,10 +76,10 @@ export class KookitRender {
     addIframeDeaultCss()
     // 用户可以自行调节的样式
     const customCss = getCustomCss()
-    rendition.setStyle(customCss)
+    this.context.setStyle(customCss)
 
-    rendition.on('rendered', async () => {
-      const position = await rendition.getPosition()
+    this.context.on('rendered', async () => {
+      const position = await context.getPosition()
     })
 
     return catalog
@@ -88,16 +87,16 @@ export class KookitRender {
   jump(href: string) {
     scrollToTop()
 
-    return this.rendition.goToChapter(href);
+    return this.context.goToChapter(href);
   }
   prev() {
     scrollToTop()
 
-    return this.rendition.prev();
+    return this.context.prev();
   }
   next() {
     scrollToTop()
 
-    return this.rendition.next();
+    return this.context.next();
   }
 }
