@@ -10,7 +10,7 @@ import Header from './header.vue'
     </n-layout-header>
     <n-layout has-sider bordered position="absolute" style="top: 41px;">
       <n-layout-sider bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="160"
-        :native-scrollbar="false" style="max-height: 320px">
+        :native-scrollbar="false">
         <Menu />
       </n-layout-sider>
       <n-layout-content>
