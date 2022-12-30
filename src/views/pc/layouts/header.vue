@@ -45,8 +45,8 @@ const winClose = async () => {
 </script>
 
 <template>
-  <n-space align="center" justify="space-between" data-tauri-drag-region>
-    <n-gradient-text :size="24" type="success">
+  <div class="header-warpper" data-tauri-drag-region>
+    <n-gradient-text :size="24" type="success" class="title">
       {{ props.title }}
     </n-gradient-text>
     <n-space :size="[24, 8]">
@@ -110,5 +110,22 @@ const winClose = async () => {
         <span> {{ langField.windowFork }} </span>
       </n-tooltip>
     </n-space>
-  </n-space>
+  </div>
+
 </template>
+
+<style scoped>
+.header-warpper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
