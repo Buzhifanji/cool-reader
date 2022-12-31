@@ -29,7 +29,16 @@ export const useSroll = () => {
     webViewWindow.close();
   })
 
-  return { container }
+  // 计算阅读进度
+  const onScroll = useThrottleFn(() => {
+    const readBookStore = useReadBookStore()
+    const { scrollTop, scrollHeight } = container.value!
+    const readProgress = +(scrollTop / scrollHeight * 100).toFixed(0)
+    console.log({ readProgress })
+    readBookStore.update({ readProgress })
+  }, 1500)
+
+  return { container, onScroll }
 }
 
 // 跳转到上次记录的位置

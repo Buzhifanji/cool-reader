@@ -3,7 +3,6 @@ lockfileVersion: 5.4
 specifiers:
   '@tauri-apps/api': ^1.1.0
   '@tauri-apps/cli': ^1.1.1
-  '@tauri-apps/tauri-forage': 1.0.0-beta.2
   '@types/chai': ^4.3.4
   '@types/jsdom': ^20.0.1
   '@types/jsdom-global': ^3.0.4
@@ -22,6 +21,7 @@ specifiers:
   chai: ^4.3.7
   chardet: ^1.5.0
   concurrently: ^7.5.0
+  dexie: ^3.2.2
   dpdm: ^3.10.0
   epubjs: ^0.3.93
   husky: ^8.0.0
@@ -48,7 +48,6 @@ specifiers:
 
 dependencies:
   '@tauri-apps/api': 1.1.0
-  '@tauri-apps/tauri-forage': 1.0.0-beta.2
   '@wdio/cli': 7.25.4_typescript@4.8.4
   vue: 3.2.41
   vue-router: 4.1.6_vue@3.2.41
@@ -72,6 +71,7 @@ devDependencies:
   chai: 4.3.7
   chardet: 1.5.0
   concurrently: 7.5.0
+  dexie: 3.2.2
   dpdm: 3.10.0
   epubjs: 0.3.93
   husky: 8.0.2
@@ -414,16 +414,6 @@ packages:
       '@tauri-apps/cli-win32-ia32-msvc': 1.1.1
       '@tauri-apps/cli-win32-x64-msvc': 1.1.1
     dev: true
-
-  /@tauri-apps/tauri-forage/1.0.0-beta.2:
-    resolution: {integrity: sha512-aGObWlY8sgEfImt8+Cv4D+hqWhWB4KwPLVRQTv2uPtHSrXpXrvkJ8vTjy+QsT7tGPyVhcLPBchbyGu0JReErSQ==}
-    engines: {node: '>= 10.18.1', npm: '>= 6.13.4', yarn: '>= 1.21.1'}
-    dependencies:
-      localforage: 1.10.0
-      ramda: 0.26.1
-      tweetnacl: 1.0.3
-      tweetnacl-util: 0.15.1
-    dev: false
 
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -1948,6 +1938,11 @@ packages:
       - typescript
       - utf-8-validate
 
+  /dexie/3.2.2:
+    resolution: {integrity: sha512-q5dC3HPmir2DERlX+toCBbHQXW5MsyrFqPFcovkH9N2S/UW/H3H5AWAB6iEOExeraAu+j+zRDG+zg/D7YhH0qg==}
+    engines: {node: '>=6.0'}
+    dev: true
+
   /diff-sequences/28.1.1:
     resolution: {integrity: sha512-FU0iFaH/E23a+a718l8Qa/19bF9p06kgE0KipMOMadwa3SjnaElKzPaUC0vnibs6/B/9ni97s61mcejk8W1fQw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -3066,6 +3061,7 @@ packages:
 
   /immediate/3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+    dev: true
 
   /indent-string/3.2.0:
     resolution: {integrity: sha512-BYqTHXTGUIvg7t1r4sJNKcbDZkL92nkXA8YtRpbjFHRHGDL/NtUeiBJMeE60kIFN/Mg8ESaWQvftaYMGJzQZCQ==}
@@ -3524,6 +3520,7 @@ packages:
     resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
     dependencies:
       immediate: 3.0.6
+    dev: true
 
   /lie/3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
@@ -3558,6 +3555,7 @@ packages:
     resolution: {integrity: sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==}
     dependencies:
       lie: 3.1.1
+    dev: true
 
   /locate-path/5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
@@ -4365,10 +4363,6 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
 
-  /ramda/0.26.1:
-    resolution: {integrity: sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==}
-    dev: false
-
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
@@ -5089,17 +5083,9 @@ packages:
     dev: true
     optional: true
 
-  /tweetnacl-util/0.15.1:
-    resolution: {integrity: sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==}
-    dev: false
-
   /tweetnacl/0.14.5:
     resolution: {integrity: sha512-KXXFFdAbFXY4geFIwoyNK+f5Z1b7swfXABfL7HXCmoIWMKU3dmS26672A4EeQtDzLKy7SXmfBu51JolvEKwtGA==}
     dev: true
-
-  /tweetnacl/1.0.3:
-    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
-    dev: false
 
   /type-check/0.3.2:
     resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}

@@ -10,5 +10,7 @@ export interface BookListItem {
   id: string; // md5
   content: Uint8Array; // 书本内容
   chapter: string; // 正在阅读的章节
+  readProgress: number; // 阅读进度
+  readTime: number; // 阅读时间
   catalog: any[]; // 目录
 }

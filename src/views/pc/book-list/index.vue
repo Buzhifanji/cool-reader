@@ -14,6 +14,8 @@ const bookListStore = useBookListStore();
 
 bookListStore.init();
 
+console.log(bookListStore)
+
 const {
   showDropdownRef,
   xRef,
@@ -82,7 +84,7 @@ onUnmounted(() => {
         <div>{{ item.bookName }}</div>
         <div>作者</div>
         <div class="progress">
-          <div class="progress-content"></div>
+          <div class="progress-content" :style="{ width: item.readProgress + '%' }"></div>
         </div>
       </div>
       <div class="list-content-right">
@@ -204,7 +206,7 @@ onUnmounted(() => {
 
 .progress-content {
   height: 100%;
-  width: 20%;
+  /* width: 20%; */
   background-color: #2080f0;
 }
 

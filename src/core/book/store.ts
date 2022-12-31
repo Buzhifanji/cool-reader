@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
 import { isIndex } from 'src/utils';
 import { Bookextname } from "src/enums";
-import { addBook, getAllBooks, getBookById, removeBook } from './forage';
 import { BookListItem } from './interface';
-
-export const BOOKLIST = "_tauri_book_list_";
+import { booksDB } from '../data-base';
 
 export const useDownloadFieStore = defineStore('downloadFieStore', () => {
   const isDownloading = ref<boolean>(false); // 因为一次只能读取一个文件，所以设定此变量，防止用户在读取中重复读取文件
@@ -30,13 +28,14 @@ export const useBookListStore = defineStore('bookListStore', () => {
   const bookList = ref<BookListItem[]>([])
 
   async function init() {
-    const books = await getAllBooks()
+    const books = await booksDB.getAll();
+    console.log({ books })
     bookList.value = books
   }
 
   async function add(book: BookListItem) {
     bookList.value.unshift(book)
-    return await addBook(book) // 存储到 indexDB
+    return await booksDB.add(book) // 存储到 indexDB
   }
 
   async function remove(bookId: string) {
@@ -44,12 +43,21 @@ export const useBookListStore = defineStore('bookListStore', () => {
     if (isIndex(index)) {
       const name = bookList.value[index].bookName;
       bookList.value.splice(index, 1);
-      await removeBook(bookId) // 移除 indexDB 的数据
+      await booksDB.deleteById(bookId) // 移除 indexDB 的数据
       return { result: true, name }
     } else {
       return { result: false, name: '' }
     }
   }
+
+  // function update(value: BookListItem) {
+  //   const index = bookList.value.findIndex((item) => item.id === value.id);
+  //   if (isIndex(index)) {
+  //     bookList.value[index] = value;
+  //     updateBook(bookList.value)
+  //   }
+
+  // }
 
   return {
     bookList,
@@ -72,17 +80,20 @@ export const useReadBookStore = defineStore('readBookStore', () => {
     id: '',
     chapter: '',
     content: new Uint8Array(),
+    readProgress: 0,
+    readTime: 0,
     catalog: []
   })
 
   async function init(bookId: string) {
-    const book = await getBookById(bookId);
+    const book = await booksDB.getById(bookId);
     if (book) {
+      console.log({ book })
       readingBook.value = book;
     }
   }
 
-  function update({ content, catalog, chapter }: Partial<BookListItem>) {
+  function update({ content, catalog, chapter, readProgress, readTime }: Partial<BookListItem>) {
     if (content) {
       readingBook.value.content = content;
     }
@@ -93,6 +104,16 @@ export const useReadBookStore = defineStore('readBookStore', () => {
 
     if (chapter) {
       readingBook.value.chapter = chapter
+    }
+
+    if (readProgress && readingBook.value.readProgress !== readProgress) {
+      readingBook.value.readProgress = readProgress
+
+      booksDB.update(toRaw(readingBook.value))
+    }
+
+    if (readTime) {
+      readingBook.value.readTime = readTime
     }
   }
 

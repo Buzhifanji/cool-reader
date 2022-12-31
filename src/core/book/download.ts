@@ -9,7 +9,6 @@ import { todo } from "src/utils/todo";
 import { getAzw3Cover } from "./azw3";
 import { Bookextname } from "src/enums";
 import { getEpubCover } from "./epub";
-import { hasBook } from "./forage";
 import { BookListItem } from "./interface";
 import { setBookId } from "./md5";
 import { getMobiCover } from "./mobi";
@@ -18,6 +17,7 @@ import { useBookListStore, useDownloadFieStore } from "./store";
 import { getTextCover } from "./txt";
 import { notification } from "src/naive";
 import { langField } from "src/i18n";
+import { booksDB } from "../data-base";
 
 async function getFilePath() {
   const defaultPath = await appDir();
@@ -55,7 +55,7 @@ function generateBookCover({ content, extname }: BookListItem): Promise<string> 
 
 async function cacheBook(book: BookListItem) {
   const bookId = await setBookId(book);
-  const value = await hasBook(bookId);
+  const value = await booksDB.getById(bookId);
   if (value) {
     return false
   } else {
@@ -137,6 +137,8 @@ export function downloadFile(): Promise<{ isExit: boolean, book: BookListItem }>
             id: "",
             cover: "",
             chapter: "",
+            readProgress: 0,
+            readTime: 0,
             catalog: [],
           };
           const isExit = await cacheBook(book)

@@ -52,6 +52,7 @@ useHandleReading(route)
                   {{ bookStore.readingBook.bookName }}
                 </n-ellipsis>
                 <span>作者：佚名</span>
+                <n-p>进度：{{ bookStore.readingBook.readProgress }}%</n-p>
               </n-space>
             </n-gi>
           </n-grid>

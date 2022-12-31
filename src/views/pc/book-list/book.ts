@@ -2,7 +2,6 @@ import { BookData } from "src/interfaces";
 import { notification } from "src/naive";
 import { isIndex, renderIcon } from "src/utils";
 import { Delete, Edit, Export } from "@vicons/carbon";
-import { getAllBooks, removeBook } from "src/core/book/forage";
 
 const books = ref<BookData[]>([]);
 

@@ -15,7 +15,7 @@ import { useReadBookStore } from 'src/core/book';
 import { useBookNotesStore } from 'src/store';
 import { openIdea } from '../idea/input'
 
-const { container } = useSroll()
+const { container, onScroll } = useSroll()
 
 const toolBar = useToolbarStore()
 const bookStore = useReadBookStore();
@@ -154,7 +154,7 @@ function notesAction(className: string) {
 </script>
 
 <template>
-  <div id="viewerContainer" ref="container" @click="watchHighlight">
+  <div id="viewerContainer" ref="container" @scroll="onScroll" @click="watchHighlight">
     <div id="page-area" class="pdfViewer" @click="toolBar.closeTooBar"></div>
     <div class="tool-bar-wrapper" :style="toolBar.toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
       <n-space>

@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.1.0",
-    "@tauri-apps/tauri-forage": "1.0.0-beta.2",
     "@wdio/cli": "^7.25.4",
     "vue": "^3.2.41",
     "vue-router": "^4.1.6"
@@ -43,6 +42,7 @@
     "chai": "^4.3.7",
     "chardet": "^1.5.0",
     "concurrently": "^7.5.0",
+    "dexie": "^3.2.2",
     "dpdm": "^3.10.0",
     "epubjs": "^0.3.93",
     "husky": "^8.0.0",

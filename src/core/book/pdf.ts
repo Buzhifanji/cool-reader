@@ -54,6 +54,10 @@ class Pdf extends BookBase {
     // 跳转到上次阅读的位置
     view.eventBus.on("pagesloaded", jumpToRecordPosition);
 
+    view.eventBus.on('scroll', () => {
+      console.log('scrolll')
+    })
+
     this.rendition = view;
 
     return catalog;
