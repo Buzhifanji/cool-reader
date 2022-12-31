@@ -29,7 +29,6 @@ export const useBookListStore = defineStore('bookListStore', () => {
 
   async function init() {
     const books = await booksDB.getAll();
-    console.log({ books })
     bookList.value = books
   }
 
@@ -49,15 +48,6 @@ export const useBookListStore = defineStore('bookListStore', () => {
       return { result: false, name: '' }
     }
   }
-
-  // function update(value: BookListItem) {
-  //   const index = bookList.value.findIndex((item) => item.id === value.id);
-  //   if (isIndex(index)) {
-  //     bookList.value[index] = value;
-  //     updateBook(bookList.value)
-  //   }
-
-  // }
 
   return {
     bookList,

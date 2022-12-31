@@ -1,9 +1,10 @@
 import { window } from "@tauri-apps/api"
 import { StorageSerializers } from "@vueuse/core";
-import { RECORD_LAST_POSITION, VIEWERCONTAINER } from "src/constants";
+import { READ_PROGRESS_CHANGE, RECORD_LAST_POSITION, VIEWERCONTAINER } from "src/constants";
 import { WinEvent } from "src/enums";
 import { getEleById, isObj } from "src/utils";
 import { useReadBookStore } from 'src/core/book';
+import { emit } from "@tauri-apps/api/event";
 
 interface State {
   [key: string]: number;
@@ -34,8 +35,10 @@ export const useSroll = () => {
     const readBookStore = useReadBookStore()
     const { scrollTop, scrollHeight } = container.value!
     const readProgress = +(scrollTop / scrollHeight * 100).toFixed(0)
-    console.log({ readProgress })
+
     readBookStore.update({ readProgress })
+
+    emit(READ_PROGRESS_CHANGE, { readProgress })
   }, 1500)
 
   return { container, onScroll }

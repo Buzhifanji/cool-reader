@@ -1,7 +1,8 @@
 import { WebviewWindow, WindowOptions } from "@tauri-apps/api/window";
-import { NOTES_CHANGE } from "src/constants";
+import { NOTES_CHANGE, READ_PROGRESS_CHANGE } from "src/constants";
 import { message } from "src/naive";
 import { useAllNotesStore } from "src/store";
+import { useBookListStore } from "../book";
 
 export const windowConfig: WindowOptions = {
   title: '',              // 窗口标题
@@ -50,5 +51,11 @@ export async function createWin(label: string, options: WindowOptions) {
   win.listen(NOTES_CHANGE, () => {
     const notesStore = useAllNotesStore();
     notesStore.updateAllNotes();
+  })
+
+  // 监听阅读进度变更
+  win.listen(READ_PROGRESS_CHANGE, () => {
+    const bookListStore = useBookListStore();
+    bookListStore.init();
   })
 }
