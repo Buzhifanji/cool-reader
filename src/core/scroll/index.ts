@@ -5,6 +5,7 @@ import { WinEvent } from "src/enums";
 import { getEleById, isObj } from "src/utils";
 import { useReadBookStore } from 'src/core/book';
 import { emit } from "@tauri-apps/api/event";
+import { config } from "src/config";
 
 interface State {
   [key: string]: number;
@@ -38,7 +39,9 @@ export const useSroll = () => {
 
     readBookStore.update({ readProgress })
 
-    emit(READ_PROGRESS_CHANGE, { readProgress })
+    if (config.multiWindow) {
+      emit(READ_PROGRESS_CHANGE, { readProgress })
+    }
   }, 1500)
 
   return { container, onScroll }

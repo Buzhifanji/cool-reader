@@ -1,24 +1,25 @@
-import { TabPaneEnum } from "src/enums";
+import { RouterName, TabPaneEnum } from "src/enums";
 import Idea from './idea/index.vue'
 import Highlight from './highlight/index.vue'
 import { langField } from "src/i18n";
-import { RouteLocationNormalizedLoaded } from "vue-router";
+import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { bookRender, catalogJump, useReadBookStore } from "src/core/book";
 import { useBookNotesStore } from "src/store";
 import { Bookextname } from "src/enums";
+import { config } from "src/config";
 
 export const useHandleCatalog = () => {
   const showCatalog = ref<boolean>(false);
   const catalogWidth = 294;
   onMounted(() => (showCatalog.value = true));
 
-  const stop = onKeyStroke(["m", "M"], (e) => {
+  const stopCatalog = onKeyStroke(["m", "M"], (e) => {
     e.preventDefault();
     showCatalog.value = !showCatalog.value;
   });
 
   onUnmounted(() => {
-    stop();
+    stopCatalog();
   })
 
   return { showCatalog, catalogWidth };
@@ -64,11 +65,11 @@ export const useHandleNotes = () => {
 export const useHandleHelp = () => {
   const showHelp = ref<boolean>(false)
 
-  const stop = onKeyStroke(["h", "H"], (e) => {
+  const stopHelp = onKeyStroke(["h", "H"], (e) => {
     e.preventDefault();
     showHelp.value = !showHelp.value;
   });
-  const { shortcutKey, catalogShortcutKey, notesShortcutKey } = langField.value;
+  const { shortcutKey, catalogShortcutKey, notesShortcutKey, stopReading } = langField.value;
   const helpList = ref([
     {
       title: shortcutKey,
@@ -79,8 +80,12 @@ export const useHandleHelp = () => {
     }
   ])
 
+  if (!config.multiWindow) {
+    helpList.value[0].list.push({ name: 'Esc', value: stopReading })
+  }
+
   onUnmounted(() => {
-    stop()
+    stopHelp()
   })
 
   return { showHelp, helpList, }
@@ -165,4 +170,17 @@ export const useHandleCatalogJump = () => {
   }
 
   return { jumpByChapter, jump }
+}
+
+export const useCloseReader = (router: Router) => {
+  const stopClose = onKeyStroke(['Escape'], (e) => {
+    if (!config.multiWindow) {
+      e.preventDefault();
+      router.push({ name: RouterName.book, })
+    }
+  });
+
+  onUnmounted(() => {
+    stopClose();
+  })
 }

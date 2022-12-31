@@ -65,4 +65,6 @@ export interface LangField {
   theme: string;
   themeDark: string;
   themeLight: string;
+
+  stopReading: string;
 }

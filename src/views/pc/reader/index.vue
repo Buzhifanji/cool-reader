@@ -6,8 +6,9 @@ import Header from '../layouts/header.vue'
 import Catalog from './catalog/index.vue'
 import BookContent from './content/index.vue'
 import './web-highlight'
-import { useHandleCatalog, useHandleHelp, useHandleNotes, useHandleReading } from "./reader";
+import { useCloseReader, useHandleCatalog, useHandleHelp, useHandleNotes, useHandleReading } from "./reader";
 import { useReadBookStore } from "src/core/book";
+import { } from "src/route";
 
 const bookStore = useReadBookStore();
 
@@ -21,7 +22,9 @@ const { showCatalog, catalogWidth } = useHandleCatalog();
 const { showHelp, helpList } = useHandleHelp()
 
 const route = useRoute();
+const router = useRouter();
 useHandleReading(route)
+useCloseReader(router)
 
 </script>
 

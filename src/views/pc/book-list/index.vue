@@ -8,13 +8,13 @@ import { createWin, setReaderWinUlr } from "src/core/windows";
 import { handleCover } from "src/utils";
 import { downloadFile, useBookListStore, useDownloadFieStore } from "src/core/book";
 import { notification } from "src/naive";
+import { config } from "src/config";
+import { RouterName } from "src/enums";
 
 const downloadFileStore = useDownloadFieStore();
 const bookListStore = useBookListStore();
 
 bookListStore.init();
-
-console.log(bookListStore)
 
 const {
   showDropdownRef,
@@ -26,14 +26,20 @@ const {
   menus,
 } = useContextMenu();
 
+const router = useRouter();
+
 const stop = onKeyStroke(["i", "I"], (e) => {
   e.preventDefault();
   downloadFile()
 });
 
 const open = ({ id, bookName }: BookData) => {
-  const url = setReaderWinUlr(id)
-  createWin(id, { url, title: bookName })
+  if (config.multiWindow) {
+    const url = setReaderWinUlr(id)
+    createWin(id, { url, title: bookName })
+  } else {
+    router.push({ name: RouterName.reader, query: { id } })
+  }
 }
 
 const deleteBook = (id: string) => {
