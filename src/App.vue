@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { naiveUiLanguage } from "src/i18n/index";
-import { theme } from "src/theme"
+import { theme } from "src/config"
 </script>
 
 <template>

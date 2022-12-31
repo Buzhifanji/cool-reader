@@ -35,6 +35,9 @@ export const zhCN: LangField = {
   deleteSuccess: "删除成功",
   updateSuccess: "修改成功",
 
+  yes: '是',
+  no: '否',
+
   confirmExistTitle: '警告',
   confirmExistContent: "确认退出应用程序吗？",
 
@@ -44,6 +47,9 @@ export const zhCN: LangField = {
   windowRestore: '向下还原',
   windowHide: "最小化托盘",
   windowExit: "退出程序",
+
+  multiWindow: "多窗口",
+  multiWindowTip: "图书是在主窗口打开，还是新建一个窗口",
 
   setting: "设置",
   settingLange: "语言",

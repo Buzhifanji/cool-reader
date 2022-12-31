@@ -35,6 +35,9 @@ export const enUS: LangField = {
   deleteSuccess: "successfully deleted",
   updateSuccess: "Successfully modified",
 
+  yes: 'yes',
+  no: 'no',
+
   confirmExistTitle: "warning",
   confirmExistContent: "Are you sure to exit the application?",
 
@@ -44,6 +47,9 @@ export const enUS: LangField = {
   windowRestore: 'restore',
   windowHide: 'hide',
   windowExit: 'exit',
+
+  multiWindow: 'multiWindow',
+  multiWindowTip: "Whether the book opens in the main window, or creates a new window",
 
   setting: "setting",
   settingLange: "Language",

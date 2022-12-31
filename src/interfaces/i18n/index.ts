@@ -40,6 +40,9 @@ export interface LangField {
   deleteSuccess: string;
   updateSuccess: string;
 
+  yes: string; //
+  no: string; //
+
   confirmExistTitle: string;
   confirmExistContent: string;
 
@@ -50,6 +53,9 @@ export interface LangField {
   windowRestore: string;
   windowHide: string;
   windowExit: string;
+
+  multiWindow: string;
+  multiWindowTip: string;
 
   // 设置
   setting: string;
