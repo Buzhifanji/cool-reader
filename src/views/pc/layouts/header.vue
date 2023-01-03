@@ -46,7 +46,7 @@ const winClose = async () => {
 
 <template>
   <div class="header-warpper" data-tauri-drag-region>
-    <n-gradient-text :size="24" type="success" class="title">
+    <n-gradient-text data-tauri-drag-region :size="24" type="success" class="title">
       {{ props.title }}
     </n-gradient-text>
     <n-space :size="[24, 8]">
