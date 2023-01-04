@@ -34,3 +34,5 @@ export const MULTI_WIN = 'cool-reader-multi-window'
 export const HGIHLIGHT_BUS = 'lighlight-bus'
 
 export const HGIHLIGHT_CLICK_BUS = 'lighlight-click-bus'
+
+export const OPEN_NOTES = 'cool-reader-open-notes'

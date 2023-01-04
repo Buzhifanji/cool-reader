@@ -7,6 +7,7 @@ import { bookRender, catalogJump, useReadBookStore } from "src/core/book";
 import { useBookNotesStore } from "src/store";
 import { Bookextname } from "src/enums";
 import { config } from "src/config";
+import { OPEN_NOTES } from "src/constants";
 
 export const useHandleCatalog = () => {
   const showCatalog = ref<boolean>(false);
@@ -98,9 +99,15 @@ export const useHandleReading = async (route: RouteLocationNormalizedLoaded) => 
   useTitle('Cool do Reader')
 
   await bookRender(id)
-  const notesStore = useBookNotesStore();
 
-  notesStore.getBookNotes();
+  useBookNotesStore().getBookNotes();
+
+  const notes = localStorage.getItem(OPEN_NOTES)
+  if (notes) {
+    const { jumpByChapter } = useHandleCatalogJump();
+    jumpByChapter(JSON.parse(notes).chapter);
+    localStorage.removeItem(OPEN_NOTES)
+  }
 }
 
 export const useHandleCatalogJump = () => {

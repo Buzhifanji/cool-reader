@@ -3,13 +3,10 @@
 <script setup lang="ts">
 import { useContextMenu } from "./book";
 import { langField } from "src/i18n/index";
-import { BookData } from "src/interfaces";
-import { createWin, setReaderWinUlr } from "src/core/windows";
 import { handleCover } from "src/utils";
 import { downloadFile, useBookListStore, useDownloadFieStore } from "src/core/book";
 import { notification } from "src/naive";
-import { config } from "src/config";
-import { RouterName } from "src/enums";
+import { openBookReader } from "src/core/use";
 
 const downloadFileStore = useDownloadFieStore();
 const bookListStore = useBookListStore();
@@ -33,14 +30,6 @@ const stop = onKeyStroke(["i", "I"], (e) => {
   downloadFile()
 });
 
-const open = ({ id, bookName }: BookData) => {
-  if (config.multiWindow) {
-    const url = setReaderWinUlr(id)
-    createWin(id, { url, title: bookName })
-  } else {
-    router.push({ name: RouterName.reader, query: { id } })
-  }
-}
 
 const deleteBook = (id: string) => {
   bookListStore.remove(id).then(({ result, name }) => {
@@ -83,10 +72,10 @@ onUnmounted(() => {
     </div> -->
     <!-- 列表模式 -->
     <div class="list-wrapper" v-for="item in bookListStore.bookList" :key="item.id">
-      <div class="list-content-left" @click="open(item)">
+      <div class="list-content-left" @click="openBookReader(item, router)">
         <img class="list-img" :src="handleCover(item.cover)" alt="">
       </div>
-      <div class="list-content-center" @click="open(item)">
+      <div class="list-content-center" @click="openBookReader(item, router)">
         <div>{{ item.bookName }}</div>
         <div>作者</div>
         <div class="progress">

@@ -8,9 +8,10 @@ import BookContent from './content/index.vue'
 import './web-highlight'
 import { useCloseReader, useHandleCatalog, useHandleHelp, useHandleNotes, useHandleReading } from "./reader";
 import { useReadBookStore } from "src/core/book";
-import { } from "src/route";
+import { NLayout, NLayoutHeader, NLayoutContent, NDrawer, NDrawerContent, NGrid, NGi, NCard, NImage, NSpace, NEllipsis, NP, NDivider, NTabs, NTabPane, NModal, NDescriptions, NDescriptionsItem } from "naive-ui";
 
 const bookStore = useReadBookStore();
+
 
 // 笔记栏目相关逻辑
 const { showNotes, notesActiveTab, components, tabPanes, notesWidth } =

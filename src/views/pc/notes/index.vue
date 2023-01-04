@@ -5,7 +5,9 @@ import { hanldeNotesByTime } from "src/utils";
 import { initRenderData } from "render-big-data";
 import { useAllNotesStore } from "src/store";
 import { useVirtualList } from "src/core/scroll/virtual-list"
+import { openBookReader } from "src/core/use";
 
+const router = useRouter();
 const total = ref<number>(0)
 // 目前不知道 如何在HTML配置 // @ts-ignore，所以使用了 any类型
 const list = ref<any[]>([])
@@ -28,6 +30,7 @@ const layoutStyle = computed(() => {
     bottom: "0px",
   }
 })
+
 
 useVirtualList(list)
 
@@ -67,7 +70,9 @@ const selectedMode = ref('time')
               <n-blockquote style="--n-font-size: 16px;">
                 {{ item.text }}
               </n-blockquote>
-              <n-p class="from white-space" depth="3">来自: {{ item.bookName }}</n-p>
+              <n-p class="from white-space" depth="3" @click="openBookReader(item, router)">来自: {{
+                item.bookName
+              }}</n-p>
               <n-divider />
             </div>
           </virtual-list-item>
