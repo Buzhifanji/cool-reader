@@ -15,7 +15,7 @@ export const useBookNotes = () => {
     const { id, bookName, chapter } = bookStore.readingBook
 
     const notes: BookNotes = {
-      ...source,
+      ...toRaw(source),
       bookName,
       chapter,
       bookId: id,

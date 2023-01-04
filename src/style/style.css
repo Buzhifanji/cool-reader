@@ -147,3 +147,9 @@ button {
   border-radius: var(--n-border-radius);
   cursor: pointer;
 }
+
+.white-space {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

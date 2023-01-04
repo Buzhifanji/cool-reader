@@ -46,7 +46,7 @@ const winClose = async () => {
 
 <template>
   <div class="header-warpper" data-tauri-drag-region>
-    <n-gradient-text data-tauri-drag-region :size="24" type="success" class="title">
+    <n-gradient-text data-tauri-drag-region :size="24" type="success" class="title white-space">
       {{ props.title }}
     </n-gradient-text>
     <n-space :size="[24, 8]">
@@ -124,8 +124,5 @@ const winClose = async () => {
 
 .title {
   flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>

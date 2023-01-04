@@ -61,7 +61,7 @@ function onClick(value: any) {
   <ul class="catalog-list">
     <li v-for="item in list" class="chapter-item" :key="item.key" @click="onClick(item)">
       <div :class="['chapter-item-link', item.className, slectedKey === item.key ? 'chapter-item-link_seleted' : '']">
-        <span class="chapter-item-text">
+        <span class="chapter-item-text white-space">
           {{ item.label }}
         </span>
       </div>
@@ -107,10 +107,7 @@ function onClick(value: any) {
 
 .chapter-item-text {
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
   word-break: break-all;
-  word-wrap: normal;
   font-size: 15px;
 }
 

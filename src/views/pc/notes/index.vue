@@ -67,7 +67,7 @@ const selectedMode = ref('time')
               <n-blockquote style="--n-font-size: 16px;">
                 {{ item.text }}
               </n-blockquote>
-              <n-p class="from" depth="3">来自</n-p>
+              <n-p class="from white-space" depth="3">来自: {{ item.bookName }}</n-p>
               <n-divider />
             </div>
           </virtual-list-item>
@@ -130,5 +130,7 @@ const selectedMode = ref('time')
 
 .from {
   text-align: right;
+  max-width: 50%;
+  margin-left: 50%;
 }
 </style>
