@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     Input: typeof import('./components/toolbar/idea/input.vue')['default']
     Menu: typeof import('./components/catalog/menu.vue')['default']
     MenuItem: typeof import('./components/catalog/menu-item.vue')['default']
+    NBlockquote: typeof import('naive-ui')['NBlockquote']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']

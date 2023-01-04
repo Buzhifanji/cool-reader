@@ -17,7 +17,7 @@ import { useBookListStore, useDownloadFieStore } from "./store";
 import { getTextCover } from "./txt";
 import { notification } from "src/naive";
 import { langField } from "src/i18n";
-import { booksDB } from "../data-base";
+import { getBookById } from "../data-base";
 
 async function getFilePath() {
   const defaultPath = await appDir();
@@ -55,7 +55,7 @@ function generateBookCover({ content, extname }: BookListItem): Promise<string> 
 
 async function cacheBook(book: BookListItem) {
   const bookId = await setBookId(book);
-  const value = await booksDB.getById(bookId);
+  const value = await getBookById(bookId);
   if (value) {
     return false
   } else {

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { isIndex } from 'src/utils';
 import { Bookextname } from "src/enums";
 import { BookListItem } from './interface';
-import { booksDB } from '../data-base';
+import { addBooks, getAllBooks, getBookById, removeBookById, updateBook } from '../data-base';
 
 export const useDownloadFieStore = defineStore('downloadFieStore', () => {
   const isDownloading = ref<boolean>(false); // 因为一次只能读取一个文件，所以设定此变量，防止用户在读取中重复读取文件
@@ -28,13 +28,13 @@ export const useBookListStore = defineStore('bookListStore', () => {
   const bookList = ref<BookListItem[]>([])
 
   async function init() {
-    const books = await booksDB.getAll();
+    const books = await getAllBooks();
     bookList.value = books
   }
 
   async function add(book: BookListItem) {
     bookList.value.unshift(book)
-    return await booksDB.add(book) // 存储到 indexDB
+    return await addBooks(book) // 存储到 indexDB
   }
 
   async function remove(bookId: string) {
@@ -42,7 +42,7 @@ export const useBookListStore = defineStore('bookListStore', () => {
     if (isIndex(index)) {
       const name = bookList.value[index].bookName;
       bookList.value.splice(index, 1);
-      await booksDB.deleteById(bookId) // 移除 indexDB 的数据
+      await removeBookById(bookId) // 移除 indexDB 的数据
       return { result: true, name }
     } else {
       return { result: false, name: '' }
@@ -76,7 +76,7 @@ export const useReadBookStore = defineStore('readBookStore', () => {
   })
 
   async function init(bookId: string) {
-    const book = await booksDB.getById(bookId);
+    const book = await getBookById(bookId);
     if (book) {
       console.log({ book })
       readingBook.value = book;
@@ -98,8 +98,7 @@ export const useReadBookStore = defineStore('readBookStore', () => {
 
     if (readProgress && readingBook.value.readProgress !== readProgress) {
       readingBook.value.readProgress = readProgress
-
-      booksDB.update(toRaw(readingBook.value))
+      updateBook(toRaw(readingBook.value))
     }
 
     if (readTime) {

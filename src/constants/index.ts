@@ -1,5 +1,4 @@
-export const BOOKLIST = "_tauri_book_list_";
-export const BOOKSOTRE = "_tauri_book_list_store_"
+export const DATA_BASE = "_cool-reader_data_base_";
 
 export const DATA_SOURCE_ID = "hightlight-id";
 export const NOTES_ID = "notes-id";
