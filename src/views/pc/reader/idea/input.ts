@@ -1,15 +1,12 @@
-import { emit } from "@tauri-apps/api/event";
 import { createDiscreteApi, MessageReactive } from "naive-ui";
-import { NOTES_CHANGE } from "src/constants";
 import { createUUID, DomSource } from "src/core/web-highlight";
 import { langField } from "src/i18n";
 import { message } from "src/naive";
-import { saveNotes, updateNotes } from "src/server/notes";
 import { useBookNotesStore } from "src/store";
 import { createTime } from "src/utils";
 import { removeWebHighlightDom, removeWebHighlightDomSouce } from "../web-highlight";
 import Input from './input.vue'
-import { useReadBookStore } from "src/core/book";
+import { useBookNotes } from "src/core/use";
 
 let messageReactive: MessageReactive | null = null;
 let source: DomSource | null = null;
@@ -66,22 +63,16 @@ export const useInputIdea = () => {
     const content = unref(text);
     if (content) {
       if (source) {
+        const { updateNotes, saveNotes } = useBookNotes()
         source.notes = { id: createUUID(), tag: '', createTime: createTime(), content }
         isSave = true;
 
         if (isEdit) {
           await updateNotes(source)
         } else {
-          const bookStore = useReadBookStore();
-          source.bookId = bookStore.readingBook.id;
-
-          console.log({ source })
-
           await saveNotes(source)
+
         }
-        const notesStore = useBookNotesStore();
-        emit(NOTES_CHANGE, source)
-        notesStore.getBookNotes()
         removeMessage()
       }
     } else {

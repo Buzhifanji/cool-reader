@@ -67,10 +67,6 @@ export class WebHighlight extends Paint {
       className,
       tagName,
       text,
-      pageNumber: 0,
-      chapter: '',
-      scrollTop: 0,
-      bookId: '',
       notes
     }
 

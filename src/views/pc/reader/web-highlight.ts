@@ -48,13 +48,8 @@ function getToolBarStyle_iframe(rect: DOMRect) {
 // 订阅 range
 // 处理 document 为 iframe 
 lighlightBus.on(({ range, scrollTop }) => {
-  const bookStore = useReadBookStore();
   webHighlight.setOption({ root: getIframeDoc()! })
   const { source, rect } = webHighlight.fromRange(range)
-
-  source.scrollTop = scrollTop;
-  source.chapter = bookStore.readingBook.chapter;
-
   const { top, left } = getToolBarStyle_iframe(rect)
   useToolbarStore().openToolBar(source, top, left)
 })
@@ -107,9 +102,6 @@ export async function watchHighlight() {
 
     const { source, rect } = webHighlight.fromRange(range)
     const [top, left] = handlePdfRect(rect)
-
-    source.scrollTop = 0; // 此处带处理（document为iframe的情况)
-    source.chapter = title;
 
     const useToolBar = useToolbarStore()
     useToolBar.openToolBar(source, top, left)

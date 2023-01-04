@@ -1,22 +1,23 @@
 import { DomSource, Notes } from "src/core/web-highlight";
-import { getAllNotes, getNotesByBookId, removeNotes } from "src/server/notes";
 import { defineStore } from "pinia";
 import { useReadBookStore } from "src/core/book";
+import { BookNotes, getAllNotes, getNotesByBookId } from "src/core/data-base";
+import { useBookNotes } from "src/core/use";
 
 type Filter = (notes: Notes) => boolean
 
-const filterNotes = (value: DomSource[], callback: Filter) => {
+const filterNotes = (value: BookNotes[], callback: Filter) => {
   return value.filter(notes => callback(notes.notes))
 }
 
-const getIdeas = (value: DomSource[]) => filterNotes(value, (notes) => notes.content.length > 0);
-const getHighlights = (value: DomSource[]) => filterNotes(value, (notes) => notes.content.length === 0);
+const getIdeas = (value: BookNotes[]) => filterNotes(value, (notes) => notes.content.length > 0);
+const getHighlights = (value: BookNotes[]) => filterNotes(value, (notes) => notes.content.length === 0);
 
 // 具体某本书的笔记
 export const useBookNotesStore = defineStore('bookNotesStore', () => {
   const bookStore = useReadBookStore();
 
-  const bookNotes = ref<DomSource[]>([]);
+  const bookNotes = ref<BookNotes[]>([]);
   const bookHighlights = computed(() => getHighlights(bookNotes.value))
   const bookIdeas = computed(() => getIdeas(bookNotes.value))
 
@@ -29,11 +30,9 @@ export const useBookNotesStore = defineStore('bookNotesStore', () => {
     return bookNotes.value.some(value => value.id === id);
   }
 
-  function deleteBookNotes({ id, bookId }: DomSource) {
-    return removeNotes(bookId, id).then(() => {
-      getBookNotes()
-      return 'ok'
-    })
+  function deleteBookNotes(source: DomSource) {
+    const { removeNotesById } = useBookNotes()
+    return removeNotesById(source)
   }
 
   return { bookHighlights, bookIdeas, hasBookNotes, deleteBookNotes, getBookNotes }
@@ -41,7 +40,7 @@ export const useBookNotesStore = defineStore('bookNotesStore', () => {
 
 // 全部笔记内容
 export const useAllNotesStore = defineStore('allNotesStore', () => {
-  const allNotes = ref<DomSource[]>([])
+  const allNotes = ref<BookNotes[]>([])
 
   const allHighlights = computed(() => getHighlights(allNotes.value))
 
@@ -55,12 +54,5 @@ export const useAllNotesStore = defineStore('allNotesStore', () => {
     return allNotes.value.some(value => value.id === id);
   }
 
-  function deleteNotes({ id, bookId }: DomSource) {
-    return removeNotes(bookId, id).then(() => {
-      updateAllNotes()
-      return 'ok'
-    })
-  }
-
-  return { allNotes, allHighlights, allIdeas, updateAllNotes, hasNotes, deleteNotes }
+  return { allNotes, allHighlights, allIdeas, updateAllNotes, hasNotes }
 })

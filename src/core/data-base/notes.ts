@@ -17,6 +17,6 @@ export function getAllNotes() {
   return dexieStore.notes.toArray();
 }
 
-export function getAllNotesById(id: string) {
-  return dexieStore.notes.get(id);
+export function getNotesByBookId(bookId: string) {
+  return dexieStore.notes.where('bookId').equals(bookId).toArray();
 }

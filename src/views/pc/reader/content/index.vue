@@ -3,22 +3,16 @@ import { useSroll } from 'src/core/scroll';
 import { useToolbarStore } from 'src/store';
 import { barEnum } from 'src/enums';
 import { dialog, message } from "src/naive";
-import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, NOTES_CHANGE, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
-
+import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
 import { Copy, Delete, Idea, TextHighlight, TextUnderline, } from "@vicons/carbon";
-
-import { saveNotes, updateNotes } from "src/server/notes";
 import { paintWebHighlightFromSource, updateWebHighlight, removeWebHighlight, watchHighlight } from "../web-highlight";
-import { createTime } from 'src/utils';
-import { emit } from '@tauri-apps/api/event'
-import { useReadBookStore } from 'src/core/book';
 import { useBookNotesStore } from 'src/store';
 import { openIdea } from '../idea/input'
+import { useBookNotes } from 'src/core/use';
 
 const { container, onScroll } = useSroll()
 
 const toolBar = useToolbarStore()
-const bookStore = useReadBookStore();
 const notesStore = useBookNotesStore();
 
 const list = [
@@ -121,32 +115,21 @@ function ideaInput() {
 function notesAction(className: string) {
   const { source, edit } = toolBar
   if (source) {
+    const { updateNotes, saveNotes } = useBookNotes()
+
     if (edit) {
       // 编辑
       if (className !== source.className) {
-        source.className = className
-        console.log(source)
-        // 更新ui
-        updateWebHighlight(source)
-        // 存入数据库
-        updateNotes(source).then(() => {
-          emit(NOTES_CHANGE, source)
+        updateNotes(source, className).then(() => {
+          // 更新ui
+          updateWebHighlight(source)
         })
       }
+
     } else {
       // 创建
-      source.className = className
-      source.bookId = bookStore.readingBook.id;
-
-      source.notes.createTime = createTime()
-
-      delete source.pageNumber
-      console.log(source)
-      paintWebHighlightFromSource(source)
-
-      saveNotes(source).then(() => {
-        emit(NOTES_CHANGE, source)
-        notesStore.getBookNotes();
+      saveNotes(source, className).then(() => {
+        paintWebHighlightFromSource(source)
       })
     }
   }
