@@ -1,6 +1,6 @@
 import { open } from "@tauri-apps/api/dialog";
 import { listen } from "@tauri-apps/api/event";
-import { appDir } from "@tauri-apps/api/path";
+import { appDataDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
 import { ExtnameFn } from "src/interfaces";
@@ -20,12 +20,13 @@ import { langField } from "src/i18n";
 import { getBookById } from "../data-base";
 
 async function getFilePath() {
-  const defaultPath = await appDir();
+  const defaultPath = await appDataDir();
   const selected = await open({ defaultPath });
   let result = "";
   if (Array.isArray(selected)) {
     todo('批量下载暂不支持！')
   } else if (selected === null) {
+
   } else {
     result = selected;
   }
