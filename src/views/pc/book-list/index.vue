@@ -126,7 +126,7 @@ onUnmounted(() => {
       </div>
     </div>
   </template>
-  <n-space justify="center" style="height: 100%" align="center" st v-else>
+  <n-space justify="center" style="height: 100%" align="center" v-else>
     <n-result status="418" :title="langField.noBookTitle" :description="langField.noBookDesc">
       <template #footer>
         <n-button @click="downloadFile">{{ langField.noBookUpload }}</n-button>

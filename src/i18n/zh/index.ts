@@ -18,6 +18,8 @@ export const zhCN: LangField = {
   notesShortcutKey: '打开/关闭右侧笔记',
   notesTipWrite: '您还未填写笔记！',
   notesPlaceholder: "输入你的想法",
+  noNotes: "您的笔记为空",
+  noNotesDescription: "在全部图书列表里，打开您喜爱的书本，选中文字，就可以添加笔记啦！",
 
   highlight: '高亮',
   highlightSearchPlaceholder: '搜索我的高亮',

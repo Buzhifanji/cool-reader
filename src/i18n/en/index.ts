@@ -18,6 +18,8 @@ export const enUS: LangField = {
   notesShortcutKey: 'open or close notes',
   notesTipWrite: "You haven't filled in your notes yet!",
   notesPlaceholder: "enter your thoughts",
+  noNotes: 'Your note is empty',
+  noNotesDescription: "In the list of all books, open your favorite book, select the text, and you can add notes!",
 
   highlight: 'highlight',
   highlightSearchPlaceholder: 'search my highlight',

@@ -20,6 +20,8 @@ export interface LangField {
   notesShortcutKey: string;
   notesTipWrite: string;
   notesPlaceholder: string;
+  noNotes: string;
+  noNotesDescription: string;
 
   // 高亮
   highlight: string;

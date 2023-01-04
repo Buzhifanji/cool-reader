@@ -17,7 +17,7 @@ function getMenu() {
   const lang = langField.value;
   return [
     {
-      label: renderRouterLink(RouterName.book, lang.menuBook),
+      label: renderRouterLink(RouterName.books, lang.menuBook),
       key: "all-books",
       icon: renderIcon(Book),
     },

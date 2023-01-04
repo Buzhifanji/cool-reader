@@ -12,10 +12,10 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     component: Layout,
-    name: RouterName.book,
-    redirect: "/home/book",
+    name: RouterName.books,
+    redirect: "/home/books",
     children: [
-      { path: "book", component: Book, name: RouterName.book },
+      { path: "books", component: Book, name: RouterName.books },
       { path: "notes", component: Notes, name: RouterName.notes },
       { path: "highlight", component: HighLight, name: RouterName.highlight },
     ],

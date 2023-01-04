@@ -22,6 +22,12 @@ notesStore.updateAllNotes().then(() => {
   initRenderData(arr)
 })
 
+const layoutStyle = computed(() => {
+  return {
+    top: list.value.length ? '60px' : '0px',
+    bottom: "0px",
+  }
+})
 
 useVirtualList(list)
 
@@ -35,7 +41,7 @@ const selectedMode = ref('time')
 
 <template>
   <n-layout style="height: 100%; ">
-    <n-layout-header style="height: 60px; padding: 4px" bordered>
+    <n-layout-header style="height: 60px; padding: 4px" bordered v-if="list.length">
       <n-space align="center" justify="space-between">
         <n-statistic :label="langField.highlightRecordPrev" tabular-nums>
           <n-number-animation ref="numberAnimationInstRef" :from="0" :to="total" />
@@ -52,9 +58,9 @@ const selectedMode = ref('time')
       </n-space>
 
     </n-layout-header>
-    <n-layout position="absolute" style="top: 60px; bottom: 0px" has-sider>
+    <n-layout position="absolute" :style="layoutStyle" has-sider>
       <n-layout :native-scrollbar="false" contentStyle="height: 100%">
-        <virtual-list>
+        <virtual-list v-if="list.length">
           <virtual-list-item v-for="(item, index) in list" :index="index" :key="item.time">
             <n-p depth="3" style="--n-font-size: 16px;" v-if="item.time">{{ item.time }} </n-p>
             <div class="text" v-else>
@@ -66,6 +72,13 @@ const selectedMode = ref('time')
             </div>
           </virtual-list-item>
         </virtual-list>
+        <n-space justify="center" style="height: 100%" align="center" v-else>
+          <n-result status="418" :title="langField.noNotes" :description="langField.noNotesDescription">
+            <template #footer>
+              <n-button tag="a" href="/home/books" type="primary">{{ langField.menuBook }}</n-button>
+            </template>
+          </n-result>
+        </n-space>
       </n-layout>
     </n-layout>
   </n-layout>

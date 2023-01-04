@@ -176,7 +176,7 @@ export const useCloseReader = (router: Router) => {
   const stopClose = onKeyStroke(['Escape'], (e) => {
     if (!config.multiWindow) {
       e.preventDefault();
-      router.push({ name: RouterName.book, })
+      router.push({ name: RouterName.books, })
     }
   });
 
