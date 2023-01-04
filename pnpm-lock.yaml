@@ -1,8 +1,8 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@tauri-apps/api': ^1.1.0
-  '@tauri-apps/cli': ^1.1.1
+  '@tauri-apps/api': ^1.2.0
+  '@tauri-apps/cli': ^1.2.2
   '@types/chai': ^4.3.4
   '@types/jsdom': ^20.0.1
   '@types/jsdom-global': ^3.0.4
