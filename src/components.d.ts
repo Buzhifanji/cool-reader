@@ -11,7 +11,6 @@ declare module '@vue/runtime-core' {
     BookList: typeof import('./components/pc/bookList.vue')['default']
     Catalog: typeof import('./components/catalog/catalog.vue')['default']
     Edit: typeof import('./components/toolbar/idea/edit.vue')['default']
-    Highlight: typeof import('./components/highlight/highlight.vue')['default']
     Idea: typeof import('./components/idea/idea.vue')['default']
     IdeaInput: typeof import('./components/idea-input/index.vue')['default']
     Input: typeof import('./components/toolbar/idea/input.vue')['default']

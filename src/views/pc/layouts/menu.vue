@@ -27,11 +27,6 @@ function getMenu() {
       icon: renderIcon(Idea),
     },
     {
-      label: renderRouterLink(RouterName.highlight, lang.menuHighlight),
-      key: "my-hight",
-      icon: renderIcon(TextHighlight),
-    },
-    {
       label: lang.setting,
       key: "set",
       icon: renderIcon(SettingsCheck),
