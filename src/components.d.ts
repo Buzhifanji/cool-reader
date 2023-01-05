@@ -3,19 +3,10 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
-export {}
+export { }
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    BookContent: typeof import('./components/book-content/index.vue')['default']
-    BookList: typeof import('./components/pc/bookList.vue')['default']
-    Catalog: typeof import('./components/catalog/catalog.vue')['default']
-    Edit: typeof import('./components/toolbar/idea/edit.vue')['default']
-    Idea: typeof import('./components/idea/idea.vue')['default']
-    IdeaInput: typeof import('./components/idea-input/index.vue')['default']
-    Input: typeof import('./components/toolbar/idea/input.vue')['default']
-    Menu: typeof import('./components/catalog/menu.vue')['default']
-    MenuItem: typeof import('./components/catalog/menu-item.vue')['default']
     NBlockquote: typeof import('naive-ui')['NBlockquote']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
@@ -67,8 +58,5 @@ declare module '@vue/runtime-core' {
     NUploadDragger: typeof import('naive-ui')['NUploadDragger']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Setting: typeof import('./components/setting/index.vue')['default']
-    ShortcutKey: typeof import('./components/shortcut-key/index.vue')['default']
-    Toolbar: typeof import('./components/toolbar/toolbar.vue')['default']
   }
 }

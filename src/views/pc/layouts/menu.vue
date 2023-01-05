@@ -2,11 +2,11 @@
 import { renderIcon } from 'src/utils';
 import { RouterName } from 'src/enums/index';
 import { langField, language } from "src/i18n/index";
-import { Book, Idea, TextHighlight, SettingsCheck } from "@vicons/carbon";
+import { Book, Idea, SettingsCheck } from "@vicons/carbon";
 import { h, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';
 import { MenuOption } from 'naive-ui';
-import Setting from 'src/components/setting/index.vue'
+import Setting from '../setting/index.vue'
 
 function renderRouterLink(routerName: string, label: string) {
   return () =>
