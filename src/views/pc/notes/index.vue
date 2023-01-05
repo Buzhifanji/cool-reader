@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Search, ShowDataCards, Delete, List } from "@vicons/carbon";
+import { Search, } from "@vicons/carbon";
 import { langField } from 'src/i18n';
-import { hanldeNotesByTime } from "src/utils";
+import { hanldeNotesByTime, isIdea } from "src/utils";
 import { initRenderData } from "render-big-data";
 import { useAllNotesStore } from "src/store";
 import { useVirtualList } from "src/core/scroll/virtual-list"
 import { openBookReader } from "src/core/use";
+import Tilde from 'src/views/icons/tilde.vue'
+import Idea from 'src/views/icons/idea.vue'
 
 const router = useRouter();
 const total = ref<number>(0)
@@ -15,12 +17,10 @@ const list = ref<any[]>([])
 const notesStore = useAllNotesStore();
 
 notesStore.updateAllNotes().then(() => {
-  const hightlights = notesStore.allHighlights
-  total.value = hightlights.length;
+  const notes = notesStore.allNotes
+  total.value = notes.length;
   // 按照时间分类
-  const arr = hanldeNotesByTime(hightlights)
-
-  console.log({ arr })
+  const arr = hanldeNotesByTime(notes)
   initRenderData(arr)
 })
 
@@ -65,15 +65,22 @@ const selectedMode = ref('time')
       <n-layout :native-scrollbar="false" contentStyle="height: 100%">
         <virtual-list v-if="list.length">
           <virtual-list-item v-for="(item, index) in list" :index="index" :key="item.time">
-            <n-p depth="3" style="--n-font-size: 16px;" v-if="item.time">{{ item.time }} </n-p>
-            <div class="text" v-else>
-              <n-blockquote style="--n-font-size: 16px;">
-                {{ item.text }}
-              </n-blockquote>
-              <n-p class="from white-space" depth="3" @click="openBookReader(item, router)">来自: {{
-                item.bookName
-              }}</n-p>
-              <n-divider />
+            <div class="list-item">
+              <div class="list-item_time" v-if="item.time">{{ item.time }}</div>
+              <div class="list-item_content" v-else>
+                <Idea class="list-item_icon" v-if="isIdea(item.notes)" />
+                <Tilde v-else class="list-item_icon" v-once />
+
+                <div class="list-item_text_container">
+                  <div class="list-item_text">
+                    {{ item.text }}
+                  </div>
+                  <n-p class="list-item_origin white-space" depth="3" @click="openBookReader(item, router)">
+                    来自: {{ item.bookName }}
+                  </n-p>
+                  <n-divider />
+                </div>
+              </div>
             </div>
           </virtual-list-item>
         </virtual-list>
@@ -90,30 +97,51 @@ const selectedMode = ref('time')
 </template>
 
 <style scoped>
+.list-item {
+  padding: 18px 20px 18px 0;
+}
+
+.list-item_time {
+  color: rgb(118, 124, 130);
+  cursor: pointer;
+}
+
+.list-item_content {
+  display: flex;
+  cursor: pointer;
+  flex-direction: row;
+  align-items: flex-start;
+  word-break: break-all;
+}
+
+.list-item_icon {
+  margin-right: 12px;
+}
+
+.list-item_text_container {
+  width: 100%;
+  word-break: break-all;
+}
+
+.list-item_text {
+  margin-top: 3px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 24px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -moz-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-text-size-adjust: none;
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+}
+
+
 .n-input {
   width: 209px;
-}
-
-.n-card {
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-.n-h1,
-.text {
-  text-align: left;
-  cursor: pointer;
-  margin: 0 auto;
-  /* max-width: 960px; */
-}
-
-.n-h1 {
-  /* padding-top: 20px; */
-  padding: 20px 24px 0 24px;
-}
-
-.text {
-  padding: 0 24px;
 }
 
 .n-divider {
@@ -125,15 +153,8 @@ const selectedMode = ref('time')
   margin: 0;
 }
 
-.n-button {
-  box-shadow: none;
-}
 
-.n-card:deep(.n-card__action) {
-  padding: 5px 20px;
-}
-
-.from {
+.list-item_origin {
   text-align: right;
   max-width: 50%;
   margin-left: 50%;
