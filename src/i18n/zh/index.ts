@@ -1,9 +1,9 @@
 import { LangField } from "src/interfaces";
 
 export const zhCN: LangField = {
-  menuBook: "全部图书",
+  menuReading: '我的阅读',
+  menuBook: "我的图书",
   menuNotes: "我的笔记",
-  menuHighlight: "我的高亮",
 
   noBookTitle: "暂无书本可读",
   noBookDesc: '一切尽在不言中',

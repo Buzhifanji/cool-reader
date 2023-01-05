@@ -5,15 +5,16 @@ const Book = () => import("src/views/pc/book-list/index.vue");
 const Notes = () => import("src/views/pc/notes/index.vue");
 const Reader = () => import("src/views/pc/reader/index.vue");
 const Layout = () => import("src/views/pc/layouts/index.vue");
+const Reading = () => import("src/views/pc/reading/index.vue");
 
 const routes: RouteRecordRaw[] = [
-  { path: "/", redirect: "/home" },
   {
-    path: "/home",
+    path: "/",
     component: Layout,
-    name: RouterName.books,
-    redirect: "/home/books",
+    name: RouterName.reading,
+    redirect: "/reading",
     children: [
+      { path: "reading", component: Reading, name: RouterName.reading },
       { path: "books", component: Book, name: RouterName.books },
       { path: "notes", component: Notes, name: RouterName.notes },
     ],

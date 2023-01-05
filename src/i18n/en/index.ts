@@ -1,9 +1,9 @@
 import { LangField } from "src/interfaces";
 
 export const enUS: LangField = {
-  menuBook: "books",
-  menuNotes: "notes",
-  menuHighlight: "highlights",
+  menuReading: "my reading",
+  menuBook: "my books",
+  menuNotes: "my notes",
 
   noBookTitle: "it's no book",
   noBookDesc: 'you should upload books',

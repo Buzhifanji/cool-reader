@@ -1,8 +1,8 @@
 export interface LangField {
   // 菜单
+  menuReading: string;
   menuBook: string;
   menuNotes: string;
-  menuHighlight: string;
 
   // 书本
   noBookTitle: string;

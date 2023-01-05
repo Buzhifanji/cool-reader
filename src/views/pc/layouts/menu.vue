@@ -2,7 +2,7 @@
 import { renderIcon } from 'src/utils';
 import { RouterName } from 'src/enums/index';
 import { langField, language } from "src/i18n/index";
-import { Book, Idea, SettingsCheck } from "@vicons/carbon";
+import { Book, Idea, SettingsCheck, Home } from "@vicons/carbon";
 import { h, ref, watchEffect } from 'vue';
 import { RouterLink } from 'vue-router';
 import { MenuOption } from 'naive-ui';
@@ -16,6 +16,11 @@ function renderRouterLink(routerName: string, label: string) {
 function getMenu() {
   const lang = langField.value;
   return [
+    {
+      label: renderRouterLink(RouterName.reading, lang.menuReading),
+      key: "home",
+      icon: renderIcon(Home),
+    },
     {
       label: renderRouterLink(RouterName.books, lang.menuBook),
       key: "all-books",
