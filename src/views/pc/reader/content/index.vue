@@ -4,11 +4,17 @@ import { useToolbarStore } from 'src/store';
 import { barEnum } from 'src/enums';
 import { dialog, message } from "src/naive";
 import { HIGHLIGHT_STRAIGHT_CLASS_NAME, HIGHLIGHT_TIIDE_CLASS_NAME, WEB_HEGHLIGHT_WRAPPER_DEFALUT } from "src/constants";
-import { Copy, Delete, Idea, TextHighlight, TextUnderline, } from "@vicons/carbon";
 import { paintWebHighlightFromSource, updateWebHighlight, removeWebHighlight, watchHighlight } from "../web-highlight";
 import { useBookNotesStore } from 'src/store';
 import { openIdea } from '../idea/input'
 import { useBookNotes } from 'src/core/use';
+
+import Copy from 'src/views/icons/copy.vue'
+import Tilde from 'src/views/icons/tilde.vue'
+import Idea from 'src/views/icons/idea.vue'
+import straightLine from 'src/views/icons/straight-line.vue';
+import highlight from 'src/views/icons/highlight.vue';
+import Delete from 'src/views/icons/delete.vue';
 
 const { container, onScroll } = useSroll()
 
@@ -17,9 +23,9 @@ const notesStore = useBookNotesStore();
 
 const list = [
   { label: "复制", key: barEnum.Copy, icon: Copy },
-  { label: "高亮", key: barEnum.TextHighlight, icon: TextHighlight },
-  { label: "波浪线", key: barEnum.tilde, icon: TextUnderline },
-  { label: "直线", key: barEnum.straightLine, icon: TextUnderline },
+  { label: "高亮", key: barEnum.TextHighlight, icon: highlight },
+  { label: "波浪线", key: barEnum.tilde, icon: Tilde },
+  { label: "直线", key: barEnum.straightLine, icon: straightLine },
   { label: "笔记", key: barEnum.idea, icon: Idea },
 ];
 
@@ -142,7 +148,7 @@ function notesAction(className: string) {
     <div class="tool-bar-wrapper" :style="toolBar.toolBarStyle" ref="toolBarRef" v-show="toolBar.show">
       <n-space>
         <n-space vertical v-for="item in bars" :key="item.key" @click.stop="barAction(item.key)">
-          <n-icon :component="item.icon" size="16" />
+          <component :is="item.icon"></component>
           <div quaternary>{{ item.label }}</div>
         </n-space>
       </n-space>

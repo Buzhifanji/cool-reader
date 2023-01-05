@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { useReadBookStore } from "src/core/book";
 import { BookNotes, getAllNotes, getNotesByBookId } from "src/core/data-base";
 import { useBookNotes } from "src/core/use";
+import { isHightlight, isIdea } from "src/utils";
 
 type Filter = (notes: Notes) => boolean
 
@@ -10,8 +11,8 @@ const filterNotes = (value: BookNotes[], callback: Filter) => {
   return value.filter(notes => callback(notes.notes))
 }
 
-const getIdeas = (value: BookNotes[]) => filterNotes(value, (notes) => notes.content.length > 0);
-const getHighlights = (value: BookNotes[]) => filterNotes(value, (notes) => notes.content.length === 0);
+const getIdeas = (value: BookNotes[]) => filterNotes(value, isIdea);
+const getHighlights = (value: BookNotes[]) => filterNotes(value, isHightlight);
 
 // 具体某本书的笔记
 export const useBookNotesStore = defineStore('bookNotesStore', () => {
