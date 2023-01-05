@@ -4,10 +4,10 @@ import { appDataDir } from "@tauri-apps/api/path";
 import { invoke } from "@tauri-apps/api/tauri";
 import { appWindow } from "@tauri-apps/api/window";
 import { ExtnameFn } from "src/interfaces";
-import { mergerUint8Array } from "src/utils";
+import { createTime, mergerUint8Array } from "src/utils";
 import { todo } from "src/utils/todo";
 import { getAzw3Cover } from "./azw3";
-import { Bookextname } from "src/enums";
+import { Bookextname, BookStatus } from "src/enums";
 import { getEpubCover } from "./epub";
 import { BookListItem } from "./interface";
 import { setBookId } from "./md5";
@@ -128,18 +128,24 @@ export function downloadFile(): Promise<{ isExit: boolean, book: BookListItem }>
           const doneFiles = await unlisten.then();
           doneFiles();
 
-          const book = {
+          const book: BookListItem = {
             ...name,
             path,
             size,
             content,
-            context: null,
+            auth: '',
+            publisher: '',
+            describe: '',
             category: "",
+            createTime: createTime(),
+            lastReadTime: createTime(),
+            readAllTime: 0,
+            score: 0,
+            status: BookStatus.Unread,
             id: "",
             cover: "",
             chapter: "",
             readProgress: 0,
-            readTime: 0,
             catalog: [],
           };
           const isExit = await cacheBook(book)

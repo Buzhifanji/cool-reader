@@ -5,7 +5,7 @@ import { BookNotes } from './interface';
 
 const VERSION = 1 // 数据库版本号
 
-const books = '&id,bookName,extname,size,path,category,cover,content,chapter,readProgress,readTime,catalog';
+const books = '&id,bookName,extname,auth,publisher,describe,size,path,category,cover,createTime,score,content,chapter,readProgress,lastReadTime,readAllTime,catalog,status';
 const notes = `&id, bookId, bookName, className, tagName, text, createTime, chapter,
               startDomMeta.tagName, startDomMeta.index, startDomMeta.offset,
               endDomMeta.tagName, endDomMeta.index, endDomMeta.offset,

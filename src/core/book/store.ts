@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { isIndex } from 'src/utils';
-import { Bookextname } from "src/enums";
+import { createTime, isIndex } from 'src/utils';
+import { Bookextname, BookStatus } from "src/enums";
 import { BookListItem } from './interface';
 import { addBooks, getAllBooks, getBookById, removeBookById, updateBook } from '../data-base';
 
@@ -65,13 +65,20 @@ export const useReadBookStore = defineStore('readBookStore', () => {
     extname: Bookextname.pdf,
     size: 0,
     path: '',
-    category: '',
     cover: '',
     id: '',
     chapter: '',
+    auth: '',
+    publisher: '',
+    describe: '',
+    category: "",
+    createTime: createTime(),
+    lastReadTime: createTime(),
+    readAllTime: 0,
+    score: 0,
+    status: BookStatus.Unread,
     content: new Uint8Array(),
     readProgress: 0,
-    readTime: 0,
     catalog: []
   })
 
@@ -83,26 +90,15 @@ export const useReadBookStore = defineStore('readBookStore', () => {
     }
   }
 
-  function update({ content, catalog, chapter, readProgress, readTime }: Partial<BookListItem>) {
-    if (content) {
-      readingBook.value.content = content;
-    }
+  function update(value: Partial<BookListItem>) {
+    const temp = readingBook.value;
+    Object.assign(temp, value)
+    readingBook.value = temp;
 
-    if (catalog) {
-      readingBook.value.catalog = catalog
-    }
-
-    if (chapter) {
-      readingBook.value.chapter = chapter
-    }
-
+    const { readProgress } = value
     if (readProgress && readingBook.value.readProgress !== readProgress) {
       readingBook.value.readProgress = readProgress
       updateBook(toRaw(readingBook.value))
-    }
-
-    if (readTime) {
-      readingBook.value.readTime = readTime
     }
   }
 
