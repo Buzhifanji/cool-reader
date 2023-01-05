@@ -8,6 +8,7 @@ import { useVirtualList } from "src/core/scroll/virtual-list"
 import { openBookReader } from "src/core/use";
 import Tilde from 'src/views/icons/tilde.vue'
 import Idea from 'src/views/icons/idea.vue'
+import { config } from "src/config";
 
 const router = useRouter();
 const total = ref<number>(0)
@@ -31,6 +32,9 @@ const layoutStyle = computed(() => {
   }
 })
 
+const hoverColore = computed(() => {
+  return config.theme ? 'rgb(243, 243, 245)' : 'rgba(255, 255, 255, 0.09)';
+})
 
 useVirtualList(list)
 
@@ -70,13 +74,15 @@ const selectedMode = ref('time')
               <div class="list-item_content" v-else>
                 <Idea class="list-item_icon" v-if="isIdea(item.notes)" />
                 <Tilde v-else class="list-item_icon" v-once />
-
                 <div class="list-item_text_container">
                   <div class="list-item_text">
-                    {{ item.text }}
+                    {{ isIdea(item.notes) ?item.notes.content : item.text }}
                   </div>
+                  <n-blockquote v-if="isIdea(item.notes)">
+                    {{ item.text }}
+                  </n-blockquote>
                   <n-p class="list-item_origin white-space" depth="3" @click="openBookReader(item, router)">
-                    来自: {{ item.bookName }}
+                    {{ langField.from }}: {{ item.bookName }}
                   </n-p>
                   <n-divider />
                 </div>
@@ -98,7 +104,12 @@ const selectedMode = ref('time')
 
 <style scoped>
 .list-item {
-  padding: 18px 20px 18px 0;
+  padding: 18px 0;
+  margin-right: 20px;
+}
+
+.list-item:hover {
+  background-color: v-bind(hoverColore);
 }
 
 .list-item_time {
@@ -131,14 +142,22 @@ const selectedMode = ref('time')
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
-  -moz-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 5;
+  -moz-line-clamp: 5;
+  line-clamp: 5;
   -webkit-text-size-adjust: none;
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
 }
 
+.n-blockquote {
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  margin-top: -10px;
+  color: rgb(118, 124, 130);
+}
 
 .n-input {
   width: 209px;

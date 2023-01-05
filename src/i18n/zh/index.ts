@@ -61,4 +61,5 @@ export const zhCN: LangField = {
   themeLight: "浅色",
 
   stopReading: "退出阅读",
+  from: "来自",
 };

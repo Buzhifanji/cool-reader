@@ -61,4 +61,5 @@ export const enUS: LangField = {
   themeLight: "light",
 
   stopReading: 'stop reading',
+  from: "from",
 };
